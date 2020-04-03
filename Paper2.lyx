@@ -1,0 +1,8273 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}\definecolor{messagecolor}{rgb}{0, 0, 0}\definecolor{warningcolor}{rgb}{1, 0, 1}\definecolor{errorcolor}{rgb}{1, 0, 0}\setlength{\headheight}{14.5pt}\usepackage{babel}
+
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}\definecolor{messagecolor}{rgb}{0, 0, 0}\definecolor{warningcolor}{rgb}{1, 0, 1}\definecolor{errorcolor}{rgb}{1, 0, 0}\usepackage{babel}
+% macro for italic page numbers in the index
+\newcommand{\IndexDef}[1]{\textit{#1}}
+\newcommand{\IndexPrimary}[1]{\textbf{#1}}
+% force a page break at the start of sections
+\let\stdsection\section
+\renewcommand{\section}{\newpage\stdsection}
+
+
+% workaround for a makeindex bug,
+% see sec. "Index Entry Order"
+% only uncomment this when you are using makindex
+%\let\OrgIndex\index 
+%\renewcommand*{\index}[1]{\OrgIndex{#1}}
+%\usepackage{splitidx}
+
+% workaround for a makeindex bug,
+% see sec. "Index Entry Order"
+% only uncomment this when you are using makindex
+\let\OrgIndex\index 
+\renewcommand*{\index}[1]{\OrgIndex{#1}}
+\usepackage{splitidx}
+%\indexsetup{noclearpage}
+\AtBeginDocument{
+  \def\labelitemii{\(\circ\)}
+  \def\labelitemiii{\(\triangleright\)}
+}
+\usepackage[font={normal,sl}]{caption}% set captions slanted
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
+\newenvironment{lylist}[1]{\begin{list}{}
+{\settowidth{\labelwidth}{#1}
+\setlength{\leftmargin}{\labelwidth}
+\addtolength{\leftmargin}{\labelsep}
+\renewcommand{\makelabel}[1]{##1\hfil}}}{\end{list}}
+\newcommand{\datetoday}{\number\day\space
+     \ifcase\month\or January\or February\or March\or April\or May\or
+     June\or July\or August\or September\or October\or November\or
+     December\fi
+     \space\number\year}
+\newcommand{\EOLmemo}{\null \vskip-1.5truein
+{\raggedright \textsf{\textsc{\large \textcolor{blue}{Earth Observing Laboratory}}}}\par
+{\raggedright \textsf{\textsl{\textcolor{blue}{Memorandum:}}}} \par \vskip6pt
+{\color{blue}{\hrule}}\par
+\vskip0.3truein \leftline{\hskip \longindent \datetoday} \vskip0.2truein
+\thispagestyle{empty}}
+\newcommand{\attachm}[1]{\begin{lylist}{Attachments:00}
+\item [Attachments:] {#1}
+\end{lylist}}
+\newcommand{\cc}[1]{\begin{lylist}{Attachments:00}
+\item [cc:] {#1}
+\end{lylist}}
+\newcommand{\attach}[1]{\begin{lylist}{Attachments:00}
+\item [Attachment:] {#1}
+\end{lylist}}
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\pagenumbering{gobble}
+\end_preamble
+\options 12pt,twoside,american
+\use_default_options false
+\begin_modules
+knitr
+hanging
+\end_modules
+\maintain_unincluded_children false
+\language american
+\language_package babel
+\inputencoding default
+\fontencoding global
+\font_roman "times" "default"
+\font_sans "helvet" "default"
+\font_typewriter "lmtt" "default"
+\font_math "auto" "auto"
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command bibtex
+\index_command makeindex
+\paperfontsize 11
+\spacing single
+\use_hyperref true
+\pdf_title "Technical Note: Measuring Sensible-Heat Flux"
+\pdf_author "William A. Cooper"
+\pdf_subject "Assessment of Measurements of Sensible-Heat Flux"
+\pdf_keywords "sensible heat flux, temperature, time response of sensors, NCAR Research Aviation Facility, research aircraft, NCAR/EOL/RAF"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 2
+\pdf_breaklinks true
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref section
+\pdf_pdfusetitle false
+\pdf_quoted_options " linkcolor=blue, citecolor={blue}"
+\papersize letterpaper
+\use_geometry true
+\use_package amsmath 2
+\use_package amssymb 0
+\use_package cancel 0
+\use_package esint 2
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine natbib
+\cite_engine_type authoryear
+\biblio_style plainnat
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification false
+\use_refstyle 0
+\use_minted 0
+\backgroundcolor #ffffff
+\boxbgcolor #f7f7f7
+\branch Extra
+\selected 0
+\filename_suffix 0
+\color #faf0e6
+\end_branch
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\index Variable Names and Acronyms
+\shortcut var
+\color #00aaff
+\end_index
+\index List of Symbols
+\shortcut lis
+\color #ff0000
+\end_index
+\leftmargin 1.2in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 2
+\paragraph_separation skip
+\defskip medskip
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 2
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+The Delayed Response of Airborne Thermometers:
+\begin_inset Newline newline
+\end_inset
+
+Part 2: Correcting for Dynamic Heating 
+\end_layout
+
+\begin_layout Author
+William A.
+ Cooper and others...
+\end_layout
+
+\begin_layout Date
+
+\color red
+DRAFT
+\color inherit
+ March 2020
+\end_layout
+
+\begin_layout Standard
+National Center for Atmospheric Research
+\begin_inset Newline newline
+\end_inset
+
+Earth Observing Laboratory
+\begin_inset Newline newline
+\end_inset
+
+Research Aviation Facility
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\begin_inset Newpage cleardoublepage
+\end_inset
+
+ 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{roman}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+contentsname}{Table of Contents} 
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+ 
+\begin_inset VSpace vfill
+\end_inset
+
+
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+eject
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%% LyX 2.2.2 created this file.
+  For more info, see http://www.lyx.org/.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+%
+\backslash
+phantomsection 
+\backslash
+addcontentsline{toc}{section}{List of Figures}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage %
+\backslash
+phantomsection 
+\backslash
+addcontentsline{toc}{section}{List of Tables}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList table
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+renewcommand{
+\backslash
+abstractname}{Preface and Abstract}
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{plain}
+\end_layout
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+begin{abstract}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In Part 1, the time response of some standard airborne thermometers was
+ determined by observing the response to turbulent dynamic heating.
+ For some standard airborne thermometers, the transfer function characterizing
+ this time response was parameterized in terms of assumed differential equations
+ or more generally via fitted expressions.
+ In this paper, the consequences for how dynamic heating is treated are
+ discussed.
+ The standard processing approach used with most airborne measurement platforms
+ is to determine the ambient or air temperature by subtracting a dynamic-heating
+ correction from the measured recovery temperature.
+ When the sensor cannot respond to fluctuations in dynamic heating, this
+ procedure introduces errors and excess noise into the resulting air temperature.
+ A modified correction procedure is proposed here that instead corrects
+ for dynamic heating only after filtering to match the response of the temperatu
+re sensors.
+ The filter used for this processing step is obtained from the transfer
+ functions determined in Part 1.
+ This has a beneficial effect on the variance spectra of temperature measurement
+s.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+end{abstract}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Acknowledgments
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:acknowledgements"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This material is based upon work supported by the National Center for Atmospheri
+c Research, which is a major facility sponsored by the National Science
+ Foundation under Cooperative Agreement No.
+ 1852977.
+ Any opinions, findings and conclusions or recom-mendations expressed in
+ this publication are those of the author(s) and do not necessarily reflect
+ the views of the National Science Foundation.
+ The data used in the examples presented are from the VOCALS (VAMOS Ocean-Cloud-
+Atmosphere-Land Study), SOCRATES (Southern Ocean Clouds, Radiation, Aerosol
+ Transport Experimental Study) and the CSET (Cloud Systems Evolution in
+ the Trades) experiment, 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+WE-CAN (Western wildfire Experiment for Cloud chemistry, Aerosol absorption
+ and Nitrogen) projects, 
+\end_layout
+
+\end_inset
+
+each described at 
+\begin_inset CommandInset href
+LatexCommand href
+name "this URL"
+target "https://www.eol.ucar.edu/field_projects/"
+literal "false"
+
+\end_inset
+
+.
+ Citations for the data sets are included in the references.
+ Measurements (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "VOCALS2011"
+literal "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "SOCRATES2019"
+literal "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "WECAN2018"
+literal "false"
+
+\end_inset
+
+) were collected by the project experiment teams, and flight operations
+ and data acquisition and processing were performed by the Research Aviation
+ Facility, Earth Observing Laboratory, National Center for Atmospheric Research
+ (NCAR).
+ The analyses reported here were mostly performed using R (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Rlanguage"
+literal "true"
+
+\end_inset
+
+), with 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+RStudio
+\end_layout
+
+\end_inset
+
+RStudio (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "RStudio2012"
+literal "true"
+
+\end_inset
+
+) and 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+knitr
+\end_layout
+
+\end_inset
+
+knitr (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Xie2014a,Xie2014b"
+literal "true"
+
+\end_inset
+
+).
+ Data files in netCDF format have been read and written using the R 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+R language!package!ncdf4
+\end_layout
+
+\end_inset
+
+package 
+\begin_inset Quotes eld
+\end_inset
+
+ncdf4
+\begin_inset Quotes erd
+\end_inset
+
+; cf.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand citet
+key "ncdf4"
+literal "true"
+
+\end_inset
+
+.
+ Substantial use also was made of the 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+ggplot2
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+R language!package!ggplot2
+\end_layout
+
+\end_inset
+
+
+\begin_inset Quotes eld
+\end_inset
+
+ggplot2
+\begin_inset Quotes erd
+\end_inset
+
+ package (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "wickham2009"
+literal "true"
+
+\end_inset
+
+) for R, and some fits relied on the 
+\begin_inset Quotes eld
+\end_inset
+
+nleqslv
+\begin_inset Quotes erd
+\end_inset
+
+ package for R 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "hasselman-nleqslv"
+literal "false"
+
+\end_inset
+
+.
+ Extensive use was made of the 
+\begin_inset Quotes eld
+\end_inset
+
+stats
+\begin_inset Quotes erd
+\end_inset
+
+ package, part of Core R\SpecialChar endofsentence
+ Some of the numerical integrations used the Runge-Kutta
+ function from the 
+\begin_inset Quotes eld
+\end_inset
+
+rmutil
+\begin_inset Quotes erd
+\end_inset
+
+ package (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "runge.kutta"
+literal "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{plain}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+thispagestyle{empty}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage cleardoublepage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+pagenumbering{arabic}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Subsection
+Overview
+\end_layout
+
+\begin_layout Standard
+This series of papers was introduced in Part 1, where it was indicated that
+ the overarching goal of these papers is to improve capabilities to measure
+ sensible-heat flux from research aircraft.
+ Toward that goal, Part 1 characterized the measured quantity, the 
+\begin_inset Quotes eld
+\end_inset
+
+recovery temperature,
+\begin_inset Quotes erd
+\end_inset
+
+ using a parameterized transfer function.
+ That paper did not discuss the implications for the final measurement of
+ ambient or air temperature, which requires a correction for the dynamic
+ heating of the sensor.
+ This second paper in the series treats that correction.
+ It might seem that this is minor and could be incorporated into other parts,
+ but the claim here is that this correction as applied by essentially all
+ operators of research aircraft introduces errors and noise into the measurement
+ that should be eliminated.
+ Making this point therefore seems worth a separate discussion.
+ Part 1 and this paper will establish the foundation for Part 3, where measuring
+ the flux of sensible heat is discussed and the corrections developed in
+ the first two parts are applied.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<initialization, echo=FALSE,include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+## This chunk loads some needed R packages and defines a function
+\end_layout
+
+\begin_layout Plain Layout
+
+## used for the Laplace-transform solution of the governing
+\end_layout
+
+\begin_layout Plain Layout
+
+## differential equations.
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+library(knitr)
+\end_layout
+
+\begin_layout Plain Layout
+
+opts_chunk$set(echo = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+               include = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+               fig.lp = "fig:")
+\end_layout
+
+\begin_layout Plain Layout
+
+# note that fig.pos="center" gave errors, changed to fig.align
+\end_layout
+
+\begin_layout Plain Layout
+
+opts_chunk$set(
+\end_layout
+
+\begin_layout Plain Layout
+
+  fig.width = 6,
+\end_layout
+
+\begin_layout Plain Layout
+
+  fig.height = 3.5,
+\end_layout
+
+\begin_layout Plain Layout
+
+  fig.align = "center",
+\end_layout
+
+\begin_layout Plain Layout
+
+  digits = 4
+\end_layout
+
+\begin_layout Plain Layout
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+thisFileName <- "SensibleHeatFluxTechNote"
+\end_layout
+
+\begin_layout Plain Layout
+
+library(Ranadu, quietly = TRUE, warn.conflicts = FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(scales)
+\end_layout
+
+\begin_layout Plain Layout
+
+require(numDeriv)    ## is this used?
+\end_layout
+
+\begin_layout Plain Layout
+
+library(signal)      ## used for filtering
+\end_layout
+
+\begin_layout Plain Layout
+
+library(reshape2)    ## used with ggplot facet plots
+\end_layout
+
+\begin_layout Plain Layout
+
+library(grid)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(magrittr)    ## used for pipes (%>%)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(dplyr)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(nleqslv)
+\end_layout
+
+\begin_layout Plain Layout
+
+library(rmutil)      ## provides the runge-kutta integration function
+\end_layout
+
+\begin_layout Plain Layout
+
+options(stringsAsFactors = FALSE)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+CACHE <- FALSE
+\end_layout
+
+\begin_layout Plain Layout
+
+setwd ('~/RStudio/SensibleHeatFlux') 
+\end_layout
+
+\begin_layout Plain Layout
+
+Directory <- DataDirectory ()
+\end_layout
+
+\begin_layout Plain Layout
+
+## standard values:
+\end_layout
+
+\begin_layout Plain Layout
+
+frq <- seq(0.01, 25, by = 0.01)
+\end_layout
+
+\begin_layout Plain Layout
+
+Phi <- rep(0, length(frq))
+\end_layout
+
+\begin_layout Plain Layout
+
+H <- rep(0, length(frq))
+\end_layout
+
+\begin_layout Plain Layout
+
+a <- 0.733 # 0.713
+\end_layout
+
+\begin_layout Plain Layout
+
+tau1 <- 0.0308  # 0.0335
+\end_layout
+
+\begin_layout Plain Layout
+
+tau2 <- 0.447
+\end_layout
+
+\begin_layout Plain Layout
+
+# The Laplace-transform solution:
+\end_layout
+
+\begin_layout Plain Layout
+
+LTphase <- function(f, P) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## f=frequency; P=Param
+\end_layout
+
+\begin_layout Plain Layout
+
+  tau1 <- P$tau1
+\end_layout
+
+\begin_layout Plain Layout
+
+  tau2 <- P$tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+  a <- P$a
+\end_layout
+
+\begin_layout Plain Layout
+
+  b <- sqrt(1 / (1 + (2 * pi * f * tau2) ^ 2))
+\end_layout
+
+\begin_layout Plain Layout
+
+  zeta <- -atan(2 * pi * f * tau2)
+\end_layout
+
+\begin_layout Plain Layout
+
+  C1 <- 1 / (1 + 4 * pi ^ 2 * f ^ 2 * tau1 ^ 2) *
+\end_layout
+
+\begin_layout Plain Layout
+
+    (-(a + (1 - a) * b * cos(zeta)) * 2 * pi * f * tau1 +
+\end_layout
+
+\begin_layout Plain Layout
+
+       (1 - a) * b * sin(zeta))
+\end_layout
+
+\begin_layout Plain Layout
+
+  C2 <- 1 / (1 + 4 * pi ^ 2 * f ^ 2 * tau1 ^ 2) *
+\end_layout
+
+\begin_layout Plain Layout
+
+    ((a + (1 - a) * b * cos(zeta)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+       (1 - a) * b * sin(zeta) * 2 * pi * f * tau1)
+\end_layout
+
+\begin_layout Plain Layout
+
+  cTF <- sqrt(C1 ^ 2 + C2 ^ 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+  phiTF <- atan2(C1, C2) * 180 / pi
+\end_layout
+
+\begin_layout Plain Layout
+
+  return(list('Amp' = cTF, 'Phase' = phiTF))
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+reviseDH <-
+\end_layout
+
+\begin_layout Plain Layout
+
+  function (.data, P, alphaR) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    # P is Param1, e.g.; alphaR is recovery factor
+\end_layout
+
+\begin_layout Plain Layout
+
+    .data$Q <- .data$TASX ^ 2 / 2010
+\end_layout
+
+\begin_layout Plain Layout
+
+    aV <- P$a
+\end_layout
+
+\begin_layout Plain Layout
+
+    tau1V <- P$tau1
+\end_layout
+
+\begin_layout Plain Layout
+
+    tau2V <- P$tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+    Rate <- attr (.data, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+    fS <- function(y, i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      (.data$Q[i] - y) / (tau2V * Rate)
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    fM <- function (y, i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      (aV * .data$Q[i] + (1 - aV) * TsQ[i] - y) / (Rate * tau1V)
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    TsQ <- rk4.integrate (fS, .data$Q[1], 1:nrow(.data))
+\end_layout
+
+\begin_layout Plain Layout
+
+    Qp <- rk4.integrate (fM, .data$Q[1], 1:nrow(.data))
+\end_layout
+
+\begin_layout Plain Layout
+
+    return (.data$ATX + alphaR * (.data$Q - Qp))
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+## This is a special version with features not in the standard Ranadu version
+\end_layout
+
+\begin_layout Plain Layout
+
+CohP <-
+\end_layout
+
+\begin_layout Plain Layout
+
+  function (.data,
+\end_layout
+
+\begin_layout Plain Layout
+
+            .Var1,
+\end_layout
+
+\begin_layout Plain Layout
+
+            .Var2,
+\end_layout
+
+\begin_layout Plain Layout
+
+            col = 'blue',
+\end_layout
+
+\begin_layout Plain Layout
+
+            spans = 25,
+\end_layout
+
+\begin_layout Plain Layout
+
+            smoothBins = 50,
+\end_layout
+
+\begin_layout Plain Layout
+
+            plotType = 'ggplot',
+\end_layout
+
+\begin_layout Plain Layout
+
+            showErrors = 0,
+\end_layout
+
+\begin_layout Plain Layout
+
+            returnCospectrum = FALSE) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (is.data.frame(.data)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      if (.Var1 %in% names(.data)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        Z <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          capture.output (Vr <-
+\end_layout
+
+\begin_layout Plain Layout
+
+                            SmoothInterp(detrend (.data[, c('Time', .Var1)]),
+ .Length = 0))
+\end_layout
+
+\begin_layout Plain Layout
+
+      } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(sprintf(
+\end_layout
+
+\begin_layout Plain Layout
+
+          'CohPhase ERROR: Variable %s is not in the supplied data.frame',
+\end_layout
+
+\begin_layout Plain Layout
+
+          .Var1
+\end_layout
+
+\begin_layout Plain Layout
+
+        ))
+\end_layout
+
+\begin_layout Plain Layout
+
+        return (NA)
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+      if (.Var2 %in% names(.data)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        Z <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          capture.output (VrC <-
+\end_layout
+
+\begin_layout Plain Layout
+
+                            SmoothInterp(detrend (.data[, c('Time', .Var2)]),
+ .Length = 0))
+\end_layout
+
+\begin_layout Plain Layout
+
+      } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+        print(sprintf(
+\end_layout
+
+\begin_layout Plain Layout
+
+          'CohPhase ERROR: Variable %s is not in the supplied data.frame',
+\end_layout
+
+\begin_layout Plain Layout
+
+          .Var2
+\end_layout
+
+\begin_layout Plain Layout
+
+        ))
+\end_layout
+
+\begin_layout Plain Layout
+
+        return (NA)
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+    } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+      print('CohPhase ERROR: first argument is not a data.frame.')
+\end_layout
+
+\begin_layout Plain Layout
+
+      return (NA)
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (is.null(attr(.data, 'Rate'))) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      print ('CohPhase warning: Rate attribute missing from data.frame, so
+ using Rate=1')
+\end_layout
+
+\begin_layout Plain Layout
+
+      Rate <- 1
+\end_layout
+
+\begin_layout Plain Layout
+
+    } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+      Rate <- attr(.data, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    vcv <- cbind(ts(Vr, frequency = Rate), ts(VrC, frequency = Rate))
+\end_layout
+
+\begin_layout Plain Layout
+
+    P <-
+\end_layout
+
+\begin_layout Plain Layout
+
+      spec.pgram(
+\end_layout
+
+\begin_layout Plain Layout
+
+        vcv,
+\end_layout
+
+\begin_layout Plain Layout
+
+        detrend = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        fast = TRUE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        plot = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        spans = spans
+\end_layout
+
+\begin_layout Plain Layout
+
+      )
+\end_layout
+
+\begin_layout Plain Layout
+
+    df1 <- data.frame(P$coh, log(P$freq))
+\end_layout
+
+\begin_layout Plain Layout
+
+    df2 <- data.frame (P$phase, log(P$freq))
+\end_layout
+
+\begin_layout Plain Layout
+
+    df3 <- data.frame (P$spec[, 1], log(P$freq))
+\end_layout
+
+\begin_layout Plain Layout
+
+    df4 <- data.frame (P$spec[, 2], log(P$freq))
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf1 <- binStats (df1, bins = smoothBins)
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf2 <- binStats (df2, bins = smoothBins)
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf3 <- binStats (df3, bins = smoothBins)
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf4 <- binStats (df4, bins = smoothBins)
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf1 <- pf1[!is.na (pf1$ybar),]
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf2 <- pf2[!is.na (pf2$ybar),]
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf3 <- pf3[!is.na (pf3$ybar),]
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf4 <- pf4[!is.na (pf4$ybar),]
+\end_layout
+
+\begin_layout Plain Layout
+
+    # pf1$sigma[pf1$nb > 1] <- pf1$sigma[pf1$nb > 1] / sqrt(pf1$nb[pf1$nb
+ > 2])
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf1$sigma[pf1$nb <= 1] <- NA # pf1$ybar[pf1$nb <= 1] * 0.5
+\end_layout
+
+\begin_layout Plain Layout
+
+    # pf2$sigma[pf2$nb > 1] <- pf2$sigma[pf2$nb > 1] / sqrt(pf2$nb[pf2$nb
+ > 2])
+\end_layout
+
+\begin_layout Plain Layout
+
+    pf2$sigma[pf2$nb <= 1] <- NA # pf2$ybar[pf2$nb <= 1] * 0.5is
+\end_layout
+
+\begin_layout Plain Layout
+
+    if (plotType != 'ggplot') {
+\end_layout
+
+\begin_layout Plain Layout
+
+      pf1 <- binStats (df1, bins = smoothBins, addBin = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+      pf2 <- binStats (df2, bins = smoothBins, addBin = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+      pf3 <- binStats (df3, bins = smoothBins, addBin = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+      pf4 <- binStats (df4, bins = smoothBins, addBin = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+      return(cbind(pf1, pf2, pf3, pf4)[, c(2, 1, 3, 4, 6, 7, 10)])
+\end_layout
+
+\begin_layout Plain Layout
+
+    } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+      d2 <-
+\end_layout
+
+\begin_layout Plain Layout
+
+        data.frame(
+\end_layout
+
+\begin_layout Plain Layout
+
+          Time = exp(pf1$xc),
+\end_layout
+
+\begin_layout Plain Layout
+
+          coherence = pf1$ybar,
+\end_layout
+
+\begin_layout Plain Layout
+
+          phase = pf2$ybar * 180 / pi,
+\end_layout
+
+\begin_layout Plain Layout
+
+          clo = (pf1$ybar - showErrors * pf1$sigma),
+\end_layout
+
+\begin_layout Plain Layout
+
+          chi = pf1$ybar + showErrors * pf1$sigma,
+\end_layout
+
+\begin_layout Plain Layout
+
+          plo = (pf2$ybar - showErrors * pf2$sigma) * 180 / pi,
+\end_layout
+
+\begin_layout Plain Layout
+
+          phi = (pf2$ybar + showErrors * pf2$sigma) * 180 / pi
+\end_layout
+
+\begin_layout Plain Layout
+
+        )
+\end_layout
+
+\begin_layout Plain Layout
+
+      d2$clo[!is.na(d2$clo) & (d2$clo < 0)] <- 0
+\end_layout
+
+\begin_layout Plain Layout
+
+      labelP <- c('coherence', 'phase [degrees]')
+\end_layout
+
+\begin_layout Plain Layout
+
+      g <- ggplotWAC(
+\end_layout
+
+\begin_layout Plain Layout
+
+        d2[, c(1, 2, 3)],
+\end_layout
+
+\begin_layout Plain Layout
+
+        panels = 2,
+\end_layout
+
+\begin_layout Plain Layout
+
+        labelP = labelP,
+\end_layout
+
+\begin_layout Plain Layout
+
+        col = col,
+\end_layout
+
+\begin_layout Plain Layout
+
+        lwd = c(1.0),
+\end_layout
+
+\begin_layout Plain Layout
+
+        lty = c(1),
+\end_layout
+
+\begin_layout Plain Layout
+
+        xlab = 'freq'
+\end_layout
+
+\begin_layout Plain Layout
+
+      )
+\end_layout
+
+\begin_layout Plain Layout
+
+      g <-
+\end_layout
+
+\begin_layout Plain Layout
+
+        g + xlab('frequency [Hz]') + ylab (sprintf ('%s x %s', .Var1, .Var2))
+\end_layout
+
+\begin_layout Plain Layout
+
+      g <-
+\end_layout
+
+\begin_layout Plain Layout
+
+        g + scale_x_log10(
+\end_layout
+
+\begin_layout Plain Layout
+
+          breaks = trans_breaks("log10", function(x)
+\end_layout
+
+\begin_layout Plain Layout
+
+            10 ^ x, n = 4),
+\end_layout
+
+\begin_layout Plain Layout
+
+          labels = trans_format("log10", math_format(expr = 10 ^ .x))
+\end_layout
+
+\begin_layout Plain Layout
+
+        ) + xlab('frequency [Hz]')
+\end_layout
+
+\begin_layout Plain Layout
+
+      if (showErrors > 0 && smoothBins > 5) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        da <- data.frame(d2[, c(1, 4, 5)])
+\end_layout
+
+\begin_layout Plain Layout
+
+        db <- data.frame(d2[, c(1, 6, 7)])
+\end_layout
+
+\begin_layout Plain Layout
+
+        names(da) <- c('Time', 'ymin', 'ymax')
+\end_layout
+
+\begin_layout Plain Layout
+
+        names(db) <- c('Time', 'ymin', 'ymax')
+\end_layout
+
+\begin_layout Plain Layout
+
+        da$PanelGroup <- labelP[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+        db$PanelGroup <- labelP[2]
+\end_layout
+
+\begin_layout Plain Layout
+
+        d <- rbind(db, da)
+\end_layout
+
+\begin_layout Plain Layout
+
+        g <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          g + geom_ribbon(
+\end_layout
+
+\begin_layout Plain Layout
+
+            data = d,
+\end_layout
+
+\begin_layout Plain Layout
+
+            aes(
+\end_layout
+
+\begin_layout Plain Layout
+
+              x = Time,
+\end_layout
+
+\begin_layout Plain Layout
+
+              ymin = ymin,
+\end_layout
+
+\begin_layout Plain Layout
+
+              ymax = ymax
+\end_layout
+
+\begin_layout Plain Layout
+
+            ),
+\end_layout
+
+\begin_layout Plain Layout
+
+            colour = 'grey',
+\end_layout
+
+\begin_layout Plain Layout
+
+            alpha = 0.15,
+\end_layout
+
+\begin_layout Plain Layout
+
+            inherit.aes = FALSE
+\end_layout
+
+\begin_layout Plain Layout
+
+          )
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+      g <- g + theme_WAC(1) + theme(legend.position = 'none')
+\end_layout
+
+\begin_layout Plain Layout
+
+      if (returnCospectrum) {
+\end_layout
+
+\begin_layout Plain Layout
+
+        CS <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          sqrt(P$coh[, 1] * P$spec[, 1] * P$spec[, 2] / (1 + tan(P$phase[,
+ 1]) ^
+\end_layout
+
+\begin_layout Plain Layout
+
+                                                           2))
+\end_layout
+
+\begin_layout Plain Layout
+
+        v1 <- SmoothInterp(.data[, .Var1], .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+        v2 <- SmoothInterp(.data[, .Var2], .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+        v1 <- detrend(data.frame(Time = .data$Time, v1))
+\end_layout
+
+\begin_layout Plain Layout
+
+        v2 <- detrend(data.frame(Time = .data$Time, v2))
+\end_layout
+
+\begin_layout Plain Layout
+
+        ff1 <- fft(v1)
+\end_layout
+
+\begin_layout Plain Layout
+
+        ff2 <- fft(v2)
+\end_layout
+
+\begin_layout Plain Layout
+
+        G <- Re(ff1 * Conj(ff2)) / nrow(.data)
+\end_layout
+
+\begin_layout Plain Layout
+
+        GQ <- Im(ff1 * Conj(ff2)) / nrow(.data)
+\end_layout
+
+\begin_layout Plain Layout
+
+        N <- nrow(.data) %/% 2
+\end_layout
+
+\begin_layout Plain Layout
+
+        S1 <- Re(ff1 * Conj(ff1) / nrow(.data))
+\end_layout
+
+\begin_layout Plain Layout
+
+        S2 <- Re(ff2 * Conj(ff2) / nrow(.data))
+\end_layout
+
+\begin_layout Plain Layout
+
+        G <- G[2:(N + 1)]
+\end_layout
+
+\begin_layout Plain Layout
+
+        GQ <- GQ[2:(N + 1)]
+\end_layout
+
+\begin_layout Plain Layout
+
+        S1 <- S1[2:(N + 1)]
+\end_layout
+
+\begin_layout Plain Layout
+
+        S2 <- S2[2:(N + 1)]
+\end_layout
+
+\begin_layout Plain Layout
+
+        frq <- c(1:N) * Rate / nrow(.data)
+\end_layout
+
+\begin_layout Plain Layout
+
+        spec1 <- 2 * S1 / Rate
+\end_layout
+
+\begin_layout Plain Layout
+
+        spec2 <- 2 * S2 / Rate
+\end_layout
+
+\begin_layout Plain Layout
+
+        cospec <- 2 * G / Rate
+\end_layout
+
+\begin_layout Plain Layout
+
+        quad <- 2 * GQ / Rate
+\end_layout
+
+\begin_layout Plain Layout
+
+        # cospectrum - i * quadrature = (gain spectrum) * exp(i*(phase spectrum)
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+        # sqrt(cospectrum^2 + quadrature^2) is the amplitude or gain spectrum
+\end_layout
+
+\begin_layout Plain Layout
+
+        return(data.frame(
+\end_layout
+
+\begin_layout Plain Layout
+
+          freq = frq,
+\end_layout
+
+\begin_layout Plain Layout
+
+          cospec = cospec,
+\end_layout
+
+\begin_layout Plain Layout
+
+          quad = quad,
+\end_layout
+
+\begin_layout Plain Layout
+
+          spec1 = spec1,
+\end_layout
+
+\begin_layout Plain Layout
+
+          spec2 = spec2
+\end_layout
+
+\begin_layout Plain Layout
+
+        ))
+\end_layout
+
+\begin_layout Plain Layout
+
+      } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+        return(g)
+\end_layout
+
+\begin_layout Plain Layout
+
+      }
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+a <- 0.733 # 0.713
+\end_layout
+
+\begin_layout Plain Layout
+
+tau1 <- 0.0308  # 0.0335
+\end_layout
+
+\begin_layout Plain Layout
+
+tau2 <- 0.447
+\end_layout
+
+\begin_layout Plain Layout
+
+Param <- list(
+\end_layout
+
+\begin_layout Plain Layout
+
+  a = a,
+\end_layout
+
+\begin_layout Plain Layout
+
+  tau1 = tau1,
+\end_layout
+
+\begin_layout Plain Layout
+
+  tau2 = tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+Param1 <- Param
+\end_layout
+
+\begin_layout Plain Layout
+
+ParamSH <- Param
+\end_layout
+
+\begin_layout Plain Layout
+
+ParamSH$a <- 0
+\end_layout
+
+\begin_layout Plain Layout
+
+ParamSH$tau1 <- 0.05681167 
+\end_layout
+
+\begin_layout Plain Layout
+
+ParamSH$tau2 <- 1.25078040
+\end_layout
+
+\begin_layout Plain Layout
+
+ParamSF <- Param
+\end_layout
+
+\begin_layout Plain Layout
+
+ParamSF$a <- 0.652
+\end_layout
+
+\begin_layout Plain Layout
+
+ParamSF$tau1 <- 0.0295
+\end_layout
+
+\begin_layout Plain Layout
+
+ParamSF$tau2 <- 1.04
+\end_layout
+
+\begin_layout Plain Layout
+
+source('./chunks/rk4.integrate.R')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+The Dynamic-Heating Correction
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Revised-Treatment-of"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The dynamic-heating term is discussed for example by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BangeEtAl2013.ch2"
+literal "false"
+
+\end_inset
+
+ (cf.
+\begin_inset space ~
+\end_inset
+
+their Eq.
+\begin_inset space ~
+\end_inset
+
+2.23) and also in the working document describing processing algorithms in
+ use at the Research Aviation Facility, NCAR: 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "RAF Technical Report: Processing Algorithms"
+target "https://github.com/NCAR/aircraft_ProcessingAlgorithms/blob/master/ProcessingAlgorithms.pdf"
+literal "false"
+
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+.
+ These sources express the dynamic-heating term 
+\begin_inset Formula $Q$
+\end_inset
+
+ as
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+Q=\alpha_{r}\frac{V^{2}}{2C_{p}}=T_{r}\left(\frac{\alpha_{r}M^{2}R_{a}/(2C_{v})}{1+\alpha_{r}M^{2}R_{a}/(2C_{v})}\right)\label{eq:DHterm-1}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\alpha_{r}$
+\end_inset
+
+ is the 
+\begin_inset Quotes eld
+\end_inset
+
+recovery factor
+\begin_inset Quotes erd
+\end_inset
+
+ characterizing the extent to which the air is brought to rest relative
+ to the sensor, 
+\begin_inset Formula $V$
+\end_inset
+
+ is the airspeed, 
+\begin_inset Formula $C_{p}$
+\end_inset
+
+ and 
+\begin_inset Formula $C_{v}$
+\end_inset
+
+ are respectively the specific heat of air at constant pressure and constant
+ volume, 
+\begin_inset Formula $T_{r}$
+\end_inset
+
+ is the (true) recovery temperature expressed in absolute units, 
+\begin_inset Formula $M$
+\end_inset
+
+ the Mach number, and 
+\begin_inset Formula $R_{a}$
+\end_inset
+
+ the gas constant for air.
+ The recovery factor is close to unity for the sensors discussed in this
+ report.
+ The dynamic-heating term can exceed 
+\begin_inset Formula $20^{\circ}\mathrm{C}$
+\end_inset
+
+ at NCAR/NSF GV flight speeds, so the correction is large and fluctuations
+ in this term are often the dominant source of variability in the recovery
+ temperature.
+ The recovery temperature is related to the air or ambient temperature 
+\begin_inset Formula $T_{a}$
+\end_inset
+
+ via
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+T_{r}=T_{a}+Q\label{eq:recoveryTemperature-1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Errors conventionally introduced
+\end_layout
+
+\begin_layout Standard
+Normal data processing subtracts the dynamic-heating term 
+\begin_inset Formula $Q$
+\end_inset
+
+ from the measured recovery temperature to estimate the actual air temperature.
+ However, the dynamic-heating term often varies rapidly in a turbulent wind
+ field and produces rapid changes in the true recovery temperature to which
+ the temperature sensor may not respond.
+ In that case, applying the standard dynamic-heating correction introduces
+ erroneous fluctuations in the estimated ambient temperature.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<S15, include=TRUE, fig.cap='The variance spectrum for the recovery temperature
+ (RTF1, blue line) measured by a Rosemount 102E4AL sensor during a flight
+ segment from the SOCRATES project, flight 15, 6:00:00 -- 6:15:00 UTC.
+ The variance spectra for the dynamic-heating term (Q) and for the calculated
+ air temperature after this correction is applied (ATF1) are also shown.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DS <-
+\end_layout
+
+\begin_layout Plain Layout
+
+  getNetCDF('/Data/SOCRATES/SOCRATESrf15h.nc',
+\end_layout
+
+\begin_layout Plain Layout
+
+            standardVariables(c('ATF1', 'UXC')),
+\end_layout
+
+\begin_layout Plain Layout
+
+            60000,
+\end_layout
+
+\begin_layout Plain Layout
+
+            61500)
+\end_layout
+
+\begin_layout Plain Layout
+
+rf.txt <- attr(DS$ATF1, 'RecoveryFactor')
+\end_layout
+
+\begin_layout Plain Layout
+
+rf <- gsub('mach', 'MACHX', rf.txt)
+\end_layout
+
+\begin_layout Plain Layout
+
+rf <- gsub(' log', ' * log', rf)
+\end_layout
+
+\begin_layout Plain Layout
+
+rf <- gsub(' 
+\backslash
+
+\backslash
+(', ' * 
+\backslash
+
+\backslash
+(', rf)
+\end_layout
+
+\begin_layout Plain Layout
+
+rf <- with(DS, eval(parse(text=rf)))
+\end_layout
+
+\begin_layout Plain Layout
+
+rf <- SmoothInterp(rf, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+## RTF1 is not in the netCDF file so recalculate it:
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$RTF1 <- DS$ATF1 + rf * DS$TASX^2 / 2010
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$TASX <- SmoothInterp(DS$TASX, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$Q <- rf * DS$TASX ^ 2 / 2010
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$ATX <- DS$ATF1  ## Replace ATX, based on ATH1 in netCDF file
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$AT <- reviseDH(DS, Param1, rf)
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$AT <- SmoothInterp(DS$AT, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+g <-
+\end_layout
+
+\begin_layout Plain Layout
+
+  VSpec(
+\end_layout
+
+\begin_layout Plain Layout
+
+    DS,
+\end_layout
+
+\begin_layout Plain Layout
+
+    'RTF1',
+\end_layout
+
+\begin_layout Plain Layout
+
+    spans = 99,
+\end_layout
+
+\begin_layout Plain Layout
+
+    xlim = c(0.01, 15),
+\end_layout
+
+\begin_layout Plain Layout
+
+    ylim = c(1.e-5, 1.e-1)
+\end_layout
+
+\begin_layout Plain Layout
+
+  )
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- VSpec(DS, 'ATF1', spans = 99, add = g)
+\end_layout
+
+\begin_layout Plain Layout
+
+VSpec(DS, 'Q', spans = 99, add = g) + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:S15}
+\end_layout
+
+\end_inset
+
+ illustrates the problem.
+ The measurements are from a region reasonably consistent with an inertial
+ sub-range, where the slope of the temperature variance spectrum would be
+ expected to be -5/3 (or -2/3 in this plot where the spectrum is weighted
+ by the frequency).
+ The measured spectrum (RTF1) has a steeper slope than this but that would
+ be expected if the time response attenuates the signal at higher frequencies.
+ However, the variance spectrum for the estimated ambient temperature (ATF1)
+ appears to have a substantial amount of high-frequency contamination.
+ This matches well the spectrum for dynamic heating, but if the sensor worked
+ correctly the recovery-temperature spectrum should exceed that of the ambient
+ temperature, as is the case around 0.1 to 0.5
+\begin_inset space ~
+\end_inset
+
+Hz, so that the subtraction of dynamic heating would produce smaller variance
+ in the measured ambient temperature.
+ 
+\end_layout
+
+\begin_layout Standard
+Data processing should instead remove an estimate of how dynamic heating
+ affects the sensor.
+ The approach followed in this paper is therefore to use the transfer function
+ determined in Part 1 (e.g., Fig.
+\begin_inset space ~
+\end_inset
+
+1 in that paper) to characterize the response to dynamic heating so that
+ only that response can be subtracted from the measurement.
+ This is made possible by the assumed linearity in response of the sensor,
+ which is required if this part of the response is to be separated from
+ the more general response to the combination of dynamic heating and true
+ fluctuations in temperature.
+ 
+\end_layout
+
+\begin_layout Standard
+The revised dynamic-heating adjustment will be labeled 
+\begin_inset Formula $Q^{\prime}$
+\end_inset
+
+ to distinguish it from the standard adjustment 
+\begin_inset Formula $Q$
+\end_inset
+
+, and the ambient temperature 
+\begin_inset Formula $T_{a}$
+\end_inset
+
+ should be estimated from this equation:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+T_{a}(t)=T_{m}(t)-Q^{\prime}(t)\label{eq:QprimeCorr}
+\end{equation}
+
+\end_inset
+
+instead of 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:recoveryTemperature-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The equation depends on the actual measured (recovery) temperature 
+\begin_inset Formula $T_{m}(t)$
+\end_inset
+
+, rather than the true recovery temperature 
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+ in 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:recoveryTemperature-1"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, to emphasize that the measurement is affected by the time-response of
+ the sensor and therefore differs from the true recovery temperature.
+\end_layout
+
+\begin_layout Standard
+This revised adjustment can be obtained by using a numerical solution to
+ the differential equations in Part 1, using only 
+\begin_inset Formula $Q(t)$
+\end_inset
+
+ as the input term.
+ However, for the high-frequency components numerical integration must be
+ done with considerable attention to accuracy, especially for the unheated
+ Rosemount sensor because its characteristic time constant for the wire
+ response (
+\begin_inset Formula $\tau_{1}$
+\end_inset
+
+) is smaller than the time interval between typically used 25-Hz samples.
+ For this reason, it is preferable to develop an appropriate digital filter
+ having response that matches the transfer function.
+ This also leads to much faster processing.
+ 
+\end_layout
+
+\begin_layout Subsection
+A filter for dynamic heating
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:A-filter-for"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+With the transfer function 
+\begin_inset Formula $H(\omega)$
+\end_inset
+
+ as determined in Part 1, the impulse response of the sensor can be found
+ from the inverse Fourier transform of that transfer function.
+ Once that is determined, appropriate moving-average coefficients can be
+ found from the impulse response, and those coefficients define a digital
+ filter that represents the sensor response.
+ The procedure used here is somewhat arbitrary, and no claim is made that
+ this is the best filter, but it functions reasonably for 25
+\begin_inset space ~
+\end_inset
+
+Hz measurements.
+ Details including the filter coefficients are provided in Appendix A, and
+ the development of the filter is described in detail in the 
+\begin_inset Quotes eld
+\end_inset
+
+Workflow
+\begin_inset Quotes erd
+\end_inset
+
+ document (cf.
+\begin_inset space ~
+\end_inset
+
+Appendix B) that accompanies this paper.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch Extra
+inverted 0
+status open
+
+\begin_layout Standard
+The procedure was as follows:
+\end_layout
+
+\begin_layout Enumerate
+Use the response parameters for the sensor (e.g., for the unheated Rosemount
+ 102E4AL sensor) and a large set of frequencies spanning the interval from
+ 
+\begin_inset Formula $-12.5$
+\end_inset
+
+ to 
+\begin_inset Formula $12.5$
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+Hz, e.g., with resolution between assumed frequencies of (1/600)
+\begin_inset space ~
+\end_inset
+
+Hz, in the solution specified by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:TsSolved"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+–
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:responsePhase"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ to specify the transfer function.
+ This solution is stored in a vector with frequencies in the order 0–12.5
+\begin_inset space ~
+\end_inset
+
+Hz, then 
+\begin_inset Formula $-12.5$
+\end_inset
+
+ to 
+\begin_inset Formula $-(1/600)$
+\end_inset
+
+ Hz as needed for the Fourier transform.
+\end_layout
+
+\begin_layout Enumerate
+The inverse Fourier transform then gave the impulse function at 15,000 delays,
+ many of them representing negative delays.
+ The values in the central part of this array were mostly very small.
+\end_layout
+
+\begin_layout Enumerate
+To obtain a manageable number of moving-average coefficients, all values
+ in the array representing the impulse function were set to zero for indices
+ k with values 
+\begin_inset Formula $M+2\leq k\leq N-M$
+\end_inset
+
+ where 
+\begin_inset Formula $N$
+\end_inset
+
+ is the length of the calculated impulse function and 
+\begin_inset Formula $M=100$
+\end_inset
+
+ to leave 201 non-zero coefficients.
+ This gave coefficients spanning about 8 s at 25
+\begin_inset space ~
+\end_inset
+
+Hz, or a time long compared to the expected impulse response of the sensor.
+\end_layout
+
+\begin_layout Enumerate
+The upper-100 coefficients represent negative delays in the impulse response
+ because of the cyclic nature of the Fourier transform, so the coefficients
+ were re-arranged into a sequence with the last-100 coefficients first and
+ the initial-101 coefficients moved to the end of the array.
+ These coefficients were then moving average coefficients that implement
+ a filter matching the transfer function, except for some omitted terms
+ outside the 200-coefficient range that are assumed negligible.
+\end_layout
+
+\begin_layout Enumerate
+The resulting set of moving-average coefficients can then be applied to
+ the measured dynamic-heating term 
+\begin_inset Formula $Q$
+\end_inset
+
+ to produce a filtered version.
+\end_layout
+
+\begin_layout Enumerate
+The filtered result then needs to be shifted in time by 4
+\begin_inset space ~
+\end_inset
+
+s to correct for the offset in the filter.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<designFilter, include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+P <- Param1
+\end_layout
+
+\begin_layout Plain Layout
+
+NP <- 15000  ## Assume 10-min segment
+\end_layout
+
+\begin_layout Plain Layout
+
+df <- 25 / NP
+\end_layout
+
+\begin_layout Plain Layout
+
+df1 <- 1 / NP
+\end_layout
+
+\begin_layout Plain Layout
+
+frq <- c(seq(0, 12.5, by=df), seq(-12.5+df, -df, by=df))
+\end_layout
+
+\begin_layout Plain Layout
+
+frq1 <- c(seq(0, 0.5, by = df1), seq(-0.5+df1, -df1, by = df1))
+\end_layout
+
+\begin_layout Plain Layout
+
+NP <- length(frq)
+\end_layout
+
+\begin_layout Plain Layout
+
+NP1 <- length(frq1)
+\end_layout
+
+\begin_layout Plain Layout
+
+E <- LTphase(frq, P)
+\end_layout
+
+\begin_layout Plain Layout
+
+EH <- LTphase(frq, ParamSH)
+\end_layout
+
+\begin_layout Plain Layout
+
+EHB <- LTphase(frq, ParamSH)
+\end_layout
+
+\begin_layout Plain Layout
+
+EG <- LTphase(frq, ParamSF)
+\end_layout
+
+\begin_layout Plain Layout
+
+E1 <- LTphase(frq1, P)
+\end_layout
+
+\begin_layout Plain Layout
+
+EH1 <- LTphase(frq1, ParamSH)
+\end_layout
+
+\begin_layout Plain Layout
+
+EHB1 <- LTphase(frq1, ParamSH)
+\end_layout
+
+\begin_layout Plain Layout
+
+EG1 <- LTphase(frq1, ParamSF)
+\end_layout
+
+\begin_layout Plain Layout
+
+## --------------------------
+\end_layout
+
+\begin_layout Plain Layout
+
+G <- complex(modulus=E$Amp, argument=E$Phase * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+NG <- length(G)
+\end_layout
+
+\begin_layout Plain Layout
+
+GT <- fft(G, inverse=TRUE) / NG  # get the impulse function
+\end_layout
+
+\begin_layout Plain Layout
+
+## Limit to 200 coefficients (8 s at 25 Hz)
+\end_layout
+
+\begin_layout Plain Layout
+
+Lshift <- 100
+\end_layout
+
+\begin_layout Plain Layout
+
+GT[(Lshift + 2):(NP - Lshift)] <- complex(modulus=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTT <- GT[GT != complex(modulus=0)]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Reorder:
+\end_layout
+
+\begin_layout Plain Layout
+
+GTT <- c(GTT[(Lshift + 2):length(GTT)], GTT[1:(Lshift + 1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+AR <- Arma(Re(GTT) / sum(Re(GTT)), 1) # Normalize to avoid <1% bias
+\end_layout
+
+\begin_layout Plain Layout
+
+## --------------------------
+\end_layout
+
+\begin_layout Plain Layout
+
+GG <- complex(modulus=EG$Amp, argument=EG$Phase * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTG <- fft(GG, inverse=TRUE) / NG  # get the impulse function
+\end_layout
+
+\begin_layout Plain Layout
+
+GTG[(Lshift + 2):(NP - Lshift)] <- complex(modulus=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTG <- GTG[GTG != complex(modulus=0)]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Reorder:
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTG <- c(GTTG[(Lshift + 2):length(GTTG)], GTTG[1:(Lshift + 1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+ARG <- Arma(Re(GTTG) / sum(Re(GTTG)), 1) # Normalize to avoid <1% bias
+\end_layout
+
+\begin_layout Plain Layout
+
+## --------------------------
+\end_layout
+
+\begin_layout Plain Layout
+
+GH <- complex(modulus=EH$Amp, argument=EH$Phase * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+NG <- length(GH)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTH <- fft(GH, inverse=TRUE) / NG  # get the impulse function
+\end_layout
+
+\begin_layout Plain Layout
+
+## Limit to 300 coefficients (12 s at 25 Hz)
+\end_layout
+
+\begin_layout Plain Layout
+
+LshiftH <- 150
+\end_layout
+
+\begin_layout Plain Layout
+
+GTH[(LshiftH + 2):(NP - LshiftH)] <- complex(modulus=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTH <- GTH[GTH != complex(modulus=0)]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Reorder:
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTH <- c(GTTH[(LshiftH + 2):length(GTTH)], GTTH[1:(LshiftH + 1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+ARH <- Arma(Re(GTTH) / sum(Re(GTTH)), 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+## --------------------------
+\end_layout
+
+\begin_layout Plain Layout
+
+GHB <- complex(modulus=EHB$Amp, argument=EHB$Phase * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+NG <- length(GHB)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTHB <- fft(GHB, inverse=TRUE) / NG  # get the impulse function
+\end_layout
+
+\begin_layout Plain Layout
+
+## Limit to 300 coefficients (12 s at 25 Hz)
+\end_layout
+
+\begin_layout Plain Layout
+
+LshiftH <- 150
+\end_layout
+
+\begin_layout Plain Layout
+
+GTHB[(LshiftH + 2):(NP - LshiftH)] <- complex(modulus=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTHB <- GTHB[GTHB != complex(modulus=0)]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Reorder:
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTHB <- c(GTTHB[(LshiftH + 2):length(GTTHB)], GTTHB[1:(LshiftH + 1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+ARHB <- Arma(Re(GTTHB) / sum(Re(GTTHB)), 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+## --------------------------
+\end_layout
+
+\begin_layout Plain Layout
+
+G1 <- complex(modulus=E1$Amp, argument=E1$Phase * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+NG1 <- length(G1)
+\end_layout
+
+\begin_layout Plain Layout
+
+GT1 <- fft(G1, inverse=TRUE) / NG1  # get the impulse function
+\end_layout
+
+\begin_layout Plain Layout
+
+## Limit to 20 coefficients (20 s at 1 Hz)
+\end_layout
+
+\begin_layout Plain Layout
+
+Lshift1 <- 10
+\end_layout
+
+\begin_layout Plain Layout
+
+GT1[(Lshift1 + 2):(NP1 - Lshift1)] <- complex(modulus=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTT1 <- GT1[GT1 != complex(modulus=0)]
+\end_layout
+
+\begin_layout Plain Layout
+
+## Reorder:
+\end_layout
+
+\begin_layout Plain Layout
+
+GTT1 <- c(GTT1[(Lshift1 + 2):length(GTT1)], GTT1[1:(Lshift1 + 1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+AR1 <- Arma(Re(GTT1) / sum(Re(GTT1)), 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+## --------------------------
+\end_layout
+
+\begin_layout Plain Layout
+
+GH1 <- complex(modulus=EH1$Amp, argument=EH1$Phase * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+NG1 <- length(GH1)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTH1 <- fft(GH1, inverse=TRUE) / NG1  # get the impulse function
+\end_layout
+
+\begin_layout Plain Layout
+
+LshiftH1 <- 10
+\end_layout
+
+\begin_layout Plain Layout
+
+GTH1[(LshiftH1 + 2):(NP1 - LshiftH1)] <- complex(modulus=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTH1 <- GTH1[GTH1 != complex(modulus=0)]
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTH1 <- c(GTTH1[(LshiftH1 + 2):length(GTTH1)], GTTH1[1:(LshiftH1 + 1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+ARH1 <- Arma(Re(GTTH1) / sum(Re(GTTH1)), 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+## --------------------------
+\end_layout
+
+\begin_layout Plain Layout
+
+GHB1 <- complex(modulus=EHB1$Amp, argument=EHB1$Phase * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+NG1 <- length(GHB1)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTHB1 <- fft(GHB1, inverse=TRUE) / NG1  # get the impulse function
+\end_layout
+
+\begin_layout Plain Layout
+
+LshiftH1 <- 10
+\end_layout
+
+\begin_layout Plain Layout
+
+GTHB1[(LshiftH1 + 2):(NP1 - LshiftH1)] <- complex(modulus=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTHB1 <- GTHB1[GTHB1 != complex(modulus=0)]
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTHB1 <- c(GTTHB1[(LshiftH1 + 2):length(GTTHB1)], GTTHB1[1:(LshiftH1 +
+ 1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+ARHB1 <- Arma(Re(GTTHB1) / sum(Re(GTTHB1)), 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+## --------------------------
+\end_layout
+
+\begin_layout Plain Layout
+
+GG1 <- complex(modulus=EG1$Amp, argument=EG1$Phase * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+NG1 <- length(GG1)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTG1 <- fft(GG1, inverse=TRUE) / NG1  # get the impulse function
+\end_layout
+
+\begin_layout Plain Layout
+
+LshiftH1 <- 10
+\end_layout
+
+\begin_layout Plain Layout
+
+GTG1[(LshiftH1 + 2):(NP1 - LshiftH1)] <- complex(modulus=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTG1 <- GTG1[GTG1 != complex(modulus=0)]
+\end_layout
+
+\begin_layout Plain Layout
+
+GTTG1 <- c(GTTG1[(LshiftH1 + 2):length(GTTG1)], GTTG1[1:(LshiftH1 + 1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+ARG1 <- Arma(Re(GTTG1) / sum(Re(GTTG1)), 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+save(AR, ARH, ARHB, ARG, AR1, ARH1, ARHB1, ARG1, Lshift, LshiftH, Lshift1,
+ LshiftH1,
+\end_layout
+
+\begin_layout Plain Layout
+
+     file='AR.Rdata')
+\end_layout
+
+\begin_layout Plain Layout
+
+## --------------------------
+\end_layout
+
+\begin_layout Plain Layout
+
+# DF2$QF <- as.vector(signal::filter(AR, DF2$Q))
+\end_layout
+
+\begin_layout Plain Layout
+
+# DF2$QF <- ShiftInTime(DF2$QF, .shift=(-(Lshift + 1) * 40), .rate = 25)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<plotImpulse, include=TRUE, fig.height=4.5, fig.cap=c('(a) The impulse response
+ function found from the inverse Fourier transform of the transfer function
+ for the unheated Rosemount 102E4AL sensor (Rosemount) and for the heated
+ HARCO sensor (HARCO), using the response parameters from Table 2 of Part
+ 1.
+ The impulse response for the HARCO sensor is multiplied by 10.
+ (b) A filter function (moving-average coefficients spanning 8 s) obtained
+ from the impulse response function.
+ The filtered result must be shifted forward in time by 4 s to compensate
+ for the delay introduced by the filter.
+ The coefficients are multiplied by 10 for the HARCO sensor.')>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+layout(matrix(1:2, ncol=1), widths=c(8,8), heights=c(6.5,8))
+\end_layout
+
+\begin_layout Plain Layout
+
+op <- par (mar=c(2,4,1,1)+0.1, oma=c(1.1,0,0,0))
+\end_layout
+
+\begin_layout Plain Layout
+
+dP1 <- data.frame(Time = (1 : 100) * 0.04, R = Re(GT[1:100]), 
+\end_layout
+
+\begin_layout Plain Layout
+
+                 H = 10*Re(GTH[1:100]))
+\end_layout
+
+\begin_layout Plain Layout
+
+plotWAC(dP1, xlab='Time [s]', ylab='impulse response', lwd = c(2, 2), 
+\end_layout
+
+\begin_layout Plain Layout
+
+        lty = c(1, 2), legend.position = NA)
+\end_layout
+
+\begin_layout Plain Layout
+
+legend(2, 0.3, legend=c('Rosemount', 'HARCO x 10'), 
+\end_layout
+
+\begin_layout Plain Layout
+
+       col=c('blue', 'forestgreen'), lwd=c(2,2), lty=c(1,2))
+\end_layout
+
+\begin_layout Plain Layout
+
+abline(h=0, lty=2) 
+\end_layout
+
+\begin_layout Plain Layout
+
+text(4, 0.3, labels='(a)', cex=1.5)
+\end_layout
+
+\begin_layout Plain Layout
+
+op <- par (mar=c(5,4,1,1)+0.1)
+\end_layout
+
+\begin_layout Plain Layout
+
+dP2 <- data.frame(Time = (0 : 200) * 0.04, R = Re(GTT), 
+\end_layout
+
+\begin_layout Plain Layout
+
+                 H = 10 * Re(GTTH[51 :251]))
+\end_layout
+
+\begin_layout Plain Layout
+
+plotWAC(dP2, xlab='Time [s]', ylab='filter coef.', lwd = c(2, 2), 
+\end_layout
+
+\begin_layout Plain Layout
+
+        lty = c(1, 2), legend.position = NA)
+\end_layout
+
+\begin_layout Plain Layout
+
+legend(0.5, 0.3, legend=c('Rosemount', 'HARCO x 10'), 
+\end_layout
+
+\begin_layout Plain Layout
+
+       col=c('blue', 'forestgreen'), lwd=c(2,2), lty=c(1,2))
+\end_layout
+
+\begin_layout Plain Layout
+
+abline(h=0, lty=2)
+\end_layout
+
+\begin_layout Plain Layout
+
+text(8, 0.3, labels='(b)', cex=1.5)
+\end_layout
+
+\begin_layout Plain Layout
+
+layout(matrix(1:1, ncol=1), widths=c(8), heights=c(5.5))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:plotImpulse}
+\end_layout
+
+\end_inset
+
+a shows the impulse function for the unheated Rosemount and heated HARCO
+ sensors, and Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:plotImpulse}
+\end_layout
+
+\end_inset
+
+b shows corresponding moving-average coefficients for a filter obtained
+ from this impulse function.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+It would be useful to check if the causal filter from only the coefficients
+ shown in the first figure performs adequately, because that could be implemente
+d in sequential processing.
+\end_layout
+
+\end_inset
+
+ – checked this; doesn't work
+\end_layout
+
+\end_inset
+
+ There is significant ringing in the filter for the Rosemount sensor because
+ the shorter time constant for the sensor, 0.03
+\begin_inset space ~
+\end_inset
+
+s, is smaller than the time between 25-Hz samples.
+ The impulse response for the slower HARCO sensor leads to a much broader
+ impulse response function.
+ Both sets of moving-average coefficients sum to more than 0.99 as calculated
+ but were then normalized to sum to 1.0.
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+
+\lang english
+The result obtained by using this filter for measurements from the unheated
+ Rosemount 102E4AL sensor is illustrated in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:Integration}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Integration, Fourier transformation, and filtering
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<Integration, include=TRUE, echo=FALSE, fig.pos='t', fig.cap='Variance spectra
+ for the dynamic-heating term (Q) and for the filtered term obtained by
+ integrating the differential equations for the derivatives (Qp), by Fourier
+ transformation with application of the transfer function (Qft), or applying
+ the digital filter (QF).
+ The result for the latter is so close to Qft that it is obscured in this
+ plot.
+ Data from SOCRATES flight 15, 6:02:00 to 6:13:00 UTC.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# DS is the data.frame, which includes Q
+\end_layout
+
+\begin_layout Plain Layout
+
+a <- ParamSF$a
+\end_layout
+
+\begin_layout Plain Layout
+
+tau1 <- ParamSF$tau1
+\end_layout
+
+\begin_layout Plain Layout
+
+tau2 <- ParamSF$tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$RT <- DS$RTF1
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$TsQ <- DS$RT
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$Qp <- DS$Q
+\end_layout
+
+\begin_layout Plain Layout
+
+Rate <- attr (DS, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+fS <- function(y, i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  (DS$Q[i] - y) / (Rate * tau2)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+fM <- function (y, i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  (a * DS$Q[i] + (1 - a) * DS$TsQ[i] - y) / (Rate * tau1)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$TsQ <- rk4.integrate (fS, DS$Q[1], 1:nrow(DS))
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$Qp <- rk4.integrate (fM, DS$Q[1], 1:nrow(DS))
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$QF <- as.vector(signal::filter(ARG, DS$Q))
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$QF <- ShiftInTime(DS$QF, .shift=-Lshift * 40, .rate=25)
+\end_layout
+
+\begin_layout Plain Layout
+
+ft <- fft(DS$Q[1:(nrow(DS)-1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+df <- 25 / length(ft)
+\end_layout
+
+\begin_layout Plain Layout
+
+frq <- c(0, seq(df, 12.5, by = df), seq(-12.5 + df, -df, by = df))
+\end_layout
+
+\begin_layout Plain Layout
+
+ATF <- LTphase(frq, ParamSF)
+\end_layout
+
+\begin_layout Plain Layout
+
+H <- complex(modulus = ATF$Amp, argument = ATF$Phase * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+ftq <- ft * H
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$Qft <- c(Re(fft(ftq, inverse=TRUE) / length(ft)), 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$Qft[nrow(DS)] <- mean(DS$Qft, na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- DS %>% selectTime(60200, 61300) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+            select(Time, TASX, Qp, QF, Qft) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+            VSpec(ylim = c(1.e-6, 1.))
+\end_layout
+
+\begin_layout Plain Layout
+
+VSpec(DS, 'Q', add = g) + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+# g <- VSpec(DS, 'Q', ylim = c(1.e-6, 0.1))
+\end_layout
+
+\begin_layout Plain Layout
+
+# g <- VSpec(DS, 'QF', add = g)
+\end_layout
+
+\begin_layout Plain Layout
+
+# VSpec(DS, 'Qp', add = g) + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<revisedT, include=TRUE, echo=FALSE, fig.cap='Variance spectra for the measureme
+nt of recovery temperature (RT) from the unheated Rosemount 102E4AL sensor
+ and the resulting corrected measurement of ambient temperature (AT) with
+ the filtered dynamic-heating term (QF).
+ The original variable for ambient temperature based on standard processing
+ (ATF1) is also shown.
+ Data from SOCRATES flight 15, 6:00:00 to 6:15:00 UTC.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DS$AT <- DS$RT - DS$QF
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- VSpec(DS, 'AT', ylim = c(1.e-6, 0.1))
+\end_layout
+
+\begin_layout Plain Layout
+
+# g <- VSpec(DS, 'QF', add = g)
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- VSpec(DS, 'RT', add = g)
+\end_layout
+
+\begin_layout Plain Layout
+
+VSpec(DS, 'ATF1', add = g) + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The response of the sensor to the dynamic-heating signal 
+\begin_inset Formula $Q$
+\end_inset
+
+ can be found in three ways: integration of the differential equations,
+ Fourier transformation with application of the transfer function, or applicatio
+n of the digital filter developed in thepreceding subsection.
+ Those three approaches are explored in this subsection.
+\end_layout
+
+\begin_layout Standard
+With specified differential equations like Part 1 Eqns.
+\begin_inset space ~
+\end_inset
+
+(3) and (4), numerical integration can provide estimates of the response
+ of the temperature sensor to the dynamic-heating fluctuations.
+ Applied to dynamic heating, those equations become
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\frac{dQ_{qs}(t)}{dt}=\frac{Q(t)-Q_{qs}(t)}{\tau_{2}}\label{eq:Ts}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\frac{dQ^{\prime}(t)}{dt}=\frac{a(Q(t)-Q^{\prime}(t))+(1-a)(Q_{qs}(t)-Q^{\prime}(t))}{\tau_{1}}=\frac{\left\{ aQ(t)+(1-a)Q_{qs}(t)\right\} -Q^{\prime}(t)}{\tau_{1}}\label{eq:Tm}
+\end{equation}
+
+\end_inset
+
+where the first equation describes the variation of 
+\begin_inset Formula $Q_{qs}$
+\end_inset
+
+, the partial response of the support structure to dynamic heating, and
+ the second describes the response of the sensing wire to the combined partial
+ effects of the support temperature as influenced by dynamic heating and
+ the dynamic-heating term.
+ This separation relies on the linearity of the underlying equations, which
+ makes it possible to represent the effect of dynamic heating in isolation
+ from real fluctuations in temperatrure.
+ Euler integration of these differential equations led to erroneous results
+ at high frequency arising from inadequate resolution in the integration,
+ so a fourth-order Runge-Kutta integration
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The integration method was fourth-order Runge-Kutta with adjustment of the
+ time step to control the estimated tolerance during the integration.
+ The method was based on 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "cash1990variable"
+literal "false"
+
+\end_inset
+
+.
+ The integration was also tested with the R routine 
+\begin_inset Quotes eld
+\end_inset
+
+rmutil::runge.kutta
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "runge.kutta"
+literal "false"
+
+\end_inset
+
+.
+ See the Workflow document for additional details.
+\end_layout
+
+\end_inset
+
+ was used instead.
+ 
+\end_layout
+
+\begin_layout Standard
+The response of the sensor is specified by the transfer function, so the
+ filtered response can also be found by first calculating the Fourier transform
+ of the dynamic-heating signal (here denoted 
+\begin_inset Formula $Q^{\dagger}(\nu)=\mathcal{F}(Q(t))$
+\end_inset
+
+ where 
+\begin_inset Formula $\mathcal{F}$
+\end_inset
+
+ denotes the Fourier transform) and then using the inverse Fourier transform
+ (
+\begin_inset Formula $\mathcal{F}^{-1}$
+\end_inset
+
+) to estimate the sensor response:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+Q^{\prime}=\mathcal{F}^{-1}(Q^{\dagger}(\nu)H(\nu))
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The third option is to apply the digital filter as developed in Sect.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:A-filter-for"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Appendix A provides more detail.
+\end_layout
+
+\begin_layout Standard
+Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:Integration}
+\end_layout
+
+\end_inset
+
+ shows the variance spectra that result from all three methods, applied
+ to measurements from an unheated Rosemount 102E4AL sensor.
+ These results use the same data used in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:S15}
+\end_layout
+
+\end_inset
+
+.
+ The modified variance spectrum obtained by integration of the underlying
+ differential equations is shown as the black line (
+\begin_inset Quotes eld
+\end_inset
+
+Qp
+\begin_inset Quotes erd
+\end_inset
+
+) in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:Integration}
+\end_layout
+
+\end_inset
+
+.
+ The dynamic-heating correction is appropriately attenuated at high frequency
+ after this integration.
+ The results obtained after filtering as described in the Sect.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:A-filter-for"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, shown as 
+\begin_inset Quotes eld
+\end_inset
+
+QF
+\begin_inset Quotes erd
+\end_inset
+
+, or after Fourier transformation, shown as 
+\begin_inset Quotes eld
+\end_inset
+
+Qft
+\begin_inset Quotes erd
+\end_inset
+
+, are overlapping so as to be indistinguishable in this plot.
+ These corrected estimates of the dynamic heating are attenuated even more
+ than the result from numerical integration and are in better agreement
+ with the predicted effect of the transfer function, which for example predicts
+ attenuation of the variance spectrum by a factor of 0.096 for the component
+ with frequency  10
+\begin_inset space ~
+\end_inset
+
+Hz.
+ The numerical integration was closer to the results of the filter if the
+ measurements are interpolated to 125
+\begin_inset space ~
+\end_inset
+
+Hz with 25-Hz smoothing, integrated, and then resampled to obtain 25
+\begin_inset space ~
+\end_inset
+
+Hz measurements.
+ This illustrated that the discrepancy in results is attributable to accumulatin
+g numerical errors in the integration, but the integration became awkwardly
+ slow when performed at 125-Hz resolution.
+ The equivalence of the results from the digital filter and from Fourier
+ transformation with application of the transfer function supports the validity
+ of these results and suggests that these are preferable and equivalent
+ methods for filtering dynamic heating to match the response of the temperature
+ sensor.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+An advantage of this integration method is that it could be applied using
+ only present and past measurements and so is suited to the sequential processin
+g used for NCAR/RAF data processing.
+ As used here, however, a center estimate of the derivative is used and
+ that requires knowledge of the value of 
+\begin_inset Formula $Q$
+\end_inset
+
+ one second ahead of the reference time.
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+With the corrected dynamic-heating term 
+\begin_inset Formula $Q^{\prime}$
+\end_inset
+
+, a new estimate of the ambient air temperature was calculated using 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:QprimeCorr"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The spectral variance for air temperature, shown in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:revisedT}
+\end_layout
+
+\end_inset
+
+ as 
+\begin_inset Quotes eld
+\end_inset
+
+AT,
+\begin_inset Quotes erd
+\end_inset
+
+ is improved considerably vs.
+\begin_inset space ~
+\end_inset
+
+that using the standard correction (
+\begin_inset Quotes eld
+\end_inset
+
+ATF1
+\begin_inset Quotes erd
+\end_inset
+
+).
+ The new estimate of air temperature is an improved measurement to use in
+ estimates of sensible-heat flux and other studies where the high-rate component
+s of the temperature are important.
+\end_layout
+
+\begin_layout Standard
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<WECANX, include=TRUE, echo=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN <- getNetCDF('/Data/WECAN/WECANrf17h.nc', standardVariables(c('RTH1',
+\end_layout
+
+\begin_layout Plain Layout
+
+                    'ATH1', 'RTF1', 'ATF1')), 180400, 183500)   # 182600,182900)
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$Q <- DWECAN$TASX^2 / 2010
+\end_layout
+
+\begin_layout Plain Layout
+
+SB <- 50
+\end_layout
+
+\begin_layout Plain Layout
+
+Z <- capture.output (Vr <- SmoothInterp(detrend (DWECAN[, c('Time', 'RTH1')]),
+ .Length=0))
+\end_layout
+
+\begin_layout Plain Layout
+
+Z <- capture.output (VrC <- SmoothInterp(detrend (DWECAN[, c('Time', 'Q')]),
+ .Length=0))
+\end_layout
+
+\begin_layout Plain Layout
+
+Rate <- attr(DWECAN, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+vcv <- cbind(ts(Vr, frequency=Rate), ts(VrC, frequency=Rate))
+\end_layout
+
+\begin_layout Plain Layout
+
+P <- spec.pgram(vcv, detrend=FALSE, fast=TRUE, plot=FALSE, spans=25)
+\end_layout
+
+\begin_layout Plain Layout
+
+dfH <- data.frame(P$coh, log(P$freq))
+\end_layout
+
+\begin_layout Plain Layout
+
+pfH <- binStats (dfH, bins=SB)
+\end_layout
+
+\begin_layout Plain Layout
+
+RXH <- CohP(DWECAN, 'RTH1', 'Q', plotType='Ranadu', smoothBins=SB)
+\end_layout
+
+\begin_layout Plain Layout
+
+phaseH <- rep(0, SB)
+\end_layout
+
+\begin_layout Plain Layout
+
+nphaseH <- rep(0, SB)
+\end_layout
+
+\begin_layout Plain Layout
+
+phase2H <- rep(0, SB)
+\end_layout
+
+\begin_layout Plain Layout
+
+arH <- rep(0, SB)
+\end_layout
+
+\begin_layout Plain Layout
+
+ar2H <- rep(0, SB)
+\end_layout
+
+\begin_layout Plain Layout
+
+narH <- rep(0, SB)
+\end_layout
+
+\begin_layout Plain Layout
+
+RXH$P.spec...1.[RXH$P.spec...1.
+ < 0] <- 0
+\end_layout
+
+\begin_layout Plain Layout
+
+for (i in 2:nrow(RXH)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  phaseH[RXH$BIN.1[i]] <- phaseH[RXH$BIN.1[i]]+RXH$P.phase[i]
+\end_layout
+
+\begin_layout Plain Layout
+
+  nphaseH[RXH$BIN.1[i]] <- nphaseH[RXH$BIN.1[i]] + 1
+\end_layout
+
+\begin_layout Plain Layout
+
+  phase2H[RXH$BIN.1[i]] <- phase2H[RXH$BIN.1[i]]+RXH$P.phase[i]^2 
+\end_layout
+
+\begin_layout Plain Layout
+
+  arH[RXH$BIN.1[i]] <- arH[RXH$BIN.1[i]] + 
+\end_layout
+
+\begin_layout Plain Layout
+
+             sqrt(RXH$P.spec...1.[i] / RXH$P.spec...2.[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+  ar2H[RXH$BIN.1[i]] <- ar2H[RXH$BIN.1[i]] + 
+\end_layout
+
+\begin_layout Plain Layout
+
+             (RXH$P.spec...1.[i] / RXH$P.spec...2.[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+  narH[RXH$BIN.1[i]] <- narH[RXH$BIN.1[i]] + 1
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+narH[narH <= 0] <- 1
+\end_layout
+
+\begin_layout Plain Layout
+
+nphaseH[nphaseH == 0] <- 1
+\end_layout
+
+\begin_layout Plain Layout
+
+mphaseH <- phaseH/nphaseH
+\end_layout
+
+\begin_layout Plain Layout
+
+mphase2H <- phase2H/nphaseH
+\end_layout
+
+\begin_layout Plain Layout
+
+sdpH <- sqrt(mphase2H - mphaseH^2)
+\end_layout
+
+\begin_layout Plain Layout
+
+mphaseH <- mphaseH * 180 / pi
+\end_layout
+
+\begin_layout Plain Layout
+
+sdpH <- sdpH * 180 / pi
+\end_layout
+
+\begin_layout Plain Layout
+
+sdpH <- sdpH * 2 / sqrt(nphaseH)
+\end_layout
+
+\begin_layout Plain Layout
+
+arH <- arH / narH
+\end_layout
+
+\begin_layout Plain Layout
+
+ar2H <- ar2H / narH
+\end_layout
+
+\begin_layout Plain Layout
+
+sdrH <- sqrt(ar2H - arH^2)
+\end_layout
+
+\begin_layout Plain Layout
+
+sdrH <- sdrH * 2 / sqrt(narH)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<HarcoQ, include=TRUE, echo=FALSE, fig.cap=c('Variance spectra for the unmodifie
+d dynamic-heating term and the filtered terms, for measurements from a heated
+ HARCO sensor on the GV research aircraft.', 'The variance spectra for the
+ original measured temperature and the temperature as modified by filtering
+ the dynamic-heating term for a sample of measurements from a heated HARCO
+ sensor on the GV research aircraft.
+ The plotted spectra are for the measured recovery temperature (RTH1), the
+ conventional calculated air temperature (ATH1), and the revised air temperature
+ (AT) obtained by using the filtered version of the dynamic-heating term
+ (QF).')>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+a <- 0.733
+\end_layout
+
+\begin_layout Plain Layout
+
+tau1 <- 0.299
+\end_layout
+
+\begin_layout Plain Layout
+
+tau2 <- 0.433
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$RT <- SmoothInterp(DWECAN$RTH1, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$TsQ <- DWECAN$RT
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$Q <- SmoothInterp(DWECAN$Q, .Length = 0)  ## avoid missing values
+\end_layout
+
+\begin_layout Plain Layout
+
+Rate <- attr (DWECAN, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+\end_layout
+
+\begin_layout Plain Layout
+
+MRHO <- MachNumber(DWECAN$PSXC, DWECAN$QCXC) * DWECAN$PSXC * 100 /
+\end_layout
+
+\begin_layout Plain Layout
+
+                  (287.05 * (273.15 + DWECAN$ATX)) / rhozero
+\end_layout
+
+\begin_layout Plain Layout
+
+MRHO <- SmoothInterp(MRHO, .Length=0)
+\end_layout
+
+\begin_layout Plain Layout
+
+a <- ParamSH$a
+\end_layout
+
+\begin_layout Plain Layout
+
+tau1 <- ParamSH$tau1 * (MRHO / 0.3) ^ 0.6  ## Note that these are variable
+\end_layout
+
+\begin_layout Plain Layout
+
+tau2 <- ParamSH$tau2 * (MRHO / 0.3) ^ 0.6
+\end_layout
+
+\begin_layout Plain Layout
+
+Rate <- attr (DWECAN, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$TsQ <- DWECAN$Q
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$Qp <- DWECAN$Q
+\end_layout
+
+\begin_layout Plain Layout
+
+fS <- function(y, i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  (DWECAN$Q[i] - y) / (Rate * tau2[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+fM <- function (y, i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  (a * DWECAN$Q[i] + (1 - a) * DWECAN$TsQ[i] - y) / (Rate * tau1[i])
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$TsQ <- rk4.integrate (fS, DWECAN$Q[1], 1:nrow(DWECAN))
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$Qp <- rk4.integrate (fM, DWECAN$Q[1], 1:nrow(DWECAN))
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$QF <- as.vector(signal::filter(ARH, DWECAN$Q))
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$QF <- ShiftInTime(DWECAN$QF, .shift=-LshiftH * 40, .rate=25)
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN %>% select(Time, TASX, Q, QF, Qp) %>% VSpec(ylim=c(1.e-6,1), WACtheme=1)
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$AT <- DWECAN$RT - DWECAN$QF
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- VSpec(DWECAN, 'AT', ylim = c(1.e-6, 0.1))
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- VSpec(DWECAN, 'ATH1', add = g)
+\end_layout
+
+\begin_layout Plain Layout
+
+# g <- VSpec(DWECAN, 'RTH1', add = g)
+\end_layout
+
+\begin_layout Plain Layout
+
+suppressWarnings(print (VSpec (DWECAN, 'RTH1', add = g) + theme_WAC(1) +
+ theme(legend.position = c(0.75, 0.93))))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the case of the heated sensors, the revision is still more significant
+ because they respond more slowly.
+ Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:HarcoQ1}
+\end_layout
+
+\end_inset
+
+ shows the result of filtering the dynamic-heating term with the time constants
+ determined for this sensor.
+ In this case, the result of integration (Qp) and the digital filter (QF)
+ are almost identical so there is no evidence of the integration problems
+ that were encountered with the unheated Rosemount sensor.
+ The effect is quite dramatic even at 1
+\begin_inset space ~
+\end_inset
+
+Hz, and the errors are significant for all frequencies about about 0.1
+\begin_inset space ~
+\end_inset
+
+Hz.
+ Because the variance spectra denoted 
+\begin_inset Quotes eld
+\end_inset
+
+QF
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+Qp
+\begin_inset Quotes erd
+\end_inset
+
+ represent how the temperature sensor responds to the actual fluctuations,
+ subtracting the actual fluctuations in dynamic heating instead of the filtered
+ fluctuations introduces erroneous variability into the calculated air temperatu
+re.
+\end_layout
+
+\begin_layout Standard
+Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:HarcoQ2}
+\end_layout
+
+\end_inset
+
+ shows how this affects the spectral variance of the measured air temperature
+ from the heated HARCO sensor.
+ The slow response of this sensor causes the measured recovery temperature
+ (RTH1) to have very low spectral variance when the frequency is above 1
+\begin_inset space ~
+\end_inset
+
+Hz, so the variance in the original air-temperature measurement (ATH1) in
+ this frequency range is almost entirely caused by erroneous adjustment
+ for fluctuations in dynamic heating to which the sensor does not respond.
+ The correction procedure leading to 
+\begin_inset Formula $Q^{\prime}$
+\end_inset
+
+ removes this excess spectral variance and produces a signal where the variance
+ for frequencies above about 0.1
+\begin_inset space ~
+\end_inset
+
+Hz arises primarily from variance in the measured recovery temperature.
+ The variance spectrum for the conventionally processed temperature looks
+ approximately as might be expected in an inertial subrange, but the variance
+ above about 0.5
+\begin_inset space ~
+\end_inset
+
+Hz is a false signal that does not arise from real variance in temperature.
+ It therefore becomes very important to use this revised processing scheme
+ to avoid erroneous measurements even for changes occurring over 5
+\begin_inset space ~
+\end_inset
+
+s or more.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<ATATF, include=TRUE, echo=FALSE, fig.pos='t', fig.cap='The original measured
+ temperature from an unheated Rosemount 102E4AL sensor (ATRR) and the same
+ temperature after revising the dynamic-heating correction as described
+ in the text (AT).
+ The time is seconds after 8:01:00 UTC for VOCALS flight 3.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+if (file.exists ('./DVOCALS.Rdata')) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  load (file = './DVOCALS.Rdata')
+\end_layout
+
+\begin_layout Plain Layout
+
+  DVOCALS <- D
+\end_layout
+
+\begin_layout Plain Layout
+
+  DVOCALS %>% select(Time, ATRR, AT) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+    selectTime(80100, 80104) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+    ggplotWAC(legend.position = c(0.7, 0.93))
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For the unheated Rosemount 102E4AL sensor, Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:ATATF}
+\end_layout
+
+\end_inset
+
+ illustrates the removal of erroneous structure by filtering, and Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:ATATH1}
+\end_layout
+
+\end_inset
+
+ shows a similar example for the heated HARCO sensor.
+ These plots illustrate that the erroneous fluctuations in the uncorrected
+ measurements can be important in many potential uses of these measurements
+ and should be removed as part of standard processing.
+ The effect is particularly significant for the HARCO sensor, for which
+ there are large fluctuations in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:ATATH1}
+\end_layout
+
+\end_inset
+
+ that are caused by fluctuations in dynamic heating to which the sensor
+ does not respond, as demonstrated by the corrected measurement of air temperatu
+re shown as the green line.
+ Appendix B provides an algorithm and suggested code to implement this correctio
+n.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+For the NSF/NCAR GV, the dynamic-heating term is complicated further by
+ resonance in the pressure lines connecting the transducers to the pressure
+ sources.
+ This is discussed in detail in Appendix B.
+ That resonance is an additional source of spurious air-temperature noise
+ because the resonance occurs only in the pressure lines and so does not
+ affect the temperature sensor.
+ When they are present, those resonance effects also need to be removed
+ from the dynamic-heating term applied to the recovery temperature.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<ATATH1, include=TRUE, echo=FALSE, fig.pos='t', fig.cap='The original measured
+ temperature from a heated HARCO sensor (ATH1) and the same temperature
+ after revising the dynamic-heating correction (AT).
+ The time is seconds after 18:13:00 UTC, for WECAN flight 17.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$MACHX <- SmoothInterp (DWECAN$MACHX, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$ATH1 <- SmoothInterp (DWECAN$ATH1, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+alphaR2 <-
+\end_layout
+
+\begin_layout Plain Layout
+
+  0.988 + 0.053 * log10(DWECAN$MACHX) +
+\end_layout
+
+\begin_layout Plain Layout
+
+  0.090 * (log10(DWECAN$MACHX)) ^ 2 +
+\end_layout
+
+\begin_layout Plain Layout
+
+  0.091 * (log10(DWECAN$MACHX)) ^ 3
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN$AT <- DWECAN$ATH1 + alphaR2 * (DWECAN$Q - DWECAN$Qp)
+\end_layout
+
+\begin_layout Plain Layout
+
+DWECAN %>% select(Time, ATH1, AT) %>%
+\end_layout
+
+\begin_layout Plain Layout
+
+  selectTime(181300, 181320) %>%
+\end_layout
+
+\begin_layout Plain Layout
+
+  ggplotWAC() + ylab(bquote('temperature (ATH1) [' * degree ~ 'C]'))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+A measurement of sensible-heat flux would be affected if the errors introduced
+ by dynamic-heating are correlated with updraft.
+ Incorrect treatment of dynamic heating will introduce a false correlation
+ between airspeed and temperature, so any correlation between airspeed and
+ updraft will result in an error in the measured sensible-heat flux.
+ It is therefore useful to consider if such a correlation is expected or
+ can be detected.
+\end_layout
+
+\begin_layout Plain Layout
+For isotropic turbulence, the absence of a preferred direction requires
+ that off-diagonal elements of the Reynolds stress tensor be zero, so a
+ correlation is not expected.
+ However, conditions producing significant flux of sensible heat are likely
+ forced by shear and may therefore not be isotropic, so the assumption of
+ isotropy is unnecessarily confining.
+ Indeed, examples that follow in the next section have non-zero correlation
+ between some wind components, so this change in the treatment of dynamic
+ heating will be used in the next section where the flux of sensible heat
+ is calculated from the cospectrum of temperature and updraft.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Summary and Conclusions
+\end_layout
+
+\begin_layout Standard
+The primary conclusions of this investigation is that, because standard
+ data processing corrects the measured recovery temperature using an estimate
+ of dynamic heating based on the measured airspeed, such processing often
+ over-corrects and introduces errors because the temperature sensors are
+ not able to respond to the high-frequency fluctuations in measured airspeed.
+ This introduces a significant level of noise into the high-frequency fluctuatio
+ns in the resulting temperature.
+ A revised treatment of dynamic heating is proposed and shown to lead to
+ improved measurements.
+ A digital filter is presented that can be used to correct standard processing
+ schemes to eliminate the errors arising from the dynamic-heating term.
+\end_layout
+
+\begin_layout Standard
+This Part 2 paper has focused on the dynamic-heating correction needed to
+ obtain the measurement of air temperature from the directly measured recovery
+ temperature.
+ Because the errors discussed here are so prevalent in almost all existing
+ data from research aircraft, it is essential to be able to remove these
+ errors, and this paper develops one way of correcting these errors.
+ Part III will then turn to the implications for measuring the flux of sensible
+ heat.
+\end_layout
+
+\begin_layout Section
+\start_of_appendix
+The Digital Filter for Dynamic Heating
+\end_layout
+
+\begin_layout Standard
+As described in Sect
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:A-filter-for"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, digital filters for dynamic heating were developed from the transfer functions
+ for the probes studied in Part 1.
+ The procedure was to use the inverse Fourier transforms of those transfer
+ functions, which give the impulse response functions, and then design filters
+ using coefficients determined from those impulse functions.
+ This appendix describes in more detail how this was done and includes reference
+s to the coefficients that might be used by others.
+ The filters so obtained appear to function as desired, although this is
+ an area where further work will be warranted.
+\end_layout
+
+\begin_layout Standard
+The procedures was as follows:
+\end_layout
+
+\begin_layout Enumerate
+Use the response parameters for the sensor (e.g., for the unheated Rosemount
+ 102E4AL sensor or the heated HARCO sensor) and a large set of frequencies
+ spanning the interval from 
+\begin_inset Formula $-12.5$
+\end_inset
+
+ to 
+\begin_inset Formula $12.5$
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+Hz, e.g., with resolution between assumed frequencies of (1/600)
+\begin_inset space ~
+\end_inset
+
+Hz, in the solution specified by Part 1 Eqs.
+\begin_inset space ~
+\end_inset
+
+(7) and (8) to specify the transfer function.
+ This solution is stored in a vector with frequencies in the order (0 to
+ 12.5
+\begin_inset space ~
+\end_inset
+
+Hz, then 
+\begin_inset Formula $(-12.5+1/600)$
+\end_inset
+
+ to 
+\begin_inset Formula $-(1/600)$
+\end_inset
+
+ Hz, as is conventional for representations of the Fourier transform in
+ R and also many other languages.
+ It was essential to calculate the negative-frequency components and, to
+ obtain real-number results, to store then is that the values representing
+ negative frequencies are the complex conjugates of those for the corresponding
+ positive frequencies.
+\end_layout
+
+\begin_layout Enumerate
+The inverse Fourier transform then gave the impulse function at 15,000 delays,
+ many of them representing negative delays.
+ The values in the central part of this array were mostly very small.
+\end_layout
+
+\begin_layout Enumerate
+To obtain a manageable number of moving-average coefficients, all values
+ in the array representing the impulse function were set to zero for indices
+ k with values 
+\begin_inset Formula $M+2\leq k\leq N-M$
+\end_inset
+
+ where 
+\begin_inset Formula $N$
+\end_inset
+
+ is the length of the calculated impulse function and 
+\begin_inset Formula $M=100$
+\end_inset
+
+ to leave 201 non-zero coefficients.
+ This gave coefficients spanning about 8 s at 25
+\begin_inset space ~
+\end_inset
+
+Hz, or a time long compared to the expected impulse response of the sensor.
+\end_layout
+
+\begin_layout Enumerate
+The upper-100 coefficients represent negative delays in the impulse response
+ because of the cyclic nature of the Fourier transform, so the coefficients
+ were re-arranged into a sequence with the last-100 coefficients first and
+ the initial-101 coefficients moved to the end of the array.
+ These coefficients were then moving-average coefficients that implement
+ a filter matching the transfer function, except for some omitted terms
+ outside the 200-coefficient range that are assumed negligible.
+\end_layout
+
+\begin_layout Enumerate
+The resulting set of moving-average coefficients can then be applied to
+ the measured dynamic-heating term 
+\begin_inset Formula $Q$
+\end_inset
+
+ to produce a filtered version.
+\end_layout
+
+\begin_layout Enumerate
+The filtered result then needs to be shifted in time by 4
+\begin_inset space ~
+\end_inset
+
+s to correct for the offset in the filter.
+\end_layout
+
+\begin_layout Standard
+As an illustration, R code to define filter coefficients for use with 25-Hz
+ samples is listed here for the unheated Rosemount 102E4AL sensor:
+\end_layout
+
+\begin_layout LyX-Code
+NP <- 15000  ## Assume 10-min segment
+\end_layout
+
+\begin_layout LyX-Code
+df <- 25 / NP
+\end_layout
+
+\begin_layout LyX-Code
+frq <- c(seq(0, 12.5, by=df), seq(-12.5+df, -df, by=df))
+\end_layout
+
+\begin_layout LyX-Code
+E <- LTphase(frq, P)  ## This function returns the gain and phase in deg.
+\end_layout
+
+\begin_layout LyX-Code
+G <- complex(modulus=E$Amp, argument=E$Phase * pi / 180) # the transfer
+ fn
+\end_layout
+
+\begin_layout LyX-Code
+NG <- length(G)
+\end_layout
+
+\begin_layout LyX-Code
+GT <- fft(G, inverse=TRUE) / NG  # get the impulse function
+\end_layout
+
+\begin_layout LyX-Code
+## Limit to 200 coefficients (8 s at 25 Hz)
+\end_layout
+
+\begin_layout LyX-Code
+Lshift <- 100  ## below, will need to shift by 100 40-ms samples
+\end_layout
+
+\begin_layout LyX-Code
+GT[(Lshift + 2):(NP - Lshift)] <- complex(modulus=0)
+\end_layout
+
+\begin_layout LyX-Code
+GTT <- GT[GT != complex(modulus=0)]
+\end_layout
+
+\begin_layout LyX-Code
+## Reorder:
+\end_layout
+
+\begin_layout LyX-Code
+GTT <- c(GTT[(Lshift + 2):length(GTT)], GTT[1:(Lshift + 1)])
+\end_layout
+
+\begin_layout LyX-Code
+AR <- Arma(Re(GTT) / sum(Re(GTT)), 1) # Normalize to avoid <1% bias
+\end_layout
+
+\begin_layout LyX-Code
+## Result is appropriate coefficients to use for filtering; 
+\end_layout
+
+\begin_layout LyX-Code
+## e.g., if DF is data.frame with Q measured dynamic heating:
+\end_layout
+
+\begin_layout LyX-Code
+DF$QF <- as.vector(signal::filter(AR, DF$Q)) ## standard R
+\end_layout
+
+\begin_layout LyX-Code
+## the following is a function to shift in time:
+\end_layout
+
+\begin_layout LyX-Code
+DF$QF <- ShiftInTime(DF$QF, .shift=-Lshift * 40, .rate=25)
+\end_layout
+
+\begin_layout Standard
+The 201 coefficients in 
+\begin_inset Quotes eld
+\end_inset
+
+AR
+\begin_inset Quotes erd
+\end_inset
+
+ are archived in the zip file included in the GitHub repository for this
+ project, as described in Appendix C.
+ Other autoregressive moving-average (ARMA) coefficients included there,
+ which can be used as in the last three code lines above, are listed in
+ the following table:
+\end_layout
+
+\begin_layout Standard
+\noindent
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="7" columns="5">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+sensor
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+aircraft
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+data rate [Hz]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+ARMA
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+time shift [s]
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+unheated Rosemount 102E4AL
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+C-130
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+25
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+AR
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+AR1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+GV
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+25
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ARG
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+4
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+ARG1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+heated HARCO
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+both
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+25
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+AH
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Quotes eld
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+AH1
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Pressure-Line Resonance
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Cooper2016ncartn"
+literal "false"
+
+\end_inset
+
+ showed evidence that the variance spectrum of the longitudinal component
+ of the wind appears to have excess variance at frequencies above about
+ 2
+\begin_inset space ~
+\end_inset
+
+Hz.
+ Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:Qproblem}
+\end_layout
+
+\end_inset
+
+ shows the problem: Both the airspeed and the dynamic heating calculated
+ from it have excess variance above the expected distribution for frequencies
+ above about 2
+\begin_inset space ~
+\end_inset
+
+Hz, although this is a turbulent region with characteristics otherwise consisten
+t with an inertial subrange.
+ The lateral components of the wind do not show this excess variance; it
+ only appears in the longitudinal component.
+ It is far above the noise expected from the precision of the sensor used
+ to measure the dynamic pressure (estimated at about 0.1
+\begin_inset space ~
+\end_inset
+
+hPa), so there must be another source of this contamination of the signal.
+ The suggested explanation (by D.
+\begin_inset space ~
+\end_inset
+
+Lenschow, included in that same reference, p.
+\begin_inset space ~
+\end_inset
+
+140) is that there is resonance in the long lines connecting the pressure
+ ports to the pressure transducers and that causes either amplification
+ or attenuation of the pressure signals, along with phase shifts, at various
+ frequencies.
+ If this extraneous variance arises in the pressure lines, it does not influence
+ the temperature sensor so subtraction of the measured dynamic-heating term
+ from the recovery temperature to obtain the ambient temperature introduces
+ still more high-frequency noise into the measurement of air temperature.
+ When correcting for temperature-sensor time response, this additional source
+ of false variation in the dynamic-heating term should be removed where
+ possible.
+ This appendix discusses a possible approach to that removal.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<Qproblem, include=TRUE, fig.cap='The variance spectrum for the dynamic-heating
+ correction $Q$, from SOCRATES flight 15, 6:00:00 to 6:15:00 UTC, in a region
+ thought to have characteristics of an inertial subrange.
+ The variance spectrum for the airspeed measurement (TASX) is also shown.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15 <- getNetCDF(file.path(DataDirectory(), 'SOCRATES/SOCRATESrf15h.nc'),
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+                  standardVariables(c('ATF1', 'PSF', 'QCF')), 55700, 61900)
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$Q <- RecoveryFactor(DS15$MACHX, probe = 'UNHEATED') * DS15$TASX^2 /
+ 2010
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$TAS <- DS15$TASX  ## needed to get TASX to plot in VSpec 
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15 %>% selectTime(60000, 61500) %>%
+\end_layout
+
+\begin_layout Plain Layout
+
+         select(Time, TASX, Q, TAS) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+         VSpec(WACtheme = 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The argument presented in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Cooper2016ncartn"
+literal "false"
+
+\end_inset
+
+ was that line resonance in the static pressure line used as a lower-pressure
+ reference for the dynamic-pressure measurement was responsible.
+ It appears now that this was not the correct explanation.
+ The reason is that fluctuations in static pressure normally make a negligible
+ contribution to the measured fluctuations in dynamic pressure; instead,
+ fluctuations in dynamic pressure are dominated by fluctua\SpecialChar softhyphen
+tions in the total
+ pressure delivered by the pitot tube to the differential sensor.
+ Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:3Pplot}
+\end_layout
+
+\end_inset
+
+ shows that the dominant contributions to variance in dynamic pressure,
+ measured as the difference between the total and static pressure, comes
+ from the variance in the total pressure present in the shorter inlet line.
+ Resonances in both lines need to be evaluated, but the following argument
+ indicates that the fluctuations in the static-pressure line do not make
+ any significant contribution to fluctuations in measured dynamic pressure.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+The correction analyzed there, however, uses the resonance predicted for
+ a long line extending from the static-pressure source to one side of a
+ differential pressure transducer.
+ Previous evaluations, including that in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Cooper2016ncartn"
+literal "false"
+
+\end_inset
+
+, emphasized the role of the long pressure line connecting the differential
+ pressure sensor (for 
+\begin_inset Quotes eld
+\end_inset
+
+QCF
+\begin_inset Quotes erd
+\end_inset
+
+) to the static pressure source (measured as 
+\begin_inset Quotes eld
+\end_inset
+
+
+\begin_inset Quotes erd
+\end_inset
+
+PSF
+\begin_inset Quotes erd
+\end_inset
+
+).
+ However, there are two possible resonance effects that influence the measuremen
+t of dynamic pressure, that in the static-pressure line and that in the
+ total-pressure line from the pitot tube to the differential pressure transducer.
+ The fluctuations in static pressure are much smaller than those in total
+ pressure, so it is not obvious that the static-pressure effects dominate.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<3Pplot, include=TRUE, fig.pos='t', fig.cap='Variance spectra for three pressure
+ measurements: the ambient or static pressure (PSF), the dynamic pressure
+ (QCF), and their sum (PTOT).'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$PTOT <- DS15$PSF + DS15$QCF
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15 %>% selectTime(60000, 61500) %>%
+\end_layout
+
+\begin_layout Plain Layout
+
+         select(Time, TASX, PSF, QCF, PTOT) %>%
+\end_layout
+
+\begin_layout Plain Layout
+
+         VSpec() + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch Extra
+inverted 0
+status open
+
+\begin_layout Standard
+
+\lang english
+See Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:showLineTF}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<lineTF>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+library(Bessel)
+\end_layout
+
+\begin_layout Plain Layout
+
+Rate <- 25
+\end_layout
+
+\begin_layout Plain Layout
+
+N <- 2^14
+\end_layout
+
+\begin_layout Plain Layout
+
+df <- Rate / N
+\end_layout
+
+\begin_layout Plain Layout
+
+frq <- seq(df, Rate / 2, by = df)
+\end_layout
+
+\begin_layout Plain Layout
+
+# AFFT <- LTphase(frq, ParamSF)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Lenschow/Iberall calc:
+\end_layout
+
+\begin_layout Plain Layout
+
+LineTF <- function(frq, pinp = 1013.25, Tinp = 15, Dinp = 3.1e-3, Linp = 8,
+ Vinp = 1.e-6) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  izero  <- which(frq == 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (!is.null(izero)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    frq[izero] <- 1  ## placeholder
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  omega <- 2 * pi * frq
+\end_layout
+
+\begin_layout Plain Layout
+
+  visc <- (1.718+0.0049*Tinp)*1.e-5    # viscosity, kg/(m s)
+\end_layout
+
+\begin_layout Plain Layout
+
+  dens <- 100 * pinp / (StandardConstant('Rd') * (Tinp+273.15))  # air density
+ mks
+\end_layout
+
+\begin_layout Plain Layout
+
+  kvisc <- visc / dens
+\end_layout
+
+\begin_layout Plain Layout
+
+  gIberall <- sqrt(abs(omega) / (2 * kvisc)) * Dinp / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+  gIberall <- gIberall * complex(1, 1, -sign(omega)) 
+\end_layout
+
+\begin_layout Plain Layout
+
+  FIberall <- (1/1.4) * 
+\end_layout
+
+\begin_layout Plain Layout
+
+    (1 + (2 * 0.4 * BesselI(gIberall, 1)) / (gIberall  * BesselI(gIberall,
+ 0))) *
+\end_layout
+
+\begin_layout Plain Layout
+
+    (gIberall^2/8) / (2*BesselI(gIberall, 1) / (gIberall * BesselI(gIberall,
+ 0)) - 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+  F2Iberall <- 1.4 / (1 + 0.4 * 2 * BesselI(gIberall, 1) /
+\end_layout
+
+\begin_layout Plain Layout
+
+    (gIberall * BesselI(gIberall, 0)))
+\end_layout
+
+\begin_layout Plain Layout
+
+  xIberall <- 32 * visc * omega / (100 * pinp) * (Linp / Dinp)^2 * FIberall
+\end_layout
+
+\begin_layout Plain Layout
+
+  psiIberall <- sqrt(complex(1, 0, 1) * xIberall)
+\end_layout
+
+\begin_layout Plain Layout
+
+  xIIberall <- Vinp / (1.4 * pi * (Dinp/2)^2 * Linp) * xIberall * F2Iberall
+\end_layout
+
+\begin_layout Plain Layout
+
+  psiIIberall <- complex(1, 0, 1) * xIIberall
+\end_layout
+
+\begin_layout Plain Layout
+
+  HIberall <- 1 / cosh(psiIberall)
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## Enhancement for the instrument volume:
+\end_layout
+
+\begin_layout Plain Layout
+
+  HIberall <- 1 / (cosh(psiIberall) + psiIIberall / psiIberall * sinh(psiIberall
+))
+\end_layout
+
+\begin_layout Plain Layout
+
+  if (!is.null(izero)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    HIberall[izero] <- complex(1,1,0)
+\end_layout
+
+\begin_layout Plain Layout
+
+    frq[izero] <- 0
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  dIberall <- data.frame(freq = frq, Amp = Mod(HIberall), Phase = -Arg(HIberall)
+ * 180 / pi)
+\end_layout
+
+\begin_layout Plain Layout
+
+  return(dIberall)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Branch Extra
+inverted 0
+status open
+
+\begin_layout Standard
+
+\lang english
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<showLineTF, include=TRUE, fig.cap='Pressure line response function, for
+ 1013.25 Hpa and 15C and for 700 hPa and 0C.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+pI <- c(1013.25, 700)
+\end_layout
+
+\begin_layout Plain Layout
+
+dIberall <- LineTF(frq, p=pI[1])
+\end_layout
+
+\begin_layout Plain Layout
+
+nm <- names(dIberall)
+\end_layout
+
+\begin_layout Plain Layout
+
+nm[which(nm == 'freq')] <- 'Time'
+\end_layout
+
+\begin_layout Plain Layout
+
+names(dIberall) <- nm
+\end_layout
+
+\begin_layout Plain Layout
+
+dI2 <- LineTF(frq, p=pI[2])
+\end_layout
+
+\begin_layout Plain Layout
+
+dIberall$Amp2 <- dI2$Amp
+\end_layout
+
+\begin_layout Plain Layout
+
+dIberall$Phase2 <- dI2$Phase
+\end_layout
+
+\begin_layout Plain Layout
+
+ltitle <- c(sprintf('%.0f hPa', pI[1]), sprintf('%.0f hPa', pI[2]))
+\end_layout
+
+\begin_layout Plain Layout
+
+ggplotWAC(dIberall[, c(1,2,4,3,5)], panels = 2, 
+\end_layout
+
+\begin_layout Plain Layout
+
+  labelP = c('      Amplitude', '   Phase [degrees]'), 
+\end_layout
+
+\begin_layout Plain Layout
+
+  labelL=ltitle, legend.position=c(0.25, 0.93),
+\end_layout
+
+\begin_layout Plain Layout
+
+  ylab='Response Function', theme.version=1) + xlab('Frequency [Hz]')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Lenschow's analysis (based on theoretical predictions of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Iberall1950"
+literal "false"
+
+\end_inset
+
+) leads to a transfer function representing the effect of the line resonance
+ on the measurement.
+ This transfer function was plotted in Fig.
+\begin_inset space ~
+\end_inset
+
+52 of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Cooper2016ncartn"
+literal "false"
+
+\end_inset
+
+ and has been recalculated from the equations in 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Iberall1950"
+literal "false"
+
+\end_inset
+
+, specifically Eqs.
+\begin_inset space ~
+\end_inset
+
+(105) and (106) with (99) and (95) and with the volume within the pressure
+ sensor at the end of the line assumed to be 300
+\begin_inset space ~
+\end_inset
+
+mm
+\begin_inset Formula $^{3}$
+\end_inset
+
+ as used by D\SpecialChar endofsentence
+ Lenschow, for use in the present work.
+ That transfer function then can be used in the same way as the time-response
+ transfer function to correct the measured dynamic-heating term by applying
+ the correction to both lines connected to the dynamic-pressure sensor.
+ The result should be a better estimate of the dynamic heating at the temperatur
+e sensor because the fluctuations occurring only in the lines and not affecting
+ the temperature sensor will be removed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<correctQresonance, include=TRUE, fig.cap='The variance spectrum that results
+ from correcting the measured static pressure (
+\begin_inset Quotes eld
+\end_inset
+
+PSF
+\begin_inset Quotes erd
+\end_inset
+
+) for the theoretical effect of line resonance, represented here as 
+\begin_inset Quotes eld
+\end_inset
+
+PSR
+\begin_inset Quotes erd
+\end_inset
+
+.
+ To reduce suspected noise, additional attenuation is applied above 8 Hz
+ to obtain 
+\begin_inset Quotes eld
+\end_inset
+
+PSFR
+\begin_inset Quotes erd
+\end_inset
+
+.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Rate <- attr(DS15, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+## Correct TASX for the line-resonance effect:
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$TASX <- SmoothInterp(DS15$TASX, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$PTOT <- DS15$PSF + DS15$QCF
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$PTOT <- SmoothInterp(DS15$PTOT, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$PSF <- SmoothInterp(DS15$PSF, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$QCF <- SmoothInterp(DS15$QCF, .Length = 0)
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15 <- DS15[1:2^15, ]
+\end_layout
+
+\begin_layout Plain Layout
+
+f <- fft (DS15$TASX) 
+\end_layout
+
+\begin_layout Plain Layout
+
+fp <- fft(DS15$PSF)
+\end_layout
+
+\begin_layout Plain Layout
+
+N <- length(f)
+\end_layout
+
+\begin_layout Plain Layout
+
+df <- Rate / N
+\end_layout
+
+\begin_layout Plain Layout
+
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+\end_layout
+
+\begin_layout Plain Layout
+
+N2 <- N %/% 2
+\end_layout
+
+\begin_layout Plain Layout
+
+## Attenuate above 8 Hz:
+\end_layout
+
+\begin_layout Plain Layout
+
+fAtten <- 8
+\end_layout
+
+\begin_layout Plain Layout
+
+iatt <- which.min(abs(frq - fAtten))
+\end_layout
+
+\begin_layout Plain Layout
+
+fpf <- fp
+\end_layout
+
+\begin_layout Plain Layout
+
+irg <- iatt : (N - iatt)
+\end_layout
+
+\begin_layout Plain Layout
+
+fpf[irg] <- fpf[irg] * (fAtten / abs(frq[irg]))^10  ## 3.5 looks good!
+\end_layout
+
+\begin_layout Plain Layout
+
+## Modify the spectrum by the inverse of the response function:
+\end_layout
+
+\begin_layout Plain Layout
+
+AFFT <- LineTF(frq, mean(DS15$PSF, na.rm=TRUE), mean(DS15$ATX, na.rm=TRUE),
+\end_layout
+
+\begin_layout Plain Layout
+
+               Dinp = 4e-3, Linp = 9, Vinp = 0.3e-6)
+\end_layout
+
+\begin_layout Plain Layout
+
+# AFFT <- rbind(data.frame(Time=0, Amp=1, Phase=0), AFFT, rev(AFFT[2:N2,
+ ]))
+\end_layout
+
+\begin_layout Plain Layout
+
+# AFFT$Phase[(N2+2):N] <- -AFFT$Phase[(N2+2):N]
+\end_layout
+
+\begin_layout Plain Layout
+
+AFFT$frq <- frq
+\end_layout
+
+\begin_layout Plain Layout
+
+AFFT$Phase <- AFFT$Phase * pi / 180
+\end_layout
+
+\begin_layout Plain Layout
+
+HI <- complex (modulus = AFFT$Amp, argument = AFFT$Phase)
+\end_layout
+
+\begin_layout Plain Layout
+
+f <- f / HI
+\end_layout
+
+\begin_layout Plain Layout
+
+fp <- fp / HI
+\end_layout
+
+\begin_layout Plain Layout
+
+fpf <- fpf / HI
+\end_layout
+
+\begin_layout Plain Layout
+
+AFFTT <- LineTF(frq, mean(DS15$PTOT, na.rm=TRUE), 
+\end_layout
+
+\begin_layout Plain Layout
+
+                mean(DS15$ATX + DS15$TASX^2 / 2010, na.rm=TRUE),
+\end_layout
+
+\begin_layout Plain Layout
+
+                Dinp = 3.1e-3, Linp = 4, Vinp = 1.e-5)
+\end_layout
+
+\begin_layout Plain Layout
+
+HT <- complex (modulus = AFFTT$Amp, argument = AFFTT$Phase)
+\end_layout
+
+\begin_layout Plain Layout
+
+xn <- Re(fft(f, inverse = TRUE)) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+xnp <- Re(fft(fp, inverse = TRUE)) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+xnpf <- Re(fft(fpf, inverse = TRUE)) / N  ## Best estimate of the static
+ pressure
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$TASQ <- xn
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$PSR <- xnp
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$PSFR <- xnpf
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+fq <- fft(DS15$QCF + DS15$PSF)  ## Best estimate of total pressure in the
+ line
+\end_layout
+
+\begin_layout Plain Layout
+
+fq <- fq / HT
+\end_layout
+
+\begin_layout Plain Layout
+
+xnq <- Re(fft(fq, inverse = TRUE)) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$PTOTR <- xnq               ## Best estimate of the true total pressure
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$QCFR <- xnq - xnpf         ## Best estimate of the true dynamic pressure
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$Q <- DS15$TASX^2 / 2010
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$QQ <- DS15$TASQ^2 / 2010
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15$SIM <- rnorm(nrow(DS15), 0, 0.34)
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15 %>% selectTime(60000, 61500) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+         select(Time, TASX, PSF, PSR, PSFR) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+         VSpec(spans = 99, ylim=c(1.e-5, 1.e-1)) + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+# DS15 %>% selectTime(60000, 61500) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+#          select(Time, TASX, Q, QQ) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+#          VSpec(ylim=c(1.e-5, 1.e-1), WACtheme=1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Consider first the effect on static pressure.
+ The predicted transfer function is based on a theoretical analysis, so
+ it is useful to determine if the correction based on that transfer function
+ is reasonable.
+ In a region thought to represent an inertial subrange, the slope of the
+ variance spectrum of the longitudinal wind (and therefore of airspeed fluctuati
+ons at high frequency and also the dynamic-heating term) is expected to
+ exhibit a 
+\begin_inset Formula $-5/3$
+\end_inset
+
+ slope with frequency or a 
+\begin_inset Formula $-2/3$
+\end_inset
+
+ slope in the frequency-weighted spectral-variance plots used here.
+ Measurements of static pressure from the same region shown in Figs.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:Qproblem}
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:3Pplot}
+\end_layout
+
+\end_inset
+
+ were processed by calculating the Fourier transform of the pressure, dividing
+ by the transfer function, and using an inverse Fourier transform to recover
+ the corrected pressure.
+ The result is shown as 
+\begin_inset Quotes eld
+\end_inset
+
+PSR
+\begin_inset Quotes erd
+\end_inset
+
+ in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:correctQresonance}
+\end_layout
+
+\end_inset
+
+, as the green line (mostly overlapped at low frequency by the black line).
+ The result seems reasonable for frequencies below about 8
+\begin_inset space ~
+\end_inset
+
+Hz, but there is a sharp increase above that point.
+ Two possible causes are: (i) The sensor resolution, thought to be 0.1
+\begin_inset space ~
+\end_inset
+
+hPa from the manufacturer's specified uncertainty limit, would cause a noise
+ spectrum of about this magnitude, although with a smaller slope; and (ii)
+ aliasing of higher-frequency fluctuations may contribute.
+ The digital filters applied to the measurements don't remove this aliasing
+ because the fluctuations are real fluctuations in pressure in the pressure
+ lines and so will still be sampled as aliased.
+ For these reasons, additional filtering was applied to the Fourier components
+ before inverse transformation to reduce frequencies above 8
+\begin_inset space ~
+\end_inset
+
+Hz.
+ The result, shown as 
+\begin_inset Quotes eld
+\end_inset
+
+PSFR
+\begin_inset Quotes erd
+\end_inset
+
+ in the figure, is a reasonable adjustment to the original variance spectrum
+ to account for line resonance for frequencies below 8
+\begin_inset space ~
+\end_inset
+
+Hz, and evidently excess variance at higher frequency has been removed 
+\end_layout
+
+\begin_layout Standard
+This approximate agreement between predictions for the measured static pressure
+ and the expected shape of the variance spectrum after correction, for frequency
+ below 8
+\begin_inset space ~
+\end_inset
+
+Hz, provides some support for the theoretical analysis by greatly improving
+ the appearance of the variance spectrum for pressure, although the shape
+ is still not ideal.
+ The spectrum would appear better if the gain of the transfer function around
+ 4
+\begin_inset space ~
+\end_inset
+
+Hz were approximately 40% larger so that the variance there would be reduced
+ by about a factor of 2.
+ Although the distance from the static source to the pressure transducer
+ is only about 3
+\begin_inset space ~
+\end_inset
+
+m, it appears that resonance in the branch of this line that continues forward
+ to the differential transducer affects the signal also at this location.
+ 
+\end_layout
+
+\begin_layout Standard
+Analysis of the effect of line resonance on the measurement of dynamic pressure
+ is more complicated because resonance can occur in both lines, the line
+ delivering total pressure from the pitot tube and the line delivering static
+ pressure from the static sources.
+ The measured quantity at the differential pressure transducer is the difference
+ between the total-pressure-line resonating pressure and the ambient-pressure-li
+ne resonating pressure, so (using primes to denote quantities in the resonating
+ lines) 
+\begin_inset Formula $p_{t}^{\prime}=q^{\prime}+p_{s}^{\prime}$
+\end_inset
+
+ is the true total pressure in the line from the pitot tube.
+ This can be corrected using the theoretical transfer function for that
+ line
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Assumed parameters are length 4 m, diameter 3.1 mm, sensor volume 
+\begin_inset Formula $10^{4}\thinspace\mathrm{mm}^{3}$
+\end_inset
+
+.
+ These need confirmation and possible adjustment.
+ They were selected primarily to produce the appropriately corrected variance
+ spectrum for dynamic heating.
+ The sensor volume in particular is probably too high.
+\end_layout
+
+\end_inset
+
+ to obtain the true total pressure at the inlet to the pitot tube, 
+\begin_inset Formula $p_{t}$
+\end_inset
+
+, and then the best estimate of the true dynamic pressure 
+\begin_inset Formula $q$
+\end_inset
+
+ is 
+\begin_inset Formula $q=p_{t}-p_{s}$
+\end_inset
+
+ where corrected quantities are used for both 
+\begin_inset Formula $p_{t}$
+\end_inset
+
+ and 
+\begin_inset Formula $p_{s}$
+\end_inset
+
+, the latter as estimated from 
+\begin_inset Quotes eld
+\end_inset
+
+PSFR
+\begin_inset Quotes erd
+\end_inset
+
+ in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:correctQresonance}
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+and primes denote quantities in the resonating lines, the measured quantity
+ 
+\begin_inset Formula $q_{m}$
+\end_inset
+
+ is
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+q_{m}=p_{tot}^{\prime}-p_{s}^{\prime}=p_{tot}-(p_{tot}-p_{tot}^{\prime})-p_{s}+(p_{s}-p_{s}^{\prime})=q-(p_{tot}-p_{tot}^{\prime})+(p_{s}-p_{s}^{\prime})\label{eq:qmEq}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $q^{\prime}=p_{tot}-p_{s}$
+\end_inset
+
+ is the true dynamic pressure.
+ In the last term 
+\begin_inset Formula $p_{s}$
+\end_inset
+
+ is obtained by applying the correction predicted by the transfer function
+ 
+\begin_inset Formula $H_{s}(\omega)$
+\end_inset
+
+ for the static-pressure line to the measured value 
+\begin_inset Formula $p_{s}^{\prime}$
+\end_inset
+
+, as displayed in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:correctQresonance}
+\end_layout
+
+\end_inset
+
+: 
+\begin_inset Formula $p_{s}=\mathcal{F}^{-1}(\mathcal{F}(p_{s}^{\prime})/H_{s}(\omega))$
+\end_inset
+
+ where 
+\begin_inset Formula $\mathcal{F}$
+\end_inset
+
+ denotes the Fourier transform and 
+\begin_inset Formula $\mathcal{F}^{-1}$
+\end_inset
+
+ its inverse transform.
+ Subtracting the known last term, 
+\begin_inset Formula $\delta p_{s}=(p_{s}-p_{s}^{\prime})$
+\end_inset
+
+ from the measured dynamic pressure gives, from the middle equality in 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:qmEq"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+,
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+p_{tot}^{\prime}=q_{m}+p_{s}^{\prime}\label{eq:ptotPrime}
+\end{equation}
+
+\end_inset
+
+so the true pressure in the resonating total-pressure line (
+\begin_inset Formula $p_{tot}^{\prime}$
+\end_inset
+
+) is 
+\begin_inset Formula $q_{m}+p_{s}$
+\end_inset
+
+, the sum of the measured differential pressure and the corrected estimate
+ of the static pressure.
+ The transfer function for that total-pressure line 
+\begin_inset Formula $H_{t}(\omega)$
+\end_inset
+
+ then leads to the corrected total pressure: 
+\begin_inset Formula $p_{tot}=\mathcal{F}^{-1}(\mathcal{F}(p_{tot}^{\prime})/H_{t}(\omega))$
+\end_inset
+
+.
+ The best estimate of the dynamic pressure is then 
+\begin_inset Formula $q=p_{tot}-p_{s}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<QCcorr, include=TRUE, fig.cap='Variance spectra for the best estimate for
+ dynamic heating, 
+\begin_inset Quotes eld
+\end_inset
+
+QCFR
+\begin_inset Quotes erd
+\end_inset
+
+, after correction for resonance in both lines connected to the differential
+ pressure sensor that produces the original measurement 
+\begin_inset Quotes eld
+\end_inset
+
+QCF
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The corresponding spectrum for the measured pressure in the line connected
+ to the static sources (
+\begin_inset Quotes eld
+\end_inset
+
+PSF
+\begin_inset Quotes erd
+\end_inset
+
+) is also shown.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DS15 %>% selectTime(60000, 61500) %>%
+\end_layout
+
+\begin_layout Plain Layout
+
+         select(Time, TASX, PSF, QCF, QCFR) %>%
+\end_layout
+
+\begin_layout Plain Layout
+
+         VSpec() + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\lang english
+For illustration, 
+\begin_inset Formula $H_{t}(\omega)$
+\end_inset
+
+ is calculated here for a 4-m line having diameter 3.1
+\begin_inset space ~
+\end_inset
+
+mm and a sensor volume of 
+\begin_inset Formula $10^{-5}\mathrm{m}^{3}$
+\end_inset
+
+.
+ This is a higher volume than estimated for the sensor, but a volume of
+ this magnitude or a longer line length is required to obtain the expected
+ variance spectrum for dynamic pressure after correction (QCFR).
+ The variance spectrum for the directly measured dynamic pressure, shown
+ as 
+\begin_inset Quotes eld
+\end_inset
+
+QCF
+\begin_inset Quotes erd
+\end_inset
+
+ in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:QCcorr}
+\end_layout
+
+\end_inset
+
+, has apparent noise above about 5
+\begin_inset space ~
+\end_inset
+
+Hz, with standard deviation of 0.35
+\begin_inset space ~
+\end_inset
+
+hPa, which is larger than expected for the precision of this sensor (0.1
+\begin_inset space ~
+\end_inset
+
+hPa).
+ The apparent noise in the high-frequency spectrum can also be removed by
+ filtering as was done for the static pressure.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+It is notable that the variance spectrum for the measured static pressure,
+ 
+\begin_inset Quotes eld
+\end_inset
+
+PSF
+\begin_inset Quotes erd
+\end_inset
+
+, is far below that for the corrected dynamic pressure (
+\begin_inset Quotes eld
+\end_inset
+
+QCFR
+\begin_inset Quotes erd
+\end_inset
+
+) or for the original measurement (
+\begin_inset Quotes eld
+\end_inset
+
+QCF
+\begin_inset Quotes erd
+\end_inset
+
+), except near 12
+\begin_inset space ~
+\end_inset
+
+Hz.
+ That confirms that resonance in the long line supplying static pressure
+ to the differential pressure sensor has little effect on the measurement
+ of dynamic pressure and hence on the measurement of the longitudinal component
+ of the wind.
+ The important contribution appears to be from resonance in the total-pressure
+ line.
+\end_layout
+
+\begin_layout Standard
+This correction greatly improves the variance spectrum for dynamic pressure
+ by giving a slope consistent with expectations for an inertial subrange.
+ During this flight segment, other measurements (notably the vertical wind)
+ indicate 
+\begin_inset Formula $-5/3$
+\end_inset
+
+ slope, while the uncorrected measurement (QCF) departs from that slope
+ significantly for frequencies above about 4
+\begin_inset space ~
+\end_inset
+
+Hz.
+ The excess variance present at these frequencies therefore should also
+ be removed from estimates of dynamic heating based on dynamic pressure,
+ before the filtering to account for temperature-sensor response (Sect.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:A-filter-for"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) is applied.
+ 
+\end_layout
+
+\begin_layout Section
+Reproducibility
+\end_layout
+
+\begin_layout Standard
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+reproducibility
+\end_layout
+
+\end_inset
+
+This document is constructed in ways that support duplication of the study.
+ The code that generates the plots and implements the correction procedure
+ is incorporated into the same 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+program!file
+\end_layout
+
+\end_inset
+
+file that generated this document via 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+LaTeX
+\end_layout
+
+\end_inset
+
+, using principles and techniques described by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Xie2014a"
+literal "true"
+
+\end_inset
+
+ as implemented in the R 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+R language!package!knitr
+\end_layout
+
+\end_inset
+
+package
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+knitr
+\end_layout
+
+\end_inset
+
+ 'knitr' (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Xie2014b"
+literal "true"
+
+\end_inset
+
+).
+ The program, 'SensibleHeatFluxPaper1.Rnw', is archived on 'GitHub' 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+GitHub repository
+\end_layout
+
+\end_inset
+
+in the 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+repository!github
+\end_layout
+
+\end_inset
+
+directory
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+archive!for this document
+\end_layout
+
+\end_inset
+
+ at 
+\begin_inset CommandInset href
+LatexCommand href
+name "this URL"
+target "https://github.com/WilliamCooper/KalmanFilter.git"
+literal "false"
+
+\end_inset
+
+.
+ There is some 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+supplemental material
+\end_layout
+
+\end_inset
+
+supplemental material in that directory, including the workflow document
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+workflow document
+\end_layout
+
+\end_inset
+
+, the bibliography and some code segments saved in the 
+\begin_inset Quotes eld
+\end_inset
+
+chunks
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+R language!program chunks
+\end_layout
+
+\end_inset
+
+ subdirectory, so the full directory should be downloaded in order to run
+ the program.
+ The calculations use the programming 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+R language
+\end_layout
+
+\end_inset
+
+language 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+R language!program
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+RStudio
+\end_layout
+
+\end_inset
+
+R (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Rlanguage"
+literal "true"
+
+\end_inset
+
+) and were run within 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+RStudio
+\end_layout
+
+\end_inset
+
+RStudio (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "RStudio2012"
+literal "true"
+
+\end_inset
+
+), so this is the most straightforward way to replicate the calculations
+ and the generation of this 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+program!generating this document
+\end_layout
+
+\end_inset
+
+document.
+\end_layout
+
+\begin_layout Standard
+A 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+R language!package!Ranadu
+\end_layout
+
+\end_inset
+
+package named Ranadu,
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+R language!package!Ranadu
+\end_layout
+
+\end_inset
+
+ containing auxillary 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+function!Ranadu
+\end_layout
+
+\end_inset
+
+functions, is used extensively in the R code.
+ It is available on GitHub
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+GitHub repository
+\end_layout
+
+\end_inset
+
+ as 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/WilliamCooper/Ranadu.git"
+literal "false"
+
+\end_inset
+
+.
+ The version used for calculations in this technical note is included in
+ the 'zip' archive listed below.
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+file!data
+\end_layout
+
+\end_inset
+
+data files used are also preserved in the NCAR/EOL Data Archives and can
+ be obtained via a 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+data!requesting
+\end_layout
+
+\end_inset
+
+request to 
+\begin_inset Flex URL
+status collapsed
+
+\begin_layout Plain Layout
+
+mailto:raf-dm@eol.ucar.edu
+\end_layout
+
+\end_inset
+
+ or via the 
+\begin_inset Quotes eld
+\end_inset
+
+Data Access
+\begin_inset Quotes erd
+\end_inset
+
+ links at 
+\begin_inset CommandInset href
+LatexCommand href
+name "this web site"
+target "https://www.eol.ucar.edu/all-field-projects-and-deployments"
+literal "false"
+
+\end_inset
+
+.
+ The original files containing the data as produced by the NCAR Earth Observing
+ Laboratory, Research Aviation Facility, were in 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+netCDF format
+\end_layout
+
+\end_inset
+
+netCDF format (cf.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "this URL"
+target "http://www.unidata.ucar.edu/software/netcdf/"
+literal "false"
+
+\end_inset
+
+), but in many cases data archives were reprocessed and the files may change
+ after reprocessing so a separate archive
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+archive!for this document!data
+\end_layout
+
+\end_inset
+
+ is maintained for this document.
+ The data files
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+file!data!archive
+\end_layout
+
+\end_inset
+
+ in this archive contain 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+R language!data.frames
+\end_layout
+
+\end_inset
+
+R data.frames and are preserved as binary-format 'Rdata' files via R 'save'
+ commands.
+ The code in the GitHub archive has appropriate 'load' commands to read
+ these data files from a subdirectory named 'Data' (/Data or ~/Data or /home/Dat
+a) but this is not part of the GitHub repository because it is too large
+ to be appropriate there.
+ To reproduce this research, those data files have to be transferred separately
+ from {??where??}
+\end_layout
+
+\begin_layout Standard
+Extensive use has been made of 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+attributes!data.frame
+\end_layout
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+attributes!variable
+\end_layout
+
+\end_inset
+
+attributes assigned to the data.frames and the variables in those data.frames.
+ All the attributes from the original netCDF 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+file!netCDF
+\end_layout
+
+\end_inset
+
+files have been transferred, so there is a record of how the original data
+ were processed, for example recording 
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+calibration!coefficients!used in processing
+\end_layout
+
+\end_inset
+
+calibration coefficients and processing chains for the variables.
+ Once the data.frames are loaded into R, these attributes can be viewed and
+ provide additional documentation of what data were used.
+ Key information like the processing date, the program version that produced
+ the archive, and the selection of primary variables for various measurements
+ thus is preserved.
+\end_layout
+
+\begin_layout Standard
+(See the related list of project components on the next page that are preserved
+ to enhance reproducibility.)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="10" columns="2">
+<features tabularvalignment="middle">
+<column alignment="left" valignment="top">
+<column alignment="left" valignment="top">
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\shape smallcaps
+\color blue
+Project:
+\family default
+\shape default
+\color inherit
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SensibleHeatFlux
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\shape smallcaps
+\color blue
+Archive package:
+\family default
+\shape default
+\color inherit
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "SensibleHeatFluxPaper2.zip"
+target "https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/SensibleHeatFluxPaper2.zip"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\shape smallcaps
+\color blue
+Contains:
+\family default
+\shape default
+\color inherit
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+attachment list below
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\shape smallcaps
+\color blue
+Program:
+\family default
+\shape default
+\color inherit
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "SensibleHeatFluxPaper2.Rnw"
+target "https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/SensibleHeatFluxPaper2.Rnw"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\shape smallcaps
+\color blue
+Original Data:
+\family default
+\shape default
+\color inherit
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset CommandInset citation
+LatexCommand citet
+key "VOCALS2011"
+literal "false"
+
+\end_inset
+
+, 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset CommandInset citation
+LatexCommand citet
+key "SOCRATES2019"
+literal "false"
+
+\end_inset
+
+,
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset CommandInset citation
+LatexCommand citet
+key "CSET2017"
+literal "false"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\shape smallcaps
+\color blue
+Special Data Files:
+\family default
+\shape default
+\color inherit
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+SensibleHeatFlux.Rdata, SensibleHeatFluxPaper2.Rdata, AR.Rdata
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\shape smallcaps
+\color blue
+Workflow Document:
+\family default
+\shape default
+\color inherit
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset CommandInset href
+LatexCommand href
+name "WorkflowSensibleHeatFluxPaper2.pdf"
+target "https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/WorkflowSensibleHeatFluxPaper2.pdf"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\family sans
+\shape smallcaps
+\color blue
+Git:
+\family default
+\shape default
+\color inherit
+ 
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="left" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+GitHub repository
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset href
+LatexCommand href
+name "https://github.com/WilliamCooper/SensibleHeatFlux.git"
+target "https://github.com/WilliamCooper/SensibleHeatFlux.git"
+literal "false"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+
+\backslash
+attachm{
+\end_layout
+
+\end_inset
+
+SensibleHeatFluxPaper2.Rnw
+\begin_inset Newline newline
+\end_inset
+
+SensibleHeatFluxPaper2.pdf
+\begin_inset Newline newline
+\end_inset
+
+WorkflowSensibleHeatFluxPaper2.pdf
+\begin_inset Newline newline
+\end_inset
+
+WAC.bib
+\begin_inset Newline newline
+\end_inset
+
+chunks/*
+\begin_inset Newline newline
+\end_inset
+
+SessionInfo
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+phantomsection 
+\backslash
+addcontentsline{toc}{section}{List of Symbols}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset index_print
+LatexCommand printindex
+type "lis"
+name "List of Symbols"
+literal "true"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+phantomsection 
+\backslash
+addcontentsline{toc}{section}{Variable Names and Acronyms}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset CommandInset index_print
+LatexCommand printindex
+type "var"
+name "Variable Names and Acronyms"
+literal "true"
+
+\end_inset
+
+
+\begin_inset Index idx
+status open
+
+\begin_layout Plain Layout
+Variable Names
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\end_layout
+
+\begin_layout Plain Layout
+
+
+\backslash
+phantomsection 
+\backslash
+addcontentsline{toc}{section}{Index}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+** indicates that many similar entries are omitted.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset index_print
+LatexCommand printindex
+type "idx"
+name "Index"
+literal "true"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+clearpage
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+phantomsection 
+\backslash
+addcontentsline{toc}{section}{References}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:bibliography"
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+btprint "btPrintCited"
+bibfiles "/home/cooperw/RStudio/WAC"
+options "bibtotoc,plainnat"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+% 
+\backslash
+centerline{-- Blank Page, End of this Technical Report --}
+\end_layout
+
+\begin_layout Plain Layout
+
+% 
+\backslash
+vfill
+\backslash
+eject
+\end_layout
+
+\begin_layout Plain Layout
+
+% 
+\backslash
+clearpage
+\end_layout
+
+\begin_layout Plain Layout
+
+%
+\backslash
+addcontentsline{toc}{section}{End}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<make-zip-archive, INCLUDE=TRUE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+system (sprintf("zip KalmanFilterTechNote.zip KalmanFilterTechNote.Rnw KalmanFilte
+rTechNote.pdf WorkflowKalmanFilter.pdf WAC.bib ./chunks/* SessionInfo"))
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+@ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
