@@ -492,7 +492,11 @@ c Research, which is a major facility sponsored by the National Science
  The data used in the examples presented are from the VOCALS (VAMOS Ocean-Cloud-
 Atmosphere-Land Study), SOCRATES (Southern Ocean Clouds, Radiation, Aerosol
  Transport Experimental Study) and the CSET (Cloud Systems Evolution in
- the Trades) experiment, 
+ the Trades) experiment
+\change_inserted 1311305628 1586123187
+s
+\change_unchanged
+, 
 \begin_inset Note Note
 status open
 
@@ -761,9 +765,13 @@ pagenumbering{arabic}
 
 \begin_layout Section
 Introduction
+\change_deleted 1311305628 1585923272
+
 \end_layout
 
 \begin_layout Subsection
+
+\change_deleted 1311305628 1585923267
 Overview
 \end_layout
 
@@ -1268,40 +1276,12 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
-This paper 
-\change_deleted 1311305628 1585922419
-develops
-\change_inserted 1311305628 1585922420
-uses
-\change_unchanged
- a new method for evaluating of the time response of a
-\change_inserted 1311305628 1585922441
-n airborne
-\change_unchanged
- temperature sensor
-\change_inserted 1311305628 1585922434
-.
 
-\change_unchanged
- 
-\change_deleted 1311305628 1585922455
-and applies that method to some temperature sensors now used on research
- aircraft.
-
-\change_unchanged
- One significant difference 
-\change_deleted 1311305628 1585922481
-in comparison to
-\change_inserted 1311305628 1585922489
-vs.
-\begin_inset space ~
-\end_inset
-
-
-\change_deleted 1311305628 1585922494
- 
-\change_unchanged
-previous studies by, e.g., 
+\change_deleted 1311305628 1585923435
+This paper develops a new method for evaluating of the time response of
+ a temperature sensor and applies that method to some temperature sensors
+ now used on research aircraft.
+ One significant difference in comparison to previous studies by, e.g., 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "mccarthy1973method"
@@ -1336,6 +1316,8 @@ recovery temperature
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1585923435
 \begin_inset CommandInset citation
 LatexCommand citet
 key "PayneEtAl1994"
@@ -1372,6 +1354,8 @@ literal "false"
  makes this possible and also supports a new scheme by which the temperature
  measurements can be corrected for the time response of the sensor.
  This will be the subject of Part III.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -2310,11 +2294,19 @@ rk4.step <- function (y1, t, dt, dydt) {
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Section
+
+\change_deleted 1311305628 1585923348
 Basis for the Assessment
+\change_inserted 1311305628 1585925950
+Theory
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1585945518
 The evaluation of the time response that follows uses several methods, but
  the key one is based on the dynamic heating produced by airspeed fluctuations.
  In steady conditions a temperature sensor exposed to the air stream will
@@ -2361,6 +2353,8 @@ A sensor with a first-order time constant cannot produce a phase lag of
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1585945518
 The evaluation in terms of the amplitude ratio and phase shift of the recovery
  temperature as forced by the dynamic-heating term will therefore be the
  central approach in this study.
@@ -2387,35 +2381,86 @@ Hz response.
 \begin_inset space ~
 \end_inset
 
-Hz
-\change_inserted 1311305628 1585608476
- by more than 20%
-\change_unchanged
-, and the measured 
-\change_deleted 1311305628 1585608529
-fluctuations lead to measurements of the
-\change_unchanged
- contribution from 10-Hz fluctuations 
-\change_inserted 1311305628 1585608556
-will be
-\change_deleted 1311305628 1585608551
-that are
-\change_unchanged
- smaller than 1
-\change_inserted 1311305628 1585608352
-5
-\change_deleted 1311305628 1585608352
-0
-\change_unchanged
-% of the correct values.
+Hz, and the measured fluctuations lead to measurements of the contribution
+ from 10-Hz fluctuations that are smaller than 10% of the correct values.
  Knowledge of the limitations of these sensors is therefore essential to
  any application to measurements of sensible heat flux that uses these sensors,
  and the correction schemes developed in Part III can lead to defensible
  measurements of sensible-heat flux that otherwise will have serious errors.
+\change_inserted 1311305628 1585923532
+
 \end_layout
 
-\begin_layout Section
+\begin_layout Standard
+
+\change_inserted 1311305628 1586025441
+The errors considered here are those applicable to the measurement from
+ the sensor, which corresponds to the 
+\begin_inset Quotes eld
+\end_inset
+
+recovery temperature
+\begin_inset Quotes erd
+\end_inset
+
+, rather than those in the final temperature after correction for dynamic
+ heating.
+ Because the sensor cannot respond to rapid fluctuations in dynamic heating,
+ the standard correction for dynamic heating introduces errors into the
+ sensed temperature that are then amplified by a correction procedure.
+ This will be addressed in Part 2, but for this reason the present paper
+ will discuss only the recovery temperature.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1585926814
+\begin_inset CommandInset citation
+LatexCommand citet
+key "PayneEtAl1994"
+literal "false"
+
+\end_inset
+
+ provided a particularly illuminating analysis of the expected response
+ of a temperature sensor and developed their results in terms of a transfer
+ function.
+ They represent the response of the sensor in terms of two coupled differential
+ equations, one representing the temperature of the sensing wire and a second
+ representing the temperature of the structure that supports that wire.
+ Their analysis in terms of fundamental representation of the heat transport
+ leads to reasonable consistency with previous two-time-constant models
+ like that of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "mccarthy1973method"
+literal "false"
+
+\end_inset
+
+ but poor agreement with the empirical evidence regarding the time-response
+ parameters in those models.
+ They note, however, that the empirical evidence is not as consistent or
+ convincing as would be desirable.
+ One goal of the present work, therefore, is to develop a different and
+ readily available method of determining those parameters.
+ The over-arching goal is to be able to assess errors that might be present
+ in measurements of the flux of sensible heat and to apply corrections for
+ those errors.
+ The transfer function, constrained by new data regarding the parameters,
+ makes this possible and also supports a new scheme by which the temperature
+ measurements can be corrected for the time response of the sensor.
+ This will be the subject of Part 3.
+\change_deleted 1311305628 1585923783
+
+\end_layout
+
+\begin_layout Standard
+
+\change_deleted 1311305628 1585923776
 Characterizing the Time Response
+\change_unchanged
+
 \end_layout
 
 \begin_layout Subsection
@@ -2423,8 +2468,25 @@ The differential equations and their solution
 \end_layout
 
 \begin_layout Standard
-Previous studies have demonstrated that a simple first-order response with
- one time constant does not represent the nature of existing sensors.
+Previous studies have demonstrated that a simple first-order 
+\change_deleted 1311305628 1586096348
+response
+\change_inserted 1311305628 1586096357
+exponential equation
+\change_unchanged
+ with one time constant does not represent the 
+\change_inserted 1311305628 1586096372
+time response 
+\change_deleted 1311305628 1586096375
+nature 
+\change_unchanged
+of 
+\change_inserted 1311305628 1586096388
+airborne temperature
+\change_deleted 1311305628 1586096391
+existing
+\change_unchanged
+ sensors.
  The suggested explanation (
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -2434,8 +2496,11 @@ literal "false"
 \end_inset
 
  is that heat is transferred to the sensing wire of standard sensors not
- only from the air but also from the support that is in contact with the
- wire.
+ only from the air but also from the support
+\change_inserted 1311305628 1586096432
+ing structure
+\change_unchanged
+ that is in contact with the wire.
  Friehe and Khelif (
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -2444,7 +2509,19 @@ literal "false"
 
 \end_inset
 
-), following other prior work including that of 
+), following other prior work including that of
+\change_inserted 1311305628 1585927098
+ 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "rodi1972analysis"
+literal "false"
+
+\end_inset
+
+ and
+\change_unchanged
+ 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "mccarthy1973method"
@@ -2480,11 +2557,29 @@ where
 \end_inset
 
  must then be 1.
- Suggested values for {
+ 
+\change_deleted 1311305628 1585945799
+Suggested
+\change_inserted 1311305628 1585945806
+The
+\change_unchanged
+ values for {
 \begin_inset Formula $A_{1},\,A_{2},\,\tau_{1},\,\tau_{2}$
 \end_inset
 
-} were {0.65, 0.35, 0.09
+}
+\change_inserted 1311305628 1585945837
+ suggested by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "FrieheKhelif1992"
+literal "false"
+
+\end_inset
+
+
+\change_unchanged
+ were {0.65, 0.35, 0.09
 \begin_inset space ~
 \end_inset
 
@@ -2497,6 +2592,18 @@ s}.
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 1311305628 1585943096
+Following the approach of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "PayneEtAl1994"
+literal "false"
+
+\end_inset
+
+, 
+\change_deleted 1311305628 1585943127
 To consider how a sensor responds to a general input and not just to the
  step-function change described by 
 \begin_inset CommandInset ref
@@ -2510,13 +2617,7 @@ noprefix "false"
 
 , an appropriate pair of differential equations is developed and solved
  in this section.
- 
-\change_inserted 1311305628 1585687633
-It will be shown that the result is consistent with and even equivalent
- to (2).
- 
-\change_unchanged
-Following the approach of 
+ Following the approach of 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "PayneEtAl1994"
@@ -2524,15 +2625,43 @@ literal "false"
 
 \end_inset
 
-, the following represents the time response of the sensor in terms of two
- coupled differential equations, one that describes the response of the
- support to the air temperature and a second that describes the response
- of the sensing wire to two inputs, one from the support and one from the
- air.
- No attempt is made to determine the parameters from first principles as
- in that reference, however; instead, parameters entering the equations
- are determined empirically.
- This approach leads to the following two differential equations describing
+, the following represents 
+\change_unchanged
+the time response of the sensor 
+\change_inserted 1311305628 1585943144
+will be represented by 
+\change_deleted 1311305628 1585943148
+in terms of 
+\change_unchanged
+two coupled differential equations, one that describes the response of the
+ support 
+\change_inserted 1311305628 1585925802
+on which the sensing wire is wound 
+\change_unchanged
+to the air temperature and a second that describes the response of the sensing
+ wire to two inputs, one from the support and one from the air.
+ No attempt is made 
+\change_inserted 1311305628 1585927727
+here 
+\change_unchanged
+to determine the parameters from first principles as in 
+\change_deleted 1311305628 1585924377
+that reference
+\change_inserted 1311305628 1585924390
+
+\begin_inset CommandInset citation
+LatexCommand citet
+key "PayneEtAl1994"
+literal "false"
+
+\end_inset
+
+
+\change_unchanged
+, however; instead, parameters entering the equations are determined empirically.
+ 
+\change_deleted 1311305628 1585943229
+This approach leads to the following two differential equations describing
  the temperature of the support
 \begin_inset Foot
 status collapsed
@@ -2557,6 +2686,10 @@ A heat-transfer term omitted from the first equation is that from the support
 \end_inset
 
 ):
+\change_inserted 1311305628 1585943234
+The equations are:
+\change_unchanged
+
 \begin_inset Newline newline
 \end_inset
 
@@ -2570,18 +2703,57 @@ A heat-transfer term omitted from the first equation is that from the support
 
 
 \begin_inset Formula 
-\begin{equation}
-\frac{dT_{m}(t)}{dt}=\frac{a(T_{r}(t)-T_{m}(t))+(1-a)(T_{s}(t)-T_{m}(t))}{\tau_{1}}=\frac{\left\{ aT_{r}(t)+(1-a)T_{s}(t)\right\} -T_{m}(t)}{\tau_{1}}\label{eq:Tm}
-\end{equation}
+\begin{align}
+\frac{dT_{m}(t)}{dt} & =\frac{a(T_{r}(t)-T_{m}(t))+(1-a)(T_{s}(t)-T_{m}(t))}{\tau_{1}}\label{eq:Tm}\\
+= & \frac{\left\{ aT_{r}(t)+(1-a)T_{s}(t)\right\} -T_{m}(t)}{\tau_{1}}\nonumber 
+\end{align}
 
 \end_inset
 
+
+\change_inserted 1311305628 1586097431
+where 
+\begin_inset Formula $T_{s}(t)$
+\end_inset
+
+ is the temperature of the 
+\bar under
+s
+\bar default
+upport, 
+\begin_inset Formula $T_{m}(t)$
+\end_inset
+
+ the 
+\bar under
+m
+\bar default
+easured temperature of the sensing wire, and 
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+ the true 
+\bar under
+r
+\bar default
+ecovery temperature that is the measurand.
+ 
+\change_unchanged
 For heat transfer to or from the wire, the parameter 
 \begin_inset Formula $a$
 \end_inset
 
- then represents the fraction of the heat conducted by the air, while a
- fraction 
+ then represents the fraction of the heat 
+\change_deleted 1311305628 1586097984
+conducted
+\change_inserted 1311305628 1586097987
+transferred
+\change_unchanged
+ by the air, while 
+\change_deleted 1311305628 1586098013
+a fraction 
+\change_unchanged
+
 \begin_inset Formula $(1-a)$
 \end_inset
 
@@ -2639,10 +2811,10 @@ LTI
  can be decomposed into its sinusoidal Fourier components and each will
  satisfy these equations independently.
  
-\change_unchanged
+\change_deleted 1311305628 1586025544
 
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The step-function response of 
@@ -2699,7 +2871,7 @@ noprefix "false"
 .
  
 \begin_inset Note Note
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The solution to 
@@ -2796,7 +2968,184 @@ If
 
 \end_inset
 
- The first equation does not involve the measurement, so for a particular
+ 
+\change_inserted 1311305628 1586025544
+
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586025544
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586025544
+The step-function response of 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ is the sum of two exponentials as in 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FrieheKehlif"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, with the same time constants but with the adjustment that 
+\begin_inset Formula $A_{1}=(a-\tau_{1}/\tau_{2})/(1-\tau_{1}/\tau_{2})$
+\end_inset
+
+ and 
+\begin_inset Formula $A_{2}=(1-a)/\left(1-\tau_{1}/\tau_{2}\right)$
+\end_inset
+
+.
+ Because 
+\begin_inset Formula $\tau_{1}$
+\end_inset
+
+ is normally small compared to 
+\begin_inset Formula $\tau_{2}$
+\end_inset
+
+ for the Rosemount 102E4AL sensor, 
+\begin_inset Formula $A_{1}\approx a$
+\end_inset
+
+.
+ 
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586025544
+The solution to 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\frac{dT_{m}(t)}{dt}=\frac{(1-a)e^{-t/\tau_{2}}-T_{m}(t)}{\tau_{1}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+T_{m}(t)=be^{-t/\tau_{a}}+(1-b)e^{-t/\tau_{b}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+-b\frac{e^{-t/\tau_{a}}}{\tau_{a}}-(1-b)\frac{e^{-t/\tau_{b}}}{\tau_{b}}=\frac{(1-a)e^{-t/\tau_{2}}-be^{-t/\tau_{a}}-(1-b)e^{-t/\tau_{b}}}{\tau_{1}}
+\]
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e^{-t/\tau_{a}}:\,\,\,\frac{b}{\tau_{a}}=\frac{b}{\tau_{1}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e^{-t/\tau_{b}}:\,\,\,-\frac{1-b}{\tau_{b}}=-\frac{(1-b)}{\tau_{1}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+e^{-t/\tau_{2}}:\,\,\,0=\frac{(1-a)}{\tau_{1}}
+\]
+
+\end_inset
+
+If 
+\begin_inset Formula $\tau_{a}=\tau_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{b}=\tau_{2}$
+\end_inset
+
+, 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+(1-b)e^{-t/\tau_{b}}\left(\frac{1}{\tau_{1}}-\frac{1}{\tau_{b}}\right)=(1-a)e^{-t/\tau_{2}}\frac{1}{\tau_{1}}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+1-b=\frac{1-a}{\left(1-\frac{\tau_{1}}{\tau_{2}}\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ 
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+The first equation does not involve the measurement, so for a particular
  history of recovery temperature 
 \begin_inset Formula $T_{r}(t)$
 \end_inset
@@ -2830,7 +3179,11 @@ noprefix "false"
 \begin_inset Formula $T_{m}(t)$
 \end_inset
 
- for a specified history 
+ for a specified 
+\change_inserted 1311305628 1585943431
+measurand 
+\change_unchanged
+history 
 \begin_inset Formula $T_{r}(t)$
 \end_inset
 
@@ -2862,8 +3215,18 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
-For a sine-wave input, these equations have analytic solutions after any
- transient response from initial conditions has decayed.
+For a 
+\change_deleted 1311305628 1586098098
+sine-wave
+\change_inserted 1311305628 1586098101
+sinusoidal
+\change_unchanged
+ input
+\change_deleted 1311305628 1586098107
+,
+\change_unchanged
+ these equations have analytic solutions after any transient response from
+ initial conditions has decayed.
  If the actual recovery temperature is 
 \begin_inset Formula $T_{r}(t)=\sin\omega t$
 \end_inset
@@ -2925,17 +3288,19 @@ b=\frac{1}{\sqrt{1+\omega^{2}\tau_{2}^{2}}}
 
 
 \begin_inset Formula 
-\[
-C_{1}=\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)\left(-\omega\tau_{1}\left(a+(1-a)b\cos\zeta\right)+(1-a)b\sin\zeta\right)
-\]
+\begin{align*}
+C_{1} & =\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)\left(-\omega\tau_{1}\left(a+(1-a)b\cos\zeta\right)+(1-a)b\sin\zeta\right)\\
+= & \frac{-\omega}{(1+\omega^{2}\tau_{1}^{2})}\left(\tau_{1}a+\frac{(1-a)(\tau_{1}+\tau_{2})}{(1+\omega^{2}\tau_{2}^{2})}\right)
+\end{align*}
 
 \end_inset
 
 
 \begin_inset Formula 
-\[
-C_{2}=\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)\left(a+(1-a)b\cos\zeta+\omega\tau_{1}(1-a)b\sin\zeta\right)
-\]
+\begin{align*}
+C_{2} & =\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)\left(a+(1-a)b\cos\zeta+\omega\tau_{1}(1-a)b\sin\zeta\right)\\
+= & \left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)\left(a+\frac{(1-a)(1-\omega^{2}\tau_{1}\tau_{2})}{(1+\omega^{2}\tau_{2}^{2})}\right)
+\end{align*}
 
 \end_inset
 
@@ -2959,6 +3324,8 @@ c=\sqrt{C_{1}^{2}+C_{2}^{2}}\label{eq:responseAmp}
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1585926064
 The transfer function 
 \begin_inset Formula $H(\omega)=c(\omega)e^{i\phi(\omega)}$
 \end_inset
@@ -2974,7 +3341,7 @@ The transfer function
 
  is the frequency.
 \begin_inset Foot
-status open
+status collapsed
 
 \begin_layout Plain Layout
 The workflow document that 
@@ -3030,7 +3397,118 @@ C_{2}=\left(\frac{A_{1}}{1+\omega^{2}\tau_{1}^{2}}+\frac{A_{2}}{1+\omega^{2}\tau
 \end_inset
 
 
-\change_inserted 1311305628 1585687810
+\change_inserted 1311305628 1586003926
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586186745
+\begin_inset CommandInset citation
+LatexCommand citet
+key "mccarthy1973method"
+literal "false"
+
+\end_inset
+
+ used the derivative of the step-function response to find the impulse response
+ function and, from its Fourier transform, the sensor response function.
+ That leads to the following alternate expressions for 
+\begin_inset Formula $C_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $C_{2}$
+\end_inset
+
+:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+C_{1}=-\omega\left(\frac{A_{1}\tau_{1}}{1+\omega^{2}\tau_{1}^{2}}+\frac{A_{2}\tau_{2}}{1+\omega^{2}\tau_{2}^{2}}\right)
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+C_{2}=\left(\frac{A_{1}}{1+\omega^{2}\tau_{1}^{2}}+\frac{A_{2}}{1+\omega^{2}\tau_{2}^{2}}\right)
+\]
+
+\end_inset
+
+With 
+\begin_inset Formula $A_{2}=(1-a)/(1-\tau_{1}/\tau_{2})$
+\end_inset
+
+ and 
+\begin_inset Formula $A_{1}=1-A_{2},$
+\end_inset
+
+these are equivalent to the expressions for the same coefficients given
+ above 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:responseAmp"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ This demonstrates that the equations 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ are a representation of the response equivalent to 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:FrieheKehlif"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and the equations used by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "mccarthy1973method"
+literal "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "InverarityJTech2000"
+literal "false"
+
+\end_inset
+
+, among others.
+\change_unchanged
 
 \end_layout
 
@@ -3046,6 +3524,24 @@ name "subsec:The-resulting-transfer"
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 1311305628 1585926165
+The transfer function 
+\begin_inset Formula $H(\omega)=c(\omega)e^{i\phi(\omega)}$
+\end_inset
+
+ then characterizes how the sensor will respond to a unit-amplitude sine
+ wave with angular frequency 
+\begin_inset Formula $\omega=2\pi\nu$
+\end_inset
+
+ where 
+\begin_inset Formula $\nu$
+\end_inset
+
+ is the frequency.
+ 
+\change_deleted 1311305628 1585926227
 Equations 
 \begin_inset CommandInset ref
 LatexCommand eqref
@@ -3066,19 +3562,10 @@ noprefix "false"
 
 \end_inset
 
- 
-\change_deleted 1311305628 1585690546
-provide
-\change_inserted 1311305628 1585690547
-specify
+ provide the gain and phase for the time-response transfer function of the
+ sensor.
+
 \change_unchanged
- the gain and phase for the 
-\change_deleted 1311305628 1585690527
-time-response
-\change_inserted 1311305628 1585690535
-frequency domain
-\change_unchanged
- transfer function of the sensor.
  For a particular set of parameters (
 \begin_inset Formula $a=$
 \end_inset
@@ -3138,8 +3625,45 @@ Sexpr{round(tau2, 3)}
 \begin_inset space ~
 \end_inset
 
-s), the amplitude response and phase delay of the transfer function obtained
- in this way is shown in Fig.
+s),
+\change_inserted 1311305628 1586098383
+
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586098385
+These parameters are approximately representative of an unheated Rosemount
+ 102E4AL sensor used on the NSF/NCAR C-130, as will be demonstrated in Sect.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:The-unheated-Rosemount"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+ the amplitude response and phase delay of the transfer function 
+\change_deleted 1311305628 1586098424
+obtained in this way 
+\change_unchanged
+is shown in Fig.
 \begin_inset space ~
 \end_inset
 
@@ -3157,7 +3681,35 @@ ref{fig:LTsolution}
 \end_inset
 
 .
- These parameters are approximately representative of an unheated Rosemount
+
+\change_inserted 1311305628 1586098784
+ Similar plots of the amplitude have been shown by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "mccarthy1973method"
+literal "false"
+
+\end_inset
+
+ (Fig.
+\begin_inset space ~
+\end_inset
+
+2) and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "nicholls1978measurements"
+literal "false"
+
+\end_inset
+
+ (Fig.
+ 3).
+
+\change_unchanged
+ 
+\change_deleted 1311305628 1586100022
+These parameters are approximately representative of an unheated Rosemount
  102E4AL sensor that has been used on the NSF/NCAR C-130, as will be demonstrate
 d in Sect.
 \begin_inset space ~
@@ -3178,21 +3730,61 @@ noprefix "false"
  so the frequency-dependent gain and phase can be used with Fourier representati
 on of an input signal to characterize the response of the sensor to that
  input.
+
+\change_unchanged
  Modified transfer functions for two small changes to these parameters are
  also shown to illustrate the sensitivity of the solution to these parameters.
- This figure illustrates that serious errors will enter estimates of the
- sensible heat flux if there are significant contributions at frequencies
- even above about 1
+ This figure
+\change_inserted 1311305628 1586098776
+ 
+\change_deleted 1311305628 1586026248
+ 
+\change_unchanged
+illustrates that serious errors will enter estimates of the sensible heat
+ flux if 
+\change_deleted 1311305628 1586098619
+there are significant contributions 
+\change_inserted 1311305628 1586098776
+temperature fluctuations 
+\change_unchanged
+at frequencies
+\change_deleted 1311305628 1586098634
+ even
+\change_unchanged
+ above 
+\change_deleted 1311305628 1586098654
+about 
+\change_unchanged
+1
 \begin_inset space ~
 \end_inset
 
-Hz.
- Because the contribution to the cospectrum of temperature and vertical
- wind will be reduced by the product of the amplitude and the cosine of
- the phase shown in Fig.
+Hz
+\change_inserted 1311305628 1586098776
+ make a significant contribution to the flux
+\change_unchanged
+.
+ 
+\change_deleted 1311305628 1586100210
+Because t
+\change_inserted 1311305628 1586100211
+T
+\change_unchanged
+he contribution to the cospectrum of temperature and vertical wind will
+ be reduced by the product of the amplitude and the cosine of the phase
+\change_inserted 1311305628 1586100225
+ 
+\change_deleted 1311305628 1586100232
+ shown in 
+\change_inserted 1311305628 1586100234
+(
+\change_unchanged
+Fig.
 \begin_inset space ~
 \end_inset
 
+
+\change_deleted 1311305628 1586100275
 
 \begin_inset ERT
 status open
@@ -3211,6 +3803,8 @@ ref{fig:LTsolution}
 \end_inset
 
 
+\change_unchanged
+
 \begin_inset ERT
 status open
 
@@ -3223,20 +3817,28 @@ ref{fig:FE}
 
 \end_inset
 
+
+\change_inserted 1311305628 1586100286
+)
+\change_unchanged
 .
  Most of the 10-Hz contribution is missed, but even at 1
 \begin_inset space ~
 \end_inset
 
 Hz the error is about 28%.
- If there are substantial contributions to the sensible-heat flux with fluctuati
-ons at 1
+ 
+\change_deleted 1311305628 1586098816
+If there are substantial contributions to the sensible-heat flux with fluctuatio
+ns at 1
 \begin_inset space ~
 \end_inset
 
 Hz and above, the fractional error in those contributions will lead to an
  error in the measured flux.
  
+\change_unchanged
+
 \begin_inset Note Note
 status open
 
@@ -3821,8 +4423,15 @@ status open
 
 \begin_layout Plain Layout
 
-<<FE, include=TRUE, echo=FALSE, fig.height=3.5, fig.cap='Fractional error in
- the contribution to sensible heat flux as a function of frequency.'>>=
+<<FE, include=TRUE, echo=FALSE, fig.height=3.5, fig.cap='
+\change_inserted 1311305628 1586101479
+Fractional error in the cospectrum of sensible-heat flux caused by the delayed
+ response of the temperature sensor.
+\change_deleted 1311305628 1586101491
+Fractional error in the contribution to sensible heat flux as a function
+ of frequency.
+\change_unchanged
+'>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -3910,9 +4519,12 @@ g + theme_WAC(1)
 \end_layout
 
 \begin_layout Standard
-These equations and their solution also provide a basis for correcting either
- the measured temperature or the sensible-heat flux calculated from the
- cospectrum in 
+These equations and their solution 
+\change_deleted 1311305628 1585945980
+also 
+\change_unchanged
+provide a basis for correcting either the measured temperature or the sensible-h
+eat flux calculated from the cospectrum in 
 \begin_inset CommandInset ref
 LatexCommand eqref
 reference "eq:heatFlux"
@@ -3923,8 +4535,13 @@ noprefix "false"
 \end_inset
 
 .
- Corrected values can be obtained by integration of the equations for the
- derivatives, as by 
+ Corrected values can be obtained by 
+\change_inserted 1311305628 1586096963
+several methods including 
+\change_unchanged
+integration of the equations for the derivatives
+\change_deleted 1311305628 1586026312
+, as by 
 \begin_inset CommandInset citation
 LatexCommand citet
 key "mccarthy1973method"
@@ -3940,7 +4557,9 @@ literal "false"
 
 \end_inset
 
-, or by 
+,
+\change_unchanged
+ or by 
 \change_inserted 1311305628 1585691545
 dividing the Fourier transform of the time series by the transfer function
  and then using inverse Fourier transformation to recover the corrected
@@ -4048,13 +4667,43 @@ Fourier transform the time series
 
 \end_inset
 
- Before discussing those correction schemes in more detail, an analysis
- is needed to find the three parameters {
+ 
+\change_deleted 1311305628 1586301624
+Before discussing t
+\change_inserted 1311305628 1586301626
+T
+\change_unchanged
+hose correction schemes
+\change_inserted 1311305628 1586363988
+ are discussed
+\change_unchanged
+ in
+\change_deleted 1311305628 1586301641
+ more
+\change_unchanged
+ detail
+\change_inserted 1311305628 1586301650
+ in Appendix A
+\change_unchanged
+, 
+\change_deleted 1311305628 1586026357
+an analysis is needed to find
+\change_inserted 1311305628 1586364014
+but first a new method for finding
+\change_unchanged
+ the three parameters {
 \begin_inset Formula $a,\,\tau_{1},\,\tau_{2}$
 \end_inset
 
-}.
- That is the subject of the next section.
+}
+\change_inserted 1311305628 1586026403
+ will be developed in the next section and used to characterize standard
+ temperature sensors
+\change_unchanged
+.
+ 
+\change_deleted 1311305628 1586301682
+That is the subject of the next section.
  Then correction schemes are discussed further in Sect.
 \begin_inset space ~
 \end_inset
@@ -4070,17 +4719,210 @@ noprefix "false"
 \end_inset
 
 .
+\change_unchanged
+
 \end_layout
 
 \begin_layout Section
 Determining the Time Constants
+\change_inserted 1311305628 1585945540
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586364530
+The evaluation of the time response that follows is based on the dynamic
+ heating produced by airspeed fluctuations.
+ In steady conditions a temperature sensor exposed to the air stream will
+ measure the recovery temperature, defined as the ambient temperature increased
+ by the effect of dynamic heating.
+ Dynamic heating fluctuates as the airspeed fluctuates, so in a turbulent
+ wind field fluctuations with a measurable frequency spectrum are imposed
+ on the sensor.
+ These fluctuations are often significantly larger than real fluctuations
+ in the ambient temperature.
+ Dynamic heating of temperature sensors is discussed for example by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "BangeEtAl2013.ch2"
+literal "false"
+
+\end_inset
+
+ (cf.
+\begin_inset space ~
+\end_inset
+
+their Eq.
+\begin_inset space ~
+\end_inset
+
+2.23), who expresses dynamic heating 
+\begin_inset Formula $Q$
+\end_inset
+
+ as
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+Q=\alpha_{r}\frac{V^{2}}{2C_{p}}=T_{r}\left(\frac{\alpha_{r}M^{2}R_{a}/(2C_{v})}{1+\alpha_{r}M^{2}R_{a}/(2C_{v})}\right)\label{eq:DHterm}
+\end{equation}
+
+\end_inset
+
+where 
+\begin_inset Formula $\alpha_{r}$
+\end_inset
+
+ is the 
+\begin_inset Quotes eld
+\end_inset
+
+recovery factor
+\begin_inset Quotes erd
+\end_inset
+
+ characterizing the extent to which the air is brought to rest relative
+ to the sensor, 
+\begin_inset Formula $V$
+\end_inset
+
+ is the airspeed, 
+\begin_inset Formula $C_{p}$
+\end_inset
+
+ and 
+\begin_inset Formula $C_{v}$
+\end_inset
+
+ are respectively the specific heat of air at constant pressure and constant
+ volume, 
+\begin_inset Formula $T_{r}$
+\end_inset
+
+ is the (true) recovery temperature expressed in absolute units, 
+\begin_inset Formula $M$
+\end_inset
+
+ the Mach number, and 
+\begin_inset Formula $R_{a}$
+\end_inset
+
+ the gas constant for air.
+ The ambient air temperature 
+\begin_inset Formula $T_{a}$
+\end_inset
+
+ is related to the recovery temperature and the dynamic heating via
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+T_{r}=T_{a}+Q\,\,\,.\label{eq:recoveryTemperature}
+\end{equation}
+
+\end_inset
+
+Because dynamic heating can exceed 
+\begin_inset Formula $20^{\circ}\mathrm{C}$
+\end_inset
+
+ at jet-aircraft flight speeds, it is often the dominant cause of fluctuations
+ in the recovery temperature.
+ If the fluctuations in dynamic heating are higher in frequency than those
+ to which the sensor can respond, corresponding fluctuations will be attenuated
+ in the measured spectrum and the phase of the measured response relative
+ to the imposed signal will vary, from near 
+\begin_inset Formula $0^{\circ}$
+\end_inset
+
+ for fluctuations slow compared to sensor response to near 
+\begin_inset Formula $90^{\circ}$
+\end_inset
+
+ or even more
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586104499
+A sensor with a first-order time constant cannot produce a phase lag of
+ more than 
+\begin_inset Formula $90^{\circ}$
+\end_inset
+
+, but larger lags are possible for systems characterized by two time constants,
+ as developed below.
+\end_layout
+
+\end_inset
+
+ for fluctuations fast compared to that response.
+ The amplitude and especially the phase of the recovery temperature relative
+ to that of the dynamic heating therefore can be used as sensitive indicators
+ of the response characteristics of the sensor and can be used to determine
+ appropriate values of characteristic parameters like 
+\begin_inset Formula $a$
+\end_inset
+
+, 
+\begin_inset Formula $\tau_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{2}$
+\end_inset
+
+ that fit the predictions to the observations.
+ The evaluation in terms of the amplitude ratio and phase shift of the recovery
+ temperature as forced by the dynamic-heating term will therefore be the
+ method used to characterize the transfer function and to determine if it
+ is represented adequately by the parameterized form given by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:responseAmp"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:responsePhase"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\change_deleted 1311305628 1586104646
+
 \end_layout
 
 \begin_layout Subsection
 The response to dynamic heating
+\change_deleted 1311305628 1586103466
+
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Standard
+
+\change_deleted 1311305628 1586103376
 The unheated Rosemount 102E4AL sensor
 \begin_inset CommandInset label
 LatexCommand label
@@ -4089,9 +4931,13 @@ name "subsec:The-unheated-Rosemount"
 \end_inset
 
 
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586104164
 Dynamic heating provides an opportunity to evaluate the sensor response
  because that dynamic heating is a measured signal and its magnitude often
  is large compared to real temperature fluctuations.
@@ -4242,6 +5088,8 @@ ref{fig:LTsolution}
 \end_inset
 
  that fit the predictions to the observations.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -4284,19 +5132,37 @@ noprefix "false"
  and the Mach number.
  The Mach number in turn depends only on measurements of the dynamic and
  ambient pressures, with a small adjustment for the water vapor pressure.
- The goal here is to use the phase of the response to the dynamic-heating
+ 
+\change_deleted 1311305628 1586106266
+The goal here is to use the phase of the response to the dynamic-heating
  term to determine the response characteristics of the temperature sensor,
  so it is preferable to remain as close to the original measurements as
  possible.
+
+\change_inserted 1311305628 1586106274
+ 
+\change_deleted 1311305628 1586106266
  
 \end_layout
 
 \begin_layout Standard
-The available measurement is not the true recovery temperature 
+
+\change_inserted 1311305628 1586106293
+However, 
+\change_deleted 1311305628 1586106290
+T
+\change_inserted 1311305628 1586106296
+t
+\change_unchanged
+he available measurement is not the true recovery temperature 
 \begin_inset Formula $T_{r}$
 \end_inset
 
-, however, but instead the measured temperature 
+
+\change_deleted 1311305628 1586106306
+, however,
+\change_unchanged
+ but instead the measured temperature 
 \begin_inset Formula $T_{m}$
 \end_inset
 
@@ -4369,7 +5235,13 @@ noprefix "false"
 
 \end_inset
 
-The measured recovery temperature 
+
+\change_deleted 1311305628 1586106476
+T
+\change_inserted 1311305628 1586106481
+Because t
+\change_unchanged
+he measured recovery temperature 
 \begin_inset Formula $T_{m}$
 \end_inset
 
@@ -4377,7 +5249,11 @@ The measured recovery temperature
 \begin_inset Formula $T_{r}$
 \end_inset
 
-, so the measured phase and amplitude of the response to the dynamic-heating
+, 
+\change_deleted 1311305628 1586106488
+so 
+\change_unchanged
+the measured phase and amplitude of the response to the dynamic-heating
  term may be distorted from the correct value at frequencies where 
 \begin_inset Formula $\delta T_{m}/T_{m}$
 \end_inset
@@ -4403,7 +5279,11 @@ noprefix "false"
 \begin_inset Formula $Q$
 \end_inset
 
-, but these errors still must be addressed.
+, 
+\change_inserted 1311305628 1586107047
+and those errors can be addressed by correction procedures.
+\change_deleted 1311305628 1586106979
+but these errors still must be addressed.
 \begin_inset Note Note
 status collapsed
 
@@ -4459,7 +5339,7 @@ For this reason, once a set of parameters is determined,
 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "subsec:The-resulting-transfer"
+reference "sec:Correcting-the-Temperature"
 plural "false"
 caps "false"
 noprefix "false"
@@ -4496,9 +5376,13 @@ noprefix "false"
 
  can then improve the estimate of the parameters.
  In practice, the estimate became stable after only one or two iterations.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586115439
 To illustrate this process, consider a low-level flight segment from the
  VOCALS project where modest turbulent fluctuations were encountered.
  The primary temperature sensor for this project was an unheated Rosemount
@@ -4527,6 +5411,8 @@ ref{fig:TASX}
 \end_inset
 
 .
+
+\change_unchanged
  Figure
 \begin_inset space ~
 \end_inset
@@ -4564,7 +5450,18 @@ noprefix "false"
 \end_inset
 
 .
- The variance of the second term is more than 100 times that of the first,
+ 
+\change_inserted 1311305628 1586115412
+This is based on a low-level flight segment with moderate turbulence where
+ the airspeed fluctuations were approximately consistent with an eddy dissipatio
+n rate of 
+\begin_inset Formula $3\times10^{-4}\,\mathrm{m}^{2}\mathrm{s}^{-3}$
+\end_inset
+
+.
+ 
+\change_unchanged
+The variance of the second term is more than 100 times that of the first,
  indicating that the fluctuations in the first term are less than 10% of
  those in the second term.
  Therefore the right side of 
@@ -4585,9 +5482,45 @@ noprefix "false"
 \begin_inset Formula $T_{r}$
 \end_inset
 
- was used initially to represent dynamic heating and determine the transfer
- function representing the response to the imposed dynamic heating.
+ was used initially to represent dynamic heating
+\change_deleted 1311305628 1586107904
+ and determine the transfer function representing the response to the imposed
+ dynamic heating
+\change_unchanged
+.
  
+\change_inserted 1311305628 1586364824
+Once a set of parameters was determined, 
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+ was calculated using the first correction procedure discussed in Appendix
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Correcting-the-Temperature"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ Iteration using this estimate of 
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+ in place of 
+\begin_inset Formula $T_{m}(t)$
+\end_inset
+
+ led to a small change in the fitted values of the parameters, and the estimate
+ became stable after only one iteration.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -4596,11 +5529,44 @@ status open
 
 \begin_layout Plain Layout
 
-<<TASX, include = TRUE, fig.height = 3.4, fig.cap = 'Variance spectra for airspeed
- from a segment from VOCALS C-130 flight 3, 11:39:00 -- 11:52:00 UTC.
+<<TASX, include = 
+\change_deleted 1311305628 1586115218
+TRUE
+\change_inserted 1311305628 1586115220
+FALSE
+\change_unchanged
+, fig.height = 3.4, fig.cap = '
+\change_inserted 1311305628 1586108100
+Spectral variance
+\change_deleted 1311305628 1586108094
+Variance spectra
+\change_unchanged
+ 
+\change_inserted 1311305628 1586115174
+$P(
+\backslash
+
+\backslash
+nu)$ 
+\change_unchanged
+for airspeed 
+\change_inserted 1311305628 1586108129
+($V$) as a function of frequency $
+\backslash
+
+\backslash
+nu$ 
+\change_unchanged
+from a segment from VOCALS C-130 flight 3, 11:39:00 -- 11:52:00 UTC.
  The dotted orange lines show the spectral variance for various values of
  the eddy dissipation rate, with the heavy-dotted line representing $10^{-4}$
- m$^2$ s$^{-3}$.'>>=
+ m$^2$ s$^{-3}$.
+
+\change_inserted 1311305628 1586107297
+ The wavelength scale shows the correspondence between frequency and wavelength
+ at the average airspeed.
+\change_unchanged
+'>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -4961,6 +5927,24 @@ Tasm <- mean(D$TASX, na.rm = TRUE)
 \begin_layout Plain Layout
 
 DT <- D %>% selectTime(113900, 115200)
+\change_inserted 1311305628 1586183130
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586183142
+
+## Save it for use in the workflow document:
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586183164
+
+save(DT, file='DT.Rdata')
+\change_unchanged
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -5026,11 +6010,32 @@ rhozero <- 1013.25 * 100 / (287.05 * 288.15)
 \begin_layout Plain Layout
 
 # VSpec(DT, 'DH', spans=99, add=g) + theme_WAC()
+\change_inserted 1311305628 1586107602
+
 \end_layout
 
 \begin_layout Plain Layout
 
-VSpec(DT, 'TASX', spans = 99, ylim=c(1.e-3, 10)) + theme_WAC(1)
+\change_inserted 1311305628 1586107616
+
+DT$V <- DT$TASX
+\change_unchanged
+
+\end_layout
+
+\begin_layout Plain Layout
+
+VSpec(DT, '
+\change_deleted 1311305628 1586107625
+TASX
+\change_inserted 1311305628 1586107629
+V
+\change_unchanged
+', 
+\change_inserted 1311305628 1586107591
+VLabel='V=airspeed', 
+\change_unchanged
+spans = 99, ylim=c(1.e-3, 10)) + theme_WAC(1)
 \end_layout
 
 \begin_layout Plain Layout
@@ -5053,7 +6058,15 @@ status open
 
 \begin_layout Plain Layout
 
-<<Qprime, include=TRUE, fig.height=3.4, fig.cap='Spectral variance for $
+<<Qprime, include=TRUE, fig.height=3.4, fig.cap='
+\change_inserted 1311305628 1586115549
+Frequency-weighted 
+\change_deleted 1311305628 1586115540
+S
+\change_inserted 1311305628 1586115553
+s
+\change_unchanged
+pectral variance for $
 \backslash
 
 \backslash
@@ -5061,7 +6074,24 @@ delta T_m/T_m$ and 0.4$
 \backslash
 
 \backslash
-delta M/M$ for the same flight segment shown in the previous figure.
+delta M/M$
+\change_inserted 1311305628 1586115608
+ as functions of frequency ($
+\backslash
+
+\backslash
+nu$)
+\change_unchanged
+ for 
+\change_inserted 1311305628 1586116329
+a low-level flight segment from VOCALS flight 3, 21 Oct 2008 11:39:00 --
+ 11:52:00 UTC.
+ The wavelength scale shows the correspondence between frequency and wavelength
+ at the average airspeed.
+\change_deleted 1311305628 1586116390
+the same flight segment shown in the previous figure.
+
+\change_unchanged
  The two terms are labeled 
 \begin_inset Quotes eld
 \end_inset
@@ -6299,6 +7329,23 @@ sdr <- sdr * 2 / sqrt(nar)
 \end_inset
 
 
+\change_inserted 1311305628 1586103454
+
+\end_layout
+
+\begin_layout Subsubsection
+
+\change_inserted 1311305628 1586103455
+The unheated Rosemount 102E4AL sensor
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:The-unheated-Rosemount"
+
+\end_inset
+
+
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -6542,9 +7589,40 @@ Flight segments from flight 3 of the VOCALS project, 21 October 2008.
 
 \end_inset
 
-To extend this analysis to a larger data set, six ten-minute low level flight
- segments in the marine boundary layer from one flight of the NCAR/NSF C-130
- were selected that had simular flight conditions including the intensity
+
+\change_inserted 1311305628 1586103442
+
+\end_layout
+
+\begin_layout Standard
+
+\change_deleted 1311305628 1586103731
+To extend this analysis to a larger data set, s
+\change_inserted 1311305628 1586103986
+To characterize the response of the Rosemount 102E4AL sensor, s
+\change_unchanged
+ix ten-minute low level flight segments in the marine boundary layer from
+ one flight of the NCAR/NSF C-130 
+\change_inserted 1311305628 1586126924
+in the 
+\begin_inset Quotes eld
+\end_inset
+
+VOCALS
+\begin_inset Quotes erd
+\end_inset
+
+ project (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "wood2011vamos"
+literal "false"
+
+\end_inset
+
+), which studied low-level clouds over the Pacific Ocean near Chile, 
+\change_unchanged
+were selected that had simular flight conditions including the intensity
  of the turbulence.
  The time intervals are listed in Table 1.
  For each flight segment, the phase and amplitude ratio between the measurement
@@ -6598,8 +7676,12 @@ ref{fig:Vphase}
 \end_inset
 
 .
- The error bars in that figure indicate the two-standard-deviation limits
+ 
+\change_deleted 1311305628 1586117061
+The error bars in that figure indicate the two-standard-deviation limits
  of those mean values.
+
+\change_unchanged
  The theoretical curve is based on best-fit parameters as determined from
  these measurements and those of the amplitude ratio, discussed next.
 \end_layout
@@ -6614,10 +7696,29 @@ status open
 \change_inserted 1311305628 1585691956
  measured
 \change_unchanged
- recovery temperature behind dynamic heating, for the measurements (error
- bars) and for the theoretical response for the best-fit parameters (green
- line).
- Data from the VOCALS project, flight 3, flight segments as in Table 1.'>>=
+ recovery temperature behind dynamic heating, for the measurements (
+\change_inserted 1311305628 1586116924
+with 
+\change_unchanged
+error bars) and for the theoretical response for the best-fit parameters
+ (green line).
+ 
+\change_inserted 1311305628 1586117342
+The error bars indicate two-standard-deviation ranges in the mean at each
+ plotted point.
+ 
+\change_unchanged
+Data from the 
+\change_deleted 1311305628 1586116987
+VOCALS project, flight 3,
+\change_unchanged
+ flight segments 
+\change_inserted 1311305628 1586116995
+listed
+\change_deleted 1311305628 1586116992
+as
+\change_unchanged
+ in Table 1.'>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -6908,12 +8009,81 @@ g <- g + geom_errorbar(aes(ymin=mrspec-sdr, ymax=mrspec+sdr), width=0.06)
 
 \begin_layout Plain Layout
 
-g <- g + geom_path(data=dfAP, aes(x=Time, y=Amp), col='forestgreen')
+g <- g + geom_path(data=dfAP, aes(x=Time, y=Amp
+\change_inserted 1311305628 1586366592
+, col='best', lty='best'
+\change_unchanged
+)
+\change_deleted 1311305628 1586366605
+, col='forestgreen'
+\change_unchanged
+)
 \end_layout
 
 \begin_layout Plain Layout
 
-g <- g + geom_path(data=dfr, aes(x=frq, y=Amp5), col='darkorange', lty=2)
+g <- g + geom_path(data=dfr, aes(x=frq, y=Amp5
+\change_inserted 1311305628 1586366831
+, col='tau2=0.6', lty='tau2=0.6'
+\change_unchanged
+)
+\change_deleted 1311305628 1586366645
+, col='darkorange', lty=2
+\change_unchanged
+)
+\change_inserted 1311305628 1586366541
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586366546
+
+g <-
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586366546
+
+  g + scale_colour_manual (
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586366546
+
+    name = 'fit: ',
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586366656
+
+    values = c("best" = "forestgreen", "tau2=0.6" = "darkorange")
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586366546
+
+  )
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586366546
+
+g <- g + scale_linetype_manual (name = 'fit: ', 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586366666
+
+                                values = c('best' = 1, 'tau2=0.6'=2))
+\change_unchanged
+
 \end_layout
 
 \begin_layout Plain Layout
@@ -7663,8 +8833,14 @@ DT %>% select(Time, TTRR, RT, Ts) %>%
 \end_layout
 
 \begin_layout Standard
-To complete the cycle, the measured recovery temperature was then corrected
- via method 1 from Sect.
+To complete the 
+\change_inserted 1311305628 1586118253
+iteration discussed earlier
+\change_deleted 1311305628 1586118243
+cycle
+\change_unchanged
+, the measured recovery temperature was then corrected via method 1 from
+ Sect.
 \begin_inset space ~
 \end_inset
 
@@ -7678,8 +8854,15 @@ noprefix "false"
 
 \end_inset
 
-, using these parameters, to find a prediction for the actual recovery temperatu
-re 
+, using the
+\change_deleted 1311305628 1586118268
+se
+\change_unchanged
+ parameters
+\change_inserted 1311305628 1586118280
+ from this first fit
+\change_unchanged
+, to find a prediction for the actual recovery temperature 
 \begin_inset Formula $T_{r}(t)$
 \end_inset
 
@@ -7710,10 +8893,19 @@ noprefix "false"
  fitted again by adjusting the fit parameters.
  Only very minor changes arose from this procedure even after one iteration,
  but the iterated result is the one used here to represent the unheated
- Rosemount 102E4AL sensor as flown in the NSF/NCAR C-130.
+ Rosemount 102E4AL sensor
+\change_inserted 1311305628 1586122936
+.
+
+\change_deleted 1311305628 1586122944
+ as flown in the NSF/NCAR C-130.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586123724
 A similar evaluation examined the response of the same sensor when flown
  on the NSF/NCAR GV, which flies significantly faster than the C-130.
  The results of several studies using SOCRATES and CSET data were consistent
@@ -7742,6 +8934,8 @@ noprefix "false"
 \end_inset
 
 .
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -9494,6 +10688,99 @@ ParamSF$tau2 <- ParamSF$tau2 * (mean(MRHOGV, na.rm=TRUE) / 0.3)^0.6
 \end_inset
 
 
+\change_inserted 1311305628 1586123866
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586126818
+The airflow and typical flow angles approaching a sensor can affect its
+ response, so the results might change when installed on a different location
+ or a different aircraft.
+ Therefore a similar evaluation examined the response of this same sensor
+ when flown on the NSF/NCAR GV, which flies significantly faster than the
+ C-130.
+ The results of a study using a combined low-level dataset from the SOCRATES
+ (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "mcfarquharsouthern"
+literal "false"
+
+\end_inset
+
+) and CSET (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "albrecht2019cloud"
+literal "false"
+
+\end_inset
+
+) experiments, which were flown over the Pacific Ocean, were similar to
+ but slightly different from the coefficients determined on the C-130, with
+ both time constants a little smaller than found for the C-130 (
+\begin_inset Formula $\tau_{1}=$
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586124406
+
+
+\backslash
+Sexpr{round(ParGV$tau1, 3)}
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{2}=$
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586124250
+
+
+\backslash
+Sexpr{round(ParGV$tau2, 2)}
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+).
+ This might be expected at greater airspeed, as discussed in Sect.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:Expected-dependence-on"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ 
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -9572,7 +10859,13 @@ Sexpr{round(bestSF[3], 3)}
 \end_layout
 
 \begin_layout Subsubsection
-The heated sensors
+
+\change_deleted 1311305628 1586285516
+The h
+\change_inserted 1311305628 1586285521
+H
+\change_unchanged
+eated sensors
 \end_layout
 
 \begin_layout Standard
@@ -10237,9 +11530,14 @@ Harco Model 100009-1 Deiced TAT
 \end_inset
 
  sensor, have also been evaluated.
- These sensors respond much more slowly than the unheated Rosemount and
- attempts to use the same three-parameter representation of the transfer
- function relative to dynamic heating led to unsatisfactory fits, so a different
+ 
+\change_deleted 1311305628 1586288605
+These sensors respond much more slowly than the unheated Rosemount and a
+\change_inserted 1311305628 1586288608
+A
+\change_unchanged
+ttempts to use the same three-parameter representation of the transfer function
+ relative to dynamic heating led to unsatisfactory fits, so a different
  approach is used here.
  Because the evaluation in Sect.
 \begin_inset space ~
@@ -10256,7 +11554,11 @@ noprefix "false"
 \end_inset
 
  provides a good representation of the unheated Rosemount 102E4AL sensor,
- the measurements from that sensor, corrected as described in Sect.
+ the measurements from that sensor, corrected as 
+\change_inserted 1311305628 1586288634
+will be 
+\change_unchanged
+described in Sect.
 \begin_inset space ~
 \end_inset
 
@@ -10273,7 +11575,11 @@ noprefix "false"
 , were used as the reference for the assumed-correct recovery temperature.
  Then the phase and amplitude ratio were found for the transfer function
  required to produce the heated-probe measurements from the unheated-probe
- measurement.
+ measurement
+\change_inserted 1311305628 1586285566
+s
+\change_unchanged
+.
  This did not require any assumptions about equations or parameters determining
  the transfer function.
  
@@ -10557,7 +11863,13 @@ status open
 
 \begin_layout Plain Layout
 
-<<RTH1Spec, include=TRUE, echo=FALSE, fig.pos='t', 
+<<RTH1Spec, include=
+\change_deleted 1311305628 1586288678
+TRUE
+\change_inserted 1311305628 1586288680
+FALSE
+\change_unchanged
+, echo=FALSE, fig.pos='t', 
 \change_inserted 1311305628 1585741260
 fig.height=4, 
 \change_unchanged
@@ -10921,6 +12233,133 @@ suppressWarnings(print(g + ylim(0, 1.05) + theme_WAC(1)))
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 1311305628 1586290313
+Because these sensors have similar response, only the heated HARCO sensor
+ will be presented in detail here.
+ A similar analysis has been performed for the heated Rosemount 102 sensor
+ and some summary results for that sensor also will be presented.
+ The spectral variance for both these measurements has apparent rapid attenuatio
+n beginning at about 0.2
+\begin_inset space ~
+\end_inset
+
+Hz, as shown in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288764
+
+
+\backslash
+ref{fig:HARCOSpec}
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+, and the response is attenuated seriously above about 1
+\begin_inset space ~
+\end_inset
+
+Hz.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586290316
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586290453
+
+<<HARCOSpec, include = TRUE, fig.cap='Spectral variance $P(
+\backslash
+
+\backslash
+nu)$ weighted by frequency ($
+\backslash
+
+\backslash
+nu$) for the recovery temperature measured by a heated  HARCO and an unheated
+ Rosemount sensor.'>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586290341
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586290508
+
+DCX$temperature <- DCX$RT
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586290812
+
+DCX %>% selectTime(175200, 180200) %>% select(Time, TASX, temperature, RTH1)
+ %>%
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586290629
+
+        VSpec(VLabel=c('unheated', 'HARCO'), ylim=c(1.e-6, 0.1)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586291523
+
+        ylab(bquote('spectral variance ' ~ nu * 'P(' * nu * ')')) +    
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586291527
+
+        theme_WAC(1) + theme(legend.position=c(0.7, 0.9))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586290342
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586290343
+
+@
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_deleted 1311305628 1586288207
 Measurements from the first five flight segments listed in Table
 \begin_inset space ~
 \end_inset
@@ -10975,6 +12414,82 @@ ref{fig:phaseG}
 
  and the corresponding estimate of the gain is shown in the top panel.
  
+\change_inserted 1311305628 1586288207
+
+\begin_inset Branch Extra
+inverted 0
+status open
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586288207
+Measurements from the first five flight segments listed in Table
+\begin_inset space ~
+\end_inset
+
+1 were used for characterization of the heated Rosemount 102 sensor.
+ (The last segment was excluded because some of the measurements from the
+ heated sensor were missing.) The spectral variance for the recovery-temperature
+ measurement from the heated sensor has apparent rapid attenuation beginning
+ at about 0.2
+\begin_inset space ~
+\end_inset
+
+Hz, as shown in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288207
+
+
+\backslash
+ref{fig:RTH1Spec}
+\end_layout
+
+\end_inset
+
+, and the response is attenuated seriously above about 1
+\begin_inset space ~
+\end_inset
+
+Hz.
+ The measured phase lag of the measurement behind the measurement from the
+ unheated Rosemount 102E4AL sensor is shown in the bottom panel of Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288207
+
+
+\backslash
+ref{fig:phaseG}
+\end_layout
+
+\end_inset
+
+ and the corresponding estimate of the gain is shown in the top panel.
+ 
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -10983,11 +12498,17 @@ status open
 
 \begin_layout Plain Layout
 
-<<phaseG, include = TRUE, fig.show = 'asis', fig.height = 6, fig.cap = 'The
- gain (top) and phase (bottom) of the transfer function determined for the
- heated Rosemount 102 sensor (variable TTWH) and the recovery temperature
- obtained by applying transfer-function corrections to the measurments from
- the unheated Rosemount 102E4AL sensor (variable RT).
+<<phaseG, include = 
+\change_inserted 1311305628 1586288522
+FALSE
+\change_deleted 1311305628 1586288519
+TRUE
+\change_unchanged
+, fig.show = 'asis', fig.height = 6, fig.cap = 'The gain (top) and phase (bottom)
+ of the transfer function determined for the heated Rosemount 102 sensor
+ (variable TTWH) and the recovery temperature obtained by applying transfer-func
+tion corrections to the measurments from the unheated Rosemount 102E4AL
+ sensor (variable RT).
  Error bars are two-standard-deviation estimates of the uncertainty in the
  mean values shown by plotted circles.
  Because the results showed high variability and inconsistency for frequencies
@@ -11410,6 +12931,377 @@ grid.newpage()
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 1311305628 1586288841
+\begin_inset Branch Extra
+inverted 0
+status open
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586288841
+No combination of the three fit parameters {
+\begin_inset Formula $a,\,\tau_{1},\,\tau_{2}$
+\end_inset
+
+} entering the transfer-function equations 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:responseAmp"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:responsePhase"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ provides a satisfactory representation of the measurements in those two
+ plots, although the best fit (shown as the 
+\begin_inset Quotes eld
+\end_inset
+
+3-par
+\begin_inset Quotes erd
+\end_inset
+
+ line) for the values {
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+
+\backslash
+Sexpr{round(bestW[1], 2)}
+\end_layout
+
+\end_inset
+
+,
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+
+\backslash
+Sexpr{round(bestW[2], 2)}
+\end_layout
+
+\end_inset
+
+,
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+
+\backslash
+Sexpr{round(bestW[3], 2)}
+\end_layout
+
+\end_inset
+
+} provides a fair approximation.
+ Those figures show that the fit is inadequate (chisquare of over 16,000
+ for 40 degrees of freedom) so it appears that for this sensor heat transfer
+ is still more complicated than can be represented by the differential equations
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, perhaps because there are other paths by which heat can be transferred
+ to or from the sensing wire.
+ The small value for the parameter 
+\begin_inset Formula $a$
+\end_inset
+
+ suggests that most of the heat transferred to or from the wire is through
+ routes other than direct conduction from the air.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586288841
+Rather than seeking a more complicated representation of the transfer function,
+ it can be represented instead by the lines in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+
+\backslash
+ref{fig:phaseG}
+\end_layout
+
+\end_inset
+
+ labeled 
+\begin_inset Quotes eld
+\end_inset
+
+lfit
+\begin_inset Quotes erd
+\end_inset
+
+, fits to the measurements in terms of 
+\begin_inset Formula $x=\log_{e}(\nu/\nu_{0})$
+\end_inset
+
+ where 
+\begin_inset Formula $\nu=\omega/(2\pi)$
+\end_inset
+
+ is the frequency and 
+\begin_inset Formula $\nu_{0}=1\,\mathrm{Hz}$
+\end_inset
+
+:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\mathrm{for}\,\nu>0.08\,\mathrm{Hz,\,\,}H(\omega)=(h_{0}+h_{1}x+h_{2}x^{3}+h_{3}x^{5}+h_{3}\arctan(\nu/\nu_{0}))e^{i\phi(\omega)}\label{eq:lfitR}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\mathrm{for\:\nu\leq0.08\,\mathrm{Hz},\quad}H(\omega)=1
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\phi(\omega)=p_{0}+p_{1}x+p_{2}x^{2}+p_{3}\arctan(\nu/\nu_{0})
+\]
+
+\end_inset
+
+The coefficients obtained by fitting to the observations are 
+\begin_inset Formula $h_{0-3}=$
+\end_inset
+
+{
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+$
+\backslash
+Sexpr{round(cfr[1], 3)}$
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+$
+\backslash
+Sexpr{round(cfr[2], 3)}$
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+$
+\backslash
+Sexpr{round(cfr[3], 4)}$
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+$
+\backslash
+Sexpr{round(cfr[4], 5)}$
+\end_layout
+
+\end_inset
+
+} and 
+\begin_inset Formula $p_{0-3}=$
+\end_inset
+
+{
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+$
+\backslash
+Sexpr{round(cf[1], 1)}$
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+$
+\backslash
+Sexpr{format(cf[2], digits=1, nsmall=1)}$
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+$
+\backslash
+Sexpr{format(cf[3], digits=2, nsmall=2)}$
+\end_layout
+
+\end_inset
+
+, 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+$
+\backslash
+Sexpr{round(cf[4], 1)}$
+\end_layout
+
+\end_inset
+
+}.
+ These equations are the basis for the 
+\begin_inset Quotes eld
+\end_inset
+
+lfit
+\begin_inset Quotes erd
+\end_inset
+
+ lines plotted in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586288841
+
+
+\backslash
+ref{fig:phaseG}
+\end_layout
+
+\end_inset
+
+.
+ For negative frequencies, the values of 
+\begin_inset Formula $H(\omega)$
+\end_inset
+
+ are the complex conjugate of the values listed above.
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+
+\change_deleted 1311305628 1586288841
 No combination of the three fit parameters {
 \begin_inset Formula $a,\,\tau_{1},\,\tau_{2}$
 \end_inset
@@ -11526,6 +13418,8 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586288841
 Rather than seeking a more complicated representation of the transfer function,
  it can be represented instead by the lines in Fig.
 \begin_inset space ~
@@ -11733,14 +13627,12 @@ ref{fig:phaseG}
 .
  
 \change_inserted 1311305628 1585747305
-For negative frequencies, the values of 
-\begin_inset Formula $H(\omega)$
-\end_inset
 
- are the complex conjugate of the values listed above.
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586291688
 The reason that the three-parameter fit is unacceptable is that there is
  conflict between the constraints imposed by the amplitude ratio and the
  phase, such that either could be represented reasonably but not both.
@@ -11783,6 +13675,66 @@ Hz is approximately
 
 , which would indicate that the measurement of a real contribution to sensible-h
 eat flux at this frequency would be zero.
+\change_inserted 1311305628 1586291688
+
+\begin_inset Branch Extra
+inverted 0
+status open
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586291688
+The reason that the three-parameter fit is unacceptable is that there is
+ conflict between the constraints imposed by the amplitude ratio and the
+ phase, such that either could be represented reasonably but not both.
+ The actual transfer function has some complex features, including frequencies
+ where the phase shift reaches values below 
+\begin_inset Formula $-90^{\circ}$
+\end_inset
+
+ (not possible for a simple exponential time response) and values of the
+ phase shift of about 
+\begin_inset Formula $-36^{\circ}$
+\end_inset
+
+ at 0.1
+\begin_inset space ~
+\end_inset
+
+Hz where the amplitude ratio remains near unity.
+ The amplitude decreases to 
+\begin_inset Formula $e^{-1}$
+\end_inset
+
+ at about 0.4
+\begin_inset space ~
+\end_inset
+
+Hz, as would be the case for a first-order time constant of about 1
+\begin_inset space ~
+\end_inset
+
+s, so this could be considered another measure of the response.
+ However, that value does not extrapolate well to other frequencies and
+ the phase shift at 0.4
+\begin_inset space ~
+\end_inset
+
+Hz is approximately 
+\begin_inset Formula $-90^{\circ}$
+\end_inset
+
+, which would indicate that the measurement of a real contribution to sensible-h
+eat flux at this frequency would be zero.
+\change_unchanged
+
+\end_layout
+
+\end_inset
+
+
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -11793,10 +13745,47 @@ eat flux at this frequency would be zero.
 \end_layout
 
 \begin_layout Standard
-The heated HARCO sensor was not flown on the same flights used to study
- the heated Rosemount 102 sensor, so flight segments from the SOCRATES and
- CSET projects, listed in Table 2, were used for the HARCO sensor.
+
+\change_inserted 1311305628 1586291741
+To characterize the response of the 
+\change_deleted 1311305628 1586289289
+The 
+\change_unchanged
+heated HARCO sensor
+\change_inserted 1311305628 1586289293
+,
+\change_unchanged
  
+\change_deleted 1311305628 1586289305
+was not flown on the same flights used to study the heated Rosemount 102
+ sensor, so 
+\change_inserted 1311305628 1586291852
+boundary-layer 
+\change_unchanged
+flight segments from the SOCRATES and CSET projects
+\change_inserted 1311305628 1586289380
+ (referenced earlier in connection with the unheated probe)
+\change_deleted 1311305628 1586289389
+, listed in Table 2,
+\change_unchanged
+ were 
+\change_inserted 1311305628 1586289457
+compiled into one data set from the flight periods shown in Table
+\begin_inset space ~
+\end_inset
+
+2.
+\change_deleted 1311305628 1586289354
+used for the HARCO sensor.
+
+\change_unchanged
+ 
+\change_inserted 1311305628 1586289587
+An unheated Rosemount 102E4AL sensor was also available, so corrected measuremen
+ts from that sensor were used as the reference against which to determine
+ the gain and phase of the transfer function.
+\change_unchanged
+
 \begin_inset Float table
 placement h
 wide false
@@ -12635,20 +14624,12 @@ cfr <- coef(lm(data=dfrSH, mrspec ~ log(frq) + I(log(frq)^3) +
 
 \begin_layout Plain Layout
 
-cfr <- coef(lm(data=dfrSH, mrspec ~ log(frq) + I(log(frq)^3)
-\change_inserted 1311305628 1585749259
- +
+cfr <- coef(lm(data=dfrSH, mrspec ~ log(frq) + I(log(frq)^3) +
 \end_layout
 
 \begin_layout Plain Layout
 
-\change_inserted 1311305628 1585749272
-
-            
-\change_deleted 1311305628 1585749267
-+
-\change_unchanged
-I(log(frq)^4)+I(log(frq)^5)))
+            I(log(frq)^4)+I(log(frq)^5)))
 \end_layout
 
 \begin_layout Plain Layout
@@ -12819,9 +14800,13 @@ cfrHARCO <- cfr
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586291824
 Flight segments were all at low level and in boundary-layer conditions and
  were of equal duration to facilitate averaging of the variance spectra.
- The measured phase and amplitude ratio for this data set are shown in Figs.
+ 
+\change_unchanged
+The measured phase and amplitude ratio for this data set are shown in Figs.
 \begin_inset space ~
 \end_inset
 
@@ -12839,7 +14824,11 @@ ref{fig:GVHARCO}
 \end_inset
 
 .
- The best fit for the response function defined by 
+ The 
+\change_deleted 1311305628 1586285292
+best 
+\change_unchanged
+fit for the response function defined by 
 \begin_inset CommandInset ref
 LatexCommand eqref
 reference "eq:responseAmp"
@@ -12868,7 +14857,13 @@ noprefix "false"
 \end_inset
 
  in that figure.
- The best-fit values for {
+ The 
+\change_inserted 1311305628 1586285319
+fitted
+\change_deleted 1311305628 1586285323
+best-fit
+\change_unchanged
+ values for {
 \begin_inset Formula $a,\,\tau_{1},\,\tau_{2}$
 \end_inset
 
@@ -12910,8 +14905,15 @@ Sexpr{round(bestSH[3], 2)}
  would indicate that no heat is transferred from the sensing wire to the
  air, but instead all is transferred to the support which has a relatively
  slow characteristic response.
- The transfer function is quite similar to that of the heated Rosemount
- 102 sensor shown in Fig.
+ The transfer function 
+\change_inserted 1311305628 1586291949
+and typical variance spectrum for the heated Rosemount 102 sensor 
+\change_unchanged
+is quite similar 
+\change_inserted 1311305628 1586291959
+to this plot, 
+\change_deleted 1311305628 1586291974
+to that of the heated Rosemount 102 sensor shown in Fig.
 \begin_inset space ~
 \end_inset
 
@@ -12928,6 +14930,8 @@ ref{fig:phaseG}
 
 \end_inset
 
+
+\change_unchanged
 , and the typical variance spectrum shows a decrease with frequency similar
  to that in Fig.
 \begin_inset space ~
@@ -12941,7 +14945,13 @@ status open
 
 
 \backslash
-ref{fig:RTH1Spec}
+ref{fig:
+\change_inserted 1311305628 1586291991
+HARCOSpec
+\change_deleted 1311305628 1586291985
+RTH1Spec
+\change_unchanged
+}
 \end_layout
 
 \end_inset
@@ -12950,12 +14960,79 @@ ref{fig:RTH1Spec}
 \end_layout
 
 \begin_layout Standard
-As for the heated Rosemount, the best fit is not consistent with the measurement
- errors even though it provides an approximate representation of the transfer
- function.
- Therefore fits in the logarithm of the frequency were again used to provide
- a better representation of the measurements, as shown by the dashed green
- lines labeled 
+
+\change_deleted 1311305628 1586292005
+As for the heated Rosemount, t
+\change_inserted 1311305628 1586292006
+T
+\change_unchanged
+he 
+\change_deleted 1311305628 1586285351
+best
+\change_inserted 1311305628 1586285355
+three-parameter
+\change_unchanged
+ fit is not consistent with the measurement errors even though it provides
+ an approximate representation of the transfer function.
+ 
+\change_inserted 1311305628 1586293384
+The apparent reason is that there is conflict between the constraints imposed
+ by the amplitude ratio and the phase, such that either could be represented
+ reasonably but not both.
+ The actual transfer function has some complex features, including frequencies
+ where the phase shift reaches values below 
+\begin_inset Formula $-90^{\circ}$
+\end_inset
+
+ (not possible for a simple exponential time response) and values of the
+ phase shift of about 
+\begin_inset Formula $-38^{\circ}$
+\end_inset
+
+ at 0.1
+\begin_inset space ~
+\end_inset
+
+Hz where the amplitude ratio is still high (about 0.75).
+ The amplitude decreases to 
+\begin_inset Formula $e^{-1}$
+\end_inset
+
+ at about 0.34
+\begin_inset space ~
+\end_inset
+
+Hz, as would be the case for a first-order time constant of about 1.3
+\begin_inset space ~
+\end_inset
+
+s, so this could be considered another measure of the response.
+ However, that value does not extrapolate well to other frequencies and
+ the phase shift at 0.34
+\begin_inset space ~
+\end_inset
+
+Hz is approximately 
+\begin_inset Formula $-73^{\circ}$
+\end_inset
+
+, which would indicate that the measurement of a real contribution to sensible-h
+eat flux at this frequency would be only about 10% of the correct value.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586293417
+Because the three-parameter fit distorted the measured result, 
+\change_deleted 1311305628 1586293430
+Therefore 
+\change_unchanged
+fits in the logarithm of the frequency were 
+\change_deleted 1311305628 1586285370
+again 
+\change_unchanged
+used to provide a better representation of the measurements, as shown by
+ the dashed green lines labeled 
 \begin_inset Quotes eld
 \end_inset
 
@@ -13130,6 +15207,22 @@ Sexpr{round(cf[4], 1)}$
 \end_inset
 
 }.
+
+\change_inserted 1311305628 1586294088
+ This fit can be used to represent the transfer function better than the
+ three-parameter fit (with negative-frequency values defined as the complex
+ conjugate of the values at the corresponding positive frequency), although
+ the fit needs to be modified above about 2
+\begin_inset space ~
+\end_inset
+
+Hz because those values were not constrained by the measurements.
+ A suggested modification is to extrapolate the value at 2_Hz to higher
+ values; this appears to be adequate because there is so little variance
+ measured by this sensor at these frequencies, but it is important to avoid
+ possible zeroes that otherwise arise from extrapolation.
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
@@ -14633,12 +16726,32 @@ legend('topright', legend=c('measured','predicted', 'support'), lwd=c(2,2,2),
 \end_layout
 
 \begin_layout Standard
-The preceding subsection developed estimates of the response parameters
- for various sensors with low uncertainty compared to previous estimates,
- so that will be the primary constraint on these parameters.
- It is nevertheless useful to investigate other measurements that can constrain
- the response parameters.
- Previous studies have mostly used sharp temperature changes in the atmosphere,
+The preceding subsection developed estimates of the 
+\change_inserted 1311305628 1586295635
+sensor 
+\change_unchanged
+response 
+\change_deleted 1311305628 1586368428
+parameters for various sensors 
+\change_unchanged
+with low uncertainty compared to previous estimates, so that will be the
+ primary constraint on these parameters.
+ It is nevertheless useful to 
+\change_inserted 1311305628 1586368381
+check if
+\change_deleted 1311305628 1586368377
+investigate
+\change_unchanged
+ other measurements 
+\change_inserted 1311305628 1586368484
+that are sensitive to the time response are consistent with the characterization
+ developed in the preceding subsections.
+ 
+\change_deleted 1311305628 1586368490
+that can constrain the response parameters.
+ 
+\change_unchanged
+Previous studies have mostly used sharp temperature changes in the atmosphere,
  for example from climbs through the inversion at the top of a boundary
  layer, to study the time response.
  A search of representative VOCALS climbs and descents through inversions
@@ -14646,7 +16759,11 @@ The preceding subsection developed estimates of the response parameters
  one near-ideal example, from VOCALS research flight 3, with a descent through
  the inversion at 8:13:50 UTC.
  The instrument list for this experiment includes two unheated Rosemount102E4AL
- sensors, including ATRR (ATX)\SpecialChar endofsentence
+ sensors
+\change_deleted 1311305628 1586371220
+, including ATRR (ATX)
+\change_unchanged
+\SpecialChar endofsentence
  Figure 
 \begin_inset ERT
 status open
@@ -15114,16 +17231,93 @@ ref{fig:tfit}
 
 .
  The predicted response is consistent with the observations and supports
- the validity of the parameters determined from fits to the response to
- dynamic heating.
+ the 
+\change_inserted 1311305628 1586371278
+approximate 
+\change_unchanged
+validity of the parameters determined from fits to the response to dynamic
+ heating.
  
 \end_layout
 
 \begin_layout Subsection
-Application to a speed run
+Application to a 
+\change_inserted 1311305628 1586371432
+
+\begin_inset Quotes eld
+\end_inset
+
+
+\change_unchanged
+speed run
+\change_inserted 1311305628 1586371434
+
+\begin_inset Quotes erd
+\end_inset
+
+
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
+
+\change_inserted 1311305628 1586371556
+Another situation where a temperature lag can be observed is when the airspeed
+ changes during level flight and causes a change in dynamic heating.
+ An example is shown in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586296431
+
+
+\backslash
+ref{fig:SRDW}
+\end_layout
+
+\end_inset
+
+, where the airspeed was increased steadily in level flight from near the
+ lower limit of the flight envelope to near the upper limit and then was
+ decreased back to the starting value.
+ A plot of recovery temperature should also increase and decrease as the
+ dynamic heating changes, but with a lag caused by the sensor response.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586371627
+The assumed model provided by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ leads to a prediction of the time lag.
+ 
+\change_unchanged
 Because the assumed response of the support is characterized by a simple
  time constant, during the speed run the support will lag in temperature
  by 
@@ -15214,6 +17408,15 @@ which requires the recovery-temperature lag to be
 \end_inset
 
 
+\change_inserted 1311305628 1586296730
+This lag will produce hysteresis in the measured temperature during the
+ speed run.
+\begin_inset Newline newline
+\end_inset
+
+
+\change_deleted 1311305628 1586371500
+
 \end_layout
 
 \begin_layout Standard
@@ -15223,7 +17426,11 @@ status open
 \begin_layout Plain Layout
 
 <<SRDW, include=TRUE, fig.pos='t', fig.height=3.2, fig.cap='History of the airspeed
- during a segment of flight 15 from the DEEPWAVE project (a 
+ during a 
+\change_deleted 1311305628 1586295948
+segment of flight 15 from the DEEPWAVE project (a
+\change_unchanged
+ 
 \begin_inset Quotes eld
 \end_inset
 
@@ -15231,7 +17438,14 @@ speed-run
 \begin_inset Quotes erd
 \end_inset
 
- maneuver).'>>=
+ maneuver
+\change_deleted 1311305628 1586295963
+)
+\change_inserted 1311305628 1586296193
+ where the airspeed varied during level flight over the available speed
+ range of the aircraft
+\change_unchanged
+.'>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -15571,8 +17785,14 @@ Sexpr{round(Param1$tau1+(1-Param1$a)*Param1$tau2, 2)}
 \begin_inset space ~
 \end_inset
 
-s.
+s
+\change_inserted 1311305628 1586373445
+, which is hard to detect.
+\change_deleted 1311305628 1586373420
+.
  
+\change_unchanged
+
 \begin_inset Branch Extra
 inverted 0
 status open
@@ -15596,7 +17816,13 @@ Sexpr{round(bestW[2]+(1-bestW[1])*bestW[3], 2)}
 
 \end_inset
 
-For the heated HARCO probe the predicted lag would be 
+For the heated HARCO 
+\change_deleted 1311305628 1586296910
+probe
+\change_inserted 1311305628 1586296912
+sensor
+\change_unchanged
+ the predicted lag would be 
 \begin_inset ERT
 status open
 
@@ -15613,10 +17839,19 @@ Sexpr{round(bestSH[2]+(1-bestSH[1])*bestSH[3], 2)}
 \begin_inset space ~
 \end_inset
 
-s.
+s
+\change_deleted 1311305628 1586374960
+.
+\change_inserted 1311305628 1586374976
+, which is easily observed.
+ 
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586296840
 An example of a speed run is shown in Fig.
 \begin_inset space ~
 \end_inset
@@ -15649,7 +17884,19 @@ noprefix "false"
 \end_inset
 
 .
- For a HARCO heated sensor, this plot is shown in Fig.
+
+\change_unchanged
+ 
+\change_deleted 1311305628 1586296953
+For a HARCO heated sensor, this plot is shown in 
+\change_unchanged
+Fig
+\change_inserted 1311305628 1586296957
+ure
+\change_deleted 1311305628 1586296958
+.
+\change_unchanged
+
 \begin_inset space ~
 \end_inset
 
@@ -15666,9 +17913,29 @@ ref{fig:SRnodelay}
 
 \end_inset
 
+
+\change_deleted 1311305628 1586296962
 .
- The hysteresis depicted by the difference between the segment with increasing
- speed and that with decreasing speed arises from the sensor time lag.
+ 
+\change_inserted 1311305628 1586296978
+ shows this 
+\change_deleted 1311305628 1586296981
+The 
+\change_unchanged
+hysteresis
+\change_inserted 1311305628 1586296990
+, which appears as
+\change_unchanged
+ 
+\change_deleted 1311305628 1586296995
+depicted by 
+\change_unchanged
+the difference between the segment with increasing speed and that with decreasin
+g speed
+\change_deleted 1311305628 1586297010
+ arises from the sensor time lag
+\change_unchanged
+.
 \begin_inset Note Note
 status open
 
@@ -15702,9 +17969,29 @@ s expected from the phase-lag analysis.
 
 \end_inset
 
- Because the Mach number and hence the time parameters vary significantly
- during the speed run, a test of the time-response parameters is to apply
- the first correction scheme outlined in Sect.
+ 
+\change_inserted 1311305628 1586297106
+A correction based on simply shifting the measurements in time works reasonably
+ but doesn't take into account that 
+\change_deleted 1311305628 1586297108
+Because 
+\change_unchanged
+the Mach number and hence the time parameters vary significantly during
+ the speed run
+\change_inserted 1311305628 1586297123
+.
+ A better
+\change_deleted 1311305628 1586297126
+, a
+\change_unchanged
+ test of the time-response parameters is to apply the first correction scheme
+ outlined in 
+\change_deleted 1311305628 1586371893
+Sect.
+\change_inserted 1311305628 1586371898
+Appendix
+\change_unchanged
+
 \begin_inset space ~
 \end_inset
 
@@ -15718,24 +18005,14 @@ noprefix "false"
 
 \end_inset
 
- to the measurements.
- 
-\change_inserted 1311305628 1585761972
-Because the Mach number varies significantly during the speed run, it is
- important to adjust for the change in response characteristics with Mach
- number as represented by 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "eq:tau1prime"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
+ to the measurements
+\change_inserted 1311305628 1586297171
+, with varying response parameters dependent on 
+\change_deleted 1311305628 1586297173
 .
- Therefore the three-parameter representation of the transfer function was
- used.
+ 
+\change_inserted 1311305628 1586301524
+the Mach number.
  The specific correction equation used is 
 \begin_inset CommandInset ref
 LatexCommand eqref
@@ -15746,7 +18023,7 @@ noprefix "false"
 
 \end_inset
 
-, developed and discussed in the next section.
+.
  
 \change_deleted 1311305628 1585761996
 For 
@@ -15824,9 +18101,21 @@ an additional
 \change_deleted 1311305628 1585762038
 12
 \change_unchanged
-%, so measurements from this speed-run maneuver indicate that the time response
- determined for the heated HARCO sensor is valid to within about this uncertaint
-y.
+%, so measurements from this speed-run maneuver 
+\change_deleted 1311305628 1586371974
+indicate
+\change_inserted 1311305628 1586371995
+are consistent with the 
+\change_deleted 1311305628 1586372002
+ that the 
+\change_inserted 1311305628 1586372006
+predicted 
+\change_unchanged
+time response 
+\change_deleted 1311305628 1586372019
+determined for the heated HARCO sensor is valid 
+\change_unchanged
+to within about this uncertainty.
  
 \end_layout
 
@@ -15837,9 +18126,24 @@ status open
 \begin_layout Plain Layout
 
 <<SRnodelay, include=TRUE, fig.pos='t', fig.cap='The recovery temperature
- measured during the speed-run maneuver shown in the previous figure, without
- any imposed delay.
- The dashed orange line indicates the regression fit, with standard deviation
+ measured 
+\change_inserted 1311305628 1586297417
+by a heated HARCO sensor 
+\change_unchanged
+during the speed-run maneuver shown in the previous figure
+\change_deleted 1311305628 1586297403
+, without any imposed delay
+\change_unchanged
+.
+ 
+\change_inserted 1311305628 1586371848
+The abscissa is the dynamic-heating term, where $V$ is the airspeed and
+ $Cp$ is the specific heat at constant pressure.
+ The measurements while the airspeed was increasing are shown by the green
+ line and those for decreasing airspeed by the red line.
+ 
+\change_unchanged
+The dashed orange line indicates the regression fit, with standard deviation
  about the fit of 0.26$^{
 \backslash
 
@@ -15933,7 +18237,13 @@ d <- data.frame(xp = xp, yp = yp)
 
 \begin_layout Plain Layout
 
-Xlab <- expression(paste(V ^ 2, '/(2', c[p], ')', sep = ''))
+Xlab <- expression(paste(V ^ 2, '/(2', 
+\change_inserted 1311305628 1586297433
+C
+\change_deleted 1311305628 1586297433
+c
+\change_unchanged
+[p], ')', sep = ''))
 \end_layout
 
 \begin_layout Plain Layout
@@ -19486,9 +21796,13 @@ s))
 \end_inset
 
 
+\change_deleted 1311305628 1586299866
+
 \end_layout
 
-\begin_layout Section
+\begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 Correcting the Temperature
 \begin_inset CommandInset label
 LatexCommand label
@@ -19500,6 +21814,8 @@ name "sec:Correcting-the-Temperature"
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 The true recovery temperature 
 \begin_inset Formula $T_{r}$
 \end_inset
@@ -19513,7 +21829,9 @@ n.
  These methods are illustrated here.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 Integration of the differential equations
 \begin_inset CommandInset label
 LatexCommand label
@@ -19525,6 +21843,8 @@ name "subsec:Integration-of-the"
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 The differential equations 
 \begin_inset CommandInset ref
 LatexCommand eqref
@@ -19564,6 +21884,8 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 \begin_inset Formula 
 \begin{equation}
 \frac{dT_{s}(t)}{dt}=\frac{T_{r}(t)-T_{s}(t)}{\tau_{2}}\label{eq:Ts2}
@@ -19583,6 +21905,8 @@ T_{r}(t)=\frac{1}{a}\left\{ \tau_{1}\frac{dT_{m}(t)}{dt}+T_{m}(T)-(1-a)T_{s}(t)\
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 There are two unknowns (
 \begin_inset Formula $T_{r}(t)$
 \end_inset
@@ -19665,10 +21989,6 @@ noprefix "false"
 \end_inset
 
 , here a fourth-order Runge-Kutta integration with Cash-Karp 
-\change_inserted 1311305628 1585844480
-(
-\change_unchanged
-
 \begin_inset CommandInset citation
 LatexCommand citet
 key "cash1990variable"
@@ -19676,14 +21996,12 @@ literal "false"
 
 \end_inset
 
-
-\change_inserted 1311305628 1585844484
-)
-\change_unchanged
  adjustment of the step size.
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 The HARCO presents a special case because the best-fit value is 
 \begin_inset Formula $a=0$
 \end_inset
@@ -19752,6 +22070,8 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 \begin_inset Branch Extra
 inverted 0
 status open
@@ -19950,6 +22270,8 @@ noprefix "false"
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 \begin_inset ERT
 status open
 
@@ -20091,6 +22413,8 @@ DT %>% select(Time, TTRR, RT, Ts) %>%
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 \begin_inset ERT
 status open
 
@@ -20150,19 +22474,27 @@ VSpec(DT, 'RT', add = g) + theme_WAC(1)
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 An example of the corrected recovery temperature will be shown in the next
  subsection, where the two approaches to correction can be compared.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 Inverse Fourier transformation
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 An alternate approach is to use Fourier transforms:
 \end_layout
 
 \begin_layout Enumerate
+
+\change_deleted 1311305628 1586299866
 Calculate the Fourier transform of the measured time series: 
 \begin_inset Formula $\hat{T}_{m}(\omega)=\mathcal{F}\left(T_{m}(t)\right)$
 \end_inset
@@ -20179,26 +22511,23 @@ Calculate the Fourier transform of the measured time series:
 \end_layout
 
 \begin_layout Enumerate
+
+\change_deleted 1311305628 1586299866
 Divide the result by the complex representation of the transfer function:
  
 \begin_inset Formula $\hat{T}_{r}(\omega)=\hat{T}_{m}(\omega)/H(\omega)$
 \end_inset
 
 .
- 
-\change_deleted 1311305628 1585834336
-If the Fourier transform covers positive and negative frequencies, so should
+ If the Fourier transform covers positive and negative frequencies, so should
  the transfer function.
-\change_unchanged
-
 \end_layout
 
 \begin_layout Enumerate
-Use the inverse Fourier transform to find a retrieved estimate of the 
-\change_inserted 1311305628 1585834402
-true 
-\change_unchanged
-recovery temperature: 
+
+\change_deleted 1311305628 1586299866
+Use the inverse Fourier transform to find a retrieved estimate of the recovery
+ temperature: 
 \begin_inset Formula $T_{r}(t)=\mathrm{Re}\left(\mathcal{F}^{-1}\left(\hat{T}_{r}(\omega)\right)\right)$
 \end_inset
 
@@ -20206,6 +22535,8 @@ recovery temperature:
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 \begin_inset ERT
 status open
 
@@ -20360,6 +22691,8 @@ DT$FFT <- xn
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 \begin_inset ERT
 status open
 
@@ -20525,6 +22858,8 @@ TRR
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 The result of this procedure is illustrated in Fig.
 \begin_inset space ~
 \end_inset
@@ -20545,18 +22880,9 @@ ref{fig:sampleFFT1}
 , where the result is shown along with that obtained by the preceding method.
  The agreement between the two correction methods is very good, and both
  show evidence of faster and higher-amplitude response to fluctuations.
- The Four
-\change_inserted 1311305628 1585835114
-ie
-\change_deleted 1311305628 1585835112
-ei
-\change_unchanged
-r-transform method provides some higher-amplitude changes and may be preferable.
- However, the resulting variance spectrum
-\change_inserted 1311305628 1585835911
- for the Fourier-transform method
-\change_unchanged
- (Fig.
+ The Foureir-transform method provides some higher-amplitude changes and
+ may be preferable.
+ However, the resulting variance spectrum (Fig.
 \begin_inset space ~
 \end_inset
 
@@ -20573,84 +22899,18 @@ ref{fig:sampleFFT2}
 
 \end_inset
 
-) 
-\change_deleted 1311305628 1585835935
-appears less satisfactory because it
-\change_unchanged
- has high variance above about 5
+) appears less satisfactory because it has high variance above about 5
 \begin_inset space ~
 \end_inset
 
-Hz that is 
-\change_inserted 1311305628 1585841698
-above the variance for the corrected variable obtained from 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "eq:Tm5"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
-
-\change_deleted 1311305628 1585841706
-not understood
-\change_unchanged
-.
- Th
-\change_inserted 1311305628 1585841760
-e increasing variance for the Fourier-transform method 
-\change_unchanged
-is is likely the fault of the measurement itself
-\change_inserted 1311305628 1585836041
-: The spectral variance for the original measurement (Tm) does not decrease
- at high frequency as expected from the transfer function
-\change_unchanged
-, 
-\change_inserted 1311305628 1585836066
-and
-\change_deleted 1311305628 1585836070
-although
-\change_unchanged
- the correction procedure 
-\change_deleted 1311305628 1585836079
-tends to 
-\change_unchanged
-amplif
-\change_inserted 1311305628 1585836083
-ies
-\change_deleted 1311305628 1585836084
-y
-\change_unchanged
- 
-\change_deleted 1311305628 1585836094
-whatever causes 
-\change_unchanged
-this excess noise.
-
-\change_inserted 1311305628 1585844175
- The lower variance for the variable obtained from 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "eq:Tm5"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- at high frequency arises from the finite-difference representation of the
- term 
-\begin_inset Formula $dT_{m}(t)/dt$
-\end_inset
-
- (which is here fourth-order).
-\change_unchanged
-
+Hz that is not understood.
+ This is likely the fault of the measurement itself, although the correction
+ procedure tends to amplify whatever causes this excess noise.
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 Taking the Fourier transform of an entire 25-Hz measurement for a flight
  of several hours becomes impractical.
  However, it is possible to segment the time series, calculate Fourier transform
@@ -20665,11 +22925,15 @@ s for the segments, and then combine the results to represent the entire
  25-Hz data.
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 Application to the HARCO sensor
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 Because the heated HARCO sensor is much slower than the unheated Rosemount
  102E4AL sensor, the measurements from that slower sensor can't be corrected
  to the extent possible for the unheated sensor, but it is still useful
@@ -20744,19 +23008,8 @@ RTH1
 \end_inset
 
 ), the response of the sensor is greatly improved by this correction procedure
- and it even provides a reasonable representation of the 
-\change_inserted 1311305628 1585844857
-corrected unheated Rosemount measurement (labeled 
-\begin_inset Quotes eld
-\end_inset
-
-RT
-\begin_inset Quotes erd
-\end_inset
-
-) for the same period.
-\change_deleted 1311305628 1585844856
-best measurement (labeled 
+ and it even provides a reasonable representation of the best measurement
+ (labeled 
 \begin_inset Quotes eld
 \end_inset
 
@@ -20766,11 +23019,11 @@ RT
 
 ).
  
-\change_unchanged
-
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 Alternately, the transfer function was calculated from 
 \begin_inset CommandInset ref
 LatexCommand eqref
@@ -20822,81 +23075,28 @@ RT
 nt.
  To obtain this result, it was necessary to attenuate frequencies above
  1
-\change_inserted 1311305628 1585852782
-.8
-\change_unchanged
-
 \begin_inset space ~
 \end_inset
 
-Hz in the Fourier transform 
-\change_inserted 1311305628 1585852808
-solution
-\change_deleted 1311305628 1585852811
-representing the corrected measurement 
-\change_inserted 1311305628 1585852814
- 
-\change_unchanged
-because there is a zero in the transfer function 
-\change_inserted 1311305628 1585852843
-as represented by 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "eq:lfitH"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- 
-\change_unchanged
-that otherwise invalidates the inversion.
+Hz in the Fourier transform representing the corrected measurement because
+ there is a zero in the transfer function that otherwise invalidates the
+ inversion.
  This attenuation was accomplished by multiplying the transfer function
  by 
 \begin_inset Formula $e^{5\nu}$
 \end_inset
 
 above 1
-\change_inserted 1311305628 1585852857
-.8
-\change_unchanged
-
 \begin_inset space ~
 \end_inset
 
-Hz
-\change_inserted 1311305628 1585852877
-.
- 
-\change_deleted 1311305628 1585852889
- after setting values with modulus smaller than 0.05 to 1.
- 
-\change_inserted 1311305628 1585852892
- 
-\change_unchanged
-This arbitrarily chosen attenuation gave reasonable results, although it
+Hz after setting values with modulus smaller than 0.05 to 1.
+ This arbitrarily chosen attenuation gave reasonable results, although it
  is likely that better choices could be made with further exploration.
  One more general measure of the improvement, beyond the anecdotal evidence
- in th
-\change_inserted 1311305628 1585852914
-e
-\change_deleted 1311305628 1585852913
-at
-\change_unchanged
- 
-\change_inserted 1311305628 1585852922
-preceding 
-\change_unchanged
-figure
-\change_inserted 1311305628 1585852924
-s
-\change_deleted 1311305628 1585852925
-,
-\change_unchanged
- is that either correction procedure reduced the standard deviation of the
- difference between the measured value (RTH1) and the estimated best value
- (RT) from 
+ in that figure, is that either correction procedure reduced the standard
+ deviation of the difference between the measured value (RTH1) and the estimated
+ best value (RT) from 
 \begin_inset Formula $0.06^{\circ}$
 \end_inset
 
@@ -20908,6 +23108,8 @@ C after correction.
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 The plot of variance spectra (Fig.
 \begin_inset space ~
 \end_inset
@@ -20968,6 +23170,8 @@ Hz) because the original measurement is so severely attenuated at these
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 \begin_inset ERT
 status open
 
@@ -21828,9 +24032,13 @@ VSpec(DSAP, 'RTH1', add=g, type='MEM') + theme_WAC(1)
 \end_layout
 
 \begin_layout Standard
+
+\change_deleted 1311305628 1586299866
 \begin_inset Newpage clearpage
 \end_inset
 
+
+\change_unchanged
 
 \end_layout
 
@@ -21870,8 +24078,19 @@ noprefix "false"
  the phase and amplitude ratio of the response to dynamic-heating fluctuations.
  This is good evidence that the equations provide a good representation
  of the time response for that sensor, although the consistency with the
- predictions of the equations is less satisfactory when applied to the heated
- HARCO sensor or the heated Rosemount sensor.
+ predictions of the equations is less satisfactory when applied to 
+\change_inserted 1311305628 1586298652
+a
+\change_deleted 1311305628 1586298651
+the
+\change_unchanged
+ heated HARCO sensor or 
+\change_inserted 1311305628 1586298661
+a
+\change_deleted 1311305628 1586298662
+the
+\change_unchanged
+ heated Rosemount sensor.
  
 \end_layout
 
@@ -21887,6 +24106,20 @@ that to the structure supporting the sensing wire, can be determined with
  These parameters are thus constrained well and can be relied upon to make
  corrections to the measurements and otherwise to characterize the effects
  of time response of the sensors.
+\change_inserted 1311305628 1586299154
+
+\end_layout
+
+\begin_layout Enumerate
+
+\change_inserted 1311305628 1586299361
+Some additional evidence supports the general magnitude of the parameters
+ determined by reference to dynamic heating.
+ The supplemental observations come from a sharp feature in the atmosphere
+ or from the lag observed during flight while the airspeed varies at constant
+ altitude, 
+\change_unchanged
+
 \end_layout
 
 \begin_layout Enumerate
@@ -21899,29 +24132,16 @@ Once the transfer function for the unheated Rosemount sensor has been determined
  This approach has been used here for the slower heated sensors and should
  provide a means of correcting other sensors slower than the reference unheated
  sensor.
-\change_unchanged
+\change_deleted 1311305628 1586299149
 
 \end_layout
 
 \begin_layout Enumerate
-Some additional evidence, esp.
-\begin_inset space ~
-\end_inset
 
-from measurements during passage through sharp features in the atmosphere
- or during 
-\begin_inset Quotes eld
-\end_inset
-
-speed runs
-\begin_inset Quotes erd
-\end_inset
-
- when the aircraft flies at varying speed at constant altitude, support
- the general magnitude of the parameters.
-\end_layout
-
-\begin_layout Enumerate
+\change_inserted 1311305628 1586299498
+Appendix A uses these results with standard methods to correct the measurements
+ from airborne temperature sensors for their time response.
+\change_deleted 1311305628 1586299507
 Two correction schemes are suggested and verified, one based on integrating
  the derivatives provided by the differential equations and one based on
  taking the Fourier transform of the time series, correcting that transform
@@ -21930,10 +24150,18 @@ Two correction schemes are suggested and verified, one based on integrating
  Both could be used for routine processing to correct for the response character
 istics of airborne temperature sensors.
  
+\change_unchanged
+
 \end_layout
 
 \begin_layout Standard
-This Part-I paper has focused on the measured temperature, the 
+This Part-
+\change_inserted 1311305628 1586299522
+1
+\change_deleted 1311305628 1586299522
+I
+\change_unchanged
+ paper has focused on the measured temperature, the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -21942,9 +24170,23 @@ recovery
 \end_inset
 
  temperature.
- Part II will consider how these results affect calculation of the actual
- air or ambient temperature, which requires subtraction of the contribution
- from dynamic heating.
+ Part
+\change_inserted 1311305628 1586299534
+
+\begin_inset space ~
+\end_inset
+
+
+\change_deleted 1311305628 1586299535
+ 
+\change_inserted 1311305628 1586299526
+2
+\change_deleted 1311305628 1586299526
+II
+\change_unchanged
+ will consider how these results affect calculation of the actual air or
+ ambient temperature, which requires subtraction of the contribution from
+ dynamic heating.
  It will be argued there that the temperature sensor cannot respond to the
  rapid fluctuations in dynamic heating often present in a turbulent atmosphere,
  and therefore conventional data processing introduces errors by trying
@@ -21952,12 +24194,2571 @@ recovery
  temperature.
  Because this error is so prevalent in almost all existing data from research
  aircraft, it is essential to determine how to remove these errors.
- Once this problem is addressed, Part III will then turn to the implications
- for measuring the flux of sensible heat.
+ Once this problem is addressed, Part
+\change_inserted 1311305628 1586299562
+
+\begin_inset space ~
+\end_inset
+
+3
+\change_deleted 1311305628 1586299559
+ III
+\change_unchanged
+ will then turn to the implications for measuring the flux of sensible heat.
+\change_inserted 1311305628 1586299949
+
 \end_layout
 
 \begin_layout Section
 \start_of_appendix
+
+\change_inserted 1311305628 1586299922
+Correcting the Temperature
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Correcting-the-Temperature"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+The true recovery temperature 
+\begin_inset Formula $T_{r}$
+\end_inset
+
+ can be retrieved from the measured temperature 
+\begin_inset Formula $T_{m}$
+\end_inset
+
+ in two ways, either from the differential equations or by Fourier transformatio
+n.
+ These methods are illustrated here.
+\end_layout
+
+\begin_layout Subsection
+
+\change_inserted 1311305628 1586299922
+Integration of the differential equations
+\begin_inset CommandInset label
+LatexCommand label
+name "subsec:Integration-of-the"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+The differential equations 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ provide a basis for correcting the measured temperature to account for
+ the time response of the sensor.
+ They should be applied to the recovery temperature 
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+, which is the measurand.
+ The actual measurement is 
+\begin_inset Formula $T_{m}(t)$
+\end_inset
+
+ and the temperature of the support is 
+\begin_inset Formula $T_{s}(t)$
+\end_inset
+
+, so those equations, rearranged, are:
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+\begin_inset Formula 
+\begin{equation}
+\frac{dT_{s}(t)}{dt}=\frac{T_{r}(t)-T_{s}(t)}{\tau_{2}}\label{eq:Ts2}
+\end{equation}
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+T_{r}(t)=\frac{1}{a}\left\{ \tau_{1}\frac{dT_{m}(t)}{dt}+T_{m}(T)-(1-a)T_{s}(t)\right\} \label{eq:Tm2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+There are two unknowns (
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+, the actual recovery temperature, and 
+\begin_inset Formula $T_{s}(t)$
+\end_inset
+
+).
+ Those unknowns are specified by the two preceding equations because all
+ other terms are known, including 
+\begin_inset Formula $dT_{m}/dt$
+\end_inset
+
+ which can be represented using the numerical derivative of the measurements
+ 
+\begin_inset Formula $T_{m}(t)$
+\end_inset
+
+.
+ The second equation can be used to eliminate 
+\begin_inset Formula $T_{r}$
+\end_inset
+
+ from the first:
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\frac{dT_{s}(t)}{dt}=\frac{\frac{1}{a}\left\{ \tau_{1}\frac{dT_{m}(t)}{dt}+T_{m}(T)-(1-a)T_{s}(t)\right\} -T_{s}(t)}{\tau_{2}}\label{eq:Ts3}
+\end{equation}
+
+\end_inset
+
+From an initial value 
+\begin_inset Formula $T_{s}(0)$
+\end_inset
+
+, assumed to be 
+\begin_inset Formula $T_{m}(0)$
+\end_inset
+
+, this equation can be integrated to find the temperature of the support,
+ 
+\begin_inset Formula $T_{s}(t)$
+\end_inset
+
+.
+ Once that is known, 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm2"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ specifies the estimate of the true recovery temperature 
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+ without further integration.
+ The only choices needed are the numerical method used to find the derivative
+ 
+\begin_inset Formula $dT_{m}/dt$
+\end_inset
+
+ (e.g., here centered fourth-order) and the integration method applied to
+ 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts3"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, here fourth-order Runge-Kutta integration with Cash-Karp (
+\begin_inset CommandInset citation
+LatexCommand citet
+key "cash1990variable"
+literal "false"
+
+\end_inset
+
+) adjustment of the step size.
+ If a centered second-order finite-difference expression is used for 
+\begin_inset Formula $dT_{m}(t)/dt$
+\end_inset
+
+ and an Euler integration is used to integrate 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts3"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, this correction can be shown to be equivalent to that developed by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "InverarityJTech2000"
+literal "false"
+
+\end_inset
+
+; cf.
+\begin_inset space ~
+\end_inset
+
+his Eqn.
+\begin_inset space ~
+\end_inset
+
+(12).
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586300331
+The HARCO presents a special case because the best-fit value is 
+\begin_inset Formula $a=0$
+\end_inset
+
+ so 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm2"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ can't be used.
+ However, in this case the differential equations can still be combined
+ to give
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+T_{r}(t)=(\tau_{1}+\tau_{2})\frac{dT_{m}(t)}{dt}+T_{m}(t)+\tau_{2}\tau_{1}\frac{d^{2}T_{m}(t)}{dt^{2}}\label{eq:HARCOsoln}
+\end{equation}
+
+\end_inset
+
+a form that can be used directly without integration because finite-difference
+ expressions can be used for the derivatives of the measured 
+\begin_inset Formula $T_{m}(t)$
+\end_inset
+
+.
+ However, this is not as good a representation of the transfer function
+ as is possible with the fitted representation shown in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+
+\backslash
+ref{fig:GVHARCO}
+\end_layout
+
+\end_inset
+
+ and given by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lfitH"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ That fit can be used with the Fourier-transform approach to correction,
+ as shown in the next subsection.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+\begin_inset Branch Extra
+inverted 0
+status open
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+The heated Rosemount sensor presents a special case because the best-fit
+ parameters included 
+\begin_inset Formula $a=0$
+\end_inset
+
+ so it isn't possible to substitute 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm2"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ into 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts2"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ as for the other sensors.
+ Instead, 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ can be solved to find the support temperature 
+\begin_inset Formula $T_{s}(t)$
+\end_inset
+
+:
+\begin_inset Formula 
+\begin{equation}
+T_{s}(t)=\tau_{1}\frac{dT_{m}(t)}{dt}+T_{m}(t)\label{eq:Ts4}
+\end{equation}
+
+\end_inset
+
+which can be solved for 
+\begin_inset Formula $T_{s}(t)$
+\end_inset
+
+ because both 
+\begin_inset Formula $T_{m}(t)$
+\end_inset
+
+ and 
+\begin_inset Formula $dT_{m}(t)/dt$
+\end_inset
+
+ are measured.
+ With this solution and the resulting derivative 
+\begin_inset Formula $dT_{s}(t)/dt$
+\end_inset
+
+ of this solution, 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts2"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ leads to 
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+T_{r}(t)=T_{s}(t)+\tau_{2}\frac{dT_{s}(t)}{dt}\label{eq:Tm4}
+\end{equation}
+
+\end_inset
+
+which gives the solution directly (without integration) because all terms
+ on the right side are known.
+ The result could also be written by combining 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm4"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Ts4"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ to give
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+T_{r}(t)=(\tau_{1}+\tau_{2})\frac{dT_{m}(t)}{dt}+T_{m}(t)+\tau_{2}\tau_{1}\frac{d^{2}T_{m}(t)}{dt^{2}}\label{eq:Tm5}
+\end{equation}
+
+\end_inset
+
+which, without the second-derivative term, would represent a first-order
+ response with time constant 
+\begin_inset Formula $\tau=\tau_{1}+\tau_{2}$
+\end_inset
+
+.
+ The transfer function for the HARCO (Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+
+\backslash
+ref{fig:rfHARCO}
+\end_layout
+
+\end_inset
+
+ shows that, contrary to first-order response, the phase lag can be negative
+ for some frequencies, so the second-derivative term plays an important
+ role.
+ The second derivative in 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:HARCOsoln"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ can be represented, for example, by
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+\frac{d^{2}T_{m}(t)}{dt^{2}}=\frac{T_{m}(t-\delta t)-2T_{m}(t)+T_{m}(t+\delta t)}{(\delta t)^{2}}\label{eq:deriv2nd}
+\end{equation}
+
+\end_inset
+
+where all quantities on the right side are known from the measurement sequence.
+ Equation 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm5"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ thus provides the corrected recovery temperature 
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+ without any need to calculate the temperature of the support.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+<<method1, include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+a <- Param1$a
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+tau1 <- Param1$tau1
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+tau2 <- Param1$tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+## RT is the working solution; Ts is the support temperature
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT$Ts <- DT$RT
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Rate <- attr (DT, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT$DTMDT <- c(0, diff(DT$TTRR, 2), 0) * Rate / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT$DTMDT <-  (c(0, 8*diff(DT$TTRR, 2), 0) - 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+              c(0, 0, diff(DT$TTRR, 4), 0, 0)) * Rate / 12
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# DT$DTMDT <- (DT$DTMDT + c(0, DT$DTMDT[1:(nrow(DT)-1)])) / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# DT$DTMDT <- as.vector (signal::filter(signal::sgolay(1, 3, m=1), DT$TTRR))
+ * Rate
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+fS <- function(y, i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  # Eq.
+ Ts3
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  ((tau1 * DT$DTMDT[i] + DT$TTRR[i] - (1 - a) * y)/a - y) / (Rate * tau2)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT$Ts <- rk4.integrate (fS, DT$Ts[1], 1:nrow(DT))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT$RT <- (1 / a) * (tau1 * DT$DTMDT + DT$TTRR - (1 - a) * DT$Ts)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT %>% select(Time, TTRR, RT, Ts) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  selectTime(114500, 114505) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  plotWAC()
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+<<meth1Example, include=FALSE, fig.height=4, fig.cap=c('Example of the change
+ produced by the correction procedure.
+ The original measurement of recovery temperature is TTRR and the revised
+ value is RT.
+ The estimated temperature of the support (Ts) is also shown.
+ The plotted time is seconds after 11:45:00 UTC for VOCALS flight 3.', 'Variance
+ spectra for the original measurement of recovery temperature (TTRR) and
+ for the corrected value (RT).')>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT %>% select(Time, TTRR, RT, Ts) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  selectTime(114500, 114505) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  plotWAC(legend.position = 'topright')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+g <- VSpec(DT, 'TTRR', ylim = c(1.e-5, 0.1))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+VSpec(DT, 'RT', add = g) + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+An example of the corrected recovery temperature will be shown in the next
+ subsection, where the two approaches to correction can be compared.
+\end_layout
+
+\begin_layout Subsection
+
+\change_inserted 1311305628 1586299922
+Inverse Fourier transformation
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+An alternate approach is to use Fourier transforms:
+\end_layout
+
+\begin_layout Enumerate
+
+\change_inserted 1311305628 1586299922
+Calculate the Fourier transform of the measured time series: 
+\begin_inset Formula $\hat{T}_{m}(\omega)=\mathcal{F}\left(T_{m}(t)\right)$
+\end_inset
+
+ where 
+\begin_inset Formula $\omega$
+\end_inset
+
+ is the angular frequency and 
+\begin_inset Formula $\mathcal{F}$
+\end_inset
+
+ denotes the Fourier transform.
+\end_layout
+
+\begin_layout Enumerate
+
+\change_inserted 1311305628 1586299922
+Divide the result by the complex representation of the transfer function:
+ 
+\begin_inset Formula $\hat{T}_{r}(\omega)=\hat{T}_{m}(\omega)/H(\omega)$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+
+\change_inserted 1311305628 1586299922
+Use the inverse Fourier transform to find a retrieved estimate of the true
+ recovery temperature: 
+\begin_inset Formula $T_{r}(t)=\mathrm{Re}\left(\mathcal{F}^{-1}\left(\hat{T}_{r}(\omega)\right)\right)$
+\end_inset
+
+ where Re denotes the real part of the complex result.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+<<setUpFFT, include=FALSE>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+N <- length(DT$TTRR)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+if (N %% 2 == 1) {
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  N <- N - 1
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  DT  <- DT[-nrow(DT), ]
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+f <- fft (DT$TTRR)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+N <- length(f)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+df <- Rate / N
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+N2 <- N %/% 2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+fmax <- 2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+nlim <- which(frq > fmax)[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# f[nlim:N2] <- f[nlim:N2] * (fmax / frq[nlim:(N2-1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# f[(N2+1):(N-nlim)] <- Conj(rev(f[nlim:N2]))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+## Modify the spectrum by the inverse of the response function:
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+AFFT <- LTphase(frq, Param1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+AFFT$frq <- frq
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+AFFT$Phase <- AFFT$Phase * pi / 180
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+H <- complex (modulus = AFFT$Amp, argument = AFFT$Phase)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+xn <- Re(fft(f / H, inverse = TRUE)) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT$FFT <- xn
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# g <- VSpec(DT, 'TTRR', ylim=c(1.e-5, 0.1))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# g <- VSpec(DT, 'FFT', add=g)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# VSpec(DT, 'RT', add=g) + theme_WAC()
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# DT %>% select(Time, TTRR, FFT) %>% selectTime(114500, 114505) %>% plotWAC()
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586378694
+
+<<sampleFFT, include=TRUE, fig.height=4, fig.cap=c('Example of the change
+ produced by the FFT correction procedure.
+ The original measurement of recovery temperature is Tm, produced by an
+ unheated Rosemount sensor, and the revised values are RT (from integration)
+ and FFT (from Fourier transforms).
+ The dashed green line labeled 
+\begin_inset Quotes eld
+\end_inset
+
+Ts
+\begin_inset Quotes erd
+\end_inset
+
+ is the calculated temperature of the support.
+ The plotted time is seconds after 11:45:00 UTC for VOCALS flight 3.', 'Variance
+ spectra for the original measurement of recovery temperature (Tm) and for
+ the corrected values (RT and FFT).')>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT$Tm <- DT$TTRR
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT %>% select(Time, Tm, FFT, RT, Ts) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  selectTime(114500, 114505) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  plotWAC(col=c('blue', 'black', 'darkorange', 'forestgreen'), 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+          lty=c(1,1,2,2), lwd=c(2,2,2,1.5), legend.position='bottom')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# g <- VSpec(DT, 'TTRR', ylim = c(1.e-5, 0.1))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# VSpec(DT, 'FFT', add = g) + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DT %>% select(Time, TASX, Tm, RT, FFT) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+       VSpec(method='MEM', ylim=c(1.e-5, 0.1)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+       theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+The result of this procedure is illustrated in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+
+\backslash
+ref{fig:sampleFFT1}
+\end_layout
+
+\end_inset
+
+, where the result is shown along with that obtained by the preceding method.
+ The agreement between the two correction methods is very good, and both
+ show evidence of faster and higher-amplitude response to fluctuations.
+ The Fourier-transform method provides some higher-amplitude changes and
+ may be preferable.
+ However, the resulting variance spectrum for the Fourier-transform method
+ (Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+
+\backslash
+ref{fig:sampleFFT2}
+\end_layout
+
+\end_inset
+
+)  has high variance above about 5
+\begin_inset space ~
+\end_inset
+
+Hz that is above the variance for the corrected variable obtained from 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:HARCOsoln"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The increasing variance for the Fourier-transform method is is likely the
+ fault of the measurement itself: The spectral variance for the original
+ measurement (Tm) does not decrease at high frequency as expected from the
+ transfer function, and the correction procedure amplifies this excess noise.
+ The lower variance for the variable obtained from 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:HARCOsoln"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ at high frequency arises from the finite-difference representation of the
+ term 
+\begin_inset Formula $dT_{m}(t)/dt$
+\end_inset
+
+ (which is here fourth-order).
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+Taking the Fourier transform of an entire 25-Hz measurement for a flight
+ of several hours becomes impractical.
+ However, it is possible to segment the time series, calculate Fourier transform
+s for the segments, and then combine the results to represent the entire
+ flight.
+ Tests have shown that, for example, dividing into 
+\begin_inset Formula $2^{16}$
+\end_inset
+
+-sample overlapping segments, using fast Fourier transforms, and combining
+ the middle half of each segment is feasible with many-hour flights and
+ 25-Hz data.
+\end_layout
+
+\begin_layout Subsection
+
+\change_inserted 1311305628 1586299922
+Application to the HARCO sensor
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586378870
+Because the heated HARCO sensor is much slower than the unheated Rosemount
+ 102E4AL sensor, the measurements from that slower sensor can't be corrected
+ to the extent possible for the unheated sensor, but it is still useful
+ to evaluate to what extent the measurements can be improved.
+ The most straightforward correction is to apply 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:HARCOsoln"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, even though that is based on an inferior representation of the transfer
+ function in comparison to 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lfitH"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The solution from 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:HARCOsoln"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ is very noisy if second-order finite-difference estimates of the derivatives
+ are used, so some smoothing of the result was needed.
+ Figure
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+
+\backslash
+ref{fig:HARCOcorrection1}
+\end_layout
+
+\end_inset
+
+ shows the result (as 
+\begin_inset Quotes eld
+\end_inset
+
+RTHC, the dash-dot orange line) where a Butterworth low-pass filter with
+ cutoff frequency of 2
+\begin_inset space ~
+\end_inset
+
+Hz has smoothed the corrected measurements from a heated HARCO sensor.
+ This filtering is reasonable because the variance spectrum for this sensor
+ shows very little real signal at frequencies above 2
+\begin_inset space ~
+\end_inset
+
+Hz.
+ In comparison to the original measurement (labeled 
+\begin_inset Quotes eld
+\end_inset
+
+RTH1
+\begin_inset Quotes erd
+\end_inset
+
+), the response of the sensor is greatly improved by this correction procedure
+ and it even provides a reasonable representation of the corrected unheated
+ Rosemount measurement (labeled 
+\begin_inset Quotes eld
+\end_inset
+
+RT
+\begin_inset Quotes erd
+\end_inset
+
+) for the same period.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+Alternately, the transfer function was calculated from 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lfitH"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and the Fourier transform of the measured sequence was divided by this
+ transfer function to obtain the Fourier transform of the corrected measurement.
+ The result is shown in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+
+\backslash
+ref{fig:HARCOcorrection1}
+\end_layout
+
+\end_inset
+
+ as the black line labeled 
+\begin_inset Quotes eld
+\end_inset
+
+RTFFT
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This is also a significant improvement over the original and reproduces
+ many of the features of the best measurement (
+\begin_inset Quotes eld
+\end_inset
+
+RT
+\begin_inset Quotes erd
+\end_inset
+
+), but it appears to respond less quickly to changes in that reference measureme
+nt.
+ To obtain this result, it was necessary to attenuate frequencies above
+ 1.8
+\begin_inset space ~
+\end_inset
+
+Hz in the Fourier transform solution because there is a zero in the transfer
+ function as represented by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lfitH"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ that otherwise invalidates the inversion.
+ This attenuation was accomplished by multiplying the transfer function
+ by 
+\begin_inset Formula $e^{5\nu}$
+\end_inset
+
+above 1.8
+\begin_inset space ~
+\end_inset
+
+Hz.
+  This arbitrarily chosen attenuation gave reasonable results, although
+ it is likely that better choices could be made with further exploration.
+ One more general measure of the improvement, beyond the anecdotal evidence
+ in the preceding figures is that either correction procedure reduced the
+ standard deviation of the difference between the measured value (RTH1)
+ and the estimated best value (RT) from 
+\begin_inset Formula $0.06^{\circ}$
+\end_inset
+
+C before correction to 
+\begin_inset Formula $0.03^{\circ}$
+\end_inset
+
+C after correction.
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+The plot of variance spectra (Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+
+\backslash
+ref{fig:HARCOcorrection2}
+\end_layout
+
+\end_inset
+
+) shows that the original spectrum (orange line labeled 
+\begin_inset Quotes eld
+\end_inset
+
+RTH1
+\begin_inset Quotes erd
+\end_inset
+
+ is seriously attenuated at high frequencies relative to the reference measureme
+nt (
+\begin_inset Quotes eld
+\end_inset
+
+RT
+\begin_inset Quotes erd
+\end_inset
+
+) and that both correction procedures restore significant parts of the missing
+ spectral variance and increase the apparent cutoff frequency to 1
+\begin_inset space ~
+\end_inset
+
+Hz or, in the case of the first method, almost 2
+\begin_inset space ~
+\end_inset
+
+Hz.
+ It does not appear possible to restore the missing high-frequency fluctuations
+ (above about 1 or 2
+\begin_inset space ~
+\end_inset
+
+Hz) because the original measurement is so severely attenuated at these
+ frequencies.
+ This sensor and the similar heated Rosemount sensor are therefore unable
+ to detect contributions to sensible-heat flux from this frequency range,
+ even after corrections.
+ It nevertheless appears useful to apply one of these correction approaches
+ routinely to improve the quality of the measurements.
+ 
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+<<HARCOcorrection, include=TRUE, fig.height=3.5, fig.cap=c('Corrected recovery
+ temperature as measured by a heated HARCO sensor (
+\begin_inset Quotes eld
+\end_inset
+
+RTHC
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+RTFFT
+\begin_inset Quotes erd
+\end_inset
+
+), the uncorrected measurement (
+\begin_inset Quotes eld
+\end_inset
+
+RTH1
+\begin_inset Quotes erd
+\end_inset
+
+), and the best estimate of the true recovery temperature (
+\begin_inset Quotes eld
+\end_inset
+
+RT
+\begin_inset Quotes erd
+\end_inset
+
+) based on an unheated Rosemount sensor after correction.
+ The time is seconds after 2018-02-24 5:59:00 UTC, SOCRATES flight 15.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+RTHC
+\begin_inset Quotes erd
+\end_inset
+
+ is based on the approximate formula (20), while 
+\begin_inset Quotes eld
+\end_inset
+
+RTFFT
+\begin_inset Quotes erd
+\end_inset
+
+ results from Fourier transformation after correction using the transfer
+ function determined from (13).
+ Mean values have been subtracted from all to facilitate comparisons.', 'Variance
+ spectra for some measurements of recovery temperature: 
+\begin_inset Quotes eld
+\end_inset
+
+RT
+\begin_inset Quotes erd
+\end_inset
+
+ (the best estimate resulting from correction of the measurements from the
+ unheated Rosemount 102E4AL); 
+\begin_inset Quotes eld
+\end_inset
+
+RTH1
+\begin_inset Quotes erd
+\end_inset
+
+ (the uncorrected measurement from the heated HARCO); 
+\begin_inset Quotes eld
+\end_inset
+
+RTFFT
+\begin_inset Quotes erd
+\end_inset
+
+ (the corrected HARCO measurement based on Fourier transforms); and 
+\begin_inset Quotes eld
+\end_inset
+
+RTHC
+\begin_inset Quotes erd
+\end_inset
+
+ (the corrected HARCO measurement based on the correction formula (20)).')>>=
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+a <- Param1$a
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+tau1 <- Param1$tau1
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+tau2 <- Param1$tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+## RT is the working solution; Ts is the support temperature
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$Ts <- DSX$RTF1
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Rate <- attr (DSX, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$DTMDT <- c(0, diff(DSX$RTF1, 2), 0) * Rate / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$DTMDT <-  (c(0, 8*diff(DSX$RTF1, 2), 0) - 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+              c(0, 0, diff(DSX$RTF1, 4), 0, 0)) * Rate / 12
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# DT$DTMDT <- (DT$DTMDT + c(0, DT$DTMDT[1:(nrow(DT)-1)])) / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# DT$DTMDT <- as.vector (signal::filter(signal::sgolay(1, 3, m=1),
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+#             DT$TTRR)) * Rate
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+fS <- function(y, i) {  # Eq.
+ Ts3
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  ((1/a) * (tau1 * DSX$DTMDT[i] + DSX$RTF1[i] - (1-a) * y) - y) / (Rate
+ * tau2)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$Ts <- rk4.integrate (fS, DSX$Ts[1], 1:nrow(DSX))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$RT <- (1/a) * (tau1 * DSX$DTMDT + DSX$RTF1 - (1-a) * DSX$Ts)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+MRHO <- MachNumber(DSX$PSXC, DSX$QCXC) * DSX$PSXC * 100 /
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+                  (287.05 * (273.15 + DSX$ATX)) / rhozero
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+a <- bestSH[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+tau1 <- bestSH[2] * (MRHO / 0.3) ^ 0.6  ## Note that these are variable
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+tau2 <- bestSH[3] * (MRHO / 0.3) ^ 0.6
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Rate <- attr (DSX, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$DTMDT <- c(0, diff(DSX$RTH1, 2), 0) * Rate / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$DTM2DT2 <- (c(diff(DSX$RTH1), 0) - c(0, diff(DSX$RTH1))) * Rate^2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$RTHC <- (tau1 + tau2) * DSX$DTMDT + DSX$RTH1 + tau1 * tau2 * DSX$DTM2DT2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$RTHC <- zoo::na.approx (as.vector(DSX$RTHC), maxgap=1000*Rate,
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+      na.rm = FALSE, rule = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+CutoffPeriod <- 12.5
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSX$RTHC <- signal::filtfilt (signal::butter (3,
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+      2/CutoffPeriod), DSX$RTHC)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# DSX$RTHC <- SmoothInterp(DSX$RTHC, .Length=25)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP <- DSX
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP$RTH1 <- DSAP$RTH1 - mean(DSAP$RTH1[setRange(DSAP, 55700, 60000)], na.rm=TRUE
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP$RTF1P <- DSAP$RTF1 - mean(DSAP$RTF1[setRange(DSAP, 55700, 60000)],
+ na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP$RTHC <- DSAP$RTHC - mean(DSAP$RTHC[setRange(DSAP, 55700, 60000)], na.rm=TRUE
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP$RT <- DSAP$RT - mean(DSAP$RT[setRange(DSAP, 55700, 60000)], na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# DSAP %>% selectTime(55920, 55950) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+#          select(Time, RT, RTH1, RTHC) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+#         ggplotWAC(col=c('blue', 'forestgreen', 'black'), lty=c(1,4,1),
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+#                   ylab=bquote('recovery temperature [' ~ degree * 'C]'),
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+#                   lwd=c(0.8,1,1)) + xlab('time [s]') +
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+#         theme_WAC(1) + theme(legend.position=c(0.75, 0.9))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAX <- DSX %>% selectTime(55700, 60300)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAX <- DSAX[1:2^13, ]
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+ft <- fft(DSAX$RTH1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+N <- length(ft)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Rate <- attr(DSX, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+df <- Rate / N
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+fr <- log(abs(frq))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Gain  <- cfrHARCO[1] + fr * (cfrHARCO[2] + fr * fr * (cfrHARCO[3] + 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+         fr * (cfrHARCO[4] + fr * cfrHARCO[5])))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Gain[abs(frq) < 0.024] <- 1
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Phase <- cfHARCO[1] + cfHARCO[2] * fr + cfHARCO[3] * fr^2 +
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+         cfHARCO[4] * atan(frq)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Phase[frq < 0] <- -Phase[frq < 0]
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Phase[1] <- 0
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Phase <- Phase * pi / 180
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+TF <- complex(modulus=Gain, argument=Phase)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+tlmt <- 1.8
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+TF[abs(frq) > tlmt] <- TF[abs(frq) > tlmt] * exp(5*abs(frq[abs(frq) > tlmt])
+ / tlmt)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+ftx <- ft / TF
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAX$RTFFT <- Re(fft(ftx, inverse = TRUE) / N)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+N <- 2^13 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Nby2 <- N / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+RTH1 <- DSAX$RTH1
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+ff1 <- fft(RTH1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+RTH <- Re(fft(ff1, inverse=TRUE)) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+df <- Rate / N
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+fr <- log(frq[1:(Nby2+1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+## Get the transfer function from the fitted parameterized form:
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Ph <- cfHARCO[1] + cfHARCO[2] * fr + 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+           cfHARCO[3] * fr^2 + cfHARCO[4] * atan(frq[1:(Nby2+1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+Ph[1] <- 0
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+G <- cfrHARCO[1] + fr * (cfrHARCO[2] + fr * fr * (cfrHARCO[3] + 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+           fr * (cfrHARCO[4] + fr * cfrHARCO[5])))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+G[frq[1:length(fr)] < 0.024] <- 1
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+G[frq[1:length(fr)] > 2] <- G[which.min(abs(frq-2))]
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+H <- rep(complex(modulus=0), N)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+H[1:(Nby2+1)] <- complex(modulus=G, argument=Ph * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+H[(Nby2+2):N] <- rev(Conj(H[2:Nby2]))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+RTC <- Re(fft(ff1 / H, inverse = TRUE)) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAX$RTC <- RTC
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+dfTF <- data.frame(
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  'Time' = frq,
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  'Amp' = Gain,
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  'Phase' = Phase
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+g <-
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  ggplotWAC(
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+    dfTF,
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+    panels = 2,
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+    labelP = c('    Amplitude', 'Phase [degrees]')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  )
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+g <- g + xlab('frequency [Hz]') + ylab(bquote('transfer function H(' * nu
+ ~ ')'))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+g <-
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  g + scale_x_log10(
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+    breaks = trans_breaks("log10", function(x)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+      10 ^ x, n = 4),
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+    labels = trans_format("log10", math_format(expr = 10 ^ .x))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+  ) + xlab('frequency [Hz]')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+g <- g + annotation_logticks(sides = 'tb')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+# g + theme_WAC(1) + theme(legend.position = c(0.3, 0.65))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP <- DSAX
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP$RTH1 <- DSAP$RTH1 - mean(DSAP$RTH1[setRange(DSAP, 55700, 60000)], na.rm=TRUE
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP$RTF1P <- DSAP$RTF1 - mean(DSAP$RTF1[setRange(DSAP, 55700, 60000)],
+ na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP$RTHC <- DSAP$RTHC - mean(DSAP$RTHC[setRange(DSAP, 55700, 60000)], na.rm=TRUE
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP$RT <- DSAP$RT - mean(DSAP$RT[setRange(DSAP, 55700, 60000)], na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP$RTFFT <- DSAP$RTFFT - mean(DSAP$RTFFT[setRange(DSAP, 55700, 60000)],
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+                                na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+DSAP %>% selectTime(55920, 55950) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+         select(Time, RT, RTH1, RTFFT, RTHC) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+         ggplotWAC(c('blue', 'forestgreen', 'black', 'darkorange'),
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+                   ylab=bquote('recovery temperature [' ~ degree * 'C]'),
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586379190
+
+                   lty=c(1,2,1,1), lwd=c(0.8,1.2,1,0.8)) + xlab('time [s]')
+ +
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+         theme_WAC(1) + 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+         theme(legend.position=c(0.715, 0.93))
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+g <- DSAP %>% select(Time, TASX, RTFFT, RTHC, RT) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+        VSpec(xlim=c(5.e-3, 15), ylim=c(2.e-6, 1.e-2), 
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+        smoothBins = 100, method='MEM')
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+VSpec(DSAP, 'RTH1', add=g, type='MEM') + theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\change_inserted 1311305628 1586299922
+
+@
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+
+\change_inserted 1311305628 1586299922
+\begin_inset Newpage clearpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
 Reproducibility
 \end_layout
 
