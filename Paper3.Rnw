@@ -1,0 +1,1632 @@
+%% LyX 2.3.4.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,twoside,american,12pt,twoside,american]{article}
+\renewcommand{\familydefault}{\rmdefault}
+\usepackage[T1]{fontenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1.2in,rmargin=1in}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setcounter{tocdepth}{2}
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{color}
+\definecolor{page_backgroundcolor}{rgb}{1, 1, 1}
+\pagecolor{page_backgroundcolor}
+\usepackage{babel}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{esint}
+\usepackage[authoryear]{natbib}
+\usepackage[unicode=true,
+ bookmarks=true,bookmarksnumbered=false,bookmarksopen=false,
+ breaklinks=true,pdfborder={0 0 0},pdfborderstyle={},backref=section,colorlinks=true]
+ {hyperref}
+\hypersetup{pdftitle={Technical Note: Measuring Sensible-Heat Flux},
+ pdfauthor={William A. Cooper},
+ pdfsubject={Assessment of Measurements of Sensible-Heat Flux},
+ pdfkeywords={sensible heat flux, temperature, time response of sensors, NCAR Research Aviation Facility, research aircraft, NCAR/EOL/RAF},
+  linkcolor=blue, citecolor={blue}}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}\definecolor{messagecolor}{rgb}{0, 0, 0}\definecolor{warningcolor}{rgb}{1, 0, 1}\definecolor{errorcolor}{rgb}{1, 0, 0}\setlength{\headheight}{14.5pt}\usepackage{babel}
+
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}\definecolor{messagecolor}{rgb}{0, 0, 0}\definecolor{warningcolor}{rgb}{1, 0, 1}\definecolor{errorcolor}{rgb}{1, 0, 0}\usepackage{babel}
+% macro for italic page numbers in the index
+\newcommand{\IndexDef}[1]{\textit{#1}}
+\newcommand{\IndexPrimary}[1]{\textbf{#1}}
+% force a page break at the start of sections
+\let\stdsection\section
+\renewcommand{\section}{\newpage\stdsection}
+
+
+% workaround for a makeindex bug,
+% see sec. "Index Entry Order"
+% only uncomment this when you are using makindex
+%\let\OrgIndex\index 
+%\renewcommand*{\index}[1]{\OrgIndex{#1}}
+%\usepackage{splitidx}
+
+% workaround for a makeindex bug,
+% see sec. "Index Entry Order"
+% only uncomment this when you are using makindex
+\let\OrgIndex\index 
+\renewcommand*{\index}[1]{\OrgIndex{#1}}
+\usepackage{splitidx}
+%\indexsetup{noclearpage}
+\AtBeginDocument{
+  \def\labelitemii{\(\circ\)}
+  \def\labelitemiii{\(\triangleright\)}
+}
+\usepackage[font={normal,sl}]{caption}% set captions slanted
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+
+\newenvironment{lylist}[1]{\begin{list}{}
+{\settowidth{\labelwidth}{#1}
+\setlength{\leftmargin}{\labelwidth}
+\addtolength{\leftmargin}{\labelsep}
+\renewcommand{\makelabel}[1]{##1\hfil}}}{\end{list}}
+\newcommand{\datetoday}{\number\day\space
+     \ifcase\month\or January\or February\or March\or April\or May\or
+     June\or July\or August\or September\or October\or November\or
+     December\fi
+     \space\number\year}
+\newcommand{\EOLmemo}{\null \vskip-1.5truein
+{\raggedright \textsf{\textsc{\large \textcolor{blue}{Earth Observing Laboratory}}}}\par
+{\raggedright \textsf{\textsl{\textcolor{blue}{Memorandum:}}}} \par \vskip6pt
+{\color{blue}{\hrule}}\par
+\vskip0.3truein \leftline{\hskip \longindent \datetoday} \vskip0.2truein
+\thispagestyle{empty}}
+\newcommand{\attachm}[1]{\begin{lylist}{Attachments:00}
+\item [Attachments:] {#1}
+\end{lylist}}
+\newcommand{\cc}[1]{\begin{lylist}{Attachments:00}
+\item [cc:] {#1}
+\end{lylist}}
+\newcommand{\attach}[1]{\begin{lylist}{Attachments:00}
+\item [Attachment:] {#1}
+\end{lylist}}
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\pagenumbering{gobble}
+
+\makeatother
+
+\begin{document}
+\title{The Delayed Response of Airborne Thermometers:\\
+Part 3: Measuring the Flux of Sensible Heat}
+\author{William A. Cooper and others...}
+\date{\textcolor{red}{DRAFT} March 2020}
+
+\maketitle
+National Center for Atmospheric Research\\
+Earth Observing Laboratory\\
+Research Aviation Facility
+
+\vfill{}
+\cleardoublepage{} \pagenumbering{roman}
+
+\renewcommand{\contentsname}{Table of Contents} \tableofcontents{}
+\vfill{}
+\eject
+
+%% LyX 2.2.2 created this file.  For more info, see http://www.lyx.org/.
+
+%\phantomsection \addcontentsline{toc}{section}{List of Figures}
+
+\listoffigures
+
+\clearpage %\phantomsection \addcontentsline{toc}{section}{List of Tables}
+
+\listoftables
+
+\clearpage{}
+
+\renewcommand{\abstractname}{Preface and Abstract}\thispagestyle{plain}\begin{abstract}
+
+The predecessor papers in this series, Parts 1 and 2, characterized
+the time response of some airborne thermometers, developed correction
+procedures for those measurements based on their parameterized transfer
+functions, and developed a way to correct for the errors introduced
+when the standard dynamic-heating correction is applied without filtering
+that signal to match the time response of the sensors. This paper
+considers the implications of those results for measurements of the
+flux of sensible heat. In particular, it is showm that one sensor
+in common use, the unheated Rosemount 102E4AL sensor, will miss important
+parts of the flux if there are significant contributions above about
+1~Hz, but the flux cospectrum can be corrected reliably to extend
+that limit to near 10~Hz. For examples of measured fluxes, the correction
+procedure indicates that without this correction the flux measurement
+would be too small by about 25\%. The correction procedure consists
+of dividing the Fourier transform of the temperature by the transfer
+function for the temperature sensor before calculating the cospectrum
+of temperature and vertical-wind fluctuations. Simulation results
+support the validity of the correction procedure. 
+
+\end{abstract}
+
+\clearpage{}
+
+\section*{Acknowledgments}
+
+\label{sec:acknowledgements}
+
+This material is based upon work supported by the National Center
+for Atmospheric Research, which is a major facility sponsored by the
+National Science Foundation under Cooperative Agreement No. 1852977.
+Any opinions, findings and conclusions or recom-mendations expressed
+in this publication are those of the author(s) and do not necessarily
+reflect the views of the National Science Foundation. The data used
+in the examples presented are from the VOCALS (VAMOS Ocean-Cloud-Atmosphere-Land
+Study), SOCRATES (Southern Ocean Clouds, Radiation, Aerosol Transport
+Experimental Study) and the CSET (Cloud Systems Evolution in the Trades)
+experiment, each described at \href{https://www.eol.ucar.edu/field_projects/}{this URL}.
+Citations for the data sets are included in the references. Measurements
+(\citet{VOCALS2011}, \citet{SOCRATES2019}, \citet{WECAN2018}) were
+collected by the project experiment teams, and flight operations and
+data acquisition and processing were performed by the Research Aviation
+Facility, Earth Observing Laboratory, National Center for Atmospheric
+Research (NCAR). The analyses reported here were mostly performed
+using R (\citet{Rlanguage}), with \index{RStudio}RStudio (\citet{RStudio2012})
+and \index{knitr}knitr (\citet{Xie2014a,Xie2014b}). Data files in
+netCDF format have been read and written using the R \index{R language!package!ncdf4}package
+``ncdf4''; cf.~\citet{ncdf4}. Substantial use also was made of
+the \index{ggplot2}\index{R language!package!ggplot2}``ggplot2''
+package (\citet{wickham2009}) for R, and some fits relied on the
+``nleqslv'' package for R \citet{hasselman-nleqslv}. Extensive
+use was made of the ``stats'' package, part of Core R\@. Some of
+the numerical integrations used the Runge-Kutta function from the
+``rmutil'' package (\citet{runge.kutta}).
+
+\thispagestyle{plain}\clearpage{}
+
+\thispagestyle{empty}
+
+\cleardoublepage{}
+
+\pagenumbering{arabic}
+
+\section{Introduction}
+
+\subsection{Overview}
+
+As introduced in Part 1, the basis for eddy-correlation measurement
+of sensible-heat flux ($F_{s}$) is the following equation:
+
+\begin{equation}
+F_{s}=\rho_{a}\thinspace C_{p}\left\langle w^{\prime}T^{\prime}\right\rangle \label{eq:heatFlux-1}
+\end{equation}
+where $\rho_{a}$ is the density of air, $C_{p}$ the specific heat
+of air at constant pressure, $w$ the vertical wind, and $T$ the
+temperature. Primes in this equation denote fluctuations from the
+mean and angle brackets denote an ensemble average. The measurement
+thus depends on having a temperature sensor that can respond to the
+range of fluctuations making significant contributions to the heat
+flux. This measurement requires that temperature be measured with
+sufficient response to resolve the spectrum of contributions to the
+flux, and most sensors in routine use are marginal or inadequate for
+this use. This third paper in a three-part series argues that application
+of a correction procedure improves this measurement sufficiently to
+make it reliable despite the response-characteristics of airborne
+thermometers, at least for one sensor in common use. This paper relies
+on information from the first two and will need to reference those
+results in many places. 
+
+A crucial characteristic of the temperature sensor is its transfer
+function, or the ratio of output to input. In particular, as represented
+as a frequency-dependent function, the transfer function specifies
+the amplitude and phase of the output for a unit magnitude sinusoidal
+input of a given frequency. In Part 1, this transfer function was
+determined by observing the sensor response to measured fluctuations
+in dynamic heating in regions where those fluctuations were the dominant
+source of variability in the recovery temperature $T_{r}$, which
+is related to the ambient temperature $T_{a}$ and the dynamic heating
+$Q$ according to the equation $T_{r}=T_{a}+Q$. The focus in Part
+1 was on the relationship between the measured recovery temperature
+$T_{m}$ and the true recovery temperature $T_{r}$, while Part 2
+focused on correcting $Q$ for the response of the sensor to avoid
+the introduction of noise and false variations arising from fluctuations
+in dynamic heating to which the temperature sensor cannot respond.
+Here the key results from those first two papers will be used: (i)
+the transfer function $H(\nu)$ as a function of frequency $\nu$;
+and (ii) the modified dynamic-heating term $Q^{\prime}$ obtained
+by filtering $Q$ according to the sensor response characteristics.
+
+\subsection{Outline of the correction procedure\label{subsec:Outline-correction}}
+
+Two approaches are presented. Both follow the steps below but differ
+in step 2:
+\begin{enumerate}
+\item Find the transfer function. The estimated air temperature is normally
+calculated from $T_{a}=T_{m}-Q$ where $T_{m}$ is the measured recovery
+temperature, but here it is desired to correct both $T_{m}$ and $Q$
+on the basis of the known transfer function $H(\nu)$. The first step
+is therefore to determine an appropriate transfer function. In Part
+1, it was argued that the result varies with Mach number and air density,
+so appropriate corrections to those characteristics as listed in Table
+2 of Part 1 should be made. Alternately (and better), the transfer
+function can be determined for the actual flight conditions using
+the approach from Part 1. For a representative transfer function,
+see Fig.~1 from Part 1.
+\item Calculate the air temperature $T_{a}$:
+\begin{enumerate}
+\item Method 1: Because the transfer function is the ratio between Fourier
+representations of the output and the input, the Fourier transform
+( $(\hat{T}_{r}(\nu))$ of the input recovery temperature ($T_{r}(t)$)
+will be $\hat{T}_{m}(\nu)/H(\nu)$, where the circumflex ($\hat{}$)
+denotes the Fourier transform, so the recovery temperature can be
+retrieved using the inverse Fourier transform of $\hat{T}_{m}(\nu)/H(\nu)$.
+The air temperature then is calculated from $T_{r}-Q^{\prime}$ where
+$Q^{\prime}$is the result of filtering the dynamic heating term $Q$
+using the response characteristic of the sensor. $Q^{\prime}$ can
+be found from the inverse Fourier transform of $H(\nu)\hat{Q}(\nu)$.
+\item Method 2: Use the differential equations to find $T_{r}$ from the
+measurements $T_{m},$ as in Sect.~4.1 of Part 1. Filter the dynamic
+heating to obtain $Q^{\prime}$ as specified in Part 2. Then $T_{a}=T_{r}-Q^{\prime}$.
+\end{enumerate}
+\item The cospectrum then is calculated for the cross-spectrum of temperature
+and updraft, with a choice made regarding which frequency interval
+to include. This will normally exclude wavelengths longer than a few
+kilometers.
+\item Finally, calculate the flux from the sum of the resulting cospectrum
+over the specified frequency interval.
+\end{enumerate}
+<<initialization, echo=FALSE,include=FALSE>>=
+## This chunk loads some needed R packages and defines a function
+## used for the Laplace-transform solution of the governing
+## differential equations.
+
+library(knitr)
+opts_chunk$set(echo = FALSE,
+               include = FALSE,
+               fig.lp = "fig:")
+# note that fig.pos="center" gave errors, changed to fig.align
+opts_chunk$set(
+  fig.width = 6,
+  fig.height = 3.5,
+  fig.align = "center",
+  digits = 4
+)
+thisFileName <- "SensibleHeatFluxTechNote"
+library(Ranadu, quietly = TRUE, warn.conflicts = FALSE)
+library(scales)
+require(numDeriv)    ## is this used?
+library(signal)      ## used for filtering
+library(reshape2)    ## used with ggplot facet plots
+library(grid)
+library(magrittr)    ## used for pipes (%>%)
+library(dplyr)
+library(rmutil)      ## provides the runge-kutta integration function
+options(stringsAsFactors = FALSE)
+
+CACHE <- FALSE
+setwd ('~/RStudio/SensibleHeatFlux') 
+Directory <- DataDirectory ()
+## standard values:
+frq <- seq(0.01, 25, by = 0.01)
+Phi <- rep(0, length(frq))
+H <- rep(0, length(frq))
+a <- 0.733 # 0.713
+tau1 <- 0.0308  # 0.0335
+tau2 <- 0.447
+Param1 <- list('a' = a, 'tau1' = tau1, 'tau2' = tau2)
+ParamSF <- Param1
+ParamSF$a <- 0.652
+ParamSF$tau1 <- 0.0295
+ParamSF$tau2 <- 1.04
+# The Laplace-transform solution:
+LTphase <- function(f, P) {
+  ## f=frequency; P=Param
+  tau1 <- P$tau1
+  tau2 <- P$tau2
+  a <- P$a
+  b <- sqrt(1 / (1 + (2 * pi * f * tau2) ^ 2))
+  zeta <- -atan(2 * pi * f * tau2)
+  C1 <- 1 / (1 + 4 * pi ^ 2 * f ^ 2 * tau1 ^ 2) *
+    (-(a + (1 - a) * b * cos(zeta)) * 2 * pi * f * tau1 +
+       (1 - a) * b * sin(zeta))
+  C2 <- 1 / (1 + 4 * pi ^ 2 * f ^ 2 * tau1 ^ 2) *
+    ((a + (1 - a) * b * cos(zeta)) +
+       (1 - a) * b * sin(zeta) * 2 * pi * f * tau1)
+  cTF <- sqrt(C1 ^ 2 + C2 ^ 2)
+  phiTF <- atan2(C1, C2) 
+  return(complex(modulus = cTF, argument = phiTF))
+}
+source('./chunks/rk4.integrate.R')
+
+@
+
+\pagebreak{}
+
+\section{Examples with Corrections Applied}
+
+\subsection{VOCALS example}
+
+<<TASX, include = FALSE>>=
+
+reviseDH <-
+  function (.data, P, alphaR) {
+    # P is Param1, e.g.; alphaR is recovery factor
+    .data$Q <- .data$TASX ^ 2 / 2010
+    aV <- P$a
+    tau1V <- P$tau1
+    tau2V <- P$tau2
+    Rate <- attr (.data, 'Rate')
+    fS <- function(y, i) {
+      (.data$Q[i] - y) / (tau2V * Rate)
+    }
+    fM <- function (y, i) {
+      (aV * .data$Q[i] + (1 - aV) * TsQ[i] - y) / (Rate * tau1V)
+    }
+    TsQ <- rk4.integrate (fS, .data$Q[1], 1:nrow(.data))
+    Qp <- rk4.integrate (fM, .data$Q[1], 1:nrow(.data))
+    return (.data$ATX + alphaR * (.data$Q - Qp))
+  }
+if (file.exists ('./DVOCALS.Rdata')) {
+  load (file = './DVOCALS.Rdata')
+  DVOCALS <- D
+} else {
+  D <- getNetCDF(
+    file.path(DataDirectory(), 'VOCALS/VOCALSrf03h.nc'),
+    c(
+      'TASX',
+      'PALT',
+      'TTRR',
+      'ATRR',
+      'TTWH',
+      'WIC',
+      'ATX',
+      'PSXC',
+      'QCXC'
+    )
+  )
+  D$DH <- D$TASX ^ 2 / 2010
+  ## For use later, "filter" the dynamic-heating term and revise the temperature:
+  alphaR <- attr(D[, 'ATRR'], 'RecoveryFactor')
+  D$AT <- reviseDH(D, Param1, alphaR)
+  ## Find a corrected recovery temperature to use in the estimate of dynamic heating:
+  a <- Param1$a
+  tau1 <- Param1$tau1
+  tau2 <- Param1$tau2
+  ## RT is the working solution; Ts is the support temperature
+  D$Ts <- D$TTRR
+  Rate <- attr (D, 'Rate')
+  D$DTMDT <-
+    c(0, diff(D$TTRR, 2), 0) * Rate / 2  ## Average this and one-sample-advanced
+  # D$DTMDT <- (D$DTMDT + c(0, D$DTMDT[1:(nrow(D)-1)])) / 2
+  # DT$DTMDT <- as.vector (signal::filter(signal::sgolay(1, 3, m=1), DT$TTRR)) * Rate
+  fS <- function(y, i) {
+    # Eq. Ts3
+    ((1 / a) * (tau1 * D$DTMDT[i] + D$TTRR[i] - (1 - a) * y) - y) / (Rate * tau2)
+  }
+  D$Ts <- rk4.integrate (fS, D$Ts[1], 1:nrow(D))
+  D$RT <- (1 / a) * (tau1 * D$DTMDT + D$TTRR - (1 - a) * D$Ts)
+  # D %>% select(Time, TTRR, RT, Ts) %>% selectTime(114500, 114505) %>% plotWAC()
+  save(D, file = './DVOCALS.Rdata')
+  DVOCALS <- D
+}
+## Revise the calculation of dynamic heating to avoid dependence on AT:
+D$MACH <- MachNumber(D$PSXC, D$QCXC)
+XXA <- attr(D[, 'ATRR'], 'RecoveryFactor') * D$MACH ^ 2 / 5
+D$DH <- (D$TTRR + 273.15) * XXA / (1 + XXA)
+D$DH2 <- (D$RT + 273.15) * XXA / (1 + XXA)
+## temporary: shift D$AT later in time
+# D$AT <- ShiftInTime (D$AT, .rate=25, .shift=40)
+Tasm <- mean(D$TASX, na.rm = TRUE)
+DT <- D %>% selectTime(113900, 115200)
+# select six boundary-layer segments of 10 min each:
+DT1 <- D %>% selectTime(65000, 70000)
+DT2 <- D %>% selectTime(73300, 74300)
+DT3 <- D %>% selectTime(104600, 105600)
+DT4 <- D %>% selectTime(114200, 115200)  ## 113900, 115200
+DT5 <- D %>% selectTime(124300, 125300)
+DT6 <- D %>% selectTime(133000, 134000)
+# omitting 832-841, 920-951, 955-1005 -- look problematic
+# g <- VSpec(DT, 'TTRR', spans=99, xlim=c(0.01,15), ylim=c(1.e-5, 1.e-1))
+# g <- VSpec(DT, 'ATRR', spans=99, add=g)
+# VSpec(DT, 'DH', spans=99, add=g) + theme_WAC()
+# VSpec(DT, 'TASX', spans = 99, ylim=c(1.e-3, 10)) + theme_WAC(1)
+load(file='AR.Rdata')
+
+@
+
+The same flight segments from the VOCALS project that were used to
+characterize the transfer function in Part 1 are also used in this
+first example. A composite cospectrum for these measurements was constructed
+as before, averaging six 10-min boundary-layer flight segments of
+25~Hz measurements of recovery temperature, updraft, and dynamic
+heating. This first calculation used the measurements directly, with
+no corrections for the response of the temperature sensor and no adjustment
+of the dynamic-heating correction, so this would be the conventional
+measurement without any of the changes proposed in the present series
+of papers. The cospectrum for the cross-spectrum between temperature
+and updraft is shown in Fig.~\ref{fig:assembleCospec} for the average
+of the six flight segments. 
+
+<<assembleCospec, include=TRUE, fig.pos='t', fig.cap='The cospectrum for temperature and updraft, multiplied by the air density and specific heat to convert to a cospectrum for the sensible-heat flux, for six 10-min boundary-layer flight segments from the VOCALS project. The original uncorrected measurements have been used for temperature. Positive and negative values of the cospectrum are shown as blue and red, respectively, with the sign of the latter changed to permit plotting on a logarithmic axis. The mean values in logarithmically spaced bins in frequency are shown as black and dark red dots, and the shaded ribbon enclosing the dots represents a one-standard-deviation range for those bins. The brown line labeled "exceedance" is the complement of the cumulative distribution function for flux; i.e., the flux from all frequencies higher than the plotted value. The dashed black line denotes the frequency that corresponds to a wavelength of 3 km.'>>=
+
+## Recalculate AT using the dynamic-heating filter:
+DVOCALS$TASX <- SmoothInterp(DVOCALS$TASX, .Length=0)
+DVOCALS$ATX <- SmoothInterp(DVOCALS$ATX, .Length=0)
+DVOCALS$PSXC <- SmoothInterp(DVOCALS$PSXC, .Length=0)
+DVOCALS$QCXC <- SmoothInterp(DVOCALS$QCXC, .Length=0)
+DVOCALS$MACH <- SmoothInterp(MachNumber(DVOCALS$PSXC, DVOCALS$QCXC), .Length=0)
+DVOCALS$alphaR <- RecoveryFactor(DVOCALS$MACH, 'UNHEATED') 
+## Alas, original processing used 0.95 so duplicate that:
+DVOCALS$alphaR <- rep(0.95, nrow(DVOCALS))
+DVOCALS$Q <- DVOCALS$TASX^2 / (2 * SpecificHeats()[1])
+DVOCALS$QF <- as.vector(signal::filter(AR, DVOCALS$Q))
+DVOCALS$QF <- ShiftInTime(DVOCALS$QF, .shift=-Lshift * 40, .rate=25)
+DVOCALS$AT <- DVOCALS$ATX + DVOCALS$alphaR * (DVOCALS$Q - DVOCALS$QF)
+# DVOCALS$WIC <- ShiftInTime(DVOCALS$WIC, .rate=25, .shift=-40)
+D <- DVOCALS
+DT1 <- D %>% selectTime(65000, 70000)
+DT2 <- D %>% selectTime(73300, 74300)
+DT3 <- D %>% selectTime(104600, 105600)
+DT4 <- D %>% selectTime(114200, 115200)  ## 113900, 115200
+DT5 <- D %>% selectTime(124300, 125300)
+DT6 <- D %>% selectTime(133000, 134000)
+Cp <- 1005    # mean(SpecificHeats(DDR$EWX/DDR$PSXC)[,1], na.rm=TRUE)
+DTC <- rbind(DT1, DT2, DT3, DT4, DT5, DT6)
+Rho <- mean (100 * DTC$PSXC / ((DTC$ATX + 273.15) * 287.05), na.rm = TRUE)
+
+sBins <- 100
+# DTC$WIC <- ShiftInTime(DTC$WIC, .rate=25, .shift=-40)
+## The following replaces the "flux()" function:
+Units  <-  bquote("W" ~ m ^ -2)
+spans <-  49
+scaleFactor <- (Rho * Cp)
+smoothBins <- sBins
+wavelengthLimit <- 3000
+xlim <- c(0.01, 15)
+ylim <- c(1.e-3, 10)
+legend.position <- 'bottomleft'
+plot <- TRUE
+plotRibbon <- TRUE
+printTitle <- TRUE
+Par <- NA
+.A <- 'ATRR'
+CSprevious <- NA
+Rate <- attr(DVOCALS, 'Rate')
+Tasm <- mean(DTC$TASX, na.rm=TRUE)
+fL <- Tasm / wavelengthLimit
+N <- 2^14
+# Get the transfer function:
+Par <- Param1
+a <- Par$a
+tau1 <- Par$tau1
+tau2 <- Par$tau2
+df <- Rate / N
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+zeta <- -atan(2*pi*frq*tau2)
+b <- cos(zeta)
+## Use the Laplace-transform solution
+C1 <- 1 / (1 + 4 * pi^2 * frq^2 * tau1^2) * 
+        (-(a + (1 - a) * b * cos(zeta)) * 2 * pi * frq * tau1 +
+           (1 - a) * b * sin(zeta)) 
+C2 <- 1 / (1 + 4 * pi^2 * frq^2 * tau1^2) * 
+        ((a + (1 - a) * b * cos(zeta)) + 
+           (1 - a) * b * sin(zeta) * 2 * pi * frq * tau1)
+cTC <- sqrt(C1^2 + C2^2)
+phiTC <- atan2(C1, C2)
+H <- complex(modulus=cTC, argument=phiTC)
+DTC <- data.frame()
+CoSp <- rep(0, N)
+for (.data in list(DT1, DT2, DT3, DT4, DT5, DT6)) {
+  N1 <- (N - nrow(.data)) %/% 2
+  N2 <- N - nrow(.data) - N1
+  WP <- c(rep(0, N1), detrend(.data[, c('Time', 'WIC')]), rep(0, N2))
+  TP <- c(rep(0, N1), detrend(.data[, c('Time', .A)]), rep(0, N2))
+  Q  <- c(rep(0, N1), detrend(.data[, c('Time', 'Q')]), rep(0, N2))
+  ff1 <- fft(TP)
+  ff2 <- fft(WP)
+  ffq <- fft(Q)
+  cs <- 2 * Re(ff1 * Conj(ff2)) / (Rate * N)
+  ## Estimate original recovery T and apply corrected dynamic heating:
+  alphaR <- mean(.data$alphaR, na.rm = TRUE)
+  # cs <- 2 * Re((ff1 / H - alphaR * H * ffq) * Conj(ff2)) / (Rate * N)
+  CoSp <- CoSp + cs
+  DTC <- rbind(DTC, .data)
+}
+CoSp <- CoSp * scaleFactor / 6
+Nby2 <- N %/% 2
+CS <- data.frame(freq = frq[2:(Nby2+1)], cospec = CoSp[2:(Nby2+1)])
+plotCS <- function(CS, Units, spans, fL, wavelengthLimit, smoothBins, 
+                   xlim, ylim, printTitle, CSprevious = NA) {
+  ylab <- bquote("f x flux cospectrum ["*.(Units)*"]")    
+  CSogive <- cumsum(CS$cospec) * CS$freq[1]
+  CSogive <- CSogive[length(CSogive)]-CSogive
+  CS$ogive <- CSogive
+  CS$cospec <- SmoothInterp(CS$cospec, .Length=0)  # treat NAs
+  s25 <- spans %/% 25; s10 <- spans %/% 10; s3 <- spans %/% 3
+  s25 <- s25 + (s25 + 1) %% 2
+  s10 <- s10 + (s10 + 1) %% 2
+  s3 <- s3 + (s3 + 1) %% 2
+  CS$cospec <- zoo::rollapply(CS$cospec, FUN = mean, fill='extend', width = s25)
+  CS$cospec[CS$freq > 0.01] <- zoo::rollapply(CS$cospec, FUN = mean, fill='extend', width = s10)[CS$freq > 0.01]
+  CS$cospec[CS$freq > 0.1] <- zoo::rollapply(CS$cospec, FUN = mean, fill='extend', width = s3)[CS$freq > 0.1]
+  CS$cospec[CS$freq > 1] <- zoo::rollapply(CS$cospec, FUN = mean, fill='extend', width = spans)[CS$freq > 1]
+  FluxL <- CSogive[which(CS$freq > fL)[1]]
+  Flux <- CSogive[which(CS$freq > 0.01)[1]]
+  attr(CS, 'Flux') <- Flux
+  attr(CS, 'FluxL') <- FluxL
+  attr(CS, 'wavelengthLimit') <- wavelengthLimit
+  ## Construct the plot:
+  CS$ncospec <- -1 * CS$cospec
+  ## Weight by frequency for log-abscissa plot:
+  CS$cospec <- CS$cospec * CS$freq
+  CS$ncospec <- CS$ncospec * CS$freq
+  # plotWAC(CS, xlab='frequency [Hz]', ylab=ylab, log='xy',
+  #     col = c('skyblue', 'forestgreen', 'red'), lwd = c(2, 2, 2), 
+  #     lty = c(1, 2, 1),
+  #     xlim=c(0.05, 15), ylim=c(0.01,250), legend.position=NA)
+  if (smoothBins > 5) {
+    BS <- binStats(data.frame(CS$cospec, log(CS$freq)), bins = smoothBins)
+    # lines(exp(BS$xc), BS$ybar, lwd=2, col='brown')
+    BS$nybar <- -1 * BS$ybar
+    BS$ybar[BS$ybar < 0] <- NA
+    BS$nybar[BS$nybar < 0] <- NA
+    BS$xc <- exp(BS$xc)
+    # lines(exp(BS$xc), BS$nybar, lwd=2, col='magenta')
+    attr(CS, 'smoothed data.frame') <- BS
+    bse <- data.frame(x = BS$xc, ymin = BS$ybar - BS$sigma, ymax = BS$ybar + BS$sigma,
+                      yminN = BS$nybar - BS$sigma, ymaxN = BS$nybar + BS$sigma)
+    # lines(exp(BS$xc), BS$nybar, lwd=2, col='magenta')
+  }
+  if (smoothBins > 5) {
+    bse$ymin[bse$ymin < ylim[1]] <- ylim[1]
+    bse$yminN[bse$yminN < ylim[1]] <- ylim[1]
+  }
+  g <- ggplot(data = CS, aes(x=freq))
+  g <- g + geom_path(aes(y = cospec, colour='cospectrum', linetype='cospectrum'))
+  g <- g + geom_path(aes(y = ncospec, colour='-cospectrum', linetype='-cospectrum'))
+  g <- g + geom_path(aes(y = ogive, colour='exceedance', linetype='exceedance'), lwd=1.2)
+  if (is.data.frame(CSprevious)) {
+    g <- g + geom_path(data=CSprevious, aes(x = freq, y = ogive,
+                          colour='exceedance'), lty=2, lwd=1.2)
+    if ('ogive2' %in% names(CSprevious)) {
+      g <- g + geom_path(data=CSprevious, aes(x = freq, y = ogive2,
+                          colour='generated', linetype='generated'), lwd=1.3)
+    }
+  }
+  if (smoothBins > 5) {
+    # g <- g + geom_path(data = BS, aes(x=xc, y=ybar), colour='blue', lwd=1.2)
+    # g <- g + geom_path(data = BS, aes(x=xc, y=nybar), colour='deeppink3', lwd=1.2)
+    g <- g + geom_point(data = BS, aes(x=xc, y=ybar), colour='black', pch=19)
+    g <- g + geom_point(data = BS, aes(x=xc, y=nybar), colour='darkred', pch=19)
+    if (plotRibbon) {
+      # GeomRibbon$handle_na <- function(data, params) {  data }
+      g <- g + geom_ribbon(data=bse, aes(x=x, ymin=ymin, ymax=ymax),
+        fill='blue', alpha=0.2, show.legend=FALSE, inherit.aes=FALSE, na.rm=FALSE)
+      g <- g + geom_ribbon(data=bse, aes(x=x, ymin=yminN, ymax=ymaxN),
+                fill='red', alpha=0.2, show.legend=FALSE, inherit.aes=FALSE, na.rm=FALSE)
+      
+      # g <- g + geom_path(data=bse, aes(x=x, y=ymin), lty=1, lwd=0.5, col='magenta') +
+      #          geom_path(data=bse, aes(x=x, y=ymax), lty=1, lwd=0.5, col='magenta')
+    }
+  }
+  g <- g + geom_path(data=data.frame(x=rep(fL, 2), y=ylim), aes(x=x, y=y), linetype=2)
+  g <- g + scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x, n=4), #limits = xlim, 
+    labels = trans_format("log10", math_format(10^.x))) +
+    scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x, n=4), #limits = ylim,             
+      labels = trans_format("log10", math_format(10^.x))) +
+    annotation_logticks(sides='trbl') +
+    coord_cartesian(xlim=xlim, ylim=ylim)
+  g <- g + xlab('frequency [Hz]') + ylab(ylab)
+  g <- suppressWarnings(g + scale_colour_manual (name='', 
+    values=c('cospectrum'='blue', '-cospectrum'='red', 'exceedance'='brown',
+             'generated' = 'forestgreen')))
+  g <- g + scale_linetype_manual (name='', values=c('cospectrum'=1, '-cospectrum'=1, 'exceedance'=1, 'generated' = 4))
+  g <- g + guides(col=guide_legend(reverse = TRUE), linetype=guide_legend(reverse = TRUE))
+  ttl <- bquote('Total flux '~.(format(Flux, digits=3))~.(Units)*'; partial <'*.(format((wavelengthLimit/1000), digits=2))~'km:'~.(format(FluxL, digits=3))~.(Units))
+  if (printTitle) {
+    g <- g + labs(title=ttl)
+  }
+  suppressWarnings(print(g + theme_WAC(1) + theme(plot.title = element_text(size=12)) +
+                             theme(legend.position=c(0.5, 0.91))))
+  g <<- g  ## Save for adding uncorrected cospec for debugging...
+  # par(bg = 'gray95')
+  # plotWAC(data.frame(exp(BSF1$xc), BSF1$ybar, BSF1$nybar), 
+  #   col = c('blue', 'red'), ylab = ylab,
+  #   xlab='frequency [Hz]', log='xy', xlim=c(0.05,15),
+  #   ylim=c(0.01,250), legend.position=NA)
+  # lines(CSF1, col='gray50')
+  # lines(exp(BSF1$xc), BSF1$ybar, col='blue', lwd=2)
+  # lines(exp(BSF1$xc), BSF1$ybar+BSF1$sigma, col='blue', lwd=1)
+  # lines(exp(BSF1$xc), BSF1$ybar-BSF1$sigma, col='blue', lwd=1)
+  return(CS)
+}
+spans <- 51
+CS.orig <- plotCS(CS, Units, spans, fL, wavelengthLimit, smoothBins, 
+                   xlim, ylim, printTitle) 
+
+# X <-
+#   flux(
+#     DTC,
+#     'ATX',
+#     Units = bquote("W" ~ m ^ -2),
+#     spans = 149,
+#     scaleFactor = (Rho * Cp),
+#     smoothBins = sBins,
+#     wavelengthLimit = 3000,
+#     xlim = c(0.01, 15),
+#     ylim = c(1.e-3, 10)
+#   )
+
+@
+
+\pagebreak{}
+
+This plot format is unconventional and so needs some explanation because
+it will be used as the primary display of the cospectrum in this paper.
+The cospectrum can be positive or negative, so it is often plotted
+using a linear scale for the abscissa. However, as the figure shows,
+the range of ordinate values is displayed better with a logarithmic
+scale, even after weighting the cospectrum by frequency. The compromise
+made in this plot is to use a logarithmic scale but plot negative
+values with sign reversed and with a different color, here red instead
+of blue. The values plotted in red therefore should be regarded as
+negative values of the plotted magnitude. There is then a dead-band
+at the bottom of the plot where spectral values with very small absolute
+value lie, here absolute values smaller than $10^{-3}\thinspace\mathrm{W\,m^{-2}}$.
+A plot weighted by frequency is used as is appropriate for a logarithmic
+abscissa. There are several other features of this plot:
+\begin{enumerate}
+\item The cospectrum (blue line) has been smoothed using Daniell smoothing,
+with consecutive smoothing using width-3 for frequencies above 0.01~Hz,
+then width-5 for frequencies above 0.1~Hz, then width-17 for frequencies
+above 1~Hz. For these 10-min flight legs and for 25~Hz measurements,
+the maximum smoothing interval corresponds to a smoother spanning
+about 0.025~Hz, so most spectral features are retained even with
+this strong smoothing. Additional smoothing results from averaging
+six cospectra to obtain the plotted values. 
+\item Further smoothing is included by binning the results into 100 logarithmically
+spaced intervals in frequency and averaging in those bins. That results
+in the blue dots (or dark red dots for negative points).
+\item A shaded ribbon denotes the standard deviation of the values in the
+bins. In many cases it is too narrow to be visible.
+\item The total flux indicated in the title is that arising from the part
+of the flux with frequency above 0.01~Hz. This corresponds to a wavelength
+of more than 10~km for the C-130 and more than 15~km for the GV\@.
+In addition, there is another estimate of the contribution to the
+flux from wavelengths below a selected limit, here 3~km. That or
+a still smaller wavelength limit is often a reasonable estimate of
+the part of the flux contributed by turbulent air motions in the boundary
+layer, so that will be regarded as the primary measurement of sensible-heat
+flux.
+\item One additional line is plotted brown and labeled ``exceedance.''
+That is a cumulative distribution function for the cospectrum, called
+``exceedance'' because it is the complement of the conventional
+cumulative distribution: It shows the contribution from all frequencies
+higher than the indicated value. That is more informative at high
+frequency on a logarithmic scale, where some of the most interesting
+variation is located. Unlike the other plotted values, its units are
+$\mathrm{W\,m}^{-2}$, not $\mathrm{W\,m}^{-2}$ per logarithmic interval
+as is the case for the weighted cospectrum.\footnote{The cumulative distribution termed ``exceedance'' here is sometimes
+called the ogive.}
+\end{enumerate}
+Although the value measured for the sensible-heat flux is small, the
+plot indicates that there are positive contributions to the flux up
+to the highest frequencies measured. The adjustment in dynamic heating
+has only a minor (ca.~$+10$\%) effect on the measured flux, but
+it is not negligible. It is an encouraging sign that there seems to
+be some consistent contribution to the flux even from the high-frequency
+range.
+
+<<correctedCospec, include=TRUE, fig.pos='t', fig.cap='The cospectrum for temperature and updraft, multiplied by the air density and specific heat to convert to a cospectrum for the sensible-heat flux, for six 10-min boundary-layer flight segments from the VOCALS project. The measurements used in the preceding plot have been corrected for the time response of the temperature sensor, and the dynamic-heating correction has been filtered to compensate for the expected response of the temperature sensor. Further description of the plot is included in the caption for the preceding figure. An added line is the dashed brown line; it duplicates the exceedance plot from the uncorrected calculation of the cospectrum as shown in the previous figure.'>>=
+
+DVOCALS$WIC <- ShiftInTime(DVOCALS$WIC, .rate=25, .shift=-40)
+D <- DVOCALS
+DT1 <- D %>% selectTime(65000, 70000)
+DT2 <- D %>% selectTime(73300, 74300)
+DT3 <- D %>% selectTime(104600, 105600)
+DT4 <- D %>% selectTime(114200, 115200)  ## 113900, 115200
+DT5 <- D %>% selectTime(124300, 125300)
+DT6 <- D %>% selectTime(133000, 134000)
+CoSp <- rep(0, N)
+for (.data in list(DT1, DT2, DT3, DT4, DT5, DT6)) {
+  N1 <- (N - nrow(.data)) %/% 2
+  N2 <- N - nrow(.data) - N1
+  WP <- c(rep(0, N1), detrend(.data[, c('Time', 'WIC')]), rep(0, N2))
+  TP <- c(rep(0, N1), detrend(.data[, c('Time', .A)]), rep(0, N2))
+  Q  <- c(rep(0, N1), detrend(.data[, c('Time', 'Q')]), rep(0, N2))
+  ff1 <- fft(TP)
+  ff2 <- fft(WP)
+  ffq <- fft(Q)
+  # cs <- 2 * Re(ff1 * Conj(ff2)) / (Rate * N)
+  ## Estimate original recovery T and apply corrected dynamic heating:
+  alphaR <- mean(.data$alphaR, na.rm = TRUE)
+  cs <- 2 * Re((ff1 / H - alphaR * H * ffq) * Conj(ff2)) / (Rate * N)
+  CoSp <- CoSp + cs
+}
+CoSp <- CoSp * scaleFactor / 6
+Nby2 <- N %/% 2
+CS <- data.frame(freq = frq[2:(Nby2+1)], cospec = CoSp[2:(Nby2+1)])
+CS.corrected <- plotCS(CS, Units, spans, fL, wavelengthLimit, smoothBins, 
+                   xlim, ylim, printTitle, CSprevious = CS.orig) 
+
+@
+
+The result after corrections for the time response of the sensor is
+shown in Fig.~\ref{fig:correctedCospec}. The exceedance distributions
+for the original and corrected measurements of sensible-heat flux
+are both shown in this figure, the former as the dashed brown line.
+For this plot, the combination of the correction methods described
+in Sect.~\ref{subsec:Outline-correction} was used by correcting
+the measured temperature for dynamic heating using the digital filter
+but then using Fourier transforms to find the corrected flux as specified
+by the transfer function. Only minor differences arose when the other
+combinations of the methods were used. The estimated flux of sensible
+heat is increased by about 60\%, from 1.93 to 3.09~W\,m$^{-2}$
+for the contribution to the flux from wavelengths smaller than 3~km,
+and the flux attributable to frequencies above 1~Hz increased by
+100\%. 
+
+The VOCALS data led to very small sensible-heat flux. (For comparison,
+solar insolation provides a top-of-the-atmosphere flux of more than
+1000~W\,m$^{-2}$. The measured flux of sensible heat in this case
+is insignificant, although the measurement itself appears valid.)
+Therefore it is useful to extend these measurements to cases with
+more flux of sensible heat.
+
+\subsection{SOCRATES example}
+
+<<SOCrf15, include=FALSE>>=
+
+DS <-
+  getNetCDF('/Data/SOCRATES/SOCRATESrf15h.nc',
+            standardVariables(c('ATF1')),
+            55500,
+            62000)
+Rate <- attr(DS, 'Rate')
+rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+MRHO <- DS$MACHX * DS$PSXC * 100 / 
+        (287.05 * (273.15 + DS$ATX)) / rhozero
+ParamFS1 <- ParamSF
+ParamFS1$tau1 <- ParamFS1$tau1 * (mean(MRHO, na.rm = TRUE) / 0.3) ^ -0.6
+ParamFS1$tau2 <- ParamFS1$tau2 * (mean(MRHO, na.rm = TRUE) / 0.3) ^ -0.6
+DS$TASX <- SmoothInterp(DS$TASX, .Length = 0)
+DS$Q <- DS$TASX ^ 2 / 2010
+DS$ATX <- DS$ATF1
+# DS$AT <- reviseDH(DS, ParamFS1, rf)  # rf was calculated in an earlier code chunk
+## Replace this by the filtered result:
+## Recalculate AT using the dynamic-heating filter:
+DS$ATX <- SmoothInterp(DS$ATX, .Length=0)
+DS$PSXC <- SmoothInterp(DS$PSXC, .Length=0)
+DS$QCXC <- SmoothInterp(DS$QCXC, .Length=0)
+DS$MACH <- SmoothInterp(MachNumber(DS$PSXC, DS$QCXC), .Length=0)
+DS$alphaR <- RecoveryFactor(DS$MACH, 'UNHEATED') 
+DS$Q <- DS$TASX^2 / (2 * SpecificHeats()[1])
+DS$QF <- as.vector(signal::filter(ARG, DS$Q))
+DS$QF <- ShiftInTime(DS$QF, .shift=-Lshift * 40, .rate=25)
+DS$AT <- DS$ATX + DS$alphaR * (DS$Q - DS$QF)
+DS$AT <- SmoothInterp(DS$AT, .Length = 0)
+DS$RTF1 <-
+  DS$ATF1 + DS$alphaR * DS$Q  ## This variable isn't in the available file
+DS$RTF1 <- SmoothInterp(DS$RTF1, .Length = 0)
+## Estimate the corrected recovery temperature:
+aV <- ParamFS1$a
+tau1V <- ParamFS1$tau1
+tau2V <- ParamFS1$tau2
+DS$DTMDT <- c(0, diff(DS$RTF1, 2), 0) * Rate / 2
+
+fSS <- function(y, i) {  # Eq. Ts3
+    ((1/aV) * (tau1V * DS$DTMDT[i] + DS$RTF1[i] - (1-aV) * y) - y) / (Rate * tau2V)
+  }
+
+DS$Ts <- rk4.integrate (fSS, DS$RTF1[1], 1:nrow(DS))
+DS$RTC <- (1/aV) * (tau1V * DS$DTMDT + DS$RTF1 - (1-aV) * DS$Ts)
+DS$ATC <- DS$RTC - DS$alphaR * DS$QF
+## Small time adjustment seems useful?
+# DS$Q <- ShiftInTime(DS$Q, .shift = -25, .rate = 25)
+DS$RHOCP <- 100 * DS$PSXC / (287.05 * 278) * 1005
+DS$RHOCP <- SmoothInterp(DS$RHOCP, .Length = 0)
+
+@
+
+Flight 15 from the ``Southern Ocean Clouds, Radiation, Aerosol Transport
+Experimental Study'' (SOCRATES), from 24 January 2018, 6:00:00 to
+6:15:00 UTC, was another flight segment at low level over the ocean
+on which the unheated Rosemount sensor was used to measure temperature.
+The same procedure was followed as for VOCALS, with two changes: The
+flight was split into three 5-min flight segments and the results
+from those segments were averaged when the cospectrum was calculated,
+and the transfer function used was that determined based on GV measurements
+from this same project and flight, as listed in Part 1 Table 2. 
+
+Figure~\ref{fig:SOCp1} shows the measured cospectrum leading to
+the measured flux of sensible heat listed in the plot title. The exceedance
+distribution before correction, shown as the dashed brown line, was
+calculated using a dynamic-heating correction that was filtered to
+match the response of the sensor, but otherwise was not corrected.
+Without correction for the response as represented by the transfer
+function, about 30\% of the flux of sensible heat would be missed.
+The underestimation is particularly serious at higher frequencies:
+The measured contribution from frequencies above 1~Hz is about twice
+as large after correction as it is without correction. \citet{LawsonRodi1992}
+estimated that, in comparison to their fast thermocouple sensor on
+a slower aircraft, the unheated Rosemount sensor underestimated the
+flux by about 21\% in their measurements. The magnitude of the correction
+applied here is thus reasonably consistent with expectations from
+their study. 
+
+<<SOCp1, include=TRUE, fig.cap='The corrected flux of sensible heat for SOCRATES flight 15, 6:00:00 to 6:15:00, a low-level flight segment over the southern-hemisphere ocean. The "exceedance" is the complement of the cumulative distribution function (i.e., the sum of contributions from frequencies above the plotted value), and the dashed brown exceedance line is that without transfer-function correction but with adjustment of the dynamic-heating term to incorporate the estimated response of the temperature sensor.'>>=
+
+N <- 2^13   ## 8192 covers the 5-min (7500-pt) segment
+# Get the transfer function:
+Par <- Param1
+a <- ParamFS1$a
+tau1 <- ParamFS1$tau1
+tau2 <- ParamFS1$tau2
+df <- Rate / N
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+H <- LTphase(frq, ParamFS1) # complex(modulus=cTC, argument=phiTC)
+Tasm <- mean(DS$TASX[setRange(DS, 60000, 61500)], na.rm=TRUE)
+D <- DS
+D$RTF1 <- ShiftInTime(D$RTF1, .rate=25, .shift=40)
+# D$ATC <- ShiftInTime(D$ATC, .rate=25, .shift=0)
+# D$WIC <- ShiftInTime(D$WIC, .rate=25, .shift=-40)
+DS1 <- D %>% selectTime(60000, 60500)
+DS2 <- D %>% selectTime(60500, 61000)
+DS3 <- D %>% selectTime(61000, 61500)
+CoSp <- rep(0, N)
+CoSpUC <- rep(0, N)
+.A <- 'RTF1'
+.B <- 'ATC'
+.C <- 'AT'
+.D <- 'ATF1'
+for (.data in list(DS1, DS2, DS3)) {
+  N1 <- (N - nrow(.data)) %/% 2
+  N2 <- N - nrow(.data) - N1
+  WP <- c(rep(0, N1), detrend(.data[, c('Time', 'WIC')]), rep(0, N2))
+  TP <- c(rep(0, N1), detrend(.data[, c('Time', .A)]), rep(0, N2))
+  TPB <- c(rep(0, N1), detrend(.data[, c('Time', .B)]), rep(0, N2))
+  TPuc <- c(rep(0, N1), detrend(.data[, c('Time', .C)]), rep(0, N2))
+  TPO <- c(rep(0, N1), detrend(.data[, c('Time', .D)]), rep(0, N2))
+  Q  <- c(rep(0, N1), detrend(.data[, c('Time', 'Q')]), rep(0, N2))
+  ff1 <- fft(TP)
+  ff1uc <- fft(TPuc)
+  ffb <- fft(TPB)
+  ffo <- fft(TPO)
+  ff2 <- fft(WP)
+  ffq <- fft(Q)
+  cs.orig <- 2 * Re(ff1uc * Conj(ff2)) / (Rate * nrow(.data))
+  # cs <- 2 * Re(ff1 * Conj(ff2)) / (Rate * N)
+  ## Estimate original recovery T and apply corrected dynamic heating:
+  alphaR <- mean(.data$alphaR, na.rm = TRUE)
+  cs <- 2 * Re((ff1 / H - alphaR * H * ffq) * Conj(ff2)) / (Rate * nrow(.data))
+  ## supercede with direct use of ATC:
+  cs <- 2 * Re((ff1uc / H) * Conj(ff2)) / (Rate * nrow(.data))
+  cs <- 1/(Mod(H)*cos(Arg(H))) * 2 * Re((ff1uc) * Conj(ff2)) / (Rate * nrow(.data))
+  CoSp <- CoSp + cs
+  CoSpUC <- CoSpUC + cs.orig
+}
+CoSp <- CoSp * scaleFactor / 3
+CoSpUC <- CoSpUC * scaleFactor / 3
+Nby2 <- N %/% 2
+CS <- data.frame(freq = frq[2:(Nby2+1)], cospec = CoSp[2:(Nby2+1)])
+CS.orig <- data.frame(freq = frq[2:(Nby2+1)], cospec = CoSpUC[2:(Nby2+1)])
+CSogiveUC <- cumsum(CoSpUC[2:(Nby2+1)]) * CS$freq[1]
+CSogiveUC <- CSogiveUC[length(CSogiveUC)]-CSogiveUC
+CS.orig$ogive <- CSogiveUC
+wavelengthLimit <- 2000
+fL <- Tasm / wavelengthLimit
+ylim <- c(1.e-3, 80)
+CS.corrected <- plotCS(CS, Units, spans, fL, wavelengthLimit, smoothBins, 
+                   xlim, ylim, printTitle, CSprevious = CS.orig) 
+CS.orig$cospec <- SmoothInterp(CS.orig$cospec, .Length=0)  # treat NAs
+  s25 <- spans %/% 25; s10 <- spans %/% 10; s3 <- spans %/% 3
+  s25 <- s25 + (s25 + 1) %% 2
+  s10 <- s10 + (s10 + 1) %% 2
+  s3 <- s3 + (s3 + 1) %% 2
+  CS.orig$cospec <- zoo::rollapply(CS.orig$cospec, FUN = mean, fill='extend', width = s25)
+  CS.orig$cospec[CS.orig$freq > 0.01] <- zoo::rollapply(CS.orig$cospec, FUN = mean, fill='extend', width = s10)[CS.orig$freq > 0.01]
+  CS.orig$cospec[CS.orig$freq > 0.1] <- zoo::rollapply(CS.orig$cospec, FUN = mean, fill='extend', width = s3)[CS.orig$freq > 0.1]
+  CS.orig$cospec[CS.orig$freq > 1] <- zoo::rollapply(CS.orig$cospec, FUN = mean, fill='extend', width = spans)[CS.orig$freq > 1]
+# g + geom_path(data=CS.orig, aes(x=freq, y=cospec*freq), col='forestgreen', size=1.3)
+
+XS <-
+  flux(
+    DS[setRange(DS, 60000, 61500), ],
+    'AT',
+    Units = bquote("W"~m^-2),
+    smoothBins = 50,
+    scaleFactor = scaleFactor,
+    wavelengthLimit = 2000,
+    .plot = FALSE,
+    Par = ParamFS1
+  )
+
+@
+
+By obtaining a realistic measurement of the cospectrum at high frequency,
+it is possible to estimate how much of the otherwise unknown contribution
+above 1~Hz has been missed and therefore to judge if the frequency
+coverage is adequate. In this case, the exceedance curve is less than
+2\% at 10~Hz and falls rapidly above that frequency, so it appears
+likely that additional contributions from higher frequencies can go
+unmeasured without introducing serious errors into the measurement
+of flux.
+
+Appendix A presents simulation results that support these methods
+used to calculate corrections to the flux. These results in combination
+with those presented in this section indicate that defensible measurements
+of the flux of sensible heat can be made using the unheated Rosemount
+102E4AL sensor if the measurements are corrected for the time response
+of the sensor.
+
+\subsection{CSET example}
+
+The ``Cloud Systems Evolution in the Trades'' (CSET) experiment
+included many low-level (150~m) flight segments over the Pacific
+Ocean between California and Hawaii, USA, and an unheated Rosemount
+102E4AL sensor was flown on the NSF/NCAR GV during this project\@.
+These measurements provide another opportunity to evaluate the measurements
+of sensible-heat flux. Three low-level flight segments were selected
+from research flight 5 (14 July 2015): 17:52:00 to 18:02:00, 19:45:30
+to 19:55:30, and 20:37:17 to 20:47:17. The procedure was the same
+as used for the preceding SOCRATES example: Calculate the air temperature
+with a dynamic-heating correction filtered to match the sensor response,
+then average the cospectra of air temperature and updraft for the
+three segments so that the uncorrected and corrected measurements
+of flux can be compared.. 
+
+<<CSET, include=TRUE, fig.cap='Cospectrum for the flux of sensible heat, for three 10-min flight segments from the CSET project. The dashed brown line is the exceedance distribution before correction, which gives a flux of 3.07 W m${-2}$ for wavelengths smaller than 2 km and 2.06 W m$^{-2}$ for frequencies above 0.01 Hz.'>>=
+
+DCX <- getNetCDF(file.path(DataDirectory(), 'CSET/rf05h.nc'),
+                 standardVariables(c('ATF1', 'ATH1', 'ATH2')), 175000, 205000)
+Rate <- attr(DCX, 'Rate')
+MRHO <- DCX$MACHX * DCX$PSXC * 100 / 
+        (287.05 * (273.15 + DCX$ATX)) / rhozero
+ParamFS1 <- ParamSF
+ParamFS1$tau1 <- ParamFS1$tau1 * (mean(MRHO, na.rm = TRUE) / 0.3) ^ -0.6
+ParamFS1$tau2 <- ParamFS1$tau2 * (mean(MRHO, na.rm = TRUE) / 0.3) ^ -0.6
+DCX$TASX <- SmoothInterp(DCX$TASX, .Length = 0)
+DCX$Q <- DCX$TASX ^ 2 / 2010
+DCX$ATX <- DCX$ATF1
+# DCX$AT <- reviseDH(DCX, ParamFS1, rf)  # rf was calculated in an earlier code chunk
+## Replace this by the filtered result:
+## Recalculate AT using the dynamic-heating filter:
+DCX$ATX <- SmoothInterp(DCX$ATX, .Length=0)
+DCX$PSXC <- SmoothInterp(DCX$PSXC, .Length=0)
+DCX$QCXC <- SmoothInterp(DCX$QCXC, .Length=0)
+DCX$MACH <- SmoothInterp(MachNumber(DCX$PSXC, DCX$QCXC), .Length=0)
+DCX$alphaR <- RecoveryFactor(DCX$MACH, 'UNHEATED') 
+DCX$Q <- DCX$TASX^2 / (2 * SpecificHeats()[1])
+DCX$QF <- as.vector(signal::filter(ARG, DCX$Q))
+DCX$QF <- ShiftInTime(DCX$QF, .shift=-Lshift * 40, .rate=25)
+DCX$AT <- DCX$ATX + DCX$alphaR * (DCX$Q - DCX$QF)
+DCX$AT <- SmoothInterp(DCX$AT, .Length = 0)
+DCX$RTF1 <-
+  DCX$ATF1 + DCX$alphaR * DCX$Q  ## This variable isn't in the available file
+DCX$RTF1 <- SmoothInterp(DCX$RTF1, .Length = 0)
+## Estimate the corrected recovery temperature:
+aV <- ParamFS1$a
+tau1V <- ParamFS1$tau1
+tau2V <- ParamFS1$tau2
+DCX$DTMDT <- c(0, diff(DCX$RTF1, 2), 0) * Rate / 2
+
+fSS <- function(y, i) {  # Eq. Ts3
+    ((1/aV) * (tau1V * DCX$DTMDT[i] + DCX$RTF1[i] - (1-aV) * y) - y) / (Rate * tau2V)
+  }
+
+DCX$Ts <- rk4.integrate (fSS, DCX$RTF1[1], 1:nrow(DCX))
+DCX$RTC <- (1/aV) * (tau1V * DCX$DTMDT + DCX$RTF1 - (1-aV) * DCX$Ts)
+DCX$ATC <- DCX$RTC - DCX$alphaR * DCX$QF
+## Small time adjustment seems useful?
+# DCX$Q <- ShiftInTime(DCX$Q, .shift = -25, .rate = 25)
+DCX$RHOCP <- 100 * DCX$PSXC / (287.05 * 278) * 1005
+DCX$RHOCP <- SmoothInterp(DCX$RHOCP, .Length = 0)
+
+N <- 2^14   ## 16384 covers the 10-min (15000-pt) segments
+# Get the transfer function:
+a <- ParamFS1$a
+tau1 <- ParamFS1$tau1
+tau2 <- ParamFS1$tau2
+df <- Rate / N
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+H <- LTphase(frq, ParamFS1)
+D <- DCX
+D$RTF1 <- ShiftInTime(D$RTF1, .rate=25, .shift=40)
+# D$ATC <- ShiftInTime(D$ATC, .rate=25, .shift=0)
+# D$WIC <- ShiftInTime(D$WIC, .rate=25, .shift=-40)
+DC1 <- D %>% selectTime(175200, 180200)
+DC2 <- D %>% selectTime(194530, 195530)
+DC3 <- D %>% selectTime(203717, 204717)
+CoSp <- rep(0, N)
+CoSpUC <- rep(0, N)
+.A <- 'RTF1'
+.B <- 'ATC'
+.C <- 'AT'
+.D <- 'ATF1'
+DCF <- data.frame()
+for (.data in list(DC1, DC2, DC3)) {
+  N1 <- (N - nrow(.data)) %/% 2
+  N2 <- N - nrow(.data) - N1
+  WP <- c(rep(0, N1), detrend(.data[, c('Time', 'WIC')]), rep(0, N2))
+  TP <- c(rep(0, N1), detrend(.data[, c('Time', .A)]), rep(0, N2))
+  TPB <- c(rep(0, N1), detrend(.data[, c('Time', .B)]), rep(0, N2))
+  TPuc <- c(rep(0, N1), detrend(.data[, c('Time', .C)]), rep(0, N2))
+  TPO <- c(rep(0, N1), detrend(.data[, c('Time', .D)]), rep(0, N2))
+  Q  <- c(rep(0, N1), detrend(.data[, c('Time', 'Q')]), rep(0, N2))
+  ff1 <- fft(TP)
+  ff1uc <- fft(TPuc)
+  ffb <- fft(TPB)
+  ffo <- fft(TPO)
+  ff2 <- fft(WP)
+  ffq <- fft(Q)
+  cs.orig <- 2 * Re(ff1uc * Conj(ff2)) / (Rate * nrow(.data))
+  # cs <- 2 * Re(ff1 * Conj(ff2)) / (Rate * N)
+  ## Estimate original recovery T and apply corrected dynamic heating:
+  alphaR <- mean(.data$alphaR, na.rm = TRUE)
+  cs <- 2 * Re((ff1 / H - alphaR * H * ffq) * Conj(ff2)) / (Rate * nrow(.data))
+  ## supercede with direct use of ATC:
+  cs <- 2 * Re((ff1uc / H) * Conj(ff2)) / (Rate * nrow(.data))
+  cs <- 1/(Mod(H)*cos(Arg(H))) * 2 * Re((ff1uc) * Conj(ff2)) / (Rate * nrow(.data))
+  CoSp <- CoSp + cs
+  CoSpUC <- CoSpUC + cs.orig
+  DCF <- rbind(DCF, .data)
+}
+Tasm <- mean(DCF$TASX, na.rm=TRUE)
+CoSp <- CoSp * scaleFactor / 3
+CoSpUC <- CoSpUC * scaleFactor / 3
+Nby2 <- N %/% 2
+CS <- data.frame(freq = frq[2:(Nby2+1)], cospec = CoSp[2:(Nby2+1)])
+CS.orig <- data.frame(freq = frq[2:(Nby2+1)], cospec = CoSpUC[2:(Nby2+1)])
+CSogiveUC <- cumsum(CoSpUC[2:(Nby2+1)]) * CS$freq[1]
+CSogiveUC <- CSogiveUC[length(CSogiveUC)]-CSogiveUC
+CS.orig$ogive <- CSogiveUC
+wavelengthLimit <- 2000
+fL <- Tasm / wavelengthLimit
+ylim <- c(1.e-3, 80)
+CS.corrected <- plotCS(CS, Units, spans, fL, wavelengthLimit, smoothBins, 
+                   xlim, ylim, printTitle, CSprevious = CS.orig) 
+CS.orig$cospec <- SmoothInterp(CS.orig$cospec, .Length=0)  # treat NAs
+  s25 <- spans %/% 25; s10 <- spans %/% 10; s3 <- spans %/% 3
+  s25 <- s25 + (s25 + 1) %% 2
+  s10 <- s10 + (s10 + 1) %% 2
+  s3 <- s3 + (s3 + 1) %% 2
+  CS.orig$cospec <- zoo::rollapply(CS.orig$cospec, FUN = mean, fill='extend', width = s25)
+  CS.orig$cospec[CS.orig$freq > 0.01] <- zoo::rollapply(CS.orig$cospec, FUN = mean, fill='extend', width = s10)[CS.orig$freq > 0.01]
+  CS.orig$cospec[CS.orig$freq > 0.1] <- zoo::rollapply(CS.orig$cospec, FUN = mean, fill='extend', width = s3)[CS.orig$freq > 0.1]
+  CS.orig$cospec[CS.orig$freq > 1] <- zoo::rollapply(CS.orig$cospec, FUN = mean, fill='extend', width = spans)[CS.orig$freq > 1]
+# g + geom_path(data=CS.orig, aes(x=freq, y=cospec*freq), col='forestgreen', size=1.3)
+
+
+@
+
+The resulting cospectrum is shown in Fig.~\ref{fig:CSET}. Without
+correction, the measured flux would be about 56\% of the corrected
+flux for wavelengths smaller than 2 km, and for fluctuating frequencies
+above 1~Hz the measured flux would be only about 43\% of that obtained
+from the corrected measurements. The indication from this example,
+as from the others, is that the correction can amount to a significant
+part of the measured flux and that, without correction, the flux would
+be underestimated by around 50\%.
+
+\clearpage{}
+
+\section{Summary and Conclusions}
+
+Some key conclusions from Parts 1 and 2 are included briefly here
+so that this summary can encompass all three papers. The key findings
+are these:
+\begin{enumerate}
+\item In Part 1, a transfer function for an unheated Rosemount 102E4AL sensor
+was determined and shown to be consistent with constraining measurements.
+A parametric representation depending on three parameters was shown
+to lead to reasonable correction of the measurements of recovery temperature.
+\item Part 2 argued that, because temperature sensors often do not respond
+fast enough to measure high-frequency components of the dynamic-heating
+correction, erroneous corrections are introduced by conventional data
+processing. Instead, the corrections should be filtered to match the
+response of the temperature sensor to avoid introduction of these
+errors.
+\item In this Part 3, a correction procedure was proposed that consists
+of using the transfer function from Part 1 and the modified correction
+for dynamic heating developed in Part 2 to calculate the sensible-heat
+flux. Three cases are presented, all with significant correlation
+between temperature and updraft at a range of frequencies including
+those above 1~Hz. The measured values of sensible-heat flux would
+be underestimated significantly (by about 40\%, 30\%, and 44\% in
+the three cases) without correction. 
+\item The cospectrum with correction appears to be represented reasonably
+at frequencies up to about 10~Hz, so the rapidly decreasing concentration
+to the cospectrum from these frequencies suggests that it is not necessary
+to measure contributions from frequencies above this limit. This conclusion
+is tentative and needs reconsideration when applied to new cases.
+\item These results are reproducible using the document that generated this
+report, and this report is archived along with appropriate data sources
+so that they will be accessible to others who might want to apply
+these approaches to other sensors or use these correction schemes
+to improve measurements of the flux of sensible heat. Appendix B provides
+specific information to aid an analyst who might want to replicate
+or extend this study. In particular, an accompanying ``workflow''
+statement provides additional details and documents some additional
+aspects of the study that are not included in this report, and methods
+to access the data used are included in that workflow document.
+\end{enumerate}
+
+\appendix
+
+\section{Appendix: Assessment Via Simulation}
+
+<<reinitialization,echo=FALSE,include=FALSE>>=
+
+Directory <- DataDirectory ()
+Flight <- 1 				
+Project = "SOCRATES"			
+ProjectDir <- "SOCRATES"
+fname = sprintf("%s%s/%srf%02d.nc", Directory, ProjectDir, Project, Flight)
+
+@
+
+\subsection{The Goal}
+
+This appendix uses simulated measurements with the analysis methods
+developed in this paper to demonstrate that those correction schemes
+can recover the assumed simulated conditions. Toward this end, it
+is useful to generate time series representing isotropic wind measurements
+that have a specified relationship to the eddy dissipation rate and
+the expected $-5/3$ slope of spectral variance vs.~frequency that
+is expected for an inertial sub-range. The code used here generates
+such a time series of duration $T=30\,\mathrm{min}$ by generating
+a Gaussian-noise spectrum, finding the Fourier transform, weighting
+the components to obtain a $-5/3$ slope, and then using an inverse
+Fourier transform to reconstruct a simulated measurement series representing
+an inertial subrange. To provide a more realistic representation of
+the variance spectra often observed, the spectral variance is attenuated
+a low frequency to produce a peak variance at several-kilometer wavelength.
+
+The variance spectrum expected for an inertial sub-range has the following
+form:\\
+\begin{equation}
+P(\nu)=C\left(\frac{2\pi}{V}\right)^{-2/3}\epsilon^{2/3}\nu^{-5/3}\label{eq:expectedSpectrum}
+\end{equation}
+where $C=0.5$ for the longitudinal component of the wind and 2/3
+for a lateral component. An eddy dissipation rate of $10^{-3}\,\mathrm{m}^{2}\mathrm{s^{-3}}$
+and a flight speed of $V=200$~m/s were used with \eqref{eq:expectedSpectrum}
+to specify the desired variance spectrum. 
+
+<<varSpecISR, include=FALSE, echo=FALSE, fig.cap="Assumed spectral variance at periodogram points.">>=
+
+epsilon <- 1.e-3  ## mks
+e23 <- epsilon ^ (2 / 3)
+V <- 200   ## assumed flight speed, m/s
+duration <- 1800
+Rate <- 50
+Nyq <- Rate / 2
+C <- (2 / 3) * (2 * pi / V) ^ (-2 / 3)
+# freq <- seq(1/duration, Nyq, by=1/duration)  ## unaliased
+freq <- seq(1 / duration, Nyq * 5, by = 1 / duration)  ## aliased version
+p <-
+  C * e23 * freq ^ (-5 / 3)  ## This is variance per frequency interval,
+## normalized to be positive frequencies
+r <- freq > 0 & freq <= Nyq
+plotWAC(
+  data.frame (freq[r], p[r]),
+  log = 'xy',
+  xlab = 'frequency [Hz]',
+  ylab = bquote('P(frequency) [m' ^ 2 ~ 's' ^ -2 ~ 'Hz' ^ -1 ~ ']'),
+  col = 'blue',
+  lwd = 2
+)
+
+@
+
+<<generate, include=TRUE, echo=FALSE, fig.cap='The variance spectrum of the generated time series. Three wind components are shown: $u$ longitudinal; $v$ side lateral; $w$ upward. The simulated eddy dissipation rate was $10^{-3}$ m$^2s^{-3}$. The generated longitudinal spectral density (u) is 3/4 the lateral spectral densities (v and w), as expected in an inertial subrange. The dashed orange lines indicated the expected slope ($-2/3$ for this distribution because it is weighted by frequency), with the large-dot line representing $10^{-4}$ m$^2s^{-3}$ and other lines representing eddy dissipation rates  factors of 10 higher or lower. The spectral variance has been attenuated at low frequency to simulate the shapes that are often observed. The displayed wavelength scale was determined from the average flight speed.'>>=
+
+if (file.exists('DF2.Rdata')) {  ## This is to avoid having this change every run
+  load(file = 'DF2.Rdata')
+} else {
+  Rate <- 25
+  duration <- 2^16 / Rate
+  epsilon <- 1.e-3  ## Specify the eddy dissipation rate, mks units
+  V <- 200   ## assumed flight speed, m/s
+  ## Spectral variance amplitude, lateral component
+  C <- (2 / 3) * (2 * pi / V) ^ (-2 / 3) * epsilon ^ (2 / 3) 
+  Time <- seq(0, duration * Rate - 1) / Rate
+  N <- length(Time)
+  A <- sqrt(C * Rate / 2)
+  u <- rnorm(N, 0, A) * sqrt(3/4)  ## sqrt(3/4) to get 3:4 ratio, spectra
+  v <- rnorm(N, 0, A)
+  w <- rnorm(N, 0, A)
+  DF2 <- data.frame(Time = Time, TASX = V + u, u = u, v = v, w = w)
+  attr(DF2, 'Rate') <- Rate
+  f1 <- fft(DF2$u)
+  f2 <- fft(DF2$v)
+  f3 <- fft(DF2$w)
+  df <- Rate / N
+  frq <- c(seq(0, Rate/2, by = df), seq(-Rate/2+df, -df, by = df))
+  f1[2:N] <- f1[2:N] * abs(frq[2:N]) ^ (-5/6)  ## Force -5/3 slope
+  f2[2:N] <- f2[2:N] * abs(frq[2:N]) ^ (-5/6)
+  f3[2:N] <- f3[2:N] * abs(frq[2:N]) ^ (-5/6)
+  rf <- (abs(frq) < 0.02)
+  rf[1] <- TRUE
+  f1[rf] <- f1[rf] * exp(-5*0.02 / abs(frq[rf]))  ## Truncate low-frequency
+                                          ## (improves high-f accuracy)
+  f2[rf] <- f2[rf] * exp(-5*0.02 / abs(frq[rf]))
+  f3[rf] <- f3[rf] * exp(-5*0.02 / abs(frq[rf]))
+  DF2$u <- Re(fft(f1, inverse = TRUE) / N)
+  DF2$v <- Re(fft(f2, inverse = TRUE) / N)
+  DF2$w <- Re(fft(f3, inverse = TRUE) / N)
+  ## Modify time to get a POSIXct value as expected by Ranadu:
+  load('chunks/Time_units.Rdata')  ## Saved from a conventional file
+  attr(DF2$Time, 'units') <- Time_units$value
+  tref <- sub ('seconds since ', '', attr (DF2$Time, 'units'))
+  DF2$Time <- as.POSIXct(DF2$Time, tz = 'UTC', origin = tref)
+  DF2 <- DF2 %>% selectTime(500, 3500)  # Select subset to avoid end effects
+  save(DF2, file='DF2.Rdata')
+}
+DF2 %>% select(Time, TASX, u, v, w) %>% 
+        VSpec(xlim=c(0.01,15), ylim=c(1.e-3, 10), type='MEM') + theme_WAC(1)
+
+@
+
+The result for one realization of the time series is shown in Fig.~\ref{fig:generate}.
+The match to the assumed eddy dissipation rate ($10^{-3}m^{2}s^{-3})$
+is good. When calculating the simulated flux, the very-long-wavelength
+components (with frequency below 0.02~Hz) were attenuated before
+the series was used. This seemed to improve the accuracy of the high-frequency
+simulation, which otherwise exhibited some variability for different
+random sequences but became more consistent with this adjustment.
+
+\subsection{Simulated Flux }
+
+To determine how a simulated time series would be measured, it was
+necessary to generate two realistic time series for the updraft and
+the temperature. To produce a flux, there should be some correlation
+between these so that the measurement based on \eqref{eq:heatFlux-1}
+will be non-zero. Therefore, the two time series were generated as
+follows:
+\begin{enumerate}
+\item A time series for $w^{\prime}$ was generated that has eddy dissipation
+rate of $10^{-3}\mathrm{m}^{2}\mathrm{s}^{-3}$, as shown in Fig.~\ref{fig:generate}.
+\item A second independent time series $T$ with fluctuations $T^{\prime}$
+scaled smaller by a factor of five was generated to represent the
+\emph{air }temperature.
+\item Correlation between the two time series was then introduced by defining
+a new temperature time series with the fluctuations $T_{c}^{\prime}=(1-r)T^{\prime}+rw^{\prime}/5$
+where $r=0.3$. The result will be $<w^{\prime}T_{c}^{\prime}>=r\sqrt{\sigma_{w}\sigma_{T_{c}}}$,
+which will lead to a flux of sensible heat specified as\\
+\[
+F_{s}=\rho_{a}C_{p}r\sqrt{\sigma_{w}\sigma_{T_{c}}}
+\]
+\end{enumerate}
+An example is shown in Fig.~\ref{fig:simF1}. In this simulation,
+the correlation is the same at all frequencies so the contribution
+to the measured flux also extends over all frequencies, with decreasing
+contributions as frequency increases. In this case, about 10\% of
+the $<5\,\mathrm{km}$ flux is contributed at frequencies above 1~Hz,
+where there is danger that the real sensor will respond incompletely
+to the fluctuations. The potential effects of the sensor response
+and possibly incorrect adjustment for dynamic heating can then be
+determined by replacing the dynamic-heating term with the filtered
+version as specified in Part 2 and then by calculating the expected
+measurement by filtering the recovery temperature in the same way. 
+
+<<genF, include=FALSE>>=
+
+rc <- 0.3
+DF2$T <- DF2$v / 5
+DF2$T <- (1 - rc) * DF2$T + rc * DF2$w / 5 + 10
+DF2$WIC <- DF2$w
+DF2$Q <- 0.985 * DF2$TASX ^ 2 / 2010
+DF2$RT <- DF2$T + DF2$Q  ## The conventional calculation of the recovery temperature
+a <- Param1$a
+tau1 <- Param1$tau1
+tau2 <- Param1$tau2
+DF2$TsQ <- DF2$RT
+DF2$Qp <- DF2$Q
+Rate <- attr (DF2, 'Rate')
+fS <- function(y, i) {
+  (DF2$Q[i] - y) / (Rate * tau2)
+}
+fM <- function (y, i) {
+  (a * DF2$Q[i] + (1 - a) * DF2$TsQ[i] - y) / (Rate * tau1)
+}
+# DF2$TsQ <- rk4.integrate (fS, DF2$Q[1], 1:nrow(DF2))
+# DF2$Qp <- rk4.integrate (fM, DF2$Q[1], 1:nrow(DF2))
+DF2$QF <- as.vector(signal::filter(AR, DF2$Q))
+DF2$QF <- ShiftInTime(DF2$QF, .shift=-Lshift * 40, .rate=25)
+## Find the measured recovery temperature Tm responding to RT
+fS <- function(y, i) {
+  (DF2$RT[i] - y) / (Rate * tau2)
+}
+fM <- function (y, i) {
+  (a * DF2$RT[i] + (1 - a) * DF2$Ts[i] - y) / (Rate * tau1)
+}
+# DF2$Ts <- rk4.integrate (fS, DF2$RT[1], 1:nrow(DF2))
+# DF2$Tm <- rk4.integrate (fM, DF2$RT[1], tv = 1:nrow(DF2))
+# DF2$Tm <- rk4.integrate (fM, DF2$RT[1], 1:nrow(DF2))
+DF2$TF <- as.vector(signal::filter(AR, DF2$RT))
+DF2$TF <- ShiftInTime(DF2$TF, .shift=-Lshift * 40, .rate=25) ## The simulated measurement
+
+# DF2$ATm <-
+  # DF2$Tm - DF2$Q  ## The erroneous measured ambient temperature
+# DF2$ATM <-
+  # DF2$Tm - DF2$Qp  # and application of the corrected dynamic-heating
+DF2$ATF <- 
+  DF2$TF - DF2$QF  # Subtract the filtered version
+SF <- 100 * 850 / (287 * 283) * 1005
+A <- flux(    ## This is the "true" flux
+  DF2,
+  'T',
+  Units = bquote("W" ~ m ^ -2),
+  smoothBins = 100,
+  scaleFactor = rep(SF, nrow(DF2)),
+  wavelengthLimit = 2500,
+  .plot = FALSE
+)
+
+@
+
+\subsection{Application of corrections}
+
+<<simF, include=TRUE, fig.height=4, fig.cap=c('The cospectrum for the flux of sensible heat for the simulated data generated as described in the text. Three 10-min segments of simulated 25 Hz data, with 0.3 correlation coefficient between fluctuations in temperature and updraft and the correlated fluctuations in temperature scaled to have amplitude 20\\% of those in updraft.','The cospectrum for the flux of sensible heat for the simulated measurement of a realistic sensor (here, the unheated Rosemount 102E4AL sensor) with the revised dynamic-heating correction ($Q^\\prime$) and the measurement calculated by applying the digital filter from Part 2 to the assumed recovery-temperature history as simulated. The correction procedure from Sect. 1.2 was used to estimate the corrected flux shown as the plotted spectrum and the solid brown exceedance distribution. The dashed exceedance line is the uncorrected result, for which the contributions from frequencies above 1 Hz are only 3.4 W m$^{-2}$ vs.\\ 5.9 W m$^{-2}$ for the cospectrum as generated.')>>=
+
+# A <- flux(
+#   DF2,
+#   'ATF',
+#   Units = bquote("W" ~ m ^ -2),
+#   smoothBins = 100,
+#   scaleFactor = rep(SF, nrow(DF2)),
+#   wavelengthLimit = 2500
+# )
+AF <- flux(
+  DF2,
+  'ATF',
+  Units = bquote("W" ~ m ^ -2),
+  smoothBins = 100,
+  scaleFactor = rep(SF, nrow(DF2)),
+  Par = Param1,
+  .plot = FALSE,
+  wavelengthLimit = 2500
+)
+
+N <- 2^14   ## 16384 covers the 10-min (15000-pt) segments
+# Get the transfer function:
+a <- Param1$a
+tau1 <- Param1$tau1
+tau2 <- Param1$tau2
+df <- Rate / N
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+H <- LTphase(frq, Param1)
+D <- DF2
+# D$RTF1 <- ShiftInTime(D$RTF1, .rate=25, .shift=40)
+# D$ATC <- ShiftInTime(D$ATC, .rate=25, .shift=0)
+# D$WIC <- ShiftInTime(D$WIC, .rate=25, .shift=-40)
+DX1 <- D %>% selectTime(500, 1500)
+DX2 <- D %>% selectTime(1500, 2500)
+DX3 <- D %>% selectTime(2500, 3500)
+CoSp <- rep(0, N)
+CoSpG <- rep(0, N)  ## cospectrum of generated T
+CoSpUC <- rep(0, N)
+.A <- 'ATF'
+.B <- 'TF'
+.C <- 'ATF'
+.D <- 'T'
+DCF <- data.frame()
+for (.data in list(DX1, DX2, DX3)) {
+  N1 <- (N - nrow(.data)) %/% 2
+  N2 <- N - nrow(.data) - N1
+  WP <- c(rep(0, N1), detrend(.data[, c('Time', 'WIC')]), rep(0, N2))
+  TP <- c(rep(0, N1), detrend(.data[, c('Time', .A)]), rep(0, N2))
+  TPB <- c(rep(0, N1), detrend(.data[, c('Time', .B)]), rep(0, N2))
+  TPuc <- c(rep(0, N1), detrend(.data[, c('Time', .C)]), rep(0, N2))
+  TPO <- c(rep(0, N1), detrend(.data[, c('Time', .D)]), rep(0, N2))
+  Q  <- c(rep(0, N1), detrend(.data[, c('Time', 'Q')]), rep(0, N2))
+  ff1 <- fft(TP)
+  ff1uc <- fft(TPuc)
+  ffb <- fft(TPB)
+  ffo <- fft(TPO)
+  ff2 <- fft(WP)
+  ffq <- fft(Q)
+  cs.G <- 2 * Re(ffo * Conj(ff2)) / (Rate * nrow(.data))
+  cs.orig <- 2 * Re(ff1uc * Conj(ff2)) / (Rate * nrow(.data))
+  # cs <- 2 * Re(ff1 * Conj(ff2)) / (Rate * N)
+  ## Estimate original recovery T and apply corrected dynamic heating:
+  cs <- 2 * Re((ffb / H - H * ffq) * Conj(ff2)) / (Rate * nrow(.data))
+  # cs <- 2 * Re((ffo) * Conj(ff2)) / (Rate * nrow(.data))
+  ## supercede with direct use of ATF:
+  cs <- 2 * Re((ff1uc / H) * Conj(ff2)) / (Rate * nrow(.data))
+  # cs <- 1/(Mod(H)*cos(Arg(H))) * 2 * Re((ff1uc) * Conj(ff2)) / (Rate * nrow(.data))
+  CoSp <- CoSp + cs
+  CoSpG <- CoSpG + cs.G
+  CoSpUC <- CoSpUC + cs.orig
+  DCF <- rbind(DCF, .data)
+}
+Tasm <- mean(DCF$TASX, na.rm=TRUE)
+CoSp <- CoSp * scaleFactor / 3
+CoSpG <- CoSpG * scaleFactor / 3
+CoSpUC <- CoSpUC * scaleFactor / 3
+Nby2 <- N %/% 2
+CS <- data.frame(freq = frq[2:(Nby2+1)], cospec = CoSp[2:(Nby2+1)])
+CS.G <- data.frame(freq = frq[2:(Nby2+1)], cospec = CoSpG[2:(Nby2+1)])
+CS.orig <- data.frame(freq = frq[2:(Nby2+1)], cospec = CoSpUC[2:(Nby2+1)])
+CSogiveUC <- cumsum(CoSpUC[2:(Nby2+1)]) * CS$freq[1]
+CSogiveUC <- CSogiveUC[length(CSogiveUC)]-CSogiveUC
+CS.orig$ogive <- CSogiveUC
+wavelengthLimit <- 2500
+fL <- Tasm / wavelengthLimit
+ylim <- c(1.e-3, 800)
+CS.G <- plotCS(CS.G, Units, spans, fL, wavelengthLimit, smoothBins, 
+                   xlim, ylim, printTitle)
+CS.orig$ogive2 <- CS.G$ogive
+CS.corrected <- plotCS(CS, Units, spans, fL, wavelengthLimit, smoothBins, 
+                   xlim, ylim, printTitle, CSprevious = CS.orig) 
+
+@
+
+Figure uncorrected measurement of temperature used to generate Fig.~\ref{fig:simF2}
+results from digital filtering to correct the dynamic heating term
+but otherwise without correction based on the transfer function. To
+be specific:
+\begin{enumerate}
+\item A true recovery temperature $T_{r}$ was calculated by adding the
+dynamic-heating term $Q$ to the simulated air temperature $T$.
+\item The digital filter for the unheated Rosemount sensor as determined
+from measurements on th GV, with response characteristics as listed
+in Table 2 of Part 1, was applied to $T_{r}$ to obtain an estimate
+of the time series that would be measured, $T_{m}$.
+\item The same digital filter was applied to the dynamic-heating term $Q$
+to obtain an estimate of how the sensor should respond to that dynamic
+heating, denoted here as $Q^{\prime}$.
+\item That estimate of the probe response to dynamic heating was subtracted
+from $T_{m}$ to obtain a prediction of the air temperature that would
+be measured, $T_{a}=T_{m}-Q^{\prime}$.
+\item The flux was then calculated from \eqref{eq:heatFlux-1} using $T_{a}$
+and the simulated updraft. That produced the uncorrected flux characterized
+by the dashed brown line in Fig.~\ref{fig:simF2}.
+\item The correction procedure from Sect.~\ref{subsec:Outline-correction}
+was then used to correct for the flux of sensible heat that would
+be missed because the temperature sensor does not respond instantly.
+\end{enumerate}
+<<fluxEx, include=FALSE, fig.cap='The exceedance functions for flux as functions of frequency, for the cospectra of the simulated variables for temperature and updraft and for the calculated cospectrum that would be measured after correction as described in Sect.\\ 5.'>>=
+
+dP <- data.frame(freq = A$freq, Flux = A$ogive, Measured = AF$ogive)
+g <- ggplot (data = dP, aes(x = freq))
+g <- g + geom_path(aes(y = Flux, col = 'Simulated', 
+                       linetype = 'Simulated'), lwd = 1.5)
+g <- g + geom_path(aes(y = Measured, col = 'Corrected Measurement',
+                       linetype = 'Corrected Measurement'))
+g <- g + xlab('frequency [Hz]') + 
+         ylab(bquote('Flux Exceedance [W' ~ m ^ -2 ~ ']'))
+g <- g + scale_x_log10(breaks = trans_breaks("log10", 
+         function(x) 10^x, n=4),
+         labels = trans_format("log10", math_format(expr = 10^.x)))
+g <- g + scale_y_log10(breaks = trans_breaks("log10", 
+         function(x) 10^x, n=4),
+         labels = trans_format("log10", math_format(expr = 10^.x)))
+g <- g + coord_cartesian(xlim=c(0.01, 15))  
+g <- g + annotation_logticks(sides='trbl')
+g <- suppressWarnings(g + scale_colour_manual (name='', 
+                      values=c('Simulated'='blue', 
+                               'Corrected Measurement'='forestgreen')))
+g <- g + scale_linetype_manual (name='', values=c('Simulated' = 4,
+                                            'Corrected Measurement' = 1))
+g <- g + theme_WAC(1)
+suppressWarnings(print(g + theme_WAC(1) + 
+                       theme(legend.position=c(0.3, 0.7))))
+
+@
+
+The result was remarkable consistency between the generated flux (39.8~W\,m$^{-2}$)
+shown in Fig.~\ref{fig:simF1} and the flux estimated after the correction
+procedure (40.6~W\,m$^{-2}$) as shown in Fig.~\ref{fig:simF2}.
+The representation of the high-frequency contribution is improved
+significantly by the correction procedure, and the exceedance distributions
+are almost identical for the generated and corrected cospectra, as
+shown by the agreement between the corrected exceedance distribution
+(solid brown line) and the generated exceedance distribution (dashed
+green line) in Fig.~\ref{fig:simF2}. Thus, the simulation supports
+both the correction procedure from Sect.~\ref{subsec:Outline-correction}
+and the proposed treatment of dynamic heating in Part 2. Of course,
+this does not demonstrate that the fitted transfer function is correct
+as determined in this document, only that the use of that transfer
+function and the digital filter derived from it are consistent.
+
+\section{Reproducibility}
+
+\index{reproducibility}This document is constructed in ways that
+support duplication of the study. The code that generates the plots
+and implements the correction procedure is incorporated into the same
+\index{program!file}file that generated this document via \LaTeX,
+using principles and techniques described by \citet{Xie2014a} as
+implemented in the R \index{R language!package!knitr}package\index{knitr}
+'knitr' (\citet{Xie2014b}). The program, 'SensibleHeatFluxPaper1.Rnw',
+is archived on 'GitHub' \index{GitHub repository}in the \index{repository!github}directory\index{archive!for this document}
+at \href{https://github.com/WilliamCooper/KalmanFilter.git}{this URL}.
+There is some \index{supplemental material}supplemental material
+in that directory, including the workflow document\index{workflow document},
+the bibliography and some code segments saved in the ``chunks''\index{R language!program chunks}
+subdirectory, so the full directory should be downloaded in order
+to run the program. The calculations use the programming \index{R language}language
+\index{R language!program}\index{RStudio}R (\citet{Rlanguage})
+and were run within \index{RStudio}RStudio (\citet{RStudio2012}),
+so this is the most straightforward way to replicate the calculations
+and the generation of this \index{program!generating this document}document.
+
+A \index{R language!package!Ranadu}package named Ranadu,\index{R language!package!Ranadu}
+containing auxillary \index{function!Ranadu}functions, is used extensively
+in the R code. It is available on GitHub\index{GitHub repository}
+as \href{https://github.com/WilliamCooper/Ranadu.git}{https://github.com/WilliamCooper/Ranadu.git}.
+The version used for calculations in this technical note is included
+in the 'zip' archive listed below.
+
+The \index{file!data}data files used are also preserved in the NCAR/EOL
+Data Archives and can be obtained via a \index{data!requesting}request
+to \url{mailto:raf-dm@eol.ucar.edu} or via the ``Data Access''
+links at \href{https://www.eol.ucar.edu/all-field-projects-and-deployments}{this web site}.
+The original files containing the data as produced by the NCAR Earth
+Observing Laboratory, Research Aviation Facility, were in \index{netCDF format}netCDF
+format (cf.~\href{http://www.unidata.ucar.edu/software/netcdf/}{this URL}),
+but in many cases data archives were reprocessed and the files may
+change after reprocessing so a separate archive\index{archive!for this document!data}
+is maintained for this document. The data files\index{file!data!archive}
+in this archive contain \index{R language!data.frames}R data.frames
+and are preserved as binary-format 'Rdata' files via R 'save' commands.
+The code in the GitHub archive has appropriate 'load' commands to
+read these data files from a subdirectory named 'Data' (/Data or \textasciitilde /Data
+or /home/Data) but this is not part of the GitHub repository because
+it is too large to be appropriate there. To reproduce this research,
+those data files have to be transferred separately from \{??where??\}
+
+Extensive use has been made of \index{attributes!data.frame}\index{attributes!variable}attributes
+assigned to the data.frames and the variables in those data.frames.
+All the attributes from the original netCDF \index{file!netCDF}files
+have been transferred, so there is a record of how the original data
+were processed, for example recording \index{calibration!coefficients!used in processing}calibration
+coefficients and processing chains for the variables. Once the data.frames
+are loaded into R, these attributes can be viewed and provide additional
+documentation of what data were used. Key information like the processing
+date, the program version that produced the archive, and the selection
+of primary variables for various measurements thus is preserved.
+
+(See the related list of project components on the next page that
+are preserved to enhance reproducibility.)
+
+\clearpage{}
+
+\begin{tabular}{ll}
+\textsf{\textsc{\textcolor{blue}{Project:}}}  & SensibleHeatFlux\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Archive package:}}}  & \href{https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/SensibleHeatFluxPaper3.zip}{SensibleHeatFluxPaper3.zip}\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Contains:}}}  & attachment list below\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Program:}}}  & \href{https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/SensibleHeatFluxPaper3.Rnw}{SensibleHeatFluxPaper3.Rnw}\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Original Data:}}}  & \citet{VOCALS2011}, \tabularnewline
+ & \citet{SOCRATES2019},\tabularnewline
+ & \citet{CSET2017} \tabularnewline
+\textsf{\textsc{\textcolor{blue}{Special Data Files:}}}  & SensibleHeatFluxTechNote.Rdata, SensibleHeatFluxTechNote2.Rdata\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Workflow Document:}}}  & \href{https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/WorkflowSensibleHeatFluxPaper3.pdf}{WorkflowSensibleHeatFluxPaper3.pdf}\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Git:}}}  & \index{GitHub repository}\href{https://github.com/WilliamCooper/SensibleHeatFlux.git}{https://github.com/WilliamCooper/SensibleHeatFlux.git}\tabularnewline
+\end{tabular}
+
+\attachm{SensibleHeatFluxPaper3.Rnw\\
+SensibleHeatFluxPaper3.pdf\\
+WorkflowSensibleHeatFluxPaper3.pdf\\
+WAC.bib\\
+chunks/{*}\\
+SessionInfo}
+
+\label{sec:bibliography} 
+
+\bibliographystyle{plainnat}
+\phantomsection\addcontentsline{toc}{section}{\refname}\bibliography{/home/cooperw/RStudio/WAC}
+
+\clearpage{}
+
+% \centerline{-- Blank Page, End of this Technical Report --}
+% \vfill\eject
+% \clearpage
+%\addcontentsline{toc}{section}{End}
+
+
+\end{document}
