@@ -3013,6 +3013,11 @@ dfAP <- data.frame(
 
 \begin_layout Plain Layout
 
+Panel2Label <- bquote('   Phase [' * degree ~ ']')
+\end_layout
+
+\begin_layout Plain Layout
+
 g <-
 \end_layout
 
@@ -3033,7 +3038,7 @@ g <-
 
 \begin_layout Plain Layout
 
-    labelP = c('    Amplitude', 'Phase [degrees]'),
+    labelP = c(bquote('    ' ~ 'Amplitude'), Panel2Label), 
 \end_layout
 
 \begin_layout Plain Layout
@@ -13719,7 +13724,6 @@ Sexpr{format(bestW[2], digits=2, nsmall=2)}
 \noun off
 \color none
 \lang english
-
  
 \family default
 \series default
@@ -19345,6 +19349,123 @@ It is also possible to make corrections to the measurements for other purposes.
  and so can have general community utility.
 \end_layout
 
+\begin_layout Standard
+This paper has focused on the recovery temperature that is the measurand,
+ as expressed by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:recoveryTemperature"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+, because the sensor responds to that temperature.
+ Corrections should be made to the measurement of the recovery temperature,
+ here represented by 
+\begin_inset Formula $T_{m}$
+\end_inset
+
+, to obtain an improved estimate of the measurand.
+ It is an error to apply the corrections to the air temperature after correction
+ for dynamic heating (as in, e.g., 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "mccarthy1973method"
+literal "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "InverarityJTech2000"
+literal "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "nicholls1978measurements"
+literal "false"
+
+\end_inset
+
+ and others) because then the correction is applied also to the dynamic-heating
+ term to which it does not apply.
+ As discussed further in Part 2, this will introduce noise into the calculated
+ air temperature if the sensor cannot respond fully to fluctuations in dynamic
+ heating.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+The contributions to the air temperature 
+\begin_inset Formula $T_{a}$
+\end_inset
+
+ in terms of Fourier transforms is
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\hat{T}_{a}=\hat{T}_{r}-\hat{Q}=\hat{T}_{m}/H-\hat{Q}
+\]
+
+\end_inset
+
+It is an error to apply the correction to the derived air temperature 
+\begin_inset Formula $T_{a}$
+\end_inset
+
+, which would use the correction term 
+\begin_inset Formula $(\hat{T}_{m}-\hat{Q})/H$
+\end_inset
+
+.
+ as has been done by, e.g., 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "mccarthy1973method"
+literal "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "InverarityJTech2000"
+literal "false"
+
+\end_inset
+
+, 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "nicholls1978measurements"
+literal "false"
+
+\end_inset
+
+ and others.
+ In the latter correction, the contribution of dynamic heating is amplified
+ by division by the transfer function 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Summary and Conclusions
 \end_layout
@@ -19626,6 +19747,46 @@ his Eqn.
 \end_inset
 
 (12).
+ However, the correction should be applied to the recovery temperature,
+ not the air temperature.
+ The sensor responds to the recovery temperature, which includes the increase
+ caused by dynamic heating.
+ Applying the correction to the recovery temperature properly corrects the
+ response to dynamic heating also, so the dynamic-heating correction can
+ then be subtracted from the corrected recovery temperature to obtain an
+ estimate of the air temperature.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+If the correction is applied instead to the air temperature, as has been
+ done for example by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "mccarthy1973method"
+literal "false"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "InverarityJTech2000"
+literal "false"
+
+\end_inset
+
+, the correction for the incomplete response of the sensor to dynamic-heating
+ fluctuations.
+ The result is the introduction of extraneous noise into the temperature
+ measurement.
+ This is discussed further in an appendix to Part 2.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -20019,11 +20180,6 @@ VSpec(DT, 'RT', add = g) + theme_WAC(1)
 \end_layout
 
 \begin_layout Standard
-An example of the corrected recovery temperature will be shown in the next
- subsection, where the two approaches to correction can be compared.
-\end_layout
-
-\begin_layout Standard
 An alternate approach is to use Fourier transforms:
 \end_layout
 
@@ -20036,7 +20192,7 @@ Calculate the Fourier transform of the measured time series:
 \begin_inset Formula $\omega$
 \end_inset
 
- is the angular frequency and 
+ is angular frequency and 
 \begin_inset Formula $\mathcal{F}$
 \end_inset
 
@@ -20261,6 +20417,11 @@ DT %>% select(Time, Tm, FFT, RT, Ts) %>%
 \begin_layout Plain Layout
 
   plotWAC(col=c('blue', 'black', 'darkorange', 'forestgreen'), 
+\end_layout
+
+\begin_layout Plain Layout
+
+          ylab=bquote('temperature [' ~ degree * 'C]'),
 \end_layout
 
 \begin_layout Plain Layout
