@@ -22364,13 +22364,32 @@ The impulse response of the sensor can be found from the inverse Fourier
  Once that is determined, appropriate moving-average coefficients can be
  found from the impulse response, and those coefficients define a digital
  filter that represents the sensor response.
+ The filter used here was determined at a frequency resolution of (1/600)_Hz,
+ then only the initial 101 and trailing 100 coefficients were retained and
+ all other were set to zero.
+ Shifting the negative-frequency components to the start of the array gave
+ an eight-second sequence that represented the response of the sensor.
+ These coefficients were used as a moving-average filter, after which the
+ result was shifted forward in time by four seconds to compensate for the
+ delay.
  The procedure used here is somewhat arbitrary and a better filter could
- probably be designed, but this functions reasonably for 25
+ probably be designed, but this filter functions reasonably for 25
 \begin_inset space ~
 \end_inset
 
 Hz measurements.
- Details including the filter coefficients are provided in Appendix B.
+ 
+\begin_inset Branch expanded
+inverted 0
+status open
+
+\begin_layout Standard
+Details including the filter coefficients are provided in Appendix B.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -28845,20 +28864,33 @@ Cloud Systems Evolution in the Trades
 \begin_inset Quotes erd
 \end_inset
 
- (CSET) experiment (flight 5, 14 July 2015, various segments from 17:50:00
- to 20:50:00 UTC).
- The flight segments that were used were all at low level (150
+ (CSET) experiment (flight 12, 1 August 2015, various segments from 16:00:00
+ to 19:15:00 UTC).
+ The flight segments were all at low level (150
 \begin_inset space ~
 \end_inset
 
 m) in the marine boundary layer over Pacific Ocean\SpecialChar endofsentence
  An unheated Rosemount
- 102E4AL sensor was used on the NSF/NCAR GV during these projects\SpecialChar endofsentence
- In each
- case, the cospectra from three flight segments of 5 min (SOCRATES) or 10
- min (CSET) duration were averaged to produce the measured cospectra.
+ 102E4AL sensor was used to measure temperature on these flights.
+ In each case, the cospectra from three flight segments of 5 min (SOCRATES)
+ or 10 min (CSET) duration were averaged to produce the measured cospectra.
  The flux estimates were then compared without correction and corrected
- using the appropriate transfer function as determined in Part 1.
+ using the appropriate transfer function as determined in Sect.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:theTransferFn"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
  
 \end_layout
 
@@ -29428,12 +29460,12 @@ XS <-
 
 \begin_layout Plain Layout
 
-DCX <- getNetCDF(file.path(DataDirectory(), 'CSET/rf05h.nc'),
+DCX <- getNetCDF(file.path(DataDirectory(), 'CSET/rf12h.nc'),
 \end_layout
 
 \begin_layout Plain Layout
 
-                 standardVariables(c('ATF1', 'ATH1', 'ATH2')), 175000, 205000)
+                 standardVariables(c('ATF1', 'ATH1', 'ATH2')), 153000, 193000)
 \end_layout
 
 \begin_layout Plain Layout
@@ -29714,17 +29746,17 @@ D$RTF1 <- ShiftInTime(D$RTF1, .rate=25, .shift=40)
 
 \begin_layout Plain Layout
 
-DC1 <- D %>% selectTime(175200, 180200)
+DC1 <- D %>% selectTime(160452, 161452)
 \end_layout
 
 \begin_layout Plain Layout
 
-DC2 <- D %>% selectTime(194530, 195530)
+DC2 <- D %>% selectTime(182635, 183625)
 \end_layout
 
 \begin_layout Plain Layout
 
-DC3 <- D %>% selectTime(203717, 204717)
+DC3 <- D %>% selectTime(191435, 192435)
 \end_layout
 
 \begin_layout Plain Layout
@@ -30046,12 +30078,8 @@ CS.orig$cospec <- SmoothInterp(CS.orig$cospec, .Length=0)  # treat NAs
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-
-\bar under
-(top): 
-\bar default
-The corrected flux of sensible heat for SOCRATES flight 15, 6:00:00 to 6:15:00,
- a low-level flight segment over the southern-hemisphere ocean.
+The corrected flux of sensible heat for low-level flight segments over the
+ Pacific Ocean.
  The 
 \begin_inset Quotes eld
 \end_inset
@@ -30068,15 +30096,12 @@ exceedance
 \begin_inset Newline newline
 \end_inset
 
+(top): A flight in project SOCRATES over the southern-hemisphere ocean.
+ 
+\begin_inset Newline newline
+\end_inset
 
-\bar under
-(bottom): 
-\bar default
-Cospectrum for the flux of sensible heat, for three 10-min flight segments
- from the CSET project.
- The dashed brown line is the exceedance distribution before correction,
- which gives a flux of 3.07 W m${-2}$ for wavelengths smaller than 2 km and
- 2.06 W m$^{-2}$ for frequencies above 0.01 Hz.
+(bottom): A flight in project CSET over the northern-hemisphere ocean.
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:SOCp1"
@@ -30271,16 +30296,16 @@ oh-jive
 \begin_layout Standard
 The exceedance distributions before correction, shown as the dashed brown
  lines, were calculated using a dynamic-heating correction that was filtered
- to match the response of the sensor, but otherwise was not corrected.
- In the two cases, without correction for the response as represented by
- the transfer function, about 30% and 44% of the flux, for the SOCRATES
- and CSET cases respectively, would be missed.
+ to match the response of the sensor, but otherwise were not corrected.
+ Without correction for the response as represented by the transfer function,
+ about 30% and 34% of the flux, for the SOCRATES and CSET cases respectively,
+ would be missed.
  The underestimation is particularly serious at higher frequencies: In both
  cases the measured contribution from frequencies above 1
 \begin_inset space ~
 \end_inset
 
-Hz is about twice as large after correction as it is without correction.
+Hz is more than twice as large after correction as it is without correction.
  
 \end_layout
 
@@ -33901,8 +33926,21 @@ This test only confirms consistency between the prediction of the transfer
  and weaknesses in that filter, while the latter may be influenced by end
  effect and window effects from calculating the Fourier transforms.
  The agreement between the simulated and corrected flux therefore provides
- some support for the filter developed in Part 2 and for the correction
- procedure developed in this paper.
+ some support for the filter developed in Sect.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "subsec:A-filter-for"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ and for the correction procedure developed in this paper.
 \end_layout
 
 \begin_layout Standard
@@ -34044,7 +34082,16 @@ The true recovery temperature
 
  in two ways, either from the differential equations or by Fourier transformatio
 n.
- These methods are illustrated here.
+ Only a cursory discussion of these techniques is included here because
+ the procedures are standard and follow earlier work, notably that of 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "InverarityJTech2000"
+literal "false"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -34068,45 +34115,7 @@ noprefix "false"
 
 \end_inset
 
- provide a basis for correcting the measured temperature to account for
- the time response of the sensor.
- They should be applied to the recovery temperature 
-\begin_inset Formula $T_{r}(t)$
-\end_inset
-
-, which is the measurand.
- The actual measurement is 
-\begin_inset Formula $T_{m}(t)$
-\end_inset
-
- and the temperature of the support is 
-\begin_inset Formula $T_{s}(t)$
-\end_inset
-
-, so those equations, rearranged, are:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{equation}
-\frac{dT_{s}(t)}{dt}=\frac{T_{r}(t)-T_{s}(t)}{\tau_{2}}\label{eq:Ts2}
-\end{equation}
-
-\end_inset
-
-
-\begin_inset Formula 
-\begin{equation}
-T_{r}(t)=\frac{1}{a}\left\{ \tau_{1}\frac{dT_{m}(t)}{dt}+T_{m}(T)-(1-a)T_{s}(t)\right\} \label{eq:Tm2}
-\end{equation}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-There are two unknowns (
+ involve two unknowns, 
 \begin_inset Formula $T_{r}(t)$
 \end_inset
 
@@ -34114,18 +34123,8 @@ There are two unknowns (
 \begin_inset Formula $T_{s}(t)$
 \end_inset
 
-).
- Those unknowns are specified by the two preceding equations because all
- other terms are known, including 
-\begin_inset Formula $dT_{m}/dt$
-\end_inset
-
- which can be represented using the numerical derivative of the measurements
- 
-\begin_inset Formula $T_{m}(t)$
-\end_inset
-
 .
+ the temperature of the supporting structure.
  The second equation can be used to eliminate 
 \begin_inset Formula $T_{r}$
 \end_inset
@@ -34142,31 +34141,30 @@ There are two unknowns (
 
 \end_inset
 
-From an initial value 
+Then, because the measured temperature 
+\begin_inset Formula $T_{m}(t)$
+\end_inset
+
+ is known, this can be integrated from an assumed initial value 
 \begin_inset Formula $T_{s}(0)$
 \end_inset
 
-, assumed to be 
-\begin_inset Formula $T_{m}(0)$
-\end_inset
-
-, this equation can be integrated to find the temperature of the support,
- 
+ to find the temperature of the support, 
 \begin_inset Formula $T_{s}(t)$
 \end_inset
 
 .
- Once that is known, 
+ Then 
 \begin_inset CommandInset ref
 LatexCommand eqref
-reference "eq:Tm2"
+reference "eq:Tm"
 plural "false"
 caps "false"
 noprefix "false"
 
 \end_inset
 
- specifies the estimate of the true recovery temperature 
+ can be solved to give the true recovery temperature 
 \begin_inset Formula $T_{r}(t)$
 \end_inset
 
@@ -34236,6 +34234,65 @@ his Eqn.
  then be subtracted from the corrected recovery temperature to obtain an
  estimate of the air temperature.
  
+\end_layout
+
+\begin_layout Standard
+The correction procedure must be modified for the HARCO sensor because,
+ with the best-fit value 
+\begin_inset Formula $a=0$
+\end_inset
+
+, 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:Tm"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ can't be solved for 
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+.
+ However, for 
+\begin_inset Formula $a=0$
+\end_inset
+
+ the differential equations can be combined to give
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Formula 
+\begin{equation}
+T_{r}(t)=(\tau_{1}+\tau_{2})\frac{dT_{m}(t)}{dt}+T_{m}(t)+\tau_{2}\tau_{1}\frac{d^{2}T_{m}(t)}{dt^{2}}\label{eq:HARCOsoln}
+\end{equation}
+
+\end_inset
+
+This gives 
+\begin_inset Formula $T_{r}(t)$
+\end_inset
+
+ without integration because finite-difference expressions can be used for
+ the derivatives of the measurement (
+\begin_inset Formula $T_{m}(t)$
+\end_inset
+
+).
+ Because finite-difference estimates introduce high-frequency noise, the
+ result was smoothed using a low-pass filter with 2
+\begin_inset space ~
+\end_inset
+
+Hz cutoff frequency.
+ 
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Note
 status open
 
@@ -34850,29 +34907,49 @@ DT$FFT <- xn
 \end_layout
 
 \begin_layout Standard
+Examples of the corrections produced by these procedures are shown in Fig.
+\begin_inset space ~
+\end_inset
+
+
 \begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-<<sampleFFT, include=TRUE, fig.height=4, fig.cap=c('Example of the changes
- produced by the correction procedures.
- The original measurement of recovery temperature is Tm, produced by an
- unheated Rosemount sensor, and the revised values are RT (from integration)
- and FFT (from Fourier transforms).
- The dashed green line labeled 
-\begin_inset Quotes eld
+
+\backslash
+ref{fig:sampleFFT}
+\end_layout
+
 \end_inset
 
-Ts
-\begin_inset Quotes erd
-\end_inset
+.
+ The agreement between the two correction methods is very good, and both
+ show evidence of faster and higher-amplitude response to fluctuations.
+ In comparison to the original measurement, the corrected values for the
+ HARCO sensor are improved significantly by this correction procedure and
+ are even a reasonable match to the corrected measurement from the unheated
+ Rosemount.
+\end_layout
 
- is the temperature of the support as calculated using (17).
- Measurements from VOCALS flight 3.', 'Variance spectra for the original
- measurement of recovery temperature (Tm) produced by an unheated Rosemount
- sensor and for the corrected values (RT and FFT) produced respectively
- by (16) and the Fourier-transform algorithm.')>>=
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+<<sampleFFT, include=TRUE, fig.height=4.1, fig.width=4.1, out.width='0.48
+\backslash
+
+\backslash
+linewidth', fig.show='hold', messages = FALSE>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -34881,32 +34958,103 @@ Ts
 
 \begin_layout Plain Layout
 
-DT$Tm <- DT$TTRR
+DT$measured_uncorrected <- DT$TTRR
 \end_layout
 
 \begin_layout Plain Layout
 
-DT %>% select(Time, Tm, FFT, RT, Ts) %>% 
+DT$corrected_FFT <- DT$FFT
 \end_layout
 
 \begin_layout Plain Layout
 
-  selectTime(114500, 114505) %>% 
+DT$corrected_DE <- DT$RT
 \end_layout
 
 \begin_layout Plain Layout
 
-  plotWAC(col=c('blue', 'black', 'darkorange', 'forestgreen'), 
+DT$support <- DT$Ts
 \end_layout
 
 \begin_layout Plain Layout
 
-          ylab=bquote('temperature [' ~ degree * 'C]'),
+DT %>% select(Time, corrected_FFT, corrected_DE, support, 
 \end_layout
 
 \begin_layout Plain Layout
 
-          lty=c(1,1,2,2), lwd=c(2,2,2,1.5), legend.position='bottom')
+              measured_uncorrected) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+  selectTime(114500, 114502) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+  ggplotWAC(col=c('black', 'darkorange', 'forestgreen', 'blue'), 
+\end_layout
+
+\begin_layout Plain Layout
+
+          ylab=bquote('recovery temperature [' ~ degree * 'C]'),
+\end_layout
+
+\begin_layout Plain Layout
+
+          lty=c(1,2,4,1), lwd=c(1.5,1,1.5,1)) + 
+\end_layout
+
+\begin_layout Plain Layout
+
+    xlab('time [s]') + theme_WAC(1) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    annotate('text', x = DT$Time[getIndex(DT, 114500)] + 1.5, y=20.97, label='(unh
+eated)', size=5) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    theme(legend.key.width=unit(1.3,'lines'),  
+\end_layout
+
+\begin_layout Plain Layout
+
+          legend.key.height=unit(0.5,'lines'),
+\end_layout
+
+\begin_layout Plain Layout
+
+          legend.text=element_text(size=10)) + 
+\end_layout
+
+\begin_layout Plain Layout
+
+      guides(colour = guide_legend(reverse = TRUE, '  legend:')) +
+\end_layout
+
+\begin_layout Plain Layout
+
+      guides(linetype = guide_legend(reverse = TRUE, '  legend:')) +
+\end_layout
+
+\begin_layout Plain Layout
+
+      guides(size = guide_legend(reverse = TRUE, '  legend:')) +
+\end_layout
+
+\begin_layout Plain Layout
+
+          theme(legend.direction = 'vertical', 
+\end_layout
+
+\begin_layout Plain Layout
+
+                legend.position = c(0.65, 0.20))
 \end_layout
 
 \begin_layout Plain Layout
@@ -34921,17 +35069,712 @@ DT %>% select(Time, Tm, FFT, RT, Ts) %>%
 
 \begin_layout Plain Layout
 
-DT %>% select(Time, TASX, Tm, RT, FFT) %>% 
+# DT %>% select(Time, TASX, Tm, RT, FFT) %>% 
 \end_layout
 
 \begin_layout Plain Layout
 
-       VSpec(method='MEM', ylim=c(1.e-5, 0.1)) +
+#        VSpec(method='MEM', ylim=c(1.e-5, 0.1)) +
 \end_layout
 
 \begin_layout Plain Layout
 
-       theme_WAC(1)
+#        theme_WAC(1)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+a <- Param1$a
+\end_layout
+
+\begin_layout Plain Layout
+
+tau1 <- Param1$tau1
+\end_layout
+
+\begin_layout Plain Layout
+
+tau2 <- Param1$tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+## RT is the working solution; Ts is the support temperature
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$Ts <- DSX$RTF1
+\end_layout
+
+\begin_layout Plain Layout
+
+Rate <- attr (DSX, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$DTMDT <- c(0, diff(DSX$RTF1, 2), 0) * Rate / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$DTMDT <-  (c(0, 8*diff(DSX$RTF1, 2), 0) - 
+\end_layout
+
+\begin_layout Plain Layout
+
+              c(0, 0, diff(DSX$RTF1, 4), 0, 0)) * Rate / 12
+\end_layout
+
+\begin_layout Plain Layout
+
+# DT$DTMDT <- (DT$DTMDT + c(0, DT$DTMDT[1:(nrow(DT)-1)])) / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+# DT$DTMDT <- as.vector (signal::filter(signal::sgolay(1, 3, m=1),
+\end_layout
+
+\begin_layout Plain Layout
+
+#             DT$TTRR)) * Rate
+\end_layout
+
+\begin_layout Plain Layout
+
+fS <- function(y, i) {  # Eq.
+ Ts3
+\end_layout
+
+\begin_layout Plain Layout
+
+  ((1/a) * (tau1 * DSX$DTMDT[i] + DSX$RTF1[i] - (1-a) * y) - y) / (Rate
+ * tau2)
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$Ts <- rk4.integrate (fS, DSX$Ts[1], 1:nrow(DSX))
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$RT <- (1/a) * (tau1 * DSX$DTMDT + DSX$RTF1 - (1-a) * DSX$Ts)
+\end_layout
+
+\begin_layout Plain Layout
+
+MRHO <- MachNumber(DSX$PSXC, DSX$QCXC) * DSX$PSXC * 100 /
+\end_layout
+
+\begin_layout Plain Layout
+
+                  (287.05 * (273.15 + DSX$ATX)) / rhozero
+\end_layout
+
+\begin_layout Plain Layout
+
+a <- bestSH[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+tau1 <- bestSH[2] * (MRHO / 0.3) ^ 0.6  ## Note that these are variable
+\end_layout
+
+\begin_layout Plain Layout
+
+tau2 <- bestSH[3] * (MRHO / 0.3) ^ 0.6
+\end_layout
+
+\begin_layout Plain Layout
+
+Rate <- attr (DSX, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$DTMDT <- c(0, diff(DSX$RTH1, 2), 0) * Rate / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$DTM2DT2 <- (c(diff(DSX$RTH1), 0) - c(0, diff(DSX$RTH1))) * Rate^2
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$RTHC <- (tau1 + tau2) * DSX$DTMDT + DSX$RTH1 + tau1 * tau2 * DSX$DTM2DT2
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$RTHC <- zoo::na.approx (as.vector(DSX$RTHC), maxgap=1000*Rate,
+\end_layout
+
+\begin_layout Plain Layout
+
+      na.rm = FALSE, rule = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+CutoffPeriod <- 12.5  ## 2 Hz
+\end_layout
+
+\begin_layout Plain Layout
+
+DSX$RTHC <- signal::filtfilt (signal::butter (3,
+\end_layout
+
+\begin_layout Plain Layout
+
+      2/CutoffPeriod), DSX$RTHC)
+\end_layout
+
+\begin_layout Plain Layout
+
+# DSX$RTHC <- SmoothInterp(DSX$RTHC, .Length=25)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP <- DSX
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$RTH1 <- DSAP$RTH1 - mean(DSAP$RTH1[setRange(DSAP, 55700, 60000)], na.rm=TRUE
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$RTF1P <- DSAP$RTF1 - mean(DSAP$RTF1[setRange(DSAP, 55700, 60000)],
+ na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$RTHC <- DSAP$RTHC - mean(DSAP$RTHC[setRange(DSAP, 55700, 60000)], na.rm=TRUE
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$RT <- DSAP$RT - mean(DSAP$RT[setRange(DSAP, 55700, 60000)], na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+# DSAP %>% selectTime(55920, 55950) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+#          select(Time, RT, RTH1, RTHC) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+#         ggplotWAC(col=c('blue', 'forestgreen', 'black'), lty=c(1,4,1),
+\end_layout
+
+\begin_layout Plain Layout
+
+#                   ylab=bquote('recovery temperature [' ~ degree * 'C]'),
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+#                   lwd=c(0.8,1,1)) + xlab('time [s]') +
+\end_layout
+
+\begin_layout Plain Layout
+
+#         theme_WAC(1) + theme(legend.position=c(0.75, 0.9))
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAX <- DSX %>% selectTime(55700, 60300)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAX <- DSAX[1:2^13, ]
+\end_layout
+
+\begin_layout Plain Layout
+
+ft <- fft(DSAX$RTH1)
+\end_layout
+
+\begin_layout Plain Layout
+
+N <- length(ft)
+\end_layout
+
+\begin_layout Plain Layout
+
+Rate <- attr(DSX, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+df <- Rate / N
+\end_layout
+
+\begin_layout Plain Layout
+
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+\end_layout
+
+\begin_layout Plain Layout
+
+fr <- log(abs(frq))
+\end_layout
+
+\begin_layout Plain Layout
+
+Gain  <- cfrHARCO[1] + fr * (cfrHARCO[2] + fr * fr * (cfrHARCO[3] + 
+\end_layout
+
+\begin_layout Plain Layout
+
+         fr * (cfrHARCO[4] + fr * cfrHARCO[5])))
+\end_layout
+
+\begin_layout Plain Layout
+
+Gain[abs(frq) < 0.024] <- 1
+\end_layout
+
+\begin_layout Plain Layout
+
+Phase <- cfHARCO[1] + cfHARCO[2] * fr + cfHARCO[3] * fr^2 +
+\end_layout
+
+\begin_layout Plain Layout
+
+         cfHARCO[4] * atan(frq)
+\end_layout
+
+\begin_layout Plain Layout
+
+Phase[frq < 0] <- -Phase[frq < 0]
+\end_layout
+
+\begin_layout Plain Layout
+
+Phase[1] <- 0
+\end_layout
+
+\begin_layout Plain Layout
+
+Phase <- Phase * pi / 180
+\end_layout
+
+\begin_layout Plain Layout
+
+TF <- complex(modulus=Gain, argument=Phase)
+\end_layout
+
+\begin_layout Plain Layout
+
+tlmt <- 1.8
+\end_layout
+
+\begin_layout Plain Layout
+
+TF[abs(frq) > tlmt] <- TF[abs(frq) > tlmt] * exp(5*abs(frq[abs(frq) > tlmt])
+ / tlmt)
+\end_layout
+
+\begin_layout Plain Layout
+
+ftx <- ft / TF
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAX$RTFFT <- Re(fft(ftx, inverse = TRUE) / N)
+\end_layout
+
+\begin_layout Plain Layout
+
+N <- 2^13 
+\end_layout
+
+\begin_layout Plain Layout
+
+Nby2 <- N / 2
+\end_layout
+
+\begin_layout Plain Layout
+
+RTH1 <- DSAX$RTH1
+\end_layout
+
+\begin_layout Plain Layout
+
+ff1 <- fft(RTH1)
+\end_layout
+
+\begin_layout Plain Layout
+
+RTH <- Re(fft(ff1, inverse=TRUE)) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+df <- Rate / N
+\end_layout
+
+\begin_layout Plain Layout
+
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+\end_layout
+
+\begin_layout Plain Layout
+
+fr <- log(frq[1:(Nby2+1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+## Get the transfer function from the fitted parameterized form:
+\end_layout
+
+\begin_layout Plain Layout
+
+Ph <- cfHARCO[1] + cfHARCO[2] * fr + 
+\end_layout
+
+\begin_layout Plain Layout
+
+           cfHARCO[3] * fr^2 + cfHARCO[4] * atan(frq[1:(Nby2+1)])
+\end_layout
+
+\begin_layout Plain Layout
+
+Ph[1] <- 0
+\end_layout
+
+\begin_layout Plain Layout
+
+G <- cfrHARCO[1] + fr * (cfrHARCO[2] + fr * fr * (cfrHARCO[3] + 
+\end_layout
+
+\begin_layout Plain Layout
+
+           fr * (cfrHARCO[4] + fr * cfrHARCO[5])))
+\end_layout
+
+\begin_layout Plain Layout
+
+G[frq[1:length(fr)] < 0.024] <- 1
+\end_layout
+
+\begin_layout Plain Layout
+
+G[frq[1:length(fr)] > 2] <- G[which.min(abs(frq-2))]
+\end_layout
+
+\begin_layout Plain Layout
+
+H <- rep(complex(modulus=0), N)
+\end_layout
+
+\begin_layout Plain Layout
+
+H[1:(Nby2+1)] <- complex(modulus=G, argument=Ph * pi / 180)
+\end_layout
+
+\begin_layout Plain Layout
+
+H[(Nby2+2):N] <- rev(Conj(H[2:Nby2]))
+\end_layout
+
+\begin_layout Plain Layout
+
+RTC <- Re(fft(ff1 / H, inverse = TRUE)) / N
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAX$RTC <- RTC
+\end_layout
+
+\begin_layout Plain Layout
+
+dfTF <- data.frame(
+\end_layout
+
+\begin_layout Plain Layout
+
+  'Time' = frq,
+\end_layout
+
+\begin_layout Plain Layout
+
+  'Amp' = Gain,
+\end_layout
+
+\begin_layout Plain Layout
+
+  'Phase' = Phase
+\end_layout
+
+\begin_layout Plain Layout
+
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+g <-
+\end_layout
+
+\begin_layout Plain Layout
+
+  ggplotWAC(
+\end_layout
+
+\begin_layout Plain Layout
+
+    dfTF,
+\end_layout
+
+\begin_layout Plain Layout
+
+    panels = 2,
+\end_layout
+
+\begin_layout Plain Layout
+
+    labelP = c('    Amplitude', 'Phase [degrees]')
+\end_layout
+
+\begin_layout Plain Layout
+
+  )
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- g + xlab('frequency [Hz]') + ylab(bquote('transfer function H(' * nu
+ ~ ')'))
+\end_layout
+
+\begin_layout Plain Layout
+
+g <-
+\end_layout
+
+\begin_layout Plain Layout
+
+  g + scale_x_log10(
+\end_layout
+
+\begin_layout Plain Layout
+
+    breaks = trans_breaks("log10", function(x)
+\end_layout
+
+\begin_layout Plain Layout
+
+      10 ^ x, n = 4),
+\end_layout
+
+\begin_layout Plain Layout
+
+    labels = trans_format("log10", math_format(expr = 10 ^ .x))
+\end_layout
+
+\begin_layout Plain Layout
+
+  ) + xlab('frequency [Hz]')
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- g + annotation_logticks(sides = 'tb')
+\end_layout
+
+\begin_layout Plain Layout
+
+# g + theme_WAC(1) + theme(legend.position = c(0.3, 0.65))
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP <- DSAX
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$RTH1 <- DSAP$RTH1 - mean(DSAP$RTH1[setRange(DSAP, 55700, 60000)], na.rm=TRUE
+)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$RTF1P <- DSAP$RTF1 - mean(DSAP$RTF1[setRange(DSAP, 55700, 60000)],
+ na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$RTH <- DSAP$RTHC - mean(DSAP$RTHC[setRange(DSAP, 55700, 60000)], na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$RT <- DSAP$RT - mean(DSAP$RT[setRange(DSAP, 55700, 60000)], na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$FFT <- DSAP$RTFFT - mean(DSAP$RTFFT[setRange(DSAP, 55700, 60000)],
+\end_layout
+
+\begin_layout Plain Layout
+
+                                na.rm=TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$measured_uncorrected <- DSAP$RTH1
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$corrected_DE <- DSAP$RTH
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$corrected_FFT <- DSAP$FFT
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP$reference_unheated <- DSAP$RT
+\end_layout
+
+\begin_layout Plain Layout
+
+DSAP %>% selectTime(55920, 55940) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+         select(Time, reference_unheated, corrected_FFT, corrected_DE,
+\end_layout
+
+\begin_layout Plain Layout
+
+                measured_uncorrected) %>% 
+\end_layout
+
+\begin_layout Plain Layout
+
+         ggplotWAC(c('forestgreen', 'black', 'darkorange', 'blue'),
+\end_layout
+
+\begin_layout Plain Layout
+
+                   ylab=bquote('recovery temperature [' ~ degree * 'C]'),
+\end_layout
+
+\begin_layout Plain Layout
+
+                   lty=c(1,1,1,1), lwd=c(0.5, 1.2, 0.8, 1.2)) + xlab('time [s]')
+ +
+\end_layout
+
+\begin_layout Plain Layout
+
+         theme_WAC(1) + 
+\end_layout
+
+\begin_layout Plain Layout
+
+         annotate('text', x = DSAP$Time[getIndex(DSAP, 55923)] + 1.5, y=0.15,
+ label='(heated)', size=5) +
+\end_layout
+
+\begin_layout Plain Layout
+
+         theme(axis.title.y = element_blank(),
+\end_layout
+
+\begin_layout Plain Layout
+
+               plot.margin=unit(c(0.3,0.3,1.1,0.3),"lines"),
+\end_layout
+
+\begin_layout Plain Layout
+
+               legend.direction = 'vertical',
+\end_layout
+
+\begin_layout Plain Layout
+
+               legend.text=element_text(size=10),
+\end_layout
+
+\begin_layout Plain Layout
+
+               legend.key.width=unit(1.3,'lines'),  
+\end_layout
+
+\begin_layout Plain Layout
+
+               legend.key.height=unit(0.5,'lines'),
+\end_layout
+
+\begin_layout Plain Layout
+
+               # legend.box.margin = margin(50, 6, 6, 6),
+\end_layout
+
+\begin_layout Plain Layout
+
+               legend.position=c(0.28, 0.83)) +
+\end_layout
+
+\begin_layout Plain Layout
+
+         guides(colour = guide_legend(reverse = TRUE, '  legend:')) +
+\end_layout
+
+\begin_layout Plain Layout
+
+         guides(linetype = guide_legend(reverse = TRUE, '  legend:')) +
+\end_layout
+
+\begin_layout Plain Layout
+
+         guides(size = guide_legend(reverse = TRUE, '  legend:'))
 \end_layout
 
 \begin_layout Plain Layout
@@ -34948,28 +35791,107 @@ DT %>% select(Time, TASX, Tm, RT, FFT) %>%
 
 \end_layout
 
-\begin_layout Standard
-Sample results of these correction procedures are shown in Fig.
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset ERT
-status open
+\begin_layout Plain Layout
+\begin_inset Caption Standard
 
 \begin_layout Plain Layout
+Examples of the corrected recovery temperatures compared to the original
+ uncorrected measurements.
+ In each case, the correction based on the differential equations is shown
+ as 
+\begin_inset Quotes eld
+\end_inset
 
+corrected_DE
+\begin_inset Quotes erd
+\end_inset
 
-\backslash
-ref{fig:sampleFFT1}
-\end_layout
+ and that based on Fourier transforms is labeled 
+\begin_inset Quotes eld
+\end_inset
+
+corrected_FFT
+\begin_inset Quotes erd
+\end_inset
+
+.
+ The dashed green line in the left plot shows the calculated temperature
+ of the support that contacts the sensing wire.
+ The solid green line in the right plot shows the corrected measurement
+ from the unheated sensor for comparison.
+\begin_inset Newline newline
+\end_inset
+
+(left): An unheated Rosemount 102E4AL sensor.
+ Measurements from VOCALS flight 3.
+\begin_inset Newline newline
+\end_inset
+
+(right): A heated HARCO sensor.
+ In this case the 
+\begin_inset Quotes eld
+\end_inset
+
+corrected_DE
+\begin_inset Quotes erd
+\end_inset
+
+ result is based on 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:HARCOsoln"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ while 
+\begin_inset Quotes eld
+\end_inset
+
+corrected_FFT
+\begin_inset Quotes erd
+\end_inset
+
+ uses the fit provided by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:lfitH"
+plural "false"
+caps "false"
+noprefix "false"
 
 \end_inset
 
 .
- The agreement between the two correction methods is very good, and both
- show evidence of faster and higher-amplitude response to fluctuations.
- The resulting variance spectrum for the Fourier-transform method (Fig.
+ The time is seconds after 2018-02-24 5:59:00 UTC, SOCRATES flight 15.
+ Mean values have been subtracted to facilitate comparison.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sampleFFT"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+The resulting variance spectrum for the Fourier-transform method (Fig.
 \begin_inset space ~
 \end_inset
 
@@ -35023,6 +35945,11 @@ noprefix "false"
 , which results in some smoothing.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset Note Note
 status collapsed
@@ -35044,57 +35971,12 @@ s for the segments, and then combine the results to represent the entire
 
 \end_inset
 
-Because the heated HARCO sensor is much slower than the unheated Rosemount
- 102E4AL sensor, the measurements from that slower sensor can't be corrected
- to the extent possible for the unheated sensor, but it is still useful
- to evaluate to what extent the measurements can be improved.
- The HARCO presents a special case because the best-fit value is 
-\begin_inset Formula $a=0$
-\end_inset
 
- so 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "eq:Tm2"
-plural "false"
-caps "false"
-noprefix "false"
+\begin_inset Note Note
+status open
 
-\end_inset
-
- can't be used.
- However, in this case the differential equations can still be combined
- to give
-\begin_inset Newline newline
-\end_inset
-
-
-\begin_inset Formula 
-\begin{equation}
-T_{r}(t)=(\tau_{1}+\tau_{2})\frac{dT_{m}(t)}{dt}+T_{m}(t)+\tau_{2}\tau_{1}\frac{d^{2}T_{m}(t)}{dt^{2}}\label{eq:HARCOsoln}
-\end{equation}
-
-\end_inset
-
-a form that can be used directly without integration because finite-difference
- expressions can be used for the derivatives of the measured 
-\begin_inset Formula $T_{m}(t)$
-\end_inset
-
-.
- The solution from 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "eq:HARCOsoln"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- is very noisy if finite-difference estimates of the derivatives are used,
- so smoothing of the result was applied.
- Figure
+\begin_layout Plain Layout
+Figure
 \begin_inset space ~
 \end_inset
 
@@ -35106,7 +35988,7 @@ status open
 
 
 \backslash
-ref{fig:HARCOcorrection1}
+ref{fig:HARCOcorrection}
 \end_layout
 
 \end_inset
@@ -35130,28 +36012,18 @@ Hz smoothed the corrected measurements.
 \end_inset
 
 Hz.
- In comparison to the original measurement (labeled 
-\begin_inset Quotes eld
+\end_layout
+
 \end_inset
 
-Tm
-\begin_inset Quotes erd
-\end_inset
-
-), the response of the sensor is greatly improved by this correction procedure.
- It even provides a reasonable representation of the corrected unheated
- Rosemount measurement (labeled 
-\begin_inset Quotes eld
-\end_inset
-
-RT
-\begin_inset Quotes erd
-\end_inset
-
-) for the same period.
+ 
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 This is not as good a representation of the transfer function as is possible
  with the fitted representation shown in Fig.
 \begin_inset space ~
@@ -35261,7 +36133,7 @@ C before correction to
 C after correction.
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 The plot of variance spectra (Fig.
 \begin_inset space ~
 \end_inset
@@ -35324,13 +36196,18 @@ Hz) because the original measurement is so severely attenuated at these
  routinely to improve the quality of this measurement.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-<<HARCOcorrection, include=TRUE, fig.height=3.5, fig.cap=c('Corrected recovery
+<<HARCOcorrection, include=FALSE, fig.height=3.5, fig.cap=c('Corrected recovery
  temperature as measured by a heated HARCO sensor (
 \begin_inset Quotes eld
 \end_inset
@@ -36009,7 +36886,7 @@ DSAP$Tm <- DSAP$RTH1
 
 \begin_layout Plain Layout
 
-DSAP %>% selectTime(55920, 55950) %>% 
+DSAP %>% selectTime(55918, 55950) %>% 
 \end_layout
 
 \begin_layout Plain Layout
@@ -36075,7 +36952,9 @@ VSpec(DSAP, 'FFT', add=g, type='MEM') + theme_WAC(1)
 \end_inset
 
 
-\end_layout
+\begin_inset Branch expanded
+inverted 0
+status open
 
 \begin_layout Section
 The Digital Filter for Dynamic Heating
@@ -36223,6 +37102,13 @@ Workflow
 
  document.
 \end_layout
+
+\end_inset
+
+
+\begin_inset Branch expanded
+inverted 0
+status open
 
 \begin_layout Section
 Pressure-Line Resonance
@@ -38036,6 +38922,11 @@ or, if
 \[
 \hat{Q}^{\prime}(\nu)=\hat{p}_{t}(\nu)/H_{t}(\nu)-\hat{p}_{s}(\nu)/H_{s}(\nu)
 \]
+
+\end_inset
+
+
+\end_layout
 
 \end_inset
 
