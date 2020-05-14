@@ -106,9 +106,9 @@ hanging
 \paperfontsize 11
 \spacing single
 \use_hyperref true
-\pdf_title "The Delayed Response of Airborne Thermometers, Part 1"
+\pdf_title "Measuring the Flux of Sensible Heat with Airborne Thermometers"
 \pdf_author "William A. Cooper"
-\pdf_subject "Assessment of Measurements of Sensible-Heat Flux"
+\pdf_subject "Correcting Measurements of Sensible-Heat Flux"
 \pdf_keywords "sensible heat flux, temperature, time response of sensors, NCAR Research Aviation Facility, research aircraft, NCAR/EOL/RAF"
 \pdf_bookmarks true
 \pdf_bookmarksnumbered false
@@ -191,11 +191,7 @@ hanging
 \begin_body
 
 \begin_layout Title
-The Delayed Response of Airborne Thermometers:
-\begin_inset Newline newline
-\end_inset
-
-Effect on Measuring the Flux of Sensible Heat
+Measuring the Flux of Sensible Heat With Airborne Thermometers
 \end_layout
 
 \begin_layout Author
@@ -410,44 +406,26 @@ begin{abstract}
 
 \begin_layout Standard
 Most measurements of temperature from research aircraft rely on sensors
- that have inadequate response for the most demanding applications, including
- especially measurements of the flux of sensible heat.
- This paper discusses three aspects related to the time response of airborne
- sensors.
- First, it uses a new method to characterize the time response in terms
- of the frequency-domain transfer function; then it demonstrates that standard
- data processing introduces errors in measured air temperature by exaggerating
- the influence of dynamic heating on temperature sensors; and finally it
- uses these results to propose a correction scheme to improve measurements
- of the flux of sensible heat.
- Initially, the transfer function describing the time response of two standard
- airborne thermometers is found by observing the response to turbulent dynamic
+ that have inadequate response for demanding applications, including especially
+ measuring the flux of sensible heat.
+ This paper uses a new method to characterize the time response of standard
+ sensors in terms of the frequency-domain transfer function, and it uses
+ the result to improve measurements of the flux of sensible heat.
+ The transfer function is found by observing the response to turbulent dynamic
  heating in regions where that is the dominant cause of fluctuations in
  the measurement.
- Differential equations for the response are consistent with the observed
- transfer function, and the observations constrain the parameters in those
- differential equations with low uncertainty.
- The transfer functions can then be inverted to obtain corrected measurements
- of the recovery temperature.
- They also predict how sensors will respond to fluctuations in the recovery
- temperature, and those predictions demonstrate that the sensed recovery
- temperature often does not respond to high-frequency components imposed
- by dynamic heating.
- Therefore, the common practice of subtracting the full dynamic heating
- to obtain the air temperature from the recovery temperature introduces
- errors that can be especially significant for heated sensors that are inherentl
-y slow.
- The correction procedure developed in the last section is based on using
- the transfer function to correct the measured recovery temperature before
- correcting for dynamic heating.
- The over-arching goal is to be able to assess errors that might be present
- in measurements of the flux of sensible heat and to apply corrections for
- those errors.
+ Suggested differential equations for the response are consistent with the
+ observed transfer function, and the observations constrain the parameters
+ in those differential equations with low uncertainty.
  Examples and a simulation illustrate that, without correction, measurements
  of sensible-heat flux with an unheated Rosemount 102E4AL sensor can be
  more than 30% too low, but the proposed correction procedure removes this
  error and results in reliable measurements with negligible error attributable
  to the response time of the sensor.
+ An additional result of the study is the identification of a source of
+ error, prevalent in most archived data files produced by research aircraft,
+ that results from incorrect adjustment for dynamic heating of the sensor.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -564,7 +542,7 @@ literal "false"
 , 
 \begin_inset CommandInset citation
 LatexCommand citet
-key "albrecht2019cloud"
+key "albrecht2019CSET"
 literal "false"
 
 \end_inset
@@ -805,8 +783,8 @@ Research aircraft routinely measure air temperature, but the standard sensors
  The measurement of sensible-heat flux requires, for the standard eddy-correlati
 on measurement, that temperature be measured with sufficient response to
  resolve the spectrum of contributions to the flux.
- Various recent reviews of priorities for research in atmospheric science
- have called attention to the important roles that fluxes of various quantities
+ Various reviews of priorities for research in atmospheric science have
+ called attention to the important roles that fluxes of various quantities
  play in climate science and have advocated increased focus on those fluxes;
  e.g., 
 \begin_inset CommandInset citation
@@ -900,7 +878,10 @@ Hz would be desirable to resolve some interesting aspects of the temperature
  If the response of the temperature sensor is reduced or shifted in phase
  at a particular frequency, an error will be introduced into the measurement
  of sensible-heat flux.
- 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 \begin_inset CommandInset citation
 LatexCommand citet
 key "LawsonRodi1992"
@@ -912,6 +893,10 @@ literal "false"
  then in common use produced measurements of sensible heat flux about 21%
  too low compared to the measurements from their faster thermocouple-based
  sensor.
+\end_layout
+
+\end_inset
+
  To avoid significant errors in this measurement, it therefore is essential
  to characterize the time response of the temperature sensor used and, where
  necessary, to apply corrections to compensate for that response.
@@ -1306,11 +1291,11 @@ literal "false"
 
 \end_inset
 
-, the time response of the sensor will be represented by two coupled differentia
-l equations, one that describes the response of the support on which the
- sensing wire is wound to the air temperature and a second that describes
- the response of the sensing wire to two inputs, one from the support and
- one from the air.
+, the time response of the sensor will be represented here by two coupled
+ differential equations, one that describes the response of the support
+ on which the sensing wire is wound to the air temperature and a second
+ that describes the response of the sensing wire to two inputs, one from
+ the support and one from the air.
  No attempt is made here to determine the parameters from first principles
  as in 
 \begin_inset CommandInset citation
@@ -2087,9 +2072,10 @@ status open
 
 \begin_layout Plain Layout
 
-<<LTsolution, include = TRUE, fig.height=3.7, fig.cap = 'The amplitude and
+<<LTsolution, include = TRUE, fig.height=3.7, fig.scap = 'The amplitude and
  phase for the frequency domain transfer function of the Rosemount 102E4AL
- temperature sensor.
+ temperature sensor.', fig.cap = 'The amplitude and phase for the frequency
+ domain transfer function of the Rosemount 102E4AL temperature sensor.
  The parameters representing that sensor, labeled 
 \begin_inset Quotes eld
 \end_inset
@@ -2865,7 +2851,7 @@ Fourier transform the time series
 
 \end_inset
 
- Those correction schemes are discussed in detail in Appendix A.
+ Those correction schemes are discussed in Appendix A.
  To support such corrections, the next section determines the transfer function
  experimentally.
  
@@ -2999,8 +2985,12 @@ Because dynamic heating can exceed
 \end_inset
 
  or even more
-\begin_inset Foot
+\begin_inset Note Note
 status open
+
+\begin_layout Plain Layout
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
 A sensor with a first-order time constant cannot produce a phase lag of
@@ -3009,6 +2999,11 @@ A sensor with a first-order time constant cannot produce a phase lag of
 \end_inset
 
 , but larger lags are possible for systems characterized by two time constants.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -3092,8 +3087,6 @@ literal "false"
  for supporting evidence.
  This limit applies when the temperature being measured is varying slowly
  but does not apply when the temperature changes rapidly.
- It is well known, however, that temperature sensors in common use on research
- aircraft have time-response characteristics that can affect the measurements.
  
 \begin_inset CommandInset citation
 LatexCommand citet
@@ -3110,10 +3103,10 @@ literal "false"
 
 \end_inset
 
-, among many others, provide reviews of the evidence for delayed response
- of the standard sensors.
+, among others, provide reviews of the evidence for delayed response of
+ the standard sensors.
  In particular, the unheated Rosemount 102E4AL sensor has been used widely
- as a fast-responding sensor, so it will be a focus of this three-part study.
+ as a fast-responding sensor, so it will be a focus of this study.
 \end_layout
 
 \begin_layout Standard
@@ -3414,7 +3407,7 @@ noprefix "false"
 \end_inset
 
 .
- Using this estimate of 
+ Using this revised estimate of 
 \begin_inset Formula $T_{r}(t)$
 \end_inset
 
@@ -5451,12 +5444,7 @@ literal "false"
  the turbulence.
  The time intervals are listed in Table 1.
  For each flight segment, the phase and amplitude ratio between the measurement
- and the dynamic heating term were calculated,
-\begin_inset Foot
-status open
-
-\begin_layout Plain Layout
-The R routine 
+ and the dynamic heating term were calculated using the R routine 
 \begin_inset Quotes eld
 \end_inset
 
@@ -5464,12 +5452,8 @@ spec.pgram()
 \begin_inset Quotes erd
 \end_inset
 
- was used with 25-point modified Daniell smoothing.
-\end_layout
-
-\end_inset
-
- and the results for all six segments were averaged in 
+ with 25-point modified Daniell smoothing, and the results for all six segments
+ were averaged in 
 \begin_inset ERT
 status open
 
@@ -7157,6 +7141,16 @@ suppressWarnings(print(g2, vp=vp1))
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Phase and amplitude ratio (or gain) for the measured recovery temperature
+ relative to dynamic heating.
+\end_layout
+
+\end_inset
+
 (top): Phase of measured recovery temperature relative to dynamic heating,
  for the measurements (with error bars) and for the theoretical response
  for the best-fit parameters (green line).
@@ -7781,8 +7775,12 @@ Hz for the measurements of amplitude ratio, to avoid regions where effects
  other than dynamic heating appear to bias the measurements.
  Then a search procedure varied these parameters to seek the minimum value
  of the chi-square.
-\begin_inset Foot
+\begin_inset Note Note
 status open
+
+\begin_layout Plain Layout
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
 The code can be found in the 
@@ -7819,6 +7817,11 @@ literal "false"
 \end_inset
 
 .
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -10840,8 +10843,8 @@ noprefix "false"
 \end_inset
 
  provides a good representation of the unheated Rosemount 102E4AL sensor,
- the measurements from that sensor, corrected as will be described in Appendix
- A, were used as the reference for the assumed-correct recovery temperature.
+ the measurements from that sensor, corrected as described in Appendix A,
+ were used as the reference for the assumed-correct recovery temperature.
  Then the phase and amplitude ratio were found for the transfer function
  required to produce the heated-probe measurements from the unheated-probe
  measurements.
@@ -12402,17 +12405,6 @@ eat flux at this frequency would be zero.
 \end_layout
 
 \begin_layout Standard
-To characterize the response of the heated HARCO sensor, boundary-layer
- flight segments from the SOCRATES and CSET projects (referenced earlier
- in connection with the unheated probe) were compiled into one data set
- from the flight periods shown in Table
-\begin_inset space ~
-\end_inset
-
-2.
- An unheated Rosemount 102E4AL sensor was also onboard, so corrected measurement
-s from that sensor were used as the reference against which to determine
- the gain and phase of the transfer function.
 \begin_inset Float table
 placement h
 wide false
@@ -12634,6 +12626,19 @@ Flight segments used to determine the response characteristics of a heated
 \end_layout
 
 \begin_layout Standard
+Boundary-layer flight segments from the SOCRATES and CSET projects (referenced
+ earlier in connection with the unheated probe) were compiled into one data
+ set from the flight periods shown in Table
+\begin_inset space ~
+\end_inset
+
+2.
+ An unheated Rosemount 102E4AL sensor was also onboard, so corrected measurement
+s from that sensor were used as the reference against which to determine
+ the gain and phase of the transfer function.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 wide false
 sideways false
@@ -12645,7 +12650,7 @@ status open
 
 \begin_layout Plain Layout
 
-<<GVHARCO, include = TRUE, fig.height = 4.5>>=
+<<GVHARCO, include = TRUE, fig.height = 5>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -13106,7 +13111,7 @@ g <- g + annotation_logticks(sides = "bt")
 
 \begin_layout Plain Layout
 
-g <- g + geom_errorbar(aes(ymin=mphase-sdp, ymax=mphase+sdp), width=0.08)
+g <- g + geom_errorbar(aes(ymin=mphase-2*sdp, ymax=mphase+2*sdp), width=0.08)
 \end_layout
 
 \begin_layout Plain Layout
@@ -13234,7 +13239,7 @@ g <- g + annotation_logticks(sides = "bt")
 
 \begin_layout Plain Layout
 
-g <- g + geom_errorbar(aes(ymin=mrspec-sdr, ymax=mrspec+sdr), width=0.08)
+g <- g + geom_errorbar(aes(ymin=mrspec-2*sdr, ymax=mrspec+2*sdr), width=0.08)
 \end_layout
 
 \begin_layout Plain Layout
@@ -13445,6 +13450,17 @@ cfrHARCO <- cfr
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+The phase and gain for the transfer function characterizing a heated HARCO
+ temperature sensor.
+ 
+\end_layout
+
+\end_inset
+
 The phase (top) and gain (bottom) for the transfer function characterizing
  a heated HARCO temperature sensor.
  The measurements are indicated by error bars that show two-standard-deviation
@@ -13850,8 +13866,25 @@ Hz because those values were not constrained by the measurements.
 \end_inset
 
 Hz to higher frequencies; this appears to be adequate because there is so
- little variance measured by this sensor at these frequencies, but it is
- important to avoid possible zeroes that otherwise arise from extrapolation.
+ little variance measured by this sensor at these frequencies, as shown
+ by Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:RTH1Spec}
+\end_layout
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -15081,9 +15114,11 @@ status open
 
 \begin_layout Plain Layout
 
-<<tfit, include=TRUE, echo=FALSE, fig.pos='t', fig.cap='(blue dots): Temperature
- measured at 25 Hz during descent through an inversion capping the marine
- boundary layer, from VOCALS flight 3, starting at 8:13:50 UTC.
+<<tfit, include=TRUE, echo=FALSE, fig.pos='t', fig.scap = 'Temperature measured
+ at 25 Hz during descent through an inversion capping the marine boundary
+ layer', fig.cap='(blue dots): Temperature measured at 25 Hz during descent
+ through an inversion capping the marine boundary layer, from VOCALS flight
+ 3, starting at 8:13:50 UTC.
  The descent rate was approximately 5 m/s.
  The dashed red line shows a dry-adiabatic lapse rate in the marine boundary
  layer, and the dashed black line is a reference line indicating the location
@@ -20351,6 +20386,10 @@ It is also possible to make corrections to the measurements for other purposes.
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 The preceding discussion has focused on the recovery temperature that is
  the measurand, as expressed by 
 \begin_inset CommandInset ref
@@ -20398,6 +20437,11 @@ literal "false"
  term to which it does not apply.
  This will introduce noise into the calculated air temperature if the sensor
  cannot respond fully to fluctuations in dynamic heating.
+\end_layout
+
+\end_inset
+
+
 \begin_inset Note Note
 status open
 
@@ -20467,6 +20511,13 @@ literal "false"
 
 \begin_layout Section
 Correcting for Dynamic Heating
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Correcting-for-Dynamic"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -21553,8 +21604,13 @@ status open
 
 \begin_layout Plain Layout
 
-<<S15, include=TRUE, fig.cap='The weighted variance spectrum as a function
+<<S15, include=TRUE, fig.scap = 'The weighted variance spectrum as a function
  of frequency $
+\backslash
+
+\backslash
+nu$ for the recovery temperature measured by a Rosemount 102E4AL sensor.',
+ fig.cap='The weighted variance spectrum as a function of frequency $
 \backslash
 
 \backslash
@@ -21876,7 +21932,12 @@ ref{fig:S15}
 
 Hz, so that the subtraction of dynamic heating would produce smaller variance
  in the measured ambient temperature.
- Later figures (Figs.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Later figures (Figs.
 \begin_inset space ~
 \end_inset
 
@@ -21910,12 +21971,76 @@ b) will show anecdotal examples of the errors introduced by the conventional
  correction.
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
-Data processing should instead apply a correction that represents how dynamic
- heating affects the sensor, and that correction should not include fluctuations
- at frequencies to which the sensor does not respond.
- The approach followed in this paper is therefore to use the transfer function
- to characterize the response of an airborne temperature sensor to dynamic
+The transfer function shown in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:LTsolution}
+\end_layout
+
+\end_inset
+
+ indicates that the response to fluctuations at 5
+\begin_inset space ~
+\end_inset
+
+Hz is only about 50% of the imposed amplitude, and at 10
+\begin_inset space ~
+\end_inset
+
+Hz the response is only about 35%.
+ Furthermore, the phase at 10
+\begin_inset space ~
+\end_inset
+
+Hz is shifted by about 
+\begin_inset Formula $62^{\circ}$
+\end_inset
+
+.
+ Using the measurement of dynamic heating 
+\begin_inset Formula $Q$
+\end_inset
+
+ as specified by 
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "eq:DHterm"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ to correct the measured recovery temperature will therefore over-correct
+ and produce erroneous fluctuations in the measured air temperature unless
+ 
+\begin_inset Formula $Q$
+\end_inset
+
+ is filtered to represent the sensor response.
+\end_layout
+
+\begin_layout Standard
+Data processing should therefore apply a correction that represents how
+ dynamic heating affects the sensor, and that correction should not include
+ fluctuations at frequencies to which the sensor does not respond.
+ The approach followed here is therefore to use the transfer function to
+ characterize the response of an airborne temperature sensor to dynamic
  heating so that only that response is subtracted from the measurement.
  This is made possible by the assumed linearity in response of the sensor,
  which is required if this part of the response is to be separated from
@@ -22218,65 +22343,6 @@ g + theme_WAC(1) + theme(legend.position = c(0.3, 0.65))
 \end_layout
 
 \begin_layout Standard
-The transfer function shown in Fig.
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-ref{fig:LTsolution}
-\end_layout
-
-\end_inset
-
- indicates that the response to fluctuations at 5
-\begin_inset space ~
-\end_inset
-
-Hz is only about 50% of the imposed amplitude, and at 10
-\begin_inset space ~
-\end_inset
-
-Hz the response is only about 35%.
- Furthermore, the phase at 10
-\begin_inset space ~
-\end_inset
-
-Hz is shifted by about 
-\begin_inset Formula $62^{\circ}$
-\end_inset
-
-.
- Using the measurement of dynamic heating 
-\begin_inset Formula $Q$
-\end_inset
-
- as specified by 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "eq:DHterm"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- to correct the measured recovery temperature will therefore over-correct
- and produce erroneous fluctuations in the measured air temperature unless
- 
-\begin_inset Formula $Q$
-\end_inset
-
- is filtered to represent the sensor response..
-\end_layout
-
-\begin_layout Standard
 A revised dynamic-heating adjustment filtered to represent how the sensor
  will respond is denoted 
 \begin_inset Formula $Q^{\prime}$
@@ -22364,9 +22430,12 @@ The impulse response of the sensor can be found from the inverse Fourier
  Once that is determined, appropriate moving-average coefficients can be
  found from the impulse response, and those coefficients define a digital
  filter that represents the sensor response.
- The filter used here was determined at a frequency resolution of (1/600)_Hz,
- then only the initial 101 and trailing 100 coefficients were retained and
- all other were set to zero.
+ The filter used here was determined at a frequency resolution of (1/600)
+\begin_inset space ~
+\end_inset
+
+Hz, then only the initial 101 and trailing 100 coefficients were retained
+ and all other were set to zero.
  Shifting the negative-frequency components to the start of the array gave
  an eight-second sequence that represented the response of the sensor.
  These coefficients were used as a moving-average filter, after which the
@@ -23048,22 +23117,18 @@ save(AR, ARH, ARHB, ARG, AR1, ARH1, ARHB1, ARG1, Lshift, LshiftH, Lshift1,
 \end_layout
 
 \begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-<<plotImpulse, include=TRUE, fig.height=4, fig.cap=c('(a) The impulse response
- function found from the inverse Fourier transform of the transfer function
- for the unheated Rosemount 102E4AL sensor (Rosemount) and for the heated
- HARCO sensor (HARCO), using the response parameters from Table 2 of Part
- 1.
- The impulse response for the HARCO sensor is multiplied by 10.
- (b) A filter function (moving-average coefficients spanning 8 s) obtained
- from the impulse response function.
- The filtered result must be shifted forward in time by 4 s to compensate
- for the delay introduced by the filter.
- The coefficients are multiplied by 10 for the HARCO sensor.')>>=
+<<plotImpulse, include=TRUE, fig.height=4>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -23177,6 +23242,68 @@ layout(matrix(1:1, ncol=1), widths=c(8), heights=c(5.5))
 \begin_layout Plain Layout
 
 @
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+The impulse response function found from the inverse Fourier transform of
+ the transfer function for the unheated Rosemount 102E4AL sensor and for
+ the heated HARCO sensor , and the filter functions determined from those
+ impulse response functions.
+\end_layout
+
+\end_inset
+
+(a) The impulse response function found from the inverse Fourier transform
+ of the transfer function for the unheated Rosemount 102E4AL sensor (Rosemount)
+ and for the heated HARCO sensor (HARCO), using the response parameters
+ from Table
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Parameters"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+ The impulse response for the HARCO sensor is multiplied by 10.
+\begin_inset Newline newline
+\end_inset
+
+(b) A filter function (moving-average coefficients spanning 8 s) obtained
+ from the impulse response function.
+ The filtered result must be shifted forward in time by 4 s to compensate
+ for the delay introduced by the filter.
+ The coefficients are multiplied by 10 for the HARCO sensor.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:plotImpulse"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -23361,8 +23488,12 @@ where the first equation describes the effect of dynamic heating on the
  Euler integration of these differential equations led to erroneous results
  at high frequency arising from inadequate resolution in the integration,
  so a fourth-order Runge-Kutta integration
-\begin_inset Foot
+\begin_inset Note Note
 status open
+
+\begin_layout Plain Layout
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
 The integration method was fourth-order Runge-Kutta with adjustment of the
@@ -23398,7 +23529,20 @@ literal "false"
 
 \end_inset
 
- was used instead.
+ 
+\end_layout
+
+\end_inset
+
+ with dynamic adjustment of the time step, as described by 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "cash1990variable"
+literal "false"
+
+\end_inset
+
+, was used.
 \end_layout
 
 \begin_layout Enumerate
@@ -23790,6 +23934,19 @@ g2 <- DS %>% select(Time, TASX, AT, RT, ATF1) %>%
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+For an unheated Rosemount 102E4AL sensor, variance spectra for the dynamic-heati
+ng term after application of three different filters.
+ Also, variance spectra for the measurement of recovery temperature and
+ ambient temperature calculated using the filtered dynamic-heating term.
+ 
+\end_layout
+
+\end_inset
+
 Variance spectra for the unheated Rosemount 102E4AL sensor, for the same
  flight segment used for Fig.
 \begin_inset space ~
@@ -24100,7 +24257,7 @@ Hz with 25-Hz smoothing, integrated, and then resampled to obtain 25
 \end_inset
 
 Hz measurements.
- This iondicated that the discrepancy in results is attributable to accumulating
+ This indicated that the discrepancy in results is attributable to accumulating
  numerical errors in the integration, but the integration became awkwardly
  slow when performed at 125-Hz resolution.
  The equivalence of the results from the digital filter and from Fourier
@@ -24809,6 +24966,18 @@ suppressWarnings(print(g))
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Variance spectra for the heated HARCO sensor: The unmodified dynamic-heating
+ term and two filtered terms.
+ Also, the air temperature as modified by filtering the dynamic-heating
+ term.
+\end_layout
+
+\end_inset
+
 Variance spectra for the heated HARCO sensor.
 \begin_inset Newline newline
 \end_inset
@@ -24842,7 +25011,7 @@ filter
 \begin_inset Newline newline
 \end_inset
 
-Right, (b): The temperature as modified by filtering the dynamic-heating
+Right, (b): The air temperature as modified by filtering the dynamic-heating
  term (blue line).
  The other plotted spectra are for the measured recovery temperature and
  the air temperature with the conventional dynamic-heating correction.
@@ -25150,6 +25319,18 @@ print(gb + annotate('text', x = DWECAN$Time[getIndex(DWECAN, 181300)] +
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Comparison of the original measured temperature and the same temperature
+ after filtering the dynamic-heating correction, for an unheated Rosemount
+ 102E4AL sensor and a heated HARCO sensor.
+ 
+\end_layout
+
+\end_inset
+
 Comparison of the original measured temperature and the same temperature
  after filtering the dynamic-heating correction:
 \begin_inset Newline newline
@@ -25236,8 +25417,12 @@ ref{fig:ATATF}
 b that are caused by fluctuations in dynamic heating to which the sensor
  does not respond.
  
-\begin_inset Foot
+\begin_inset Note Note
 status open
+
+\begin_layout Plain Layout
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
 For the NSF/NCAR GV, the dynamic-heating term is complicated further by
@@ -25253,6 +25438,11 @@ That resonance is an additional source of spurious air-temperature noise
  affect the temperature sensor.
  When they are present, those resonance effects also need to be removed
  from the dynamic-heating term applied to the recovery temperature.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -25544,7 +25734,21 @@ literal "false"
 \begin_inset Formula $Q$
 \end_inset
 
-, which was shown in Part 2 to lead to erroneous noise in the air temperature.
+, which was shown in Sect.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Correcting-for-Dynamic"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ to lead to erroneous noise in the air temperature.
  Then that noise is amplified by the correction procedure.
  These errors are avoided if corrections are applied instead to the measurement
  of the recovery temperature.
@@ -25623,7 +25827,7 @@ Find the air temperature
  scale factor as specified in 
 \begin_inset CommandInset ref
 LatexCommand eqref
-reference "eq:heatFlux-1"
+reference "eq:heatFlux"
 plural "false"
 caps "false"
 noprefix "false"
@@ -25631,8 +25835,12 @@ noprefix "false"
 \end_inset
 
 .
-\begin_inset Foot
+\begin_inset Note Note
 status open
+
+\begin_layout Plain Layout
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
 The corrected recovery temperature also can be calculated by integrating
@@ -25651,6 +25859,11 @@ noprefix "false"
 \end_inset
 
 .
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -25750,12 +25963,12 @@ plotCS <- function(CS, Units, spans=149, fL, wavelengthLimit=2000,
 
 \begin_layout Plain Layout
 
-                   plotRibbon=TRUE) {
+                   plotRibbon=TRUE, project = NA) {
 \end_layout
 
 \begin_layout Plain Layout
 
-  ylab <- bquote("f x flux cospectrum ["*.(Units)*"]")    
+  ylab <- bquote(nu *" x flux cospectrum ["*.(Units)*"]")    
 \end_layout
 
 \begin_layout Plain Layout
@@ -26220,6 +26433,22 @@ Units))
 
 \begin_layout Plain Layout
 
+  if(!is.na(project)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    g <- g + annotate('text', x = 4, y=7, label=paste0('(', project, ')'),
+ size=4)
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
   suppressWarnings(print(g + theme_WAC(1) + theme(plot.title = element_text(size=
 12)) +
 \end_layout
@@ -26300,24 +26529,6 @@ Units))
 \begin_layout Plain Layout
 
 @
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-vfill
-\backslash
-eject
 \end_layout
 
 \end_inset
@@ -28847,25 +29058,9 @@ DS$RHOCP <- SmoothInterp(DS$RHOCP, .Length = 0)
 
 \begin_layout Standard
 Two examples of measured cospectra illustrate the effect of the correction.
- The first example is from the 
-\begin_inset Quotes eld
-\end_inset
-
-Southern Ocean Clouds, Radiation, Aerosol Transport Experimental Study
-\begin_inset Quotes erd
-\end_inset
-
- (SOCRATES) (flight 15, 24 January 2018, 6:00:00 to 6:15:00 UTC) and the
- second is from the 
-\begin_inset Quotes eld
-\end_inset
-
-Cloud Systems Evolution in the Trades
-\begin_inset Quotes erd
-\end_inset
-
- (CSET) experiment (flight 12, 1 August 2015, various segments from 16:00:00
- to 19:15:00 UTC).
+ The first example is from the SOCRATES project, flight of 24 January 2018,
+ 6:00:00 to 6:15:00 UTC, and the second is from the CSET project, flight
+ of 1 August 2015, from various segments from 16:00:00 to 19:15:00 UTC.
  The flight segments were all at low level (150
 \begin_inset space ~
 \end_inset
@@ -29341,7 +29536,8 @@ CS.corrected <- plotCS(CS, Units, spans, fL,
 
 \begin_layout Plain Layout
 
-                   xlim, ylim, CSprevious = CS.orig) 
+                   xlim, ylim, CSprevious = CS.orig, project = 'SOCRATES')
+ 
 \end_layout
 
 \begin_layout Plain Layout
@@ -30002,7 +30198,7 @@ CS.corrected <- plotCS(CS, Units, spans, fL, wavelengthLimit,
 
 \begin_layout Plain Layout
 
-                   xlim, ylim, CSprevious = CS.orig) 
+                   xlim, ylim, CSprevious = CS.orig, project = 'CSET') 
 \end_layout
 
 \begin_layout Plain Layout
@@ -30078,8 +30274,22 @@ CS.orig$cospec <- SmoothInterp(CS.orig$cospec, .Length=0)  # treat NAs
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
 The corrected flux of sensible heat for low-level flight segments over the
  Pacific Ocean.
+ 
+\end_layout
+
+\end_inset
+
+The corrected flux of sensible heat, weighted by the frequency 
+\begin_inset Formula $\nu$
+\end_inset
+
+, for low-level flight segments over the Pacific Ocean.
  The 
 \begin_inset Quotes eld
 \end_inset
@@ -30093,15 +30303,12 @@ exceedance
  brown exceedance line is that without transfer-function correction but
  with adjustment of the dynamic-heating term to incorporate the estimated
  response of the temperature sensor.
-\begin_inset Newline newline
+ The dashed black line shows the frequency limit that corresponds to a wavelengt
+h of 2
+\begin_inset space ~
 \end_inset
 
-(top): A flight in project SOCRATES over the southern-hemisphere ocean.
- 
-\begin_inset Newline newline
-\end_inset
-
-(bottom): A flight in project CSET over the northern-hemisphere ocean.
+km.
 \begin_inset CommandInset label
 LatexCommand label
 name "fig:SOCp1"
@@ -30199,11 +30406,6 @@ Further smoothing is included by binning the results into 100 logarithmically
 \end_layout
 
 \begin_layout Enumerate
-A shaded ribbon denotes the standard deviation of the values in the bins.
- In many cases it is too narrow to be visible.
-\end_layout
-
-\begin_layout Enumerate
 The total flux indicated in the title is that arising from the part of the
  flux with frequency above 0.01
 \begin_inset space ~
@@ -30261,8 +30463,12 @@ higher
 \end_inset
 
  per logarithmic interval as is the case for the weighted cospectrum.
-\begin_inset Foot
+\begin_inset Note Note
 status open
+
+\begin_layout Plain Layout
+\begin_inset Foot
+status collapsed
 
 \begin_layout Plain Layout
 The cumulative distribution termed 
@@ -30293,13 +30499,21 @@ oh-jive
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 The exceedance distributions before correction, shown as the dashed brown
  lines, were calculated using a dynamic-heating correction that was filtered
  to match the response of the sensor, but otherwise were not corrected.
  Without correction for the response as represented by the transfer function,
- about 30% and 34% of the flux, for the SOCRATES and CSET cases respectively,
- would be missed.
+ about 33% of the flux contributed by wavelengths smaller than 2
+\begin_inset space ~
+\end_inset
+
+km would be missed.
  The underestimation is particularly serious at higher frequencies: In both
  cases the measured contribution from frequencies above 1
 \begin_inset space ~
@@ -30307,6 +30521,18 @@ The exceedance distributions before correction, shown as the dashed brown
 
 Hz is more than twice as large after correction as it is without correction.
  
+\begin_inset CommandInset citation
+LatexCommand citet
+key "LawsonRodi1992"
+literal "false"
+
+\end_inset
+
+ estimated that, in comparison to their fast thermocouple sensor, the unheated
+ Rosemount sensor underestimated the flux by about 21% in their measurements.
+ The magnitude of the correction applied here is larger than that estimated
+ error, but the flight speed of the aircraft was about 30% higher in this
+ case so a larger error would be expected.
 \end_layout
 
 \begin_layout Standard
@@ -30486,21 +30712,6 @@ The dashed line shows the result with correction only for dynamic heating,
 \end_layout
 
 \begin_layout Standard
-\begin_inset CommandInset citation
-LatexCommand citet
-key "LawsonRodi1992"
-literal "false"
-
-\end_inset
-
- estimated that, in comparison to their fast thermocouple sensor on a slower
- aircraft, the unheated Rosemount sensor underestimated the flux by about
- 21% in their measurements.
- The magnitude of the correction applied here is thus reasonably consistent
- with expectations from that study.
-\end_layout
-
-\begin_layout Standard
 By obtaining a realistic measurement of the cospectrum at high frequency,
  it is possible to estimate how much of the otherwise unknown contribution
  above 1
@@ -30596,14 +30807,8 @@ frequency that is expected for an inertial sub-range.
 
  slope, and then use an inverse Fourier transform to reconstruct the simulated
  measurement series.
- To provide a more realistic representation of the variance spectra often
- observed, the spectral variance is attenuated a low frequency to produce
- a peak variance at several-kilometer wavelength.
-\end_layout
-
-\begin_layout Standard
-The variance spectrum expected for an inertial sub-range has the following
- form:
+ The variance spectrum was generated to have the following form as expected
+ for an inertial sub-range:
 \begin_inset Newline newline
 \end_inset
 
@@ -30616,33 +30821,22 @@ P(\nu)=C\left(\frac{2\pi}{V}\right)^{-2/3}\epsilon^{2/3}\nu^{-5/3}\label{eq:expe
 \end_inset
 
 where 
+\begin_inset Formula $\nu$
+\end_inset
+
+ is the frequency, 
+\begin_inset Formula $V$
+\end_inset
+
+ the airspeed, 
+\begin_inset Formula $\epsilon$
+\end_inset
+
+ the eddy dissipation rate, and 
 \begin_inset Formula $C=0.5$
 \end_inset
 
  for the longitudinal component of the wind and 2/3 for a lateral component.
- An eddy dissipation rate of 
-\begin_inset Formula $10^{-3}\,\mathrm{m}^{2}\mathrm{s^{-3}}$
-\end_inset
-
- and a flight speed of 
-\begin_inset Formula $V=200$
-\end_inset
-
-
-\begin_inset space ~
-\end_inset
-
-m/s were used with 
-\begin_inset CommandInset ref
-LatexCommand eqref
-reference "eq:expectedSpectrum"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- to specify the desired variance spectrum.
  
 \begin_inset Note Note
 status open
@@ -30672,7 +30866,94 @@ ref{fig:varSpecISR}
 
 \end_inset
 
+Thirty-minute sequences were generated at 50
+\begin_inset space ~
+\end_inset
 
+Hz for the three components of the wind, for an eddy dissipation rate of
+ 
+\begin_inset Formula $10^{-3}\mathrm{m}^{2}\mathrm{s}^{-3}$
+\end_inset
+
+, and then 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+is shown in Fig.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+ref{fig:generate}
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Note Note
+status collapsed
+
+\begin_layout Plain Layout
+This time series can then be written to a netCDF file (preferably with the
+ Time variable converted to RAF convention) to use as input to studies of
+ how missing values and other problems will affect the resulting variance
+ spectrum.
+ Because the amplitude of the variations is proportional to 
+\begin_inset Formula $\epsilon^{1/3}$
+\end_inset
+
+, a time series for a different eddy dissipation rate can be obtained by
+ scaling these by (
+\begin_inset Formula $\epsilon^{\prime}/\epsilon^{*})^{1/3}$
+\end_inset
+
+ where 
+\begin_inset Formula $\epsilon^{\prime}$
+\end_inset
+
+ is the desired eddy dissipation rate and 
+\begin_inset Formula $\epsilon^{*}$
+\end_inset
+
+ is 
+\begin_inset Formula $10^{-5}\,\mathrm{m}^{2}\mathrm{s}^{-3}$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+long-wavelength components with frequency below 0.05
+\begin_inset space ~
+\end_inset
+
+Hz were attenuated by multiplying the Fourier components by 
+\begin_inset Formula $\exp(-5*0.05/|\nu|)$
+\end_inset
+
+ where 
+\begin_inset Formula $\nu$
+\end_inset
+
+ is the frequency.
+ This not only produced a more realistic spectrum but also improved the
+ accuracy of the high-frequency simulation, which otherwise exhibited some
+ variability for different random sequences.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -32380,94 +32661,7 @@ Units))
 \end_layout
 
 \begin_layout Standard
-Thirty-minute time series were generated for the three components of the
- wind, for an eddy dissipation rate of 
-\begin_inset Formula $10^{-3}\mathrm{m}^{2}\mathrm{s}^{-3}$
-\end_inset
-
-, and then 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-is shown in Fig.
-\begin_inset space ~
-\end_inset
-
-
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-
-\backslash
-ref{fig:generate}
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Note Note
-status collapsed
-
-\begin_layout Plain Layout
-This time series can then be written to a netCDF file (preferably with the
- Time variable converted to RAF convention) to use as input to studies of
- how missing values and other problems will affect the resulting variance
- spectrum.
- Because the amplitude of the variations is proportional to 
-\begin_inset Formula $\epsilon^{1/3}$
-\end_inset
-
-, a time series for a different eddy dissipation rate can be obtained by
- scaling these by (
-\begin_inset Formula $\epsilon^{\prime}/\epsilon^{*})^{1/3}$
-\end_inset
-
- where 
-\begin_inset Formula $\epsilon^{\prime}$
-\end_inset
-
- is the desired eddy dissipation rate and 
-\begin_inset Formula $\epsilon^{*}$
-\end_inset
-
- is 
-\begin_inset Formula $10^{-5}\,\mathrm{m}^{2}\mathrm{s}^{-3}$
-\end_inset
-
-.
-\end_layout
-
-\end_inset
-
-long-wavelength components with frequency below 0.05
-\begin_inset space ~
-\end_inset
-
-Hz were attenuated by multiplying the Fourier components by 
-\begin_inset Formula $\exp(-5*0.05/|\nu|)$
-\end_inset
-
- where 
-\begin_inset Formula $\nu$
-\end_inset
-
- is the frequency.
- This not only produced a more realistic spectrum but also improved the
- accuracy of the high-frequency simulation, which otherwise exhibited some
- variability for different random sequences.
- 
-\end_layout
-
-\begin_layout Standard
-To generate sensible-heat flux a correlation was introduced between the
+To introduce sensible-heat flux a correlation was introduced between the
  simulated temperature and updraft, as follows:
 \end_layout
 
@@ -32531,8 +32725,7 @@ eating correction to the simulated air temperature and then filtering the
 
 \begin_layout Standard
 In this simulation, the correlation is the same at all frequencies so the
- contribution to the measured flux also extends over all frequencies, with
- decreasing contributions as frequency increases.
+ contribution to the measured flux also extends over all frequencies.
  About 15% of the 
 \begin_inset Formula $<2.5\,\mathrm{km}$
 \end_inset
@@ -32842,8 +33035,10 @@ status open
 
 \begin_layout Plain Layout
 
-<<simF, include=TRUE, fig.height=4, fig.cap='The cospectrum for the flux of
- sensible heat (blue line), weighted by frequency $
+<<simF, include=TRUE, fig.height=4, fig.scap = 'The cospectrum for the flux
+ of sensible heat, weighted by frequency, for a simulated data set.', fig.cap='The
+ cospectrum for the flux of sensible heat (blue line), weighted by frequency
+ $
 \backslash
 
 \backslash
@@ -33813,8 +34008,21 @@ ref{fig:simF}
  sensor.
  The simulated measurement of air temperature was obtained by adding the
  dynamic-heating correction to the simulated air temperature and then applying
- the digital filter developed in Part 2 to estimate how the sensor would
- respond.
+ the digital filter developed in Sect.
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand eqref
+reference "subsec:A-filter-for"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+ to estimate how the sensor would respond.
  Then the resulting value for measured recovery temperature was corrected
  for dynamic heating to obtain the value that would be measured for the
  air temperature, and that value was used with the simulated updraft to
@@ -33883,7 +34091,7 @@ m
 \begin_inset Formula $^{-2}$
 \end_inset
 
-, the measured values before and after correction were 33.2 and 38.5
+ and the measured values before and after correction were 33.2 and 38.5
 \begin_inset space ~
 \end_inset
 
@@ -33924,7 +34132,7 @@ This test only confirms consistency between the prediction of the transfer
  function and the correction procedure based on that function.
  The former, when deployed in a digital filter, is dependent on the assumptions
  and weaknesses in that filter, while the latter may be influenced by end
- effect and window effects from calculating the Fourier transforms.
+ effects and window effects from calculating the Fourier transforms.
  The agreement between the simulated and corrected flux therefore provides
  some support for the filter developed in Sect.
 \begin_inset space ~
@@ -33981,8 +34189,8 @@ noprefix "false"
  Rosemount 102E4AL sensor.
  That transfer function was shown to be consistent with measurements of
  the phase and amplitude ratio of the response to dynamic-heating fluctuations.
- This is good evidence that the equations provide a good representation
- of the time response for that sensor.
+ This is evidence that the equations provide a valid representation of the
+ time response for that sensor.
  The predictions of the equations are less satisfactory when applied to
  a heated HARCO sensor or a heated Rosemount sensor, possibly indicating
  that the heat transfer is not represented adequately by those equations.
@@ -34029,15 +34237,16 @@ Because temperature sensors often do not respond fast enough to measure
 
 \begin_layout Enumerate
 A correction procedure was proposed that consists of using the transfer
- function to calculate the sensible-heat flux.
- Three cases are presented, all with significant correlation between temperature
- and updraft at a range of frequencies including those above 1
+ function to correct the measured cospectrum of sensible-heat flux.
+ Two illustrative cases were presented in which there was significant correlatio
+n between temperature and updraft at a range of frequencies including those
+ above 1
 \begin_inset space ~
 \end_inset
 
 Hz.
  The measured values of sensible-heat flux would be underestimated significantly
- (by about 40%, 30%, and 44% in the three cases) without correction.
+ (by about 33%) without correction.
 \end_layout
 
 \begin_layout Enumerate
@@ -34046,9 +34255,8 @@ es up to about 10
 \begin_inset space ~
 \end_inset
 
-Hz, so the rapidly decreasing concentration to the cospectrum from these
- frequencies suggests that it is not necessary to measure contributions
- from frequencies above this limit.
+Hz, so the decrease in the cospectrum with frequency near that value suggests
+ that it is not necessary to measure contributions from still higher frequencies.
  This conclusion is tentative and needs reconsideration when applied to
  new cases.
 \end_layout
@@ -34115,16 +34323,15 @@ noprefix "false"
 
 \end_inset
 
- involve two unknowns, 
+ involve two unknowns, the actual recovery temperature 
 \begin_inset Formula $T_{r}(t)$
 \end_inset
 
-, the actual recovery temperature, and 
+, and the temperature of the supporting structure 
 \begin_inset Formula $T_{s}(t)$
 \end_inset
 
 .
- the temperature of the supporting structure.
  The second equation can be used to eliminate 
 \begin_inset Formula $T_{r}$
 \end_inset
@@ -34136,12 +34343,12 @@ noprefix "false"
 
 \begin_inset Formula 
 \begin{equation}
-\frac{dT_{s}(t)}{dt}=\frac{\frac{1}{a}\left\{ \tau_{1}\frac{dT_{m}(t)}{dt}+T_{m}(T)-(1-a)T_{s}(t)\right\} -T_{s}(t)}{\tau_{2}}\label{eq:Ts3}
+\frac{dT_{s}(t)}{dt}=\frac{\frac{1}{a}\left\{ \tau_{1}\frac{dT_{m}(t)}{dt}+T_{m}(t)-(1-a)T_{s}(t)\right\} -T_{s}(t)}{\tau_{2}}\label{eq:Ts3}
 \end{equation}
 
 \end_inset
 
-Then, because the measured temperature 
+Because the measured temperature 
 \begin_inset Formula $T_{m}(t)$
 \end_inset
 
@@ -34174,8 +34381,7 @@ noprefix "false"
 \begin_inset Formula $dT_{m}/dt$
 \end_inset
 
- (e.g., here centered fourth-order) and the integration method applied to
- 
+ (here centered fourth-order) and the integration method applied to 
 \begin_inset CommandInset ref
 LatexCommand eqref
 reference "eq:Ts3"
@@ -34225,13 +34431,19 @@ his Eqn.
 \end_inset
 
 (12).
- However, the correction should be applied to the recovery temperature,
- not the air temperature.
- The sensor responds to the recovery temperature, which includes the increase
- caused by dynamic heating.
- Applying the correction to the recovery temperature properly corrects the
- response to dynamic heating also, so the dynamic-heating correction can
- then be subtracted from the corrected recovery temperature to obtain an
+ However, this correction should be applied to the 
+\emph on
+recovery 
+\emph default
+temperature, not the 
+\emph on
+air 
+\emph default
+temperature.
+ The sensor responds to the recovery temperature that includes the increase
+ caused by dynamic heating, so applying the correction to the recovery temperatu
+re properly corrects for the response to dynamic heating also.
+ Then the usual dynamic-heating correction can be subtracted to obtain an
  estimate of the air temperature.
  
 \end_layout
@@ -35795,6 +36007,17 @@ DSAP %>% selectTime(55920, 55940) %>%
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+Examples of corrected recovery temperatures compared to the original uncorrected
+ measurements, for two different correction methods.
+ 
+\end_layout
+
+\end_inset
+
 Examples of the corrected recovery temperatures compared to the original
  uncorrected measurements.
  In each case, the correction based on the differential equations is shown
@@ -37233,9 +37456,11 @@ status open
 
 \begin_layout Plain Layout
 
-<<Qproblem, include=TRUE, fig.cap='The variance spectrum for the dynamic-heating
- correction $Q$, from SOCRATES flight 15, 6:00:00 to 6:15:00 UTC, in a region
- thought to have characteristics of an inertial subrange.
+<<Qproblem, include=TRUE, fig.scap = 'The variance spectrum for the dynamic-heati
+ng correction in a region thought to have characteristics of an inertial
+ subrange.', fig.cap='The variance spectrum for the dynamic-heating correction
+ $Q$, from SOCRATES flight 15, 6:00:00 to 6:15:00 UTC, in a region thought
+ to have characteristics of an inertial subrange.
  The variance spectrum for the airspeed measurement (TASX) is also shown.'>>=
 \end_layout
 
@@ -39021,7 +39246,7 @@ literal "true"
 \end_inset
 
 ).
- The program, 'Paper1.Rnw', is archived on 'GitHub' 
+ The program, 'SensibleHeatFluxPaper.Rnw', is archived on 'GitHub' 
 \begin_inset Index idx
 status open
 
@@ -39228,6 +39453,10 @@ literal "false"
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 The 
 \begin_inset Index idx
 status open
@@ -39344,7 +39573,7 @@ a) but this is not part of the GitHub repository because it is too large
  from {??where??}
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
 Extensive use has been made of 
 \begin_inset Index idx
 status open
@@ -39391,6 +39620,11 @@ calibration coefficients and processing dependence for the variables.
  Key information like the processing date, the program version that produced
  the archive, and the selection of primary variables for various measurements
  thus is preserved.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -39455,8 +39689,8 @@ Archive package:
 \begin_layout Plain Layout
 \begin_inset CommandInset href
 LatexCommand href
-name "SensibleHeatFluxPaper1.zip"
-target "https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/SensibleHeatFluxPaper1.zip"
+name "SensibleHeatFluxPaper.zip"
+target "https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/SensibleHeatFluxPaper.zip"
 literal "false"
 
 \end_inset
@@ -39511,8 +39745,8 @@ Program:
 \begin_layout Plain Layout
 \begin_inset CommandInset href
 LatexCommand href
-name "Paper1.Rnw"
-target "https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/Paper1.Rnw"
+name "SensibleHeatFluxPaper.Rnw"
+target "https://github.com/WilliamCooper/SensibleHeatFlux/blob/master/SensibleHeatFluxPaper.Rnw"
 literal "false"
 
 \end_inset
@@ -39727,11 +39961,11 @@ attachm{
 
 \end_inset
 
-Paper1.Rnw
+SensibleHeatFluxPaper.Rnw
 \begin_inset Newline newline
 \end_inset
 
-Paper1.pdf
+SensibleHeatFluxPaper.pdf
 \begin_inset Newline newline
 \end_inset
 
@@ -39744,6 +39978,10 @@ WAC.bib
 \end_inset
 
 chunks/*
+\begin_inset Newline newline
+\end_inset
+
+*.Rdata
 \begin_inset Newline newline
 \end_inset
 
@@ -39946,7 +40184,7 @@ name "sec:bibliography"
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 btprint "btPrintCited"
-bibfiles "/home/cooperw/RStudio/WAC"
+bibfiles "WAC"
 options "bibtotoc,plainnat"
 
 \end_inset
