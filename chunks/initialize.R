@@ -14,6 +14,7 @@ opts_chunk$set(
 thisFileName <- "ThisFileName"    ## change this
 library(Ranadu, quietly = TRUE, warn.conflicts = FALSE)
 library(scales)
+library(ggthemes)
 library(reshape2)    ## used with ggplot facet plots
 library(grid)
 library(magrittr)    ## used for pipes (%>%)

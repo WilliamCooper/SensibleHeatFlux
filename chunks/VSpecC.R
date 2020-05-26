@@ -24,6 +24,8 @@ VSpecC <-
             ADD = NA,
             add = NA,
             EDR = FALSE,
+            lwd = NA,
+            ltyp = NA,
             WACtheme = NA) {
     if (!is.data.frame(.data)) {
       # See if the first argument can be split into a data.frame and a variable:
@@ -85,8 +87,8 @@ VSpecC <-
         nm <- nm[-which('Time' == nm)]
         nm <- nm[-which('TASX' == nm)]
         .Variable <- nm
-        if (length(.Variable) > 3) {
-          .Variable <- .Variable[1:3]
+        if (length(.Variable) > 4) {
+          .Variable <- .Variable[1:4]
         }
       }
     } else {
@@ -239,6 +241,8 @@ VSpecC <-
         DF$fpf2 <- fpf
       } else if (.V == .Variable[3]) {
         DF$fpf3 <- fpf
+      } else if (.V == .Variable[4]) {
+        DF$fpf4 <- fpf
       }
     }
     
@@ -248,6 +252,12 @@ VSpecC <-
     }
     if (is.na(col[1])) {
       col = c("blue", "forestgreen", "black", "darkorange")
+    }
+    if (is.na(lwd[1])) {
+      lwd = c(1, 1, 1, 1)
+    }
+    if (is.na(ltyp[1])) {
+      ltyp = c(1, 1, 1, 1)
     }
     if (!is.na(add[1])) {
       ADD <- add
@@ -273,49 +283,107 @@ VSpecC <-
             g + geom_path (aes(
               x = freq,
               y = fpf,
-              colour = VL[1]
+              colour = VL[1],
+              linetype = VL[1],
+              size = VL[1]
             ),
+            lwd = lwd[1],
             data = DF,
             na.rm = TRUE) +
             xlab(labx) + ylab (laby)
           .clinesVSpec <- col[1]
+          .tlinesVSpec <- ltyp[1]
+          .slinesVSpec <- lwd[1]
           names(.clinesVSpec) <- VL[1]
+          names(.tlinesVSpec) <- VL[1]
+          names(.slinesVSpec) <- VL[1]
           VSpecEnv$clinesVSpec <- .clinesVSpec
+          VSpecEnv$tlinesVSpec <- .tlinesVSpec
+          VSpecEnv$slinesVSpec <- .slinesVSpec
         }
         if (NV == 2) {
           g <-
             g + geom_path (aes(
               x = freq,
               y = fpf2,
-              colour = VL[2]
+              colour = VL[2],
+              linetype = VL[2],
+              size = FL[2]
             ),
+            lwd = lwd[2],
             data = DF,
             na.rm = TRUE)
           cl2 <- ifelse (length(col) >= 2, col[2], 'forestgreen')
           names(cl2) <- VL[2]
           .clinesVSpec <- c(VSpecEnv$clinesVSpec, cl2)
           VSpecEnv$clinesVSpec <- .clinesVSpec
+          tl2 <- ifelse (length(ltyp) >= 2, ltyp[2], 1)
+          names(tl2) <- VL[2]
+          .tlinesVSpec <- c(VSpecEnv$tlinesVSpec, tl2)
+          VSpecEnv$tlinesVSpec <- .tlinesVSpec
+          sl2 <- ifelse (length(lwd) >= 2, lwd[2], 1)
+          names(sl2) <- VL[2]
+          .slinesVSpec <- c(VSpecEnv$slinesVSpec, sl2)
+          VSpecEnv$slinesVSpec <- .slinesVSpec
         } else if (NV == 3) {
           g <-
             g + geom_path (aes(
               x = freq,
               y = fpf3,
-              colour = VL[3]
+              colour = VL[3],
+              linetype = VL[3],
+              size = VL[3]
             ),
+            lwd = lwd[3],
             data = DF,
             na.rm = TRUE)
           cl3 <- ifelse (length(col) >= 3, col[3], 'black')
           names(cl3) <- VL[3]
           .clinesVSpec <- c(VSpecEnv$clinesVSpec, cl3)
           VSpecEnv$clinesVSpec <- .clinesVSpec
+          tl3 <- ifelse (length(ltyp) >= 3, ltyp[3], 1)
+          names(tl3) <- VL[3]
+          .tlinesVSpec <- c(VSpecEnv$tlinesVSpec, tl3)
+          VSpecEnv$tlinesVSpec <- .tlinesVSpec
+          sl3 <- ifelse (length(lwd) >= 3, lwd[3], 1)
+          names(sl3) <- VL[3]
+          .slinesVSpec <- c(VSpecEnv$slinesVSpec, sl3)
+          VSpecEnv$slinesVSpec <- .slinesVSpec
+        } else if (NV == 4) {
+          g <-
+            g + geom_path (aes(
+              x = freq,
+              y = fpf4,
+              colour = VL[4],
+              linetype = VL[4],
+              size = VL[4]
+            ),
+            lwd = lwd[4],
+            data = DF,
+            na.rm = TRUE)
+          cl4<- ifelse (length(col) >= 4, col[4], 'darkorange')
+          names(cl4) <- VL[4]
+          .clinesVSpec <- c(VSpecEnv$clinesVSpec, cl4)
+          VSpecEnv$clinesVSpec <- .clinesVSpec
+          tl4 <- ifelse (length(ltyp) >= 4, ltyp[4], 1)
+          names(tl4) <- VL[4]
+          .tlinesVSpec <- c(VSpecEnv$tlinesVSpec, tl4)
+          VSpecEnv$tlinesVSpec <- .tlinesVSpec
+          sl4 <- ifelse (length(lwd) >= 4, lwd[4], 1)
+          names(sl4) <- VL[4]
+          .slinesVSpec <- c(VSpecEnv$slinesVSpec, sl4)
+          VSpecEnv$slinesVSpec <- .slinesVSpec
         }
       } else {
         ## assign name based on elements in clinesVSpec
         N <- length(VSpecEnv$clinesVSpec) + 1
         nc <- names(VSpecEnv$clinesVSpec)
         .clinesVSpec <- c(VSpecEnv$clinesVSpec, col[N])
+        .tlinesVSpec <- c(VSpecEnv$tlinesVSpec, ltyp[N])
         names(.clinesVSpec) <- c(nc, V)
+        names(.tlinesVSpec) <- c(nc, V)
         VSpecEnv$clinesVSpec <- .clinesVSpec
+        VSpecEnv$tlinesVSpec <- .tlinesVSpec
         VName <- sprintf('VSpecDF%d', N)
         assign(VName, DF, pos = VSpecEnv)
         if (N == 2) {
@@ -359,7 +427,20 @@ VSpecC <-
     }
     
     g <-
-      suppressMessages(g + scale_colour_manual (name = '', values = .clinesVSpec))
+      suppressMessages(g + scale_size_manual (name = 'variable', 
+                                                  values = .slinesVSpec))
+    g <-
+      suppressMessages(g + scale_linetype_manual (name = 'variable', 
+                                                  values = .tlinesVSpec))
+    g <-
+      suppressMessages(g + scale_colour_manual (name = 'variable', 
+                                                values = .clinesVSpec))
+    # g <- g + scale_size_manual ('', labels=lvl, breaks=lvl, values = lwd)
+    # g <- g + scale_linetype_manual ('', labels=lvl, breaks=lvl, values = lty)
+    # g <-
+    #   suppressMessages(g + scale_linetype_manual (name = '', values = .clinesVSpec))
+    # g <-
+    #   suppressMessages(g + scale_size_manual (name = '', values = .clinesVSpec))
     # print (.clinesVSpec)
     if (showErrors > 0) {
       if (smoothBins > 9) {
