@@ -96,8 +96,11 @@ VSpecC <-
       return (NA)
     }
     if (is.null(attr(.data, 'Rate'))) {
-      print ('VSpec warning: Rate attribute missing from data.frame, so using Rate=1')
+      # print ('VSpec warning: Rate attribute missing from data.frame, so using Rate=1')
       Rate <- 1
+      NT <- nrow(.data) / diff(as.integer(range(.data$Time)))
+      if (NT > 20) Rate <- 25
+      if (NT > 30) Rate <- 50
     } else {
       Rate <- attr(.data, 'Rate')
     }
