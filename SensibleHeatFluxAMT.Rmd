@@ -203,6 +203,12 @@ equation consistent with those equations. The measured transfer functions
 then are used in the sections that follow to access how common measurements
 are affected.
 
+The errors considered here apply to the measurement from the sensor,
+the "recovery temperature," rather than the calculated air temperature
+after correction for dynamic heating. In this regard, this study differs
+from earlier ones. The justification, developed in later sections, is that this approach is required so that the correction for dynamic heating can
+be applied properly. 
+
 ```{r initialization, echo=FALSE, include=FALSE}
 ## This chunk loads some needed R packages and defines a function
 ## used for the Laplace-transform solution of the governing
@@ -250,29 +256,7 @@ LTphase <- function(f, P) {
 
 ## Theory \label{subsec:Theory}
 
-The errors considered here apply to the measurement from the sensor,
-the "recovery temperature," rather than the final temperature
-after correction for dynamic heating. Because the sensor cannot respond
-to rapid fluctuations, the standard correction for dynamic heating
-introduces errors into the measured air temperature that are then
-amplified by a correction procedure. This will be addressed in the
-next section, but for this reason the present section will discuss
-only the recovery temperature.
 
-@PayneEtAl1994 provided a particularly illuminating analysis
-of the expected response of a temperature sensor and developed their
-results in terms of a transfer function. They represent the response
-of the sensor in terms of two coupled differential equations, one
-representing the temperature of the sensing wire and a second representing
-the temperature of the structure that supports that wire. Their analysis
-in terms of fundamental representation of the heat transport leads
-to reasonable consistency with previous two-time-constant models like
-that of @mccarthy1973method but poor agreement with the empirical
-evidence regarding the time-response parameters in those models. They
-note, however, that the empirical evidence is not as consistent or
-convincing as would be desirable. One goal of the present work is
-to develop a different and readily available method of determining
-those parameters. 
 
 Previous studies have demonstrated that a simple first-order exponential
 equation with one time constant does not represent the time response
@@ -293,7 +277,7 @@ The values for \{$A_{1},\,A_{2},\,\tau_{1},\,\tau_{2}$\} suggested
 by @FrieheKhelif1992 were \{0.65, 0.35, \unit{0.09\,s}, \unit{0.5\,s}\}.
 
 Following the approach of @PayneEtAl1994, the time response
-of the sensor will be represented here by two coupled differential
+of the sensor will be represented here instead by two coupled differential
 equations, one that describes the response of the support on which
 the sensing wire is wound to the air temperature and a second that
 describes the response of the sensing wire to two inputs, one from
@@ -2363,15 +2347,19 @@ the flux of sensible heat.
 
 Airborne thermometers sense the recovery temperature produced when
 air is compressed as it enters the housing. Data-processing algorithms
-used to produce data archives from most airborne measurement platforms
 subtract an independent estimate of dynamic heating to obtain a resulting
 measurement of the ambient air temperature. As
 described in Sect.\ \ref{subsec:Dynamic-heating}, when the sensor
 cannot respond to fluctuations in dynamic heating, this procedure
 introduces errors and excess noise into the resulting air temperature.
-A modified correction procedure is proposed here that instead corrects
-for dynamic heating only after filtering to match the response of
-the temperature sensor. This removes a significant source of error
+Data processing should instead apply a correction that represents
+how dynamic heating affects the sensor. 
+
+The approach followed here is to filter the dynamic-heating term so that only the actual sensor response to dynamic heating is subtracted from the measurement. This is made possible by the assumed linearity in response
+of the sensor, which is required if this part of the response is to
+be separated from the more general response to the combination of
+dynamic heating and true fluctuations in temperature. Thisfiltering
+removes a significant source of error
 present in many temperature measurements made from research aircraft.
 
 ```{r reinit, echo = FALSE, include = FALSE}
@@ -2456,7 +2444,7 @@ DS$AT <- SmoothInterp(DS$AT, .Length = 0)
 
 Figure\ \ref{fig:S15} illustrates the problem. The measurements are
 from a low-level flight segment over the ocean where other indications
-are reasonably consistent with an inertial sub-range. The slope of
+are reasonably consistent with an inertial subrange. The slope of
 the temperature variance spectrum (log spectral variance vs log frequency)
 would be expected to be -5/3 (or
 -2/3 in this plot where the spectrum is multiplied by the frequency).
@@ -2471,24 +2459,16 @@ temperature, as is the case around 0.1 to \unit{0.5\,Hz}, so that the subtractio
 of dynamic heating would produce smaller variance in the measured
 ambient temperature. 
 
-The transfer function shown in Fig.\ \ref{fig:LTsolution} indicates
-that the response to fluctuations at \unit{5\,Hz} is only about 50\% of the
-imposed amplitude, and at \unit{10\,Hz} the response is only about 35\%.
-Furthermore, the phase at \unit{10\,Hz} is shifted by about $62^{\circ}$.
-Using the measurement of dynamic heating $Q$ as specified by Eq.\ \eqref{eq:DHterm}
-to correct the measured recovery temperature will therefore over-correct
-and produce erroneous fluctuations in the measured air temperature
-unless $Q$ is filtered to represent the sensor response.
+<!-- The transfer function shown in Fig.\ \ref{fig:LTsolution} indicates -->
+<!-- that the response to fluctuations at \unit{5\,Hz} is only about 50\% of the -->
+<!-- imposed amplitude, and at \unit{10\,Hz} the response is only about 35\%. -->
+<!-- Furthermore, the phase at \unit{10\,Hz} is shifted by about $62^{\circ}$. -->
+<!-- Subtracting the measured dynamic heating $Q$ as specified by Eq.\ \eqref{eq:DHterm} -->
+<!-- to the measured recovery temperature will therefore over-correct -->
+<!-- and produce erroneous fluctuations in the measured air temperature -->
+<!-- unless $Q$ is filtered to represent the sensor response. -->
 
-Data processing should therefore apply a correction that represents
-how dynamic heating affects the sensor, and that correction should
-not include fluctuations at frequencies to which the sensor does not
-respond. The approach followed here is to use the transfer
-function so that only the sensor response to dynamic heating is subtracted from the
-measurement. This is made possible by the assumed linearity in response
-of the sensor, which is required if this part of the response is to
-be separated from the more general response to the combination of
-dynamic heating and true fluctuations in temperature.
+
 
 ```{r LT, include = FALSE, fig.height=3.7, fig.cap = 'The amplitude and phase for the frequency domain transfer function of an unheated temperature sensor.'}
 
@@ -2547,16 +2527,16 @@ g + theme_WAC(1) + theme(legend.position = c(0.3, 0.65))
 
 ```
 
-A revised dynamic-heating adjustment filtered to represent how the
-sensor will respond is denoted $Q^{\prime}$. When no correction is
-applied to the measured recovery temperature $T_{m}(t)$, the ambient
-temperature $T_{a}$ should be estimated from
+The filtered dynamic-heating adjustment will be denoted $Q^{\prime}$, so that
+the calculated air temperature is estimated from
 \begin{equation}
 T_{a}(t)=T_{m}(t)-Q^{\prime}(t){\label{eq:QprimeCorr}}
 \end{equation}
 instead of Eq.\ \eqref{eq:recoveryTemperature}. The appropriate correction
-can be obtained from the transfer function in several ways, as discussed
-next. One aspect of this correction needs emphasis, though. The correction
+has been obtained from the transfer function in several equivalent ways, by
+integration of the differential equations applied to $Q$, by Fourier transforms using the transfer function, and by applying a digital filter, all with essentially equivalent results. Only the digital filter is discussed here because the others are straightforward, but comparisons from all three approaches are presented.
+
+One aspect of this correction needs emphasis, though. The correction
 only removes the erroneous signal from dynamic heating and does not otherwise
 correct for the response of the sensor. If the sensor response is corrected
 as described in Appendix A, that correction adjust for the sensor response
@@ -2566,22 +2546,19 @@ That approach addresses the full response of the sensor, while the intent
 of the present section is to emphasize the errors that result from
 conventional processing.
 
-## A filter for dynamic heating\label{subsec:A-filter-for}
-
-The impulse response of the sensor can be found from the inverse Fourier
-transform of the transfer function. Once that is determined, appropriate
-moving-average coefficients can be found from the impulse response,
-and those coefficients define a digital filter that represents the
-sensor response. The filter used here was determined at a frequency
-resolution of \unit{(1/600)\,Hz}, then only the initial 101 and trailing
-100 coefficients were retained and all other were set to zero. Shifting
+The inverse Fourier
+transform of the transfer function in the impulse function, and appropriate
+moving-average coefficients can be found from the impulse response.
+Those coefficients define a digital filter that represents the
+sensor response. The filter used here for 25-Hz measurements
+was determined at a frequency
+resolution of \unit{(1/600)\,Hz}, from which only the initial 101 and trailing
+100 coefficients were retained and all other were set to zero. (For the slower heated sensor, a length of 301 samples was used.) Shifting
 the negative-frequency components to the start of the array gave an
-eight-second sequence that represented the response of the sensor.
-These coefficients were used as a moving-average filter, after which
-the result was shifted forward in time by four seconds to compensate
-for the delay. The procedure used here is somewhat arbitrary and a
-better filter could probably be designed, but this filter functions
-reasonably for \unit{25\,Hz} measurements. 
+eight-second (or 12-s) moving-average filter that represents the response of the sensor.
+After filtering, the result was then shifted forward in time by four seconds to compensate
+for the delay. The arbitrary filter used here is not optimal, but this filter functions
+reasonably for \unit{25\,Hz} measurements, as shown in ...
 
 ```{r designFilter, include=FALSE}
 
@@ -2789,42 +2766,42 @@ impulse response function. Both sets of moving-average coefficients
 sum to more than 0.99 as calculated but were then normalized to sum
 to 1.0.
 
-## Other filtering methods
+<!-- ## Other filtering methods -->
 
-Two other calculations can produce the appropriately filtered response
-to dynamic heating $Q^{\prime}(t)$:
+<!-- Two other calculations can produce the appropriately filtered response -->
+<!-- to dynamic heating $Q^{\prime}(t)$: -->
 
-(1). Section\ \ref{sec:theTransferFn} showed that the transfer function
-is represented reasonably by the solution to two coupled differential
-equations. Numerical integration of those equations can then produce
-the predicted response of the sensor to dynamic heating. The equations
-from Sect.\ \ref{subsec:Theory}, revised to apply to dynamic heating,
-are these:
-\begin{equation}
-\frac{dQ_{qs}(t)}{dt}=\frac{Q(t)-Q_{qs}(t)}{\tau_{2}}{\label{eq:Ts-1}}
-\end{equation}
-\begin{equation}
-\frac{dQ^{\prime}(t)}{dt}=\frac{\left\{ aQ(t)+(1-a)Q_{qs}(t)\right\} -Q^{\prime}(t)}{\tau_{1}}{\label{eq:Tm-1}}
-\end{equation}
-where the first equation describes the effect of dynamic heating on
-the support structure of the temperature sensor, leading to support-structure
-variations in temperature of $Q_{qs}(t)$, and the second describes
-the response of the sensing wire to the combined effects of this influence
-on the support temperature and the dynamic-heating term. This separation
-relies on the linearity of the underlying equations, which makes it
-possible to represent the effect of dynamic heating in isolation from
-real fluctuations in temperature. Euler integration of these differential
-equations led to erroneous results at high frequency arising from
-inadequate resolution in the integration, so a fourth-order Runge-Kutta
-integration with dynamic adjustment of the time step, as described
-by @cash1990variable, was used.
+<!-- (1). Section\ \ref{sec:theTransferFn} showed that the transfer function -->
+<!-- is represented reasonably by the solution to two coupled differential -->
+<!-- equations. Numerical integration of those equations can then produce -->
+<!-- the predicted response of the sensor to dynamic heating. The equations -->
+<!-- from Sect.\ \ref{subsec:Theory}, revised to apply to dynamic heating, -->
+<!-- are these: -->
+<!-- \begin{equation} -->
+<!-- \frac{dQ_{qs}(t)}{dt}=\frac{Q(t)-Q_{qs}(t)}{\tau_{2}}{\label{eq:Ts-1}} -->
+<!-- \end{equation} -->
+<!-- \begin{equation} -->
+<!-- \frac{dQ^{\prime}(t)}{dt}=\frac{\left\{ aQ(t)+(1-a)Q_{qs}(t)\right\} -Q^{\prime}(t)}{\tau_{1}}{\label{eq:Tm-1}} -->
+<!-- \end{equation} -->
+<!-- where the first equation describes the effect of dynamic heating on -->
+<!-- the support structure of the temperature sensor, leading to support-structure -->
+<!-- variations in temperature of $Q_{qs}(t)$, and the second describes -->
+<!-- the response of the sensing wire to the combined effects of this influence -->
+<!-- on the support temperature and the dynamic-heating term. This separation -->
+<!-- relies on the linearity of the underlying equations, which makes it -->
+<!-- possible to represent the effect of dynamic heating in isolation from -->
+<!-- real fluctuations in temperature. Euler integration of these differential -->
+<!-- equations led to erroneous results at high frequency arising from -->
+<!-- inadequate resolution in the integration, so a fourth-order Runge-Kutta -->
+<!-- integration with dynamic adjustment of the time step, as described -->
+<!-- by @cash1990variable, was used. -->
 
-(2). The response specified by the frequency-domain transfer function $H(\nu)$
-can be realized by Fourier transforms, by first calculating the Fourier
-transform of the dynamic-heating signal (here denoted $\hat{Q}(\nu)=\mathcal{F}(Q(t))$
-where $\mathcal{F}$ denotes the Fourier transform) and then using
-the inverse Fourier transform ($\mathcal{F}^{-1}$) to estimate the
-sensor response from $Q^{\prime}(t)=\mathcal{F}^{-1}(H(\nu)\hat{Q}(\nu))$.
+<!-- (2). The response specified by the frequency-domain transfer function $H(\nu)$ -->
+<!-- can be realized by Fourier transforms, by first calculating the Fourier -->
+<!-- transform of the dynamic-heating signal (here denoted $\hat{Q}(\nu)=\mathcal{F}(Q(t))$ -->
+<!-- where $\mathcal{F}$ denotes the Fourier transform) and then using -->
+<!-- the inverse Fourier transform ($\mathcal{F}^{-1}$) to estimate the -->
+<!-- sensor response from $Q^{\prime}(t)=\mathcal{F}^{-1}(H(\nu)\hat{Q}(\nu))$. -->
 
 \begin{figure}
 ```{r Integration, include=TRUE, echo=FALSE, fig.height = 3, out.width = "12cm", messages = FALSE}
