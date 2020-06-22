@@ -2358,8 +2358,8 @@ how dynamic heating affects the sensor.
 The approach followed here is to filter the dynamic-heating term so that only the actual sensor response to dynamic heating is subtracted from the measurement. This is made possible by the assumed linearity in response
 of the sensor, which is required if this part of the response is to
 be separated from the more general response to the combination of
-dynamic heating and true fluctuations in temperature. Thisfiltering
-removes a significant source of error
+dynamic heating and true fluctuations in temperature. This filtering
+removes a significant source of erroneous fluctuations
 present in many temperature measurements made from research aircraft.
 
 ```{r reinit, echo = FALSE, include = FALSE}
@@ -2528,37 +2528,37 @@ g + theme_WAC(1) + theme(legend.position = c(0.3, 0.65))
 ```
 
 The filtered dynamic-heating adjustment will be denoted $Q^{\prime}$, so that
-the calculated air temperature is estimated from
+the calculated air temperature becomes
 \begin{equation}
-T_{a}(t)=T_{m}(t)-Q^{\prime}(t){\label{eq:QprimeCorr}}
+T^{\prime}_{a}(t)=T_{m}(t)-Q^{\prime}(t){\label{eq:QprimeCorr}}
 \end{equation}
-instead of Eq.\ \eqref{eq:recoveryTemperature}. The appropriate correction
+instead of Eq.\ \eqref{eq:recoveryTemperature}. The filtered response
 has been obtained from the transfer function in several equivalent ways, by
-integration of the differential equations applied to $Q$, by Fourier transforms using the transfer function, and by applying a digital filter, all with essentially equivalent results. Only the digital filter is discussed here because the others are straightforward, but comparisons from all three approaches are presented.
+integration of the differential equations applied to $Q$, by Fourier transforms using the transfer function, and by applying a digital filter designed from the transfer function, all with essentially equivalent results. Results from all three approaches are presented here.
 
-One aspect of this correction needs emphasis, though. The correction
-only removes the erroneous signal from dynamic heating and does not otherwise
-correct for the response of the sensor. If the sensor response is corrected
-as described in Appendix A, that correction adjust for the sensor response
-to the recovery temperature, so in that case the unfiltered dynamic-heating
-correction should be subtracted to obtain the measured air temperature.
-That approach addresses the full response of the sensor, while the intent
-of the present section is to emphasize the errors that result from
-conventional processing.
+<!-- One aspect of this correction needs emphasis, though. The correction -->
+<!-- only removes the erroneous signal from dynamic heating and does not otherwise -->
+<!-- correct for the response of the sensor. If the sensor response is corrected -->
+<!-- as described in Appendix A, that correction adjust for the sensor response -->
+<!-- to the recovery temperature, so in that case the unfiltered dynamic-heating -->
+<!-- correction should be subtracted to obtain the measured air temperature. -->
+<!-- That approach addresses the full response of the sensor, while the intent -->
+<!-- of the present section is to emphasize the errors that result from -->
+<!-- conventional processing. -->
 
-The inverse Fourier
-transform of the transfer function in the impulse function, and appropriate
-moving-average coefficients can be found from the impulse response.
-Those coefficients define a digital filter that represents the
-sensor response. The filter used here for 25-Hz measurements
-was determined at a frequency
-resolution of \unit{(1/600)\,Hz}, from which only the initial 101 and trailing
-100 coefficients were retained and all other were set to zero. (For the slower heated sensor, a length of 301 samples was used.) Shifting
-the negative-frequency components to the start of the array gave an
-eight-second (or 12-s) moving-average filter that represents the response of the sensor.
-After filtering, the result was then shifted forward in time by four seconds to compensate
-for the delay. The arbitrary filter used here is not optimal, but this filter functions
-reasonably for \unit{25\,Hz} measurements, as shown in ...
+<!-- The inverse Fourier -->
+<!-- transform of the transfer function in the impulse function, and appropriate -->
+<!-- moving-average coefficients can be found from the impulse response. -->
+<!-- Those coefficients define a digital filter that represents the -->
+<!-- sensor response. The filter used here for 25-Hz measurements -->
+<!-- was determined at a frequency -->
+<!-- resolution of \unit{(1/600)\,Hz}, from which only the initial 101 and trailing -->
+<!-- 100 coefficients were retained and all other were set to zero. (For the slower heated sensor, a length of 301 samples was used.) Shifting -->
+<!-- the negative-frequency components to the start of the array gave an -->
+<!-- eight-second (or 12-s) moving-average filter that represents the response of the sensor. -->
+<!-- After filtering, the result was then shifted forward in time by four seconds to compensate -->
+<!-- for the delay. The arbitrary filter used here is not optimal, but this filter functions -->
+<!-- reasonably for \unit{25\,Hz} measurements, as shown in ... -->
 
 ```{r designFilter, include=FALSE}
 
@@ -2682,89 +2682,6 @@ save(AR,
 
 ```
 
-\begin{figure}
-```{r plotImpulse, include=TRUE, fig.height=4.5, out.width = "8.3cm"}
-
-if (generateFigures) {
-  layout(matrix(1:2, ncol = 1),
-         widths = c(8, 8),
-         heights = c(6.5, 8))
-  op <- par (mar = c(2, 4, 1, 1) + 0.1, oma = c(1.1, 0, 0, 0))
-  dP1 <- data.frame(Time = (1:100) * 0.04,
-                    R = Re(GT[1:100]),
-                    H = 10 * Re(GTH[1:100]))
-  plotWAC(
-    dP1,
-    xlab = 'Time [s]',
-    ylab = 'impulse response',
-    lwd = c(2, 2),
-    lty = c(1, 2),
-    legend.position = NA
-  )
-  legend(
-    2,
-    0.3,
-    legend = c('unheated', 'heated x 10'),
-    col = c('blue', 'forestgreen'),
-    lwd = c(2, 2),
-    lty = c(1, 2)
-  )
-  abline(h = 0, lty = 2)
-  text(4, 0.3, labels = '(a)', cex = 1.5)
-  op <- par (mar = c(5, 4, 1, 1) + 0.1)
-  dP2 <- data.frame(Time = (0:200) * 0.04,
-                    R = Re(GTT),
-                    H = 10 * Re(GTTH[51:251]))
-  plotWAC(
-    dP2,
-    xlab = 'Time [s]',
-    ylab = 'filter coef.',
-    lwd = c(2, 2),
-    lty = c(1, 2),
-    legend.position = NA
-  )
-  legend(
-    0.5,
-    0.3,
-    legend = c('unheated', 'heated x 10'),
-    col = c('blue', 'forestgreen'),
-    lwd = c(2, 2),
-    lty = c(1, 2)
-  )
-  abline(h = 0, lty = 2)
-  text(8, 0.3, labels = '(b)', cex = 1.5)
-  layout(matrix(1:1, ncol = 1),
-         widths = c(8),
-         heights = c(5.5))
-} else {
-  include_graphics('figure/fig7.pdf')
-}
-
-
-```
-
-\caption[The impulse response function found from the inverse Fourier transform
-of the transfer function for the unheated sensor
-and for the heated sensor, and the filter functions determined
-from those impulse response functions.]{(a) The impulse response function found from the inverse Fourier
-transforms of the transfer functions for the unheated and heated sensors, using the response parameters from Table\ \ref{tab:Parameters}. The impulse
-response for the heated sensor is multiplied by 10.\protect \\
-(b) A filter function (moving-average coefficients spanning 8 s) obtained
-from the impulse response function. The filtered result must be shifted
-forward in time by 4 s to compensate for the delay introduced by the
-filter. The coefficients are multiplied by 10 for the heated sensor.{\label{fig:plotImpulse}}}
-\end{figure}
-
-Figure\ \ref{fig:plotImpulse}a shows the impulse function for the
-unheated and heated sensors, and Fig.\ \ref{fig:plotImpulse}b
-shows corresponding moving-average coefficients for a filter obtained
-from this impulse function. There is significant ringing in the filter
-for the unheated sensor because the shorter time constant for the
-sensor, \unit{0.03\,s}, is smaller than the time between \unit{25\,Hz} samples. The
-impulse response for the slower heated sensor leads to a much broader
-impulse response function. Both sets of moving-average coefficients
-sum to more than 0.99 as calculated but were then normalized to sum
-to 1.0.
 
 <!-- ## Other filtering methods -->
 
@@ -2972,8 +2889,8 @@ sensor. The modified variance spectrum obtained
 by integration of the underlying differential equations is shown as
 the orange line labelled "DiffEq". The
 dynamic-heating correction is appropriately attenuated at high frequency
-after this integration. The results obtained after filtering as described
-in the Sect.\ \ref{subsec:A-filter-for}, labeled "filter", or
+after this integration. The results obtained after application of a
+digital filter representing the transfer function, labeled "filter", or
 after Fourier transformation, labelled "FFT", are overlapping so
 as to be indistinguishable in this plot. These corrected estimates
 of the dynamic heating are attenuated even more than the result from
@@ -2982,10 +2899,8 @@ effect of the transfer function, which for example predicts attenuation
 of the variance spectrum by a factor of 0.096 for the component with
 frequency \unit{10\,Hz}. The numerical integration was closer to the results
 of the filter after the measurements were interpolated to \unit{125\,Hz} with
-\unit{25\,Hz} smoothing, integrated, and then resampled to obtain \unit{25\,Hz} measurements.
-This indicated that the discrepancy in results is attributable to
-accumulating numerical errors in the integration, but the integration
-became awkwardly slow when performed at \unit{125\,Hz} resolution. The equivalence
+\unit{25\,Hz} smoothing, integrated, and then resampled to obtain \unit{25\,Hz} measurements, so the high-frequency discrepancy appears
+to result from accumulating numerical errors in the integration. The equivalence
 of the results from the digital filter and from Fourier transformation
 with application of the transfer function supports the validity of
 these results and suggests that these are preferable and equivalent
@@ -3330,19 +3245,19 @@ generateFigures <- generateSave
 
 ```
 
-\caption[Comparison of the original measured temperature and the same temperature
-after filtering the dynamic-heating correction, for an unheated sensor and a heated sensor. ]{Comparison of the original measured temperature and the same temperature
+\caption[Comparison of the original calculated air temperature and the same temperature
+after filtering the dynamic-heating correction, for an unheated sensor and a heated sensor. ]{Comparison of the original calculated air temperature and the same temperature
 after filtering the dynamic-heating correction:\protect \\
 (left): An unheated sensor; (right): A heated sensor. {\label{fig:ATATF}}}
 \end{figure}
 
 For the unheated sensor, Fig.\ \ref{fig:ATATF}a
 illustrates the removal of erroneous structure by filtering, and Fig.\ \ref{fig:ATATF}b
-shows a similar example for the heated sensor. These examples
+shows a similar example for the heated sensor. These figures
 illustrate that the erroneous fluctuations in the uncorrected measurements
 can be important in many potential uses of these measurements and
 should be removed as part of standard processing. The effect is particularly
-significant for the heated sensor, for which there are large fluctuations
+significant for the heated sensor, for which there are especially large fluctuations
 in Fig.\ \ref{fig:ATATF}b that are caused by fluctuations in dynamic
 heating to which the sensor does not respond. 
 
@@ -4036,17 +3951,19 @@ line shows the frequency limit that corresponds to a wavelength of
 The results are shown in Fig.\ \ref{fig:SOCp1}.
 This plot format
 is unconventional so some explanation is provided here. The cospectrum can be positive or negative, so it is usually
-plotted using a linear scale for the abscissa. However, as the figure
+plotted using a linear scale for the ordinate However, as the figure
 shows, the range of ordinate values is displayed better with a logarithmic
 scale, even after weighting the cospectrum by frequency. The compromise
 made in this plot is to use a logarithmic scale but plot negative
 values with sign reversed and with a different color, here red instead
 of blue. The values plotted in red therefore should be regarded as
-negative values of the plotted magnitude. There is then a dead-band
-at the bottom of the plot where spectral values with very small absolute
-value lie, here absolute values smaller than \unit{10^{-2}\,W\,m^{-2}}.
-Weighting by frequency is used as is appropriate for a logarithmic
-abscissa. Other features of this plot and computation conventions
+negative values of the plotted magnitude. 
+<!-- There is then a dead-band -->
+<!-- at the bottom of the plot where spectral values with very small absolute -->
+<!-- value lie, here absolute values smaller than \unit{10^{-2}\,W\,m^{-2}}. -->
+<!-- Weighting by frequency is used as is appropriate for a logarithmic -->
+<!-- abscissa.  -->
+Other features of this plot and computation conventions
 include the following:
 
 1. The cospectrum (blue line) has been smoothed using Daniell smoothing,
@@ -4121,28 +4038,25 @@ fname = sprintf("%s%s/%srf%02d.nc", Directory, ProjectDir, Project, Flight)
 This section uses simulated measurements with the analysis methods
 described in the preceding section to demonstrate that those correction
 schemes can recover the assumed simulated conditions. The study uses
-generated time series representing isotropic wind measurements that
-have a specified relationship to the eddy dissipation rate and the
-expected $-5/3$ slope of spectral variance vs.\ frequency that is
-expected for an inertial sub-range. The procedure was to generate
+generated time series representing isotropic wind measurements with $-5/3$ slope of spectral variance vs.\ frequency as expected
+for an inertial sub-range. The procedure was to generate
 a Gaussian-noise spectrum, find the Fourier components, weight them
 to obtain a $-5/3$ slope, and then use an inverse Fourier transform
-to reconstruct the simulated measurement series. The variance spectrum
-was generated to have the following form as expected for an inertial
-sub-range:
-\begin{equation}
-P(\nu)=C\left(\frac{2\pi}{V}\right)^{-2/3}\epsilon^{2/3}\nu^{-5/3}{\label{eq:expectedSpectrum}}
-\end{equation}
-where $\nu$ is the frequency, $V$ the airspeed, $\epsilon$ the
-eddy dissipation rate, and $C=0.5$ for the longitudinal component
-of the wind and 2/3 for a lateral component. Thirty-minute sequences
-were generated at \unit{50\,Hz} for the three components of the wind, for
-an eddy dissipation rate of \unit{10^{-3}\,m^{2}\,s^{-3}},
-and then long-wavelength components with frequency below \unit{0.05\,Hz}
-were attenuated by multiplying the Fourier components by $\exp(-5*0.05/|\nu|)$
-where $\nu$ is the frequency. This not only produced a more realistic
-spectrum but also improved the accuracy of the high-frequency simulation,
-which otherwise exhibited some variability for different random sequences. 
+to reconstruct the simulated measurement series. The eddy dissipation
+rate for the generated time series was\unit{10^{-3}\,m^{2}\,s^{-3}}.
+<!-- \begin{equation} -->
+<!-- P(\nu)=C\left(\frac{2\pi}{V}\right)^{-2/3}\epsilon^{2/3}\nu^{-5/3}{\label{eq:expectedSpectrum}} -->
+<!-- \end{equation} -->
+<!-- where $\nu$ is the frequency, $V$ the airspeed, $\epsilon$ the -->
+<!-- eddy dissipation rate, and $C=0.5$ for the longitudinal component -->
+<!-- <!-- of the wind and 2/3 for a lateral component. Thirty-minute sequences --> -->
+<!-- were generated at \unit{50\,Hz} for the three components of the wind, for -->
+<!-- an eddy dissipation rate of, -->
+<!-- and then long-wavelength components with frequency below \unit{0.05\,Hz} -->
+<!-- were attenuated by multiplying the Fourier components by $\exp(-5*0.05/|\nu|)$ -->
+<!-- where $\nu$ is the frequency. This not only produced a more realistic -->
+<!-- spectrum but also improved the accuracy of the high-frequency simulation, -->
+<!-- which otherwise exhibited some variability for different random sequences.  -->
 
 ```{r varSpecISR, include=FALSE, echo=FALSE, fig.cap="Assumed spectral variance at periodogram points."}
 
@@ -4573,25 +4487,10 @@ plotCS <- function(CS,
 ```
 
 To introduce sensible-heat flux a correlation was introduced between
-the simulated temperature and updraft, as follows:
-
-1. In addition to the three-component time series for the wind, another
-independent time series with the same slope was generated for the
-*air temperature *$T_{a}$ with fluctuations $T_{a}^{\prime}$
-scaled smaller by a factor of $S$=\unit{0.2^{\circ}C\,m^{-1}\,s}$
-in comparison to the magnitude of the wind fluctuations. 
-
-2. Correlation between the two time series was then introduced by defining
-a new temperature time series with the fluctuations $T_{c}^{\prime}=(1-r)T^{\prime}+rw^{\prime}S$
-where $r=0.3$. The result will be $<w^{\prime}T_{c}^{\prime}>=r\sqrt{\sigma_{w}\sigma_{T_{c}}}$,
-which will lead to a flux of sensible heat specified as 
-$F_{s}=\rho_{a}C_{p}r\sqrt{\sigma_{w}\sigma_{T_{c}}}$
-
-3. Finally, the measured recovery temperature was simulated by adding
-the dynamic-heating correction to the simulated air temperature and
-then filtering the result to represent how the sensor would respond.
-
-In this simulation, the correlation is the same at all frequencies
+the simulated temperature and updraft. The fluctuations in temperature
+was generated similarly but scaled by a factor of \unit{0.2^{\circ}C\,m^{-1}\,s}, and then a correlation of 0.3 was introduced
+between temperature and updraft fluctuations.
+The correlation is thus the same at all frequencies
 so the contribution to the measured flux also extends over all frequencies.
 About 15\% of the flux from wavelengths below \unit{2.5\,km} is contributed by frequencies
 above \unit{1\,Hz}, where the sensor may respond incompletely to the fluctuations
@@ -5016,6 +4915,7 @@ VSpec(DT, 'RT', add = g) + theme_WAC(1)
 ```
 
 An alternate approach is to use Fourier transforms:
+
 * Calculate the Fourier transform of the measured time series: $\hat{T}_{m}(\omega)=\mathcal{F}\left(T_{m}(t)\right)$
 where $\omega$ is angular frequency and $\mathcal{F}$ denotes the
 Fourier transform.
