@@ -102,6 +102,7 @@ correctDynamicHeating <- function(D, AT) {
   platform <- ifelse (grepl('677', platform), 'GV', 'C130')
   heated <- attr(D[, AT], 'long_name')
   heated <- ifelse(grepl('nheated', heated), FALSE, TRUE)
+  if (grepl('RTF', RT)) {heated <- FALSE}
   # Select the right filter
   Rate <- attr(D, 'Rate')
   if (Rate == 25) {
