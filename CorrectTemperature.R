@@ -12,7 +12,7 @@ require(Ranadu, quietly = TRUE, warn.conflicts=FALSE)
 # needed packages
 library(zoo)
 require(signal)
-load(file='AR.Rdata')    ## the filters
+load(file='ARF.Rdata')    ## the filters
 load(file='PAR.Rdata')  ## the response parameters
 
 ## Get file to process:
@@ -171,7 +171,7 @@ correctDynamicHeating <- function(D, AT) {
   Q <- SmoothInterp(Q, .Length = 0)
   # Filter
   QF <- as.vector(signal::filter(AF, Q))
-  QF <- ShiftInTime(QF, .shift=(-(Lsh + 1) * 40), .rate = Rate)
+  QF <- ShiftInTime(QF, .shift=(-(Lsh) * 40), .rate = Rate)
   # Change the measured air temperature by adding back Q and subtracting QF
   ATC <- D[, AT] + Q - QF
   return(ATC)
@@ -188,6 +188,7 @@ correctTemperature <- function(D, RT, responsePar =
   RTT[is.na(RTT)] <- 0
   heated <- attr(D[, RT], 'long_name')
   heated <- ifelse(grepl('nheated', heated), FALSE, TRUE)
+  if (grepl('RTF', RT)) {heated <- FALSE}
   a <- responsePar$a
   tau1 <- responsePar$tau1
   tau2 <- responsePar$tau2
@@ -290,18 +291,51 @@ processFile <- function(ProjectDir, Project, Flight) {
   DHM <- rep(D$DH, length(TVARS))
   dim(DHM) <- c(length(D$DH), length(TVARS))
   newTVARS <- paste0(TVARS, 'C')
+  newRVARS <- paste0(RVARS, 'C')
+  newTVARS2 <- paste0(TVARS, 'C2')
   filteredTVARS <- paste0(TVARS, 'F')
   for (i in 1:length(TVARS)) {
     D[, filteredTVARS[i]] <- correctDynamicHeating(D, TVARS[i])
   }
 
+ 
+
   ## Calculate the corrected temperatures:
   for (i in 1:length(TVARS)) {
-    ATC <- correctTemperature(D, filteredTVARS[i], responsePar = PAR[i,])
-    D[, newTVARS[i]] <- ATC
+    D[, newTVARS[i]] <- correctTemperature(D, filteredTVARS[i], responsePar = PAR[i,])
+    D[, newRVARS[i]] <- correctTemperature(D, RVARS[i], responsePar = PAR[i,])
+    # get the recovery factor from the attribute:
+    rf.txt <- attr(D[, TVARS[i]], 'RecoveryFactor')
+    if (grepl('mach', rf.txt)) {
+      rf <- gsub('mach', 'MACHX', rf.txt)
+      rf <- gsub(' log', ' * log', rf)
+      rf <- gsub(' \\(', ' * \\(', rf)
+      rf <- with(D, eval(parse(text=rf)))
+    } else {
+      rf <- 0.985  ## placeholder -- if needed, add decoding here
+    }
+    # Is the associated recovery temperature present?
+    dep <- attr(D[, TVARS[i]], 'Dependencies')
+    RT <- gsub(' .*', '', gsub('^. ', '', dep))
+    # Get the dynamic-heating correction:
+    if ('EWX' %in% names(D)) {
+      ER <- SmoothInterp(D$EWX / D$PSXC, .Length = 0)
+      CP <- SpecificHeats(ER)
+    } else {
+      CP <- SpecificHeats()
+    }
+    if (RT %in% names(D)) {
+      X <- rf * D$MACHX^2 * CP[, 3] / (2 * CP[, 2])
+      Q <- (273.15 + D[, RT]) * X / (1 + X)
+    } else {
+      Q <- rf * D$TASX^2 / 2010
+    }
+    # Interpolate to avoid missing values
+    Q <- SmoothInterp(Q, .Length = 0)
+    D[, newTVARS2[i]] <- D[, newRVARS[i]] - Q
   }
   ## Add the new variables:
-  newTVARS <- c(newTVARS, filteredTVARS)
+  newTVARS <- c(newTVARS, filteredTVARS, newTVARS2)
 
   ## create and open a copy of the old file for writing:
   fnew <- sub ('.nc', 'T.nc', fname)
@@ -319,14 +353,15 @@ processFile <- function(ProjectDir, Project, Flight) {
 
   ## variables to add to the netCDF file:
   VarNew <- newTVARS
-  VarOld <- c(TVARS, TVARS)
-  VarUnits <- rep("deg_C", 2*length(TVARS))
+  VarOld <- c(TVARS, TVARS, TVARS)
+  VarUnits <- rep("deg_C", 3*length(TVARS))
   VarLongName <- c(rep("Ambient Temperature, corrected", length(TVARS)), 
-                   rep("Ambient Temperature, filtered", length(TVARS)))
-  VarStdName <- rep("air_temperature", 2*length(TVARS))
-  Dependencies <- rep(sprintf('2 %s TASX', TVARS[1]), 2*length(TVARS))
-  for (i in 1:(2*length(TVARS))) {
-    Dependencies[i] <- sprintf('2 %s TASX', TVARS[i])
+                   rep("Ambient Temperature, filtered", length(TVARS)),
+                   rep("Ambient Temperature, corr method 2", length(TVARS)))
+  VarStdName <- rep("air_temperature", 3*length(TVARS))
+  Dependencies <- rep(sprintf('2 %s TASX', TVARS[1]), 3*length(TVARS))
+  for (i in 1:(3*length(TVARS))) {
+    Dependencies[i] <- sprintf('2 %s TASX', VarOld[i])
   }
 
   ## create the new variables
