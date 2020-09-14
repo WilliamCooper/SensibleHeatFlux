@@ -2744,7 +2744,7 @@ g2 <- DS %>% select(Time, TASX, AT, RT, ATF1) %>%
 if (generateFigures) {
   print(g2, vp = vp2)
 } else {
-  include_graphics('figure/fig8.pdf')
+  include_graphics('figure/fig7.pdf')
 }
 grid.newpage()
 
@@ -2996,7 +2996,7 @@ g2 <- DWECAN %>% select(Time, TASX, AT, RTH1, ATH1) %>%
 if (generateFigures) {
   suppressWarnings(print(g2, vp = vp2))
 } else {
-  include_graphics('figure/fig9.pdf')
+  include_graphics('figure/fig8.pdf')
 }
 
 grid.newpage()
@@ -3125,7 +3125,7 @@ if (generateFigures) {
     size = 5
   ), vp = vp2)
 } else {
-  include_graphics('figure/fig10.pdf')
+  include_graphics('figure/fig9.pdf')
 }
 generateFigures <- generateSave
 
@@ -3796,7 +3796,7 @@ if (generateFigures) {
                     printTitle = FALSE,
                     project = 'CSET', vwp = vp1)
 } else {
-  include_graphics('figure/fig11.pdf')
+  include_graphics('figure/fig10.pdf')
 }
 
 CS.orig$cospec <- SmoothInterp(CS.orig$cospec, .Length = 0)  # treat NAs
@@ -4604,7 +4604,7 @@ g <- g + scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x, n=2), #l
 if (generateFigures) {
   suppressWarnings(print(g + theme(legend.key.size = unit(0.5, "in"))))
 } else {
-  include_graphics('figure/fig12.pdf')
+  include_graphics('figure/fig11.pdf')
 }
 
 ```
