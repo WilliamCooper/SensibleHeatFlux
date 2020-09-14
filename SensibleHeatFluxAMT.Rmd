@@ -252,8 +252,8 @@ be applied with proper treatment of the sensor response.
 
 # setwd('~/RStudio/SensibleHeatFlux')
 source('chunks/initialize.R')
-source('chunks/theme_WAC.R')
-source('chunks/VSpec.R')
+# source('chunks/theme_WAC.R')
+# source('chunks/VSpec.R')
 opts_chunk$set(fig.height = 3.5, digits = 3)
 generateFigures = FALSE  ## set this TRUE to regenerate all figures;
                          ## with it FALSE, previously generated figures
@@ -3182,12 +3182,10 @@ representation of the measured recovery temperature. (Fourier transforms are
 denoted here by the symbol "\ $\widehat{~}$\ " over variables.)
 The measurement then is related to the true recovery temperature via
 $\hat{T}_{m}(\nu)=H(\nu)\hat{T}_{r}(\nu)$ where $H(\nu)$ is the
-transfer function.
-The recovery temperature then can be obtained from the
-inverse Fourier transform of $\hat{T}_{m}(\nu)/H(\nu)$. The best
-estimate of the Fourier representation of the air temperature is then
+frequency-domain transfer function.
+The true recovery temperature will be the
+inverse Fourier transform of $\hat{T}_{r}=\hat{T}_{m}(\nu)/H(\nu)$. The Fourier representation of the air temperature is then
 obtained from $\hat{T}_{a}=\hat{T}_{m}(\nu)/H(\nu)-\hat{Q}(\nu)$.
-
 This Fourier representation of the air temperature then can be multiplied
 by the complex conjugate of the Fourier representation of the updraft
 to yield the cospectrum representing the flux of sensible heat, with
