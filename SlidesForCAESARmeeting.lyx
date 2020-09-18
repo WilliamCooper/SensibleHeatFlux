@@ -199,11 +199,22 @@ In principle, this file can be redistributed and/or modified under the terms
 \end_layout
 
 \begin_layout Title
-Some Info for the CAESAR Discussion
+Some Information for the CAESAR Discussion
 \end_layout
 
 \begin_layout Author
 Al Cooper - 21 Sept 2020
+\end_layout
+
+\begin_layout Date
+\begin_inset space ~
+\end_inset
+
+
+\begin_inset space ~
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -314,7 +325,7 @@ THE PROBLEM RE SENSIBLE-HEAT FLUX
 status open
 
 \begin_layout Plain Layout
-The Response Time of a Thermometer Can Affect the Measurement
+The Response Time of a Thermometer Affects the Measurement
 \end_layout
 
 \end_inset
@@ -358,10 +369,10 @@ The frequency-domain transfer function was determined for the sensor.
 \end_inset
 
 
-\begin_inset Formula $H(\nu)=(sensor$
+\begin_inset Formula $H(\nu)=$
 \end_inset
 
- output) / (measurand input)
+ sensor output) / (measurand input)
 \begin_inset Newline newline
 \end_inset
 
@@ -391,7 +402,7 @@ The transfer function was found by using the known input provided by dynamic
 status open
 
 \begin_layout Plain Layout
-THE TRANSFER FUNCTION
+THE TRANSFER FUNCTION (best fit from observations)
 \end_layout
 
 \end_inset
@@ -414,6 +425,10 @@ THE TRANSFER FUNCTION
 \end_layout
 
 \end_deeper
+\begin_layout Frame
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset Separator plain
 \end_inset
@@ -426,7 +441,173 @@ THE TRANSFER FUNCTION
 status open
 
 \begin_layout Plain Layout
-CORRECTIONS ARE POSSIBLE, often 30-35%.
+CALCULATING SENSIBLE-HEAT FLUX 
+\begin_inset Formula $F_{s}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vskip-0.2cm
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Block
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+Eddy Correlation:
+\begin_inset Newline newline
+\end_inset
+
+Simultaneously measure temperature and updraft
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\[
+F_{s}=\rho\thinspace C_{p}\left\langle w^{\prime}T^{\prime}\right\rangle 
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout WACBlock
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+Express in terms of the cospectrum:
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\[
+F_{s}=\mathrm{Re}\left(\int\rho C_{p}\hat{w}^{*}(\nu)\hat{T}(\nu)d\nu\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+(
+\begin_inset space \thinspace{}
+\end_inset
+
+
+\begin_inset Formula $\hat{}$
+\end_inset
+
+
+\begin_inset space \thinspace{}
+\end_inset
+
+) denotes Fourier transform, 
+\begin_inset Formula $^{*}$
+\end_inset
+
+ complex conjugation
+\end_layout
+
+\begin_layout Standard
+Then use 
+\begin_inset Formula $\hat{T_{m}}(\nu)=H(\nu)\hat{T}(\nu)$
+\end_inset
+
+ where:
+\end_layout
+
+\begin_layout Description
+\begin_inset Formula $H(\nu)$
+\end_inset
+
+ is the complex transfer function (gain and phase)
+\end_layout
+
+\begin_layout Description
+\begin_inset Formula $T_{m}$
+\end_inset
+
+ is the uncorrected measurement
+\end_layout
+
+\end_deeper
+\begin_layout SummaryBlock
+\begin_inset Argument 2
+status open
+
+\begin_layout Plain Layout
+The corrected cospectrum:
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula 
+\[
+F_{s}=\mathrm{Re}\left(\int\rho C_{p}\hat{w}^{*}(\nu)(\hat{T}_{m}(\nu)/H(\nu))d\nu\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Frame
+\begin_inset Argument 4
+status open
+
+\begin_layout Plain Layout
+CORRECTIONS ARE TYPICALLY 30-35%.
  Examples:
 \end_layout
 
@@ -462,7 +643,7 @@ CORRECTIONS ARE POSSIBLE, often 30-35%.
 status open
 
 \begin_layout Plain Layout
-SUGGESTED ASSESSMENT:
+SUGGESTED ASSESSMENT, NSF/NCAR C-130:
 \end_layout
 
 \end_inset
@@ -476,7 +657,7 @@ SUGGESTED ASSESSMENT:
 status open
 
 \begin_layout Plain Layout
-For the NSF/NCAR C-130:
+Sensible-heat flux:
 \end_layout
 
 \end_inset
@@ -486,16 +667,23 @@ For the NSF/NCAR C-130:
 
 \begin_deeper
 \begin_layout Itemize
-Defensible measurements of sensible-heat flux are possible.
+Defensible measurements are possible with the proposed correction, which
+ removes an otherwise significant error.
 \end_layout
 
 \begin_layout Itemize
-Unertainty arising from sensor response: 5% or less.
+Remaining uncertainty from sensor response: 5% or less.
 \end_layout
 
 \begin_layout Itemize
-The usual restrictions re leg lengths apply and often require long legs
- in relatively homogeneous conditions.
+To limit other aspects of the uncertainty, long-enough legs in relatively
+ homogeneous conditions are needed.
+ Cf.
+\begin_inset space ~
+\end_inset
+
+Lenschow references.
+ Simulations can provide additional guidance.
 \end_layout
 
 \end_deeper
