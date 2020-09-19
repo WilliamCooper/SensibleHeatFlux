@@ -616,21 +616,82 @@ CORRECTIONS ARE TYPICALLY 30-35%.
 
 \end_layout
 
-\begin_deeper
-\begin_layout Standard
+\begin_layout Frame
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vskip-0.2cm
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
 \align center
 \begin_inset Graphics
 	filename CAESARfig2.pdf
 	lyxscale 50
 	width 80text%
-	height 8cm
+	height 7cm
+
+\end_inset
+
+
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+
+\backslash
+vskip-0.2cm
+\end_layout
 
 \end_inset
 
 
 \end_layout
 
-\end_deeper
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Corrected cospectra (blue line, black dots).
+ The brown line is the 
+\begin_inset Quotes eld
+\end_inset
+
+exceedance
+\begin_inset Quotes erd
+\end_inset
+
+ (flux contributed by frequencies above the plotted value); the dashed brown
+ line is the same for the uncorrected cospectrum.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset Separator plain
 \end_inset
