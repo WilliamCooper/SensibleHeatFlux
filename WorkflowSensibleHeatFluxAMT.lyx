@@ -1224,6 +1224,27 @@ Par
  the cospectrum is corrected using that response function.
 \end_layout
 
+\begin_layout Standard
+In the code used for this paper, this was replaced by 
+\begin_inset Quotes eld
+\end_inset
+
+plotCS()
+\begin_inset Quotes erd
+\end_inset
+
+, a function that incorporated much of the same code.
+ This was done partly to facilitate placing the two panels of 
+\begin_inset Quotes eld
+\end_inset
+
+fig10.pdf
+\begin_inset Quotes erd
+\end_inset
+
+ into a single plot.
+\end_layout
+
 \begin_layout Subsection
 Ranadu::CohPhase ()
 \end_layout
@@ -1269,7 +1290,7 @@ Ranadu::VSpec ()
 \end_layout
 
 \begin_layout Standard
-Plots of variance spectra, like that shown in Figs.
+Plots of variance spectra, as shown in Figs.
 \begin_inset space ~
 \end_inset
 
@@ -1303,7 +1324,7 @@ literal "false"
 
 \end_inset
 
-.
+ or in the Zenodo reference.
  A tutorial Shiny-app is also available 
 \begin_inset CommandInset href
 LatexCommand href
@@ -1694,7 +1715,11 @@ Equations in the submitted paper are denoted here using the notation
 \begin_inset Quotes eld
 \end_inset
 
-Eq.(n)
+Eq.
+\begin_inset space ~
+\end_inset
+
+(n)
 \begin_inset Quotes erd
 \end_inset
 
@@ -1751,6 +1776,10 @@ Here is exhaustive detail on the Laplace-transform solution.
  was valid.
  This material is mostly superfluous because the solution has been verified
  several ways, so most readers can skip this subsection.
+ This material will be unnecessary for those already expert in Laplace transform
+s because they will be able to see the solution immediately from the differentia
+l equations, as co-author Carnes has demonstrated.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -5751,6 +5780,16 @@ DSR %>% select(Time, TASX) %>%
 
 \begin_layout Plain Layout
 
+load('PAR.Rdata')
+\end_layout
+
+\begin_layout Plain Layout
+
+rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+\end_layout
+
+\begin_layout Plain Layout
+
 Z <- MachNumber(DSR$PSXC, DSR$QCXC) * 100 * DSR$PSXC / 
 \end_layout
 
@@ -6443,6 +6482,16 @@ DSR <- DSS
 
 \begin_layout Plain Layout
 
+rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+\end_layout
+
+\begin_layout Plain Layout
+
+bestSH <- c(0.0, 0.05849842, 1.28791645)
+\end_layout
+
+\begin_layout Plain Layout
+
 MRHO <- MachNumber(DSR$PSXC, DSR$QCXC) * DSR$PSXC * 100 / 
 \end_layout
 
@@ -6559,6 +6608,21 @@ fr <- log(frq[1:(Nby2+1)])
 \begin_layout Plain Layout
 
 ## Get the transfer function from the fitted parameterized form:
+\end_layout
+
+\begin_layout Plain Layout
+
+## (Coefficients are transferred from where they are used in the main paper:)
+\end_layout
+
+\begin_layout Plain Layout
+
+cfHARCO <- c(-155.20736, -62.80924, -6.35164, 67.17185)
+\end_layout
+
+\begin_layout Plain Layout
+
+cfrHARCO <- c(0.160796040, -0.136460209, -0.076042545, -0.030920784, -0.003244361)
 \end_layout
 
 \begin_layout Plain Layout
