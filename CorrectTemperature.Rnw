@@ -1,0 +1,817 @@
+%% LyX 2.3.5.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[12pt,american]{article}
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=3.54cm,bmargin=2.54cm,lmargin=2.54cm,rmargin=2.54cm,headheight=1cm,headsep=2cm,footskip=0.5cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{color}
+\usepackage{babel}
+\usepackage{calc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{setspace}
+\PassOptionsToPackage{normalem}{ulem}
+\usepackage{ulem}
+\usepackage[unicode=true]
+ {hyperref}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newenvironment{lyxcode}
+	{\par\begin{list}{}{
+		\setlength{\rightmargin}{\leftmargin}
+		\setlength{\listparindent}{0pt}% needed for AMS classes
+		\raggedright
+		\setlength{\itemsep}{0pt}
+		\setlength{\parsep}{0pt}
+		\normalfont\ttfamily}%
+	 \item[]}
+	{\end{list}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\input colordvi
+\usepackage{color}
+\fancyhead{}
+\fancyfoot[CE,CO]{}
+\newtoks{\addressee} \global\addressee={}
+\newdimen\longindent \longindent=3.5truein
+\fancyhead[L]{Memo to: \the\addressee \\ \datetoday \\ Page \thepage \hfill}
+\renewcommand{\headrulewidth}{0.0pt}
+\newenvironment{lyxlist}[1]
+{\begin{list}{}
+{\settowidth{\labelwidth}{#1}
+\setlength{\leftmargin}{\labelwidth}
+\addtolength{\leftmargin}{\labelsep}
+\renewcommand{\makelabel}[1]{##1\hfil}}}
+{\end{list}}
+\newcommand{\datetoday}{\number\day\space
+     \ifcase\month\or January\or February\or March\or April\or May\or
+     June\or July\or August\or September\or October\or November\or
+     December\fi
+     \space\number\year}
+\newcommand{\EOLmemo}{\null \vskip-1.5truein
+{\raggedright \textsf{\textsc{\large \textcolor{blue}{Earth Observing Laboratory}}}}\par
+{\raggedright \textsf{\textsl{\textcolor{blue}{Memorandum:}}}} \par \vskip6pt
+{\color{blue}{\hrule}}\par
+\vskip0.3truein \leftline{\hskip \longindent \datetoday} \vskip0.2truein
+\thispagestyle{empty}}
+\newcommand{\attachm}[1]{\begin{lyxlist}{Attachments:00}
+\item [Attachments:] {#1}
+\end{lyxlist}}
+\newcommand{\cc}[1]{\begin{lyxlist}{Attachments:00}
+\item [cc:] {#1}
+\end{lyxlist}}
+\newcommand{\attach}[1]{\begin{lyxlist}{Attachments:00}
+\item [Attachment:] {#1}
+\end{lyxlist}}
+%usage: \encl{A\\B\\C} or \cc{ma,e1\\name2\\name3}
+
+\makeatother
+
+\begin{document}
+\EOLmemo 
+
+\global\addressee={Reprocessing File}  % >>change "File" to the "To:" name desired
+
+\begin{tabular}{ll}
+\textsf{\textsc{\textcolor{blue}{To:}}} & \the\addressee\tabularnewline
+\textsf{\textsc{\textcolor{blue}{From:}}} & Al Cooper\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Subject:}}} & A procedure and script to correct temperature measurements for sensor
+time response\tabularnewline
+\end{tabular}
+
+\bigskip
+
+<<initialization,echo=FALSE,include=FALSE>>=
+
+
+library(knitr)
+opts_chunk$set(echo=FALSE, include=FALSE, fig.lp="fig:")
+opts_chunk$set(fig.width=6, fig.height=4.5, fig.align="center", digits=4)
+opts_chunk$set(warnings=FALSE, messages=FALSE)
+setwd('~/RStudio/SensibleHeatFlux')
+thisFileName <- "CorrectTemperature"
+require(Ranadu, quietly = TRUE, warn.conflicts=FALSE)
+require(tidyverse)
+require(magrittr)
+Directory <- DataDirectory ()
+Flight <- "rf15h" 				
+Project = "SOCRATES"	
+ProjectDir <- Project
+fname = sprintf("%s%s/%s%s.nc", Directory,ProjectDir,Project,Flight)
+FI <- DataFileInfo(fname, LLrange = FALSE)
+TVARS <- FI$Measurands$air_temperature
+TVARS <- TVARS[-which ('ATX' == TVARS)]  # don't include ATX
+Data <- getNetCDF (fname, standardVariables(TVARS))		
+SaveRData <- sprintf("%s.Rdata", thisFileName)
+
+@
+
+\section{The Governing Equations}
+
+The basis for this script is documented by Cooper et al.~(2020).
+The objective in this note is to provide specific information regarding
+how that can be implemented in a second-pass processing script. It
+is hoped that this note will be useful to anyone needing to use and
+maintain the processing script, which is called ``CorrectTemperature.R''.
+
+\subsection{Correction Method \#1}
+
+The governing differential equations involve two unknowns, the actual
+recovery temperature $T_{r}(t)$, and the temperature of the supporting
+structure $T_{s}(t)$. As given in Cooper et al.~(2020), they are:
+
+\begin{equation}
+\frac{dT_{s}(t)}{dt}=\frac{T_{r}(t)-T_{s}(t)}{\tau_{2}}\label{eq:DE1}
+\end{equation}
+\begin{equation}
+\frac{dT_{m}(t)}{dt}=\frac{a(T_{r}(t)-T_{m}(t))+(1-a)(T_{s}(t)-T_{m}(t))}{\tau_{1}}\label{eq:DE2}
+\end{equation}
+where $T_{s}(t)$ is the temperature of the support, $T_{m}(t)$ the
+measured temperature of the sensing wire, and $T_{r}(t)$ the true
+recovery temperature that is the measurand. For heat transfer to or
+from the wire, the parameter $a$ then represents the fraction of
+the heat transferred by the air while $(1-a)$ is transferred to or
+from the support. The wire responds to the combined transfers of heat
+with characteristic time constant $\tau_{1}$ while the support structure
+responds to the air temperature more slowly, with time constant $\tau_{2}$.
+
+It is possible to eliminate $T_{r}(t)$ from the simultaneous equations:
+The second equation, solved for $T_{r}(t)$, is
+
+\begin{equation}
+T_{r}(t)=\frac{1}{a}\left(\tau_{1}\frac{dT_{m}(t)}{dt}+T_{m}(t)-(1-a)T_{s}(t)\right)\label{eq:Tr-1}
+\end{equation}
+
+Substituting this into the first equation eliminates $T_{r}$:\\
+\begin{equation}
+\frac{dT_{s}(t)}{dt}=\frac{\frac{1}{a}\left\{ \tau_{1}\frac{dT_{m}(t)}{dt}+T_{m}(t)-(1-a)T_{s}(t)\right\} -T_{s}(t)}{\tau_{2}}\label{eq:Ts3}
+\end{equation}
+Because the measured temperature $T_{m}(t)$ is known, this can be
+integrated from an assumed initial value $T_{s}(0)$ to find the temperature
+of the support, $T_{s}(t)$. Then the true recovery temperature $T_{r}(t)$
+can be obtained by solving \eqref{eq:Tr-1} without further integration.
+The only choices needed are the numerical method used to find the
+derivative $dT_{m}/dt$ (here centered fourth-order) and the integration
+method applied to \eqref{eq:Ts3}, here fourth-order Runge-Kutta integration
+with Cash-Karp (\cite{cash1990variable}) adjustment of the step size.
+If the values of the parameters ($a$, $\tau_{1}$, $\tau_{2}$) are
+known, this approach provides a method of correcting the measured
+recovery temperature $T_{m}(t)$ to retrieve (an estimate of) the
+true recovery temperature $T_{r}(t)$. 
+
+\subsection{Correction Method \#2}
+
+An alternate approach to this correction is to use the frequency-space
+transfer function as developed in Cooper et al.~(2020), $H(\omega)$,
+which relates the Fourier representation of the measurement to that
+of the measurand via $\hat{T}_{m}(\omega)=H(\omega)\hat{T}_{r}(\omega)$.
+The measurand can be retrieved from the inverse Fourier transform
+of $\hat{T}_{m}(\omega)\thinspace/\thinspace H(\omega)$. This requires
+treating a block of measurements so that the Fourier components can
+be determined, so this is less straightforward than Method \#1, especially
+if it is desirable to include variations in the parameters in the
+differential equations.
+
+\subsection{Application to the Heated Probe}
+
+For the HARCO heated sensor, both methods require modification. The
+best-fit parameters include $a=0$, so \eqref{eq:Tr-1} and \eqref{eq:Ts3}
+can't be used. for Method \#1 Fortunately, there is an alternate solution
+to the equations for the case when $a=0$:\\
+\begin{equation}
+T_{r}(t)=(\tau_{1}+\tau_{2})\frac{dT_{m}(t)}{dt}+T_{m}(t)+\tau_{1}\tau_{2}\frac{d^{2}T_{m}(t)}{dt^{2}}\label{eq:HARCOcorr}
+\end{equation}
+This gives $T_{r}(t)$ without integration because finite-difference
+expressions can be used for the derivatives of the measurement $T_{m}(t)$.
+However, because the finite-difference estimates introduce high-frequency
+noise, the result needs to be smoothed using a low-pass filter with
+2~Hz cutoff frequency. This is acceptable because the heated sensor
+has only insignificant response at such frequencies.
+
+\subsection{The Treatment of Dynamic Heating}
+
+As described by Cooper et al.~(2020), the standard dynamic-heating
+correction should be modified so that only the part of that correction
+to which the sensor responds is subtracted. The above correction schemes
+apply to the recovery temperature, so further steps are needed if
+the measurement of air temperature is to be corrected. Several approaches
+to this problem are listed here:
+\begin{enumerate}
+\item Filter the dynamic-heating correction as required to find what part
+of that correction has influenced the recovery temperature, and subtract
+only that filtered correction. This produces a measurement of air
+temperature that is improved over the standard calculation because
+it does not include the extraneous noise introduced by the unfiltered
+dynamic-heating correction. For this case, the resulting air temperature
+measurement is $T_{a}(t)=T_{m}(t)-Q_{f}(t)$ where $Q_{f}(t)$ is
+the dynamic-heating term filtered to represent how it will affect
+the measured recovery temperature: $Q_{f}(t)=\mathcal{F}^{-1}(H(\omega)\hat{Q}(\omega))$
+where $\hat{Q}(\omega)$ denotes the Fourier transform of the dynamic-heating
+term $Q(t)$ and $\mathcal{F}^{-1}()$ denotes the inverse Fourier
+transform. However, the result then is not corrected for time response
+of the sensor.
+\item Follow with application of Method \#1 or Method \#2 to the filtered
+result from item 1 above to obtain a revised measurement of air temperature.
+If the response of the sensor is linear, this will further correct
+the first estimate of the ambient temperature from approach \#1 for
+the response of the sensor. In the frequency-space representation,
+the result can be written as:\\
+\begin{equation}
+T_{a}^{\prime}(t)=\mathcal{F}^{-1}\left(\hat{T}_{m}(\omega)/H(\omega)-H(\omega)\hat{Q}(\omega)/H(\omega)\right)\label{eq:Taprime}
+\end{equation}
+The equivalent result is obtained by using the differential equations
+as in Method \#1 but applied to the result from item 1 above. 
+\item An equivalent approach is to apply Method \#1 or Method \#2 to the
+measurement of recovery temperature, which will produce an estimate
+of what the sensor should have measured in the presence of normal
+dynamic heating, and then subtract the full unfiltered dynamic heating,
+which will have been restored to the recovery temperature by the correction
+procedure. In the frequency-space representation, because $H(\omega)\hat{Q}(\omega)/H(\omega)=\hat{Q}(\omega)$
+the result is again \eqref{eq:Taprime}.
+\item For the heated sensor, the parameterized equations do not provide
+the best fit to the observations so the alternate fit using a polynomial
+might be preferable. That polynomial fit can only be applied using
+method \#2. However, the limited examples in Cooper et al.~(2020)
+seem to indicate that, despite the inferior fit to the transfer function,
+the parameterized transfer function provides a better reconstruction
+as judged relative to the unheated sensor.
+\end{enumerate}
+
+\section{Implementation: A Second-Pass Script}
+
+An R script ``CorrectTemperature.R'' adds the following corrected
+temperature variables to a netCDF file (where {[}vname{]} is an existing
+temperature variable):
+\begin{enumerate}
+\item {[}vname{]}F -- A corrected variable improving on {[}vname{]} using
+approach \#1 above, in which the dynamic-heating correction is filtered
+to represent the sensor response to dynamic heating and that filtered
+dynamic-heating correction is subtracted from the measured recovery
+temperature. This variable thus does not show the spurious noise present
+in the original variable but is not otherwise corrected for the time
+response of the sensor.
+\item {]}vname{]}C - A corrected variable improving on {[}vname{]} using
+approach \#2 above, with method \#1 (based on the differential equations).
+For measurements of air temperature, this correction accounts for
+the time response of the sensor and also, for calculated air temperature,
+removes the spurious contributions from dynamic heating that the sensor
+does not detect. This is the favored result from this reprocessing.
+If {[}vname{]} is a recovery temperature, this result is the best
+estimate of the true recovery temperature and dynamic heating is not
+addressed.
+\item {[}vname{]}C2 {[}optional{]} - A corrected variable like {[}vname{]}C
+but obtained by Fourier transformation. The process followed is to
+divide the portion of the flight from takeoff to landing into 10-min
+segments, each overlapping the previous segment by 5 min. Each segment
+is processed via Fourier transformation and the central 5-min segment
+is retained as the corrected variable. For the first and last segments,
+the leading or trailing portion of the segment is also retained so
+that the entire flight is covered. This optional processing is usually
+not an improvement over {[}vname{]}C but is available for testing.
+\end{enumerate}
+Given a netCDF flight, the script identifies the air-temperature and
+recovery-temperature variables and processes each to obtain the new
+variables listed above. Because the recovery temperatures are not
+preserved in most production files, the script reconstructs the recovery
+temperature if necessary from the air temperature and the calculated
+dynamic heating, using the same recovery factor that was included
+as an attribute for the original air-temperature variable. The new
+variables are inserted into a copy of the original netCDF file, renamed
+to have a ``T'' suffix.
+
+The processing code for this script is inserted into the ``CorrectTemperature.Rnw''
+file as the ``processor'' code chunk. A processing example will
+be run when that file is compiled or when the associated .lyx file
+is exported to pdf via pdflatex. The script is available separately
+as ``CorrectTemperature.R'' and that is included in the SensibleHeatFlux.zip
+file that is the project archive for the correction procedure developed
+to improve measurements of the flux density of sensible heat. That
+archive is preserved at this URL: \href{https://github.com/WilliamCooper/SensibleHeatFlux}{https://github.com/WilliamCooper/SensibleHeatFlux}
+.
+
+<<processor, echo = FALSE, eval = FALSE>>=
+
+source('./CorrectTemperature.R')
+@
+
+<<testp, echo = TRUE, include = TRUE>>=
+
+system('Rscript CorrectTemperature.R SOCRATES rf15h')
+@
+
+<<processorOld, echo=FALSE, eval=FALSE>>=
+
+## This is an old version; ignore and eventually delete.
+require(Ranadu, quietly = TRUE, warn.conflicts=FALSE)
+# needed packages
+library(zoo)
+require(signal)
+
+## Get file to process:
+
+## Specify the Project and Flight:
+Project <- 'SOCRATES'
+Flight <- 'rf15h'  # should be high-rate
+getNext <- function(ProjectDir, Project) {
+  Fl <- sort (list.files (sprintf ("%s%s/", DataDirectory (), ProjectDir),
+    sprintf ("%srf..hT.nc", Project)), decreasing = TRUE)[1]
+  if (is.na (Fl)) {
+    Flight <- 'rf01h'
+  } else {
+    Flight <- sub (".*rf", '',  sub ("hT.nc", '', Fl))
+    Flight <- as.numeric(Flight)+1
+    Flight <- sprintf ('rf%02dh', Flight)
+  }
+  return (Flight)
+}
+if (!interactive()) {  ## can run interactively or via Rscript
+  run.args <- commandArgs (TRUE)
+  if (length (run.args) > 0) {
+    if (nchar(run.args[1]) > 1) {
+      Project <- run.args[1]
+      ProjectDir <- Project
+    }
+  } else {
+    print ("Usage: Rscript FilterDynamicHeating.R Project Flight")
+    print ("Example: Rscript FilterDynamicHeating.R SOCRATES rf15h")
+    stop("exiting...")
+  }
+  ## Flight
+  if (length (run.args) > 1) {
+    ALL <- FALSE
+    if (run.args[2] == 'ALL') {
+      ALL <- TRUE
+    } else if (run.args[2] != 'NEXT') {
+      Flight <- run.args[2]
+    } else {
+      ## Find max already-processed rf..h in data directory,
+      ## Use as default if none supplied via command line:
+      Flight <- getNext(ProjectDir, Project)
+    }
+  }
+} else {
+  x <- readline (sprintf ("Project is %s; CR to accept or enter new project name: ", Project))
+  if (nchar(x) > 1) {
+    Project <- x
+    if (grepl ('HIPPO', Project)) {
+      ProjectDir <- 'HIPPO'
+    } else {
+      ProjectDir <- Project
+    }
+  }
+  x <- readline (sprintf ("Flight is %s; CR to accept, number 'ALL' or 'NEXT' for new flight name: ", 
+    Flight))
+  ALL <- FALSE
+  if (x == 'ALL') {
+    ALL <- TRUE
+  } else if (x == 'NEXT') {
+    Flight <- getNext(ProjectDir, Project)
+  } else if (nchar(x) > 0 && !is.na(as.numeric(x))) {
+    Flight <- sprintf('rf%02dh', as.numeric(x))
+  }
+}
+## A function to transfer attributes:
+copy_attributes <- function (atv, v, nfile) {
+  for (i in 1:length(atv)) {
+    aname <- names(atv[i])
+    if (grepl ('name', aname)) {next}  # skips long and standard names
+    if (grepl ('units', aname)) {next}
+    if (grepl ('Dependencies', aname)) {next}
+    if (grepl ('actual_range', aname)) {next}
+    if (is.numeric (atv[[i]])) {
+      ncatt_put (nfile, v, attname=aname, attval=as.numeric(atv[[i]]))
+    } else {
+      ncatt_put (nfile, v, attname=aname, attval=as.character (atv[[i]]))
+    }
+  }
+}
+
+correctTemperature <- function(D, RT, responseTime = 2.2,
+  cutoffPeriod=0.3) {
+  Rate <- attr(D, 'Rate')
+  RT <- D[, RT]
+  RT <- zoo::na.approx(as.vector(RT), maxgap = 1000 * Rate, na.rm = FALSE, rule = 2)
+  RT[is.na(RT)] <- 0
+  .span <- 5
+  Tdot <- signal::sgolayfilt (RT, 3, .span, m=1) * Rate
+  RTC <- RT + responseTime * Tdot 
+  RTF <- signal::filtfilt (signal::butter (3, 
+    2/(cutoffPeriod * Rate)), RTC)
+  # RTF <- SmoothInterp(RTF, .Length=35)
+  return(RTF)
+}
+processFile <- function(ProjectDir, Project, Flight) {
+  ## Find the available air_temperature variables:
+  fname <- file.path(DataDirectory(), sprintf('%s/%s%s.nc', 
+    ProjectDir, Project, Flight))
+  FI <- DataFileInfo(fname, LLrange = FALSE)
+  TVARS <- FI$Measurands$air_temperature
+  TVARS <- TVARS[-which ('ATX' == TVARS)]  # don't include ATX
+  RVARS <- sub('^A', 'R', TVARS)
+  ## get the old netCDF variables needed to calculate the modified variables
+  VarList <- standardVariables(TVARS)
+  ## Add the recovery temperatures if present; otherwise
+  ## recalculate them:
+  for (RV in RVARS) {
+    if (RV %in% FI$Variables) {
+      VarList <- c(VarList, RV)
+    }
+  }
+  D <- getNetCDF (fname, VarList)  
+  Rate <- attr(D, 'Rate')
+  
+  ## Calculate the new variables:
+  D$Cp <- SpecificHeats (D$EWX / D$PSXC)[, 1]
+  D$DH <- D$TASX^2 / (2 * D$Cp)
+  ## Recalculate recovery temperatures if missing:
+  for (RV in RVARS) {
+    if(!(RV %in% VarList)) {
+      TV <- sub('^R', 'A', RV)
+      prb <- 'HARCO'
+      if (TV == 'ATH2') {prb <- 'HARCOB'}
+      if (grepl('ATF', TV)) {prb <- 'UNHEATED'}
+      D[, RV] <- D[, TV] - RecoveryFactor(D$MACHX, prb) * D$DH
+    }
+  }
+  # filter DH:
+  CutoffPeriod <- rep(Rate * 1.0, length(TVARS)) # Standard is 1 s for DH filtering
+  probe <- rep('HARCO', length(TVARS))  # used to determine the recovery factor
+  # check for ATF
+  ic <- which(grepl('ATF', TVARS))
+  if (length(ic) > 0) {
+    CutoffPeriod[ic] <- Rate * 0.5  # 0.5 s for ATFx
+    probe[ic] <- 'UNHEATED'
+  }
+  ic <- which(grepl('ATH2', TVARS))
+  if (length(ic) > 0) {
+    probe[ic] <- 'HARCOB'
+  }
+  if (Rate == 1) {  # Protection against script failure for a LRT file
+    CutoffPeriod[CutoffPeriod == 1] <- 2.2
+    CutoffPeriod[CutoffPeriod == 0.5] <- 2.0
+  }
+  
+  DHM <- rep(D$DH, length(TVARS))
+  dim(DHM) <- c(length(D$DH), length(TVARS))
+  newTVARS <- paste0(TVARS, 'C')
+  filteredTVARS <- paste0(TVARS, 'F')
+  for (i in 1:length(TVARS)) {
+    DHM[, i] <- zoo::na.approx (as.vector(D$DH), maxgap=1000*Rate, 
+      na.rm = FALSE, rule = 2)
+    DHM[is.na(DHM[, i]), i] <- 0
+    DHM[, i] <- signal::filtfilt (signal::butter (3, 2/CutoffPeriod[i]), DHM[, i])
+    D[, filteredTVARS[i]] <- D[, TVARS[i]] + 
+      (D$DH - DHM[, i]) * RecoveryFactor(D$MACHX, probe=probe[i])
+  }
+  
+  ## Calculate the corrected temperatures:
+  responseTime <- rep(2.2, length(RVARS))
+  responseTime[which('UNHEATED' == probe)] <- 0.7
+  filterPeriod <- rep(0.3, length(RVARS))
+  filterPeriod[which('UNHEATED' == probe)] <- 2
+  for (i in 1:length(TVARS)) {
+    RTC <- correctTemperature(D, RVARS[i], responseTime = responseTime[i],
+      cutoffPeriod = filterPeriod[i])
+    D[, newTVARS[i]] <- D[, filteredTVARS[i]] + (RTC - D[, RVARS[i]])
+  }
+  
+  ## create and open a copy of the old file for writing:
+  fnew <- sub ('.nc', 'T.nc', fname)
+  ## beware: overwrites without warning!!
+  Z <- file.copy (fname, fnew, overwrite=TRUE)  
+  netCDFfile <- nc_open (fnew, write=TRUE) 
+  ## retrieve dimension info from the old file
+  Dimensions <- attr (D, "Dimensions")
+  Dim <- Dimensions[["Time"]]
+  if ("sps25" %in% names (Dimensions)) {
+    Rate <- 25
+    Dim <- list(Dimensions[["sps25"]], Dimensions[["Time"]])
+  }
+  DATT <- D
+  
+  ## variables to add to the netCDF file:
+  VarNew <- newTVARS   
+  VarOld <- TVARS
+  VarUnits <- rep("deg_C", length(TVARS))
+  VarLongName <- rep("Ambient Temperature, filtered", length(TVARS))
+  VarStdName <- rep("air_temperature", length(TVARS))
+  Dependencies <- rep(sprintf('2 %s TASX', TVARS[1]), length(TVARS))
+  for (i in 1:length(TVARS)) {
+    Dependencies[i] <- sprintf('2 %s TASX', TVARS[i])
+  }
+  
+  ## create the new variables
+  varCDF <- list ()
+  for (i in 1:length(VarNew)) {  
+    ## create the new variable and add it to the netCDF file
+    varCDF[[i]] <- ncvar_def (VarNew[i],  
+      units=VarUnits[i], 
+      dim=Dim, 
+      missval=as.single(-32767.), prec="float", 
+      longname=VarLongName[i])
+    if (i == 1) {
+      newfile <- ncvar_add (netCDFfile, varCDF[[i]])
+    } else {
+      newfile <- ncvar_add (newfile, varCDF[[i]])
+    }
+    ## transfer attributes from the old variable and add new ones
+    ATV <- ncatt_get (netCDFfile, VarOld[i])
+    copy_attributes (ATV, VarNew[i], newfile)
+    ncatt_put (newfile, VarNew[i], attname="standard_name", 
+      attval=VarStdName[i])
+    ncatt_put (newfile, VarNew[i], attname="Dependencies", 
+      attval=Dependencies[i])
+    ## add the measurements for the new variable
+    if (Rate == 1) {
+      ncvar_put (newfile, varCDF[[i]], D[, VarNew[i]])
+    } else if (Rate == 25) {
+      ncvar_put (newfile, varCDF[[i]], D[, VarNew[i]], 
+        count=c(25, nrow(D)/25))
+    }
+  }
+  ## then close to write the new file
+  nc_close (newfile)
+}
+
+if (ALL) {
+  Fl <- sort (list.files (sprintf ("%s%s/", DataDirectory (), ProjectDir),
+    sprintf ("%srf..h.nc", Project)), decreasing = TRUE)
+  for (flt in Fl) {
+    fcheck <- file.path(DataDirectory(), ProjectDir, '/', flt, fsep = '')
+    fcheck <- sub('.nc', 'T.nc', fcheck)
+    if (file.exists(fcheck)) {
+      print (sprintf('processed file %s exists; skipping', flt))
+    } else {
+      print (sprintf('processing file %s', flt))
+      processFile (ProjectDir, Project, sub('.*rf', 'rf', sub('.nc', '', flt)))
+    }
+  }
+} else {
+  processFile (ProjectDir, Project, Flight)
+}
+
+@
+
+\subsection{Running the Script}
+
+The processing script starts by determining the flight or series of
+flights to process. This information can be provided in either of
+two ways:
+\begin{itemize}
+\item If run interactively (e.g., from RStudio or an R console window),
+the script will ask the user to provide the project and flight. The
+project name should follow standard archiving conventions for the
+netCDF files; an example is ``SOCRATES'' or ``CSET''. The flight
+can be provided in several different ways:
+\begin{itemize}
+\item ``NEXT'' will process the next high-rate file in the project directory
+with a standard name like ``SOCRATESrf01h.nc''. This can be used
+sequentially to process an entire set of flights.
+\item ``NEXTLR'' will process the next low-rate file.
+\item ``ALL'' will process all high-rate files, skipping any that have
+already been processed. This may be unacceptably slow; tests indicate
+it may take as much as an hour.
+\item ``ALLLR'' will process all low-rate files, skipping any that have
+been already processed.
+\item For a specific individual flight, provide the flight name following
+one of these examples: ``rf15h'' or ``rf15''. An entry like ``15''
+will process the low-rate file ``{[}ProjectName{]}rf15.nc''. 
+\end{itemize}
+\item The script can also be run from a terminal, after changing to the
+working directory containing the script. The entry at a terminal window
+should follow this example: ``Rscript CorrectTemperature.R SOCRATES
+rf15h'' (without the quotation marks). Two additional optional arguments,
+``RT'' and ``FFT'', can be appended, as discussed below. Interactive
+use will also query to determine those arguments.
+\end{itemize}
+The result will be a new netCDF file with ``T'' appended to the
+name, for example ``SOCRATESrf15hT.nc'' if the original was ``SOCRATESrf15h.nc''.
+The new file will have these added variables:
+\begin{itemize}
+\item {[}ATyy{]}C if the original file contained a variable named {[}ATyy{]}
+-- the corrected result for air temperature that includes modifications
+for the sensor response and the filtered dynamic heating.
+\item {[}ATyy{]}F -- the original measurement with only the addition of
+the usual dynamic-heating term and then subtraction of the filtered
+dynami-heating term. This removes the excess noise arising from the
+failure of the sensor to respond fully to dynamic heating, but it
+does not otherwise correct the measurement for sensor response.
+\item {[}RTyy{]}C -- the corrected result for the recovery temperature.
+This correction addresses the sensor response but does not involve
+dynamic heating. It is the best estimate of the true recovery temperature
+that is the measurand.
+\end{itemize}
+In addition, these variables are optionally added:
+\begin{itemize}
+\item {[}RTyy{]} -- Often archived files do not include the recovery temperature,
+so in the course of processing it must then be recalculated from the
+air temperature and the dynamic-heating term. If {[}RTyy{]} is not
+present in the original file, the recalculated value can be added
+if it is desired. Inclusion of these variables can be included, for
+cases where they are not present in the original file, by adding the
+argument ``RT'' to the Rscript call or answering the appropriate
+question during interactive use.
+\item {[}ATyy{]}C2 -- like {[}ATyy{]}C but calculated using the transfer
+function and FFT processing instead of solution of the differential
+equations. The variable {[}ATyy{]}C2 is calculated by subtracting
+the full unfiltered dynamic-heating term from {[}RTyy{]}C2, listed
+next. This is thought to be equivalent to {[}ATyy{]}C but can suffer
+from end-of-sequence effects when splicing together the FFT results,
+so it is excluded by default. This and the following variable are
+only included if ``FFT'' is appended to the arguments of the Rscript
+call or if they are requested in response to an interactive prompt.
+\item {]}RTyy{]}C2 -- like {[}RTyy{]}C but calculated using the transfer
+function and FFT processing. 
+\end{itemize}
+
+\subsection{Description of Key Functions}
+\begin{enumerate}
+\item \emph{\uline{correctDynamicHeating(D, AT):}} AT is a variable in
+the original data-frame D. The routine uses attributes of AT to select
+the right filter. The filters were generated in the SensibleHeatFluxAMT.Rmd
+file and were saved in ``ARF.Rdata'', which is loaded at the start
+of this CorrectTemperature.R script. This function retrieves the recovery
+factor from the attribute saved with the variable, as needed if the
+recovery temperature is absent and should be recalculated. It then
+uses that recovery factor to calculate the dynamic-heating term. Application
+of the signal::filter() function will fail is there are missing values
+in the time series, so Ranadu::SmoothInterp() is used to replace missing
+values by linear interpolation before the filter is applied. Then
+the appropriate filter from the reference paper is applied to the
+time series via ``signal::filter(AF, Q)'' where ``AF'' is the
+appropriate filter (dependent on the sensor and the data rate) and
+``Q'' is the dynamic-heating term, including the recovery factor.
+The file ``ARF.Rdata'' also specifies the appropriate time shift
+used for each filter. The function Ranadu::ShiftInTime()'' is used
+after filtering to restore proper timing to the time series after
+filtering. The value returned from this function is the air temperature
+corrected by the term ($Q-QF$) where $Q$ is the usual dynamic-heating
+term $\alpha_{r}V^{2}/(2C_{p})$ and $QF$ is the result of applying
+the filter developed in the reference paper.
+\item \emph{\uline{correctTemperature(D, RT, responsePar):}} \emph{RT}
+is the recovery temperature, either contained in the data.frame \emph{D}
+or recalculated if it is absent, and \emph{responsePar} contains the
+transfer-function parameters for the particular sensor providing \emph{RT\@.
+}The function has two branches, depending on whether to sensor is
+heated or unheated:
+\begin{enumerate}
+\item For an unheated sensor, \eqref{eq:Tr-1} and \eqref{eq:Ts3} provide
+the basis for the correction. For the derivative $dT_{m}/dt$, needed
+to integrate \eqref{eq:Ts3}, a centered fourth-order expression is
+used:\\
+\begin{equation}
+\frac{dT_{m}[i]}{dt}=\frac{-T[i+2\}+8T_{m}[i+1]-8T_{m}[i-1]+T_{m}[i-2]}{12/R}\label{eq:centered4thorderder}
+\end{equation}
+where $R$ is the sample rate (usually 25 or 1). The expression used
+for this in R is\\
+\fbox{\begin{minipage}[t]{1\columnwidth - 2\fboxsep - 2\fboxrule}%
+\begin{lyxcode}
+\begin{singlespace}
+DTMDT~<-~(c(0,~8~{*}~diff(RTF1,~2),~0)~-~~\\
+          c(0,~0,~diff(RTF1,~4),~0,~0))~{*}~Rate~/~12
+\end{singlespace}
+\end{lyxcode}
+%
+\end{minipage}}It was found that this works significantly better than a second-order
+centered finite-difference expression (i.e., DTMDT <- c(0, diff(RTF1,
+2), 0) {*} Rate / 2). The integration then proceeds using a 4th-order
+Runge-Kutta integration with Cash-Karp adjustment of the time step,
+as implemented in the function \emph{Ranadu::rk4.integrate()}, after
+which \eqref{eq:Tr-1} is used to find the corrected recovery temperature.
+The integration routine, coded for this usage after it was found that
+the standard R-provided Runge-Kutta scheme had numerical problems,
+is not coded very well and should be used with attention to how the
+function being integrated is supplied. In this implementation, the
+function needs not only the current state of the integral but also
+the derivative as expressed above and the original measurement, as
+well as the transfer-function parameters. An example of how this is
+implemented is as follows, where the support temperature is calculated
+from \eqref{eq:Ts3}:\\
+\fbox{\begin{minipage}[t]{1\columnwidth - 2\fboxsep - 2\fboxrule}%
+\begin{lyxcode}
+fS~<-~function(y,~i)~\{
+
+~~~~~~((tau1~{*}~D\$DTMDT{[}i{]}~+~D\$TTRR{[}i{]}~-~
+
+~~~~~~(1~-~a)~{*}~y)~/~a~-~y)~/~(Rate~{*}~tau2)
+
+~~~~\}
+
+D\$Ts~<-~rk4.integrate~(fS,~D\$Ts{[}1{]},~1:nrow(D))
+\end{lyxcode}
+%
+\end{minipage}}The function needs the indexed vectors DTMDT and TTRR but they are
+not provided explicitly as arguments to the function. Instead, it
+is assumed that they are present in the calling environment, after
+for example calculating DTMDT as in the earlier box, and only the
+index \emph{i} is provided to the function. If this script continues
+to be useful in the future, this weakness should be cleaned up by
+providing additional arguments to the function as needed. 
+\item For the heated sensor, the corrected temperature is found from \eqref{eq:HARCOcorr},
+with appropriate finite-difference formulas for the derivatives. Equation
+\eqref{eq:centered4thorderder} can be used for the first derivative,
+but this equation also involves the second derivative $\frac{d^{2}T_{m}(t)}{dt^{2}}$.
+The fourth-order centered finite difference expression for this second
+derivative is:\\
+\begin{equation}
+\frac{d^{2}T_{m}([i]}{dt^{2}}=\frac{-T_{m}[i+2]+16T_{m}[i+1]-30T_{m}[i]+16T_{m}[i-1]-T_{m}[i-2]}{12/R^{2}}\label{eq:centered4thorderSecondDer}
+\end{equation}
+which is calculated by the following R code:\\
+\fbox{\begin{minipage}[t]{1\columnwidth - 2\fboxsep - 2\fboxrule}%
+\begin{lyxcode}
+DTM2DT2~<-~(-c(0,0,~RTH1){[}1:nrow(DSX){]}~+~16{*}c(0,RTH1){[}1:nrow(DSX){]}~
+
+~~~~~~-~30~{*}~RTH1~+~16~{*}~c(RTH1{[}2:nrow(DSX){]},~0)~
+
+~~~~~~-~c(RTH1{[}3:nrow(DSX){]},~0,~0))~{*}~(Rate\textasciicircum 2)~/~12~
+\end{lyxcode}
+%
+\end{minipage}}Because the finite-difference formulas introduce unacceptable high-frequency
+noise where the heated sensor has negligible response, a third-order
+Butterworth low-pass filter with cutoff frequency of 2~Hz is then
+applied to the corrected temperature.
+\end{enumerate}
+\item \emph{\uline{addFFTsoln(D, RV, responsePar)}}\emph{ -- }For the
+recovery temperature RV, this function calculates and returns the
+corrected recovery temperature. It uses the transfer function provided
+by ``\emph{responsePar'' }and uses sequential segments with Fourier
+transforms. These calculations are only performed, and the variables
+are only added, when ``FFT'' is an argument to the script. The solution
+for the unheated probe is hard to distinguish from that from the differential
+equations, and the solution for the heated probe is usually inferier
+to that provided by the differential equations, so this is usually
+not a useful option. It is kept here because the processing procedure
+might be a model for other processing and because there might be uses
+for this routine during testing or debugging.
+\item \emph{\uline{processFile(ProjectDir, Project, Flight):}} This is
+the main processing function, called after determining the run parameters
+via user interaction or the provided run arguments. The next section
+describes the processing governed by this function.
+\end{enumerate}
+
+\subsection{The Flow of Processing}
+
+Once run-time parameters like the project and flight are determined,
+the main routine calls \emph{processFile()} where the processing is
+performed by calling the functions in the preceding subsection and
+then constructing the new output file. A flow chart for the script
+is shown in Fig.~1.
+
+\begin{figure}
+\begin{centering}
+\includegraphics[width=0.95\textwidth]{CorrectTemperatureDiagram}
+\par\end{centering}
+\caption{Flow diagram for the script CorrectTemperature.R. The individual functions
+are described in the preceding subsection.}
+
+\end{figure}
+
+\begin{center}
+\textsf{\textcolor{blue}{-- End of Memo --}}
+\par\end{center}
+
+\clearpage{}
+
+Reproducibility:
+
+\begin{tabular}{ll}
+\textsf{\textsc{\textcolor{blue}{Project:}}} & \Sexpr{thisFileName}\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Archive package:}}} & \Sexpr{thisFileName}.zip in the Git directory below\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Contains:}}} & attachment list below\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Program:}}} & \Sexpr{thisFileName}.Rnw\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Original Data:}}} & /scr/raf\_data/SOCRATES/\Sexpr{Flight}.nc for the example\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Git:}}} & https://github.com/WilliamCooper/SensibleHeatFlux/\Sexpr{thisFileName}.zip\tabularnewline
+\end{tabular}
+
+\attachm{\Sexpr{thisFileName}.Rnw\\\Sexpr{thisFileName}.pdf\\\Sexpr{thisFileName}.R\\\Sexpr{thisFileName}.dot\\SessionInfo}
+%\cc{first attachment\\second\\3rd att}
+%\attach{attachment}
+%\attachm{first\\second} %\cc{first attachment\\second\\3rd att}
+<<save-system-info, echo=FALSE>>= 
+cat (toLatex(sessionInfo()), file="SessionInfo")
+
+@ 
+<<make-zip-archive, echo=TRUE, INCLUDE=TRUE>>=
+system (sprintf("zip %s.zip %s.Rnw %s.pdf %s.R %s.dot SessionInfo", thisFileName, thisFileName, thisFileName, thisFileName, thisFileName))
+
+@ 
+
+% \attach{attachment}
+
+% \attachm{ProgramFile\\Document.pdf\\SaveRData}
+
+%\cc{first attachment\\second\\3rd att}
+\end{document}

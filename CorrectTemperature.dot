@@ -1,0 +1,89 @@
+digraph GPC {
+  subgraph "cluster6" {
+    graph_attrs = "layout = neato";
+    node [style=filled, color=white, fontcolor=blue];
+    style=filled;
+    color=lightgrey;
+    "get the run arguments" -> "for ALL run,\nget list of files" -> "call processFile()\nfor each file" [weight=9];
+    "call processFile()\nfor each file" -> "(a)" [minlen="0.1",weight=9];
+    fontcolor=darkgreen;
+    label="initialization";
+  }
+  subgraph "cluster5" {
+    node [style=filled,color=white,fontcolor=blue];
+    style=filled;
+    color=lightgrey;
+    "(b)" -> "identify TVARS & RVARS,\nadding RVARS if needed" [minlen="0.1", weight=20];
+    "identify TVARS & RVARS,\nadding RVARS if needed"  -> "get transfer-function pars\nfilters and new-var names" -> "call correctDynamicHeating()\nfor each TVAR" -> "call correctTemperature()\nfor each TVAR and RVAR" -> "add new variables to\nnew netCDF file" [weight=20];
+    #"call correctDynamicHeating()\nfor each TVAR"  -> "(c)" [minlen=0.1,weight=20];
+    #"call correctDynamicHeating()\nfor each TVAR"  -> "(c2)" [minlen=0.1,dir=back,weight=20];
+    #"call correctTemperature()\nfor each TVAR and RVAR"  -> "(g1)" [minlen=0.1,weight=20];
+    "(g2)" -> "call correctTemperature()\nfor each TVAR and RVAR" [minlen=0.1,weight=20];
+    fontcolor=darkgreen;
+    label="processFile()";
+  }
+  subgraph "cluster4" {
+    node [style=filled,color=white,fontcolor=blue];
+    style=filled;
+    color=lightgrey;
+    "(d)" -> "apply filter and\ntime shift" [minlen=0.2,weight=5];
+    "apply filter and\ntime shift" -> "correct TVAR using\nfiltered Q"  [weight=10];
+    #"correct TVAR using\nfiltered Q"  -> "(e)" [minlen=0.1,weight=20];
+    fontcolor=darkgreen;
+    label="correctDynamicHeating()";
+  }
+  subgraph "cluster3" {
+    node [style=filled,color=white,fontcolor=blue];
+    style=filled;
+    color=lightgrey;
+        "heated\nsensor?" -> "integrate (4) to\nfind support T" [minlen=0.1,weight=5];
+    "heated\nsensor?" -> "solve (5) for Tr" [style=dashed,weight=35];
+    subgraph "cluster2" {
+      style=filled;
+      color=lightyellow;
+      "integrate (4) to\nfind support T" -> "use (3) to\nfind Tr" [weight=20];
+    }
+    subgraph "cluster1" {
+      style=filled;
+      color=lightyellow;
+      "solve (5) for Tr" -> "low-pass-filter" [weight=20];
+    }
+    #"use (3) to\nfind Tr" -> "solve (5) for Tr" [style="invis",weight=1];
+    #{rank = same; "solve (5) for Tr" "use (3) to\nfind Tr"} 
+    fontcolor=darkgreen;
+    label="correctTemperature()";
+  }
+  size ="8,6";
+   node [style=filled, color=lightblue];
+  "CorrectTemperature.R" [shape=Mdiamond];
+  "END" [shape=Msquare];
+   node [style=filled, color=white];
+   "heated\nsensor?" [shape=diamond, color=lightyellow, style=filled];
+   "(a)" [shape=point, color=gray, style="filled"]
+   "(b)" [shape=point, color=gray, style="filled"]
+   "(c)" [shape=point, color=gray, style="filled"]
+   "(c2)" [shape=point, color=gray, style="filled"]
+   "(d)" [shape=point, color=gray, style="filled"]
+   "(e)" [shape=point, color=gray, style="filled"]
+   "(g1)" [shape=point, color=gray, style="filled"]
+   "(g2)" [shape=point, color=gray, style="filled"]
+   "(h)" [shape=point, color=gray, style="filled"]
+   #"(e)" -> "(c2)" [style=dashed, color=red,weight=12];
+   "correct TVAR using\nfiltered Q" -> "call correctDynamicHeating()\nfor each TVAR" [style=dashed, color=red,weight=12];
+   "call correctTemperature()\nfor each TVAR and RVAR" -> "(h)" [style=dashed,color=red,weight=15];
+   "(h)" -> "heated\nsensor?" [minlen=0.1, weight=30];
+   "low-pass-filter" -> "(g2)" [style=dashed, color=red, weight=10];
+   "use (3) to\nfind Tr" -> "(g2)" [style=dashed, color=red, weight=10];
+   # "(e)" [shape=point, color=gray, style="filled"]
+   "CorrectTemperature.R" -> "get the run arguments" [weight=5]
+   "CorrectTemperature.R" -> "(b)" [style="invis",weight=13];
+   "CorrectTemperature.R" -> "(d)" [style="invis", weight=18];
+   #"correct TVAR using\nfiltered Q" -> "integrate (4) to\nfind support T" [style="invis",weight=5];
+   "call correctDynamicHeating()\nfor each TVAR" -> "heated\nsensor?" [style="invis", minlen=0.5,weight=25];
+    "call processFile()\nfor each file" -> "END";
+  "(a)" -> "(b)" [style=dashed, color=red, weight=1];
+  #"(d)" -> "(c)" [style=dashed, dir=back,color=red,weight=50];
+  "call correctDynamicHeating()\nfor each TVAR" -> "(d)" [style=dashed, color=red, weight=5];
+  "add new variables to\nnew netCDF file" -> "call processFile()\nfor each file" [style=dashed, color=red];
+  
+}
