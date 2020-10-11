@@ -3135,14 +3135,17 @@ after filtering the dynamic-heating correction:\protect \\
 (left): An unheated sensor; (right): A heated sensor. {\label{fig:ATATF}}}
 \end{figure}
 
-For the unheated sensor, Fig.\ \ref{fig:ATATF}a
-illustrates the removal of erroneous structure by filtering, and Fig.\ \ref{fig:ATATF}b
+Fig.\ \ref{fig:ATATF}a
+illustrates the removal of erroneous structure by filtering for
+the unheated sensor, and Fig.\ \ref{fig:ATATF}b
 shows a similar example for the heated sensor. These figures
 illustrate that the erroneous fluctuations in the uncorrected measurements
 can be important in many potential uses of these measurements and
 should be removed as part of standard processing. The effect is particularly
-significant for the heated sensor, for which there are especially large fluctuations
-in Fig.\ \ref{fig:ATATF}b that are caused by fluctuations in dynamic
+significant for the heated sensor, for which 
+the conventionally processed temperature has
+large fluctuations
+that are caused by subtraction of fluctuations in dynamic
 heating to which the sensor does not respond. These do not arise 
 from real fluctuations in ambient air temperature.
 
@@ -3178,16 +3181,16 @@ term from the corrected recovery temperature.
 The eddy-correlation calculation used here starts with the Fourier
 representation of the measured recovery temperature. (Fourier transforms are
 denoted here by the symbol "\ $\widehat{~}$\ " over variables.)
-The measurement then is related to the true recovery temperature via
+The measurement is related to the true recovery temperature via
 $\hat{T}_{m}(\nu)=H(\nu)\hat{T}_{r}(\nu)$ where $H(\nu)$ is the
 frequency-domain transfer function.
 The true recovery temperature will be the
 inverse Fourier transform of $\hat{T}_{r}=\hat{T}_{m}(\nu)/H(\nu)$. The Fourier representation of the air temperature is then
 obtained from $\hat{T}_{a}=\hat{T}_{m}(\nu)/H(\nu)-\hat{Q}(\nu)$, 
 which includes both the correction for time response and the subtraction of dynamic heating.
-This Fourier representation of the air temperature then can be multiplied
+Multiplication
 by the complex conjugate of the Fourier representation of the updraft
-to yield the cospectrum representing the flux of sensible heat, with
+then gives the cospectrum representing the flux of sensible heat, with
 an appropriate scale factor as specified in Eq.\ \eqref{eq:heatFlux}.
 The resulting cospectrum is then integrated over an appropriate wavelength
 range to produce the measured flux density of sensible heat. This will normally exclude wavelengths greater
@@ -3524,8 +3527,7 @@ scalar flux, an averaging distance
 of 100--500 times the boundary-layer height is required. (See also \citet{lenschow1994long}.) The flight segments in these two
 cases span about 80--150 times the boundary-layer height, so they are marginal by this criterion,
 but the measurements still serve to illustrate the effect of the proposed correction. 
-The flux estimates were then compared without correction and after correction
-using the appropriate transfer function. 
+
 
 \begin{figure}
 ```{r SOCp1, include=TRUE, fig.height = 5, out.width = "12cm"}
@@ -3826,7 +3828,7 @@ line shows the frequency limit that corresponds to a wavelength of
 \unit{2\,km}.{\label{fig:SOCp1}}}
 \end{figure}
 
-The results are shown in Fig.\ \ref{fig:SOCp1}.
+The corrected cospectra are shown in Fig.\ \ref{fig:SOCp1}.
 This plot format
 is unconventional so some explanation is provided here. The cospectrum can be positive or negative, so it is usually
 plotted using a linear ordinate scale. However, 
@@ -3834,8 +3836,7 @@ the range of ordinate values is displayed better with a logarithmic
 scale, even after weighting the cospectrum by frequency. The compromise
 made in this plot is to use a logarithmic scale but plot negative
 values with sign reversed and with a different color, here red instead
-of blue. The values plotted in red therefore should be regarded as
-negative values of the plotted magnitude. 
+of blue. 
 <!-- There is then a dead-band -->
 <!-- at the bottom of the plot where spectral values with very small absolute -->
 <!-- value lie, here absolute values smaller than \unit{10^{-2}\,W\,m^{-2}}. -->
@@ -3844,11 +3845,11 @@ negative values of the plotted magnitude.
 Other features of this plot and computation conventions
 include the following:
 
-1. The cospectrum (blue line) has been smoothed using Daniell smoothing,
+1. The cospectra have been smoothed using Daniell smoothing,
 with consecutive smoothing using width-3 for frequencies above \unit{0.01\,Hz},
 then width-5 for frequencies above \unit{0.1\,Hz}, then width-17 for frequencies
 above \unit{1\,Hz}. For these \unit{5\,min} flight legs and for \unit{25\,Hz} measurements,
-the maximum smoothing interval corresponds to a smoother spanning
+the maximum smoothing interval is
 about \unit{0.05\,Hz} so most spectral features are retained even with this
 strong smoothing. Additional smoothing results from averaging three
 cospectra to obtain the plotted values.
@@ -3858,13 +3859,15 @@ spaced intervals in frequency and averaging in those bins. That results
 in the blue dots (or dark red dots for negative points).
 
 3. The listed "total" flux is that arising from the part
-of the flux with frequency above \unit{0.01\,Hz}. This corresponds to a wavelength
-of more than \unit{10\,km}. In addition, there is another estimate of
-the contribution to the flux from wavelengths below a selected limit,
-here \unit{2\,km}. That or a still smaller wavelength limit is often a reasonable
-estimate of the part of the flux contributed by turbulent air motions
-in the boundary layer, so that will be regarded as the primary measurement
-of sensible-heat flux.
+of the flux with frequency above \unit{0.01\,Hz}. This 
+frequency limit restricts the calculation to wavelengths 
+smaller than about \unit{13\,km}. Another measurement of
+the flux is calculated for wavelengths 
+below \unit{2\,km}. That or a still smaller wavelength
+limit is a reasonable
+measure of the part of the flux contributed by turbulent air motions
+in the boundary layer, so that second measurement 
+is used as the primary measurement in this study.
 
 4. The brown line labeled "exceedance" is
 a cumulative distribution function for the cospectrum, called
@@ -3894,14 +3897,14 @@ The magnitude of the correction here is larger than that estimated
 error, but the flight speed of the aircraft was about 30\% higher
 in this case so a larger error would be expected.
 
-By obtaining a realistic measurement of the cospectrum at high frequency,
-it is possible to estimate how much of the otherwise unknown contribution
-above \unit{1\,Hz} has been missed and therefore to judge if the frequency
+Because the corrected cospectrum appears realistic at frequencies 
+of \unit{1\,Hz} and above,
+it is possible to judge if the frequency
 coverage is adequate. In this case, the exceedance curve is less than
 2\% at \unit{10\,Hz} and falls rapidly above that frequency, even after correction,
 so it appears likely that additional contributions from higher frequencies
 can go unmeasured without introducing serious errors into the measurement
-of flux. Additional guidance regarding the expected shape of the cospectrum and the expected requirements for frequency measurements is provided by \citet{lenschow95micro}. The generalized cospectra provided there suggest that, for flight at \unit{130\,m\,s^{-1}}, frequencies up to about \unit{10\,Hz} or about \unit{1.3\,Hz} must be measured at various altitudes below the top of a boundary layer, with the higher frequency limit applying to low-level flight at about \unit{30\,m} above the surface. Those results also suggest that, if the measurements are corrected as suggested here, reliable measurements of sensible-heat flux can be made with the unheated sensor.
+of flux. Additional guidance regarding the expected shape of the cospectrum and the required frequency response is provided by \citet{lenschow95micro}. The generalized cospectra provided there suggest that, for flight at \unit{130\,m\,s^{-1}}, frequencies up to about \unit{1.3\,Hz}--\unit{10\,Hz}, depending on altitude, must be measured. The higher frequency limit applies to low-level flight at about \unit{30\,m} above the surface. Those results suggest that, if the measurements are corrected as suggested here, reliable measurements of sensible-heat flux can be made with the unheated sensor.
 
 ## Evidence from Simulated Measurements
 
@@ -3920,7 +3923,7 @@ described in the preceding section, a simulated case was analyzed in the same
 way. Time series were generated representing isotropic wind measurements
 by starting with
 a Gaussian-noise spectrum, weighting the Fourier components
-to obtain a $-5/3$ slope, and then use an inverse Fourier transform
+to obtain a $-5/3$ slope, and then using an inverse Fourier transform
 to reconstruct the simulated measurement series. 
 <!-- \begin{equation} -->
 <!-- P(\nu)=C\left(\frac{2\pi}{V}\right)^{-2/3}\epsilon^{2/3}\nu^{-5/3}{\label{eq:expectedSpectrum}} -->
@@ -4613,7 +4616,7 @@ if (generateFigures) {
 Figure\ \ref{fig:simF} shows (as the green line) how the simulated
 cospectrum would be measured by a sensor with response parameters
 \{$a,\,\tau_{1},\,\tau_{2}$\} equal to \{0.733, \unit{0.0308\,s}, \unit{0.447\,s}\},
-as is characteristic of am unheated sensor. The simulated
+as is characteristic of an unheated sensor. The simulated
 measurement of air temperature was obtained by adding the dynamic-heating
 correction to the simulated air temperature and then applying the
 digital filter developed in Sect.\ \ref{sec:Correcting-for-Dynamic} to
@@ -4628,11 +4631,11 @@ a factor of ten too low at \unit{10\,Hz}. The measured exceedance distribution
 frequency.
 
 The cospectrum obtained using the correction procedure of Sect.\ \ref{subsec:Outline-correction}
-was consistent with the generated cospectrum, as illustrated by the
+is consistent with the generated cospectrum, as illustrated by the
 corrected exceedance distribution in Fig.\ \ref{fig:simF} (dashed
 black line). For wavelengths smaller than \unit{2.5\,km}, the generated flux
-of sensible heat was \unit{39.5\,W\,m^{-2}} and the measured values before
-and after correction were 33.2 and \unit{38.5\,W\,m^{-2}}. The correction
+of sensible heat is \unit{39.5\,W\,m^{-2}} and the measured values before
+and after correction are 33.2 and \unit{38.5\,W\,m^{-2}}. The correction
 thus reduces the 15\% measurement error to about 2.5\%. The representation
 of the high-frequency contribution is improved significantly by the
 correction procedure: For the contribution to the flux from frequencies
@@ -4662,7 +4665,7 @@ with the phase and gain of the measured response
 to dynamic-heating fluctuations. This is evidence that the equations
 provide a valid representation of the time response for that sensor.
 The predictions of the equations are less satisfactory when applied
-to heated sensors, possibly indicating inadequate representation of
+to heated sensors, possibly indicating incomplete representation of
 the transfer of heat to those slower sensors.
 \item For the unheated Rosemount 102E4AL sensor, the three parameters in those equations
 (characterizing the two time constants and the fraction of heat transfer
@@ -4672,9 +4675,8 @@ to observations of dynamic heating. These parameters are thus constrained
 well and can be relied upon to make corrections to the measurements
 and otherwise to characterize the effects of time response of that
 sensor.
-\item Once the transfer function for the unheated sensor has been
-determined, it can be used to estimate the true recovery temperature,
-and then transfer functions for other sensors can be determined by
+\item The transfer function for the unheated sensor can then be used to estimate the true recovery temperature. 
+Transfer functions for other sensors then can be determined by
 comparison to that estimate of the measurand to which they are responding.
 This approach has been used here for the slower heated sensors and
 should provide a means of correcting other sensors slower than the
@@ -4683,15 +4685,15 @@ to correct the measurements from airborne temperature sensors for
 their time response.
 \item Because temperature sensors often do not respond fast enough to measure
 high-frequency components of the dynamic-heating correction, erroneous
-corrections are introduced by conventional data processing. Instead,
-that correction should be filtered to match the response of the temperature
+fluctuations are introduced by conventional data processing when the full dynamic-heating term is subtracted. Instead,
+that term should be filtered to match the response of the temperature
 sensor. A digital filter is
 proposed that can be used to correct standard processing schemes to
 eliminate the errors arising from the dynamic-heating term. The errors
 discussed here are prevalent in almost all existing data from research
-aircraft, so application of this proposed correction method will lead
+aircraft, so application of this proposed correction method would lead
 to significant improvement in those measurements.
-\item An algorithm was proposed for measurements of sensible-heat flux that consists of using the transfer
+\item An algorithm was proposed for calculating sensible-heat flux that uses the transfer
 function to correct the measured cospectrum.
 Two illustrative cases were presented in which there was significant
 correlation between temperature and updraft at a range of frequencies
@@ -4752,7 +4754,7 @@ T_{r}(t)=(\tau_{1}+\tau_{2})\frac{dT_{m}(t)}{dt}+T_{m}(t)+\tau_{2}\tau_{1}\frac{
 \end{equation}
 This gives $T_{r}(t)$ without integration because finite-difference
 expressions can be used for the derivatives of the measurement ($T_{m}(t)$).
-Because finite-difference estimates introduce high-frequency noise,
+However, the finite-difference estimates introduce high-frequency noise so
 the result was smoothed using a low-pass filter with \unit{2\,Hz} cutoff
 frequency. 
 
@@ -4906,11 +4908,21 @@ MRHO <- MachNumber(DSX$PSXC, DSX$QCXC) * DSX$PSXC * 100 /
 a <- bestSH[1]
 tau1 <-
   bestSH[2] * (MRHO / 0.3) ^ 0.68  ## Note that these are variable
-tau2 <- bestSH[3] * (MRHO / 0.3) ^ 0.68
+tau2 <- bestSH[3] ## * (MRHO / 0.3) ^ 0.68  ## inhibit this adjustment
 Rate <- attr (DSX, 'Rate')
 DSX$DTMDT <- c(0, diff(DSX$RTH1, 2), 0) * Rate / 2
+DSX$DTMDT <-  (c(0, 8 * diff(DSX$RTH1, 2), 0) -
+                 c(0, 0, diff(DSX$RTH1, 4), 0, 0)) * Rate / 12
 DSX$DTM2DT2 <-
   (c(diff(DSX$RTH1), 0) - c(0, diff(DSX$RTH1))) * Rate ^ 2
+DSX$DTM2DT2a <-  ## this doesn't work...
+  (-c(diff(DSX$RTH1, 2), 0, 0) + c(0, 0, diff(DSX$RTH1, 2)) +
+           16*(c(diff(DSX$RTH1, 1), 0)) - c(0, diff(DSX$RTH1, 1))) *
+           (Rate^2) / 12
+RTH1 <- DSX$RTH1
+DSX$DTM2DT2 <- (-c(0,0, RTH1)[1:nrow(DSX)] + 16*c(0,RTH1)[1:nrow(DSX)] 
+      - 30 * RTH1 + 16 * c(RTH1[2:nrow(DSX)], 0) 
+      - c(RTH1[3:nrow(DSX)], 0, 0)) * (Rate^2) / 12
 DSX$RTHC <-
   (tau1 + tau2) * DSX$DTMDT + DSX$RTH1 + tau1 * tau2 * DSX$DTM2DT2
 DSX$RTHC <- zoo::na.approx (
@@ -4919,7 +4931,7 @@ DSX$RTHC <- zoo::na.approx (
   na.rm = FALSE,
   rule = 2
 )
-CutoffPeriod <- 12.5  ## 2 Hz for 25-Hz samples
+CutoffPeriod <- Rate / 2 ## 2 Hz for 25-Hz samples
 DSX$RTHC <- signal::filtfilt (signal::butter (3,
                                2 / CutoffPeriod), DSX$RTHC)
 # DSX$RTHC <- SmoothInterp(DSX$RTHC, .Length=25)
@@ -4950,7 +4962,7 @@ Phase[frq < 0] <- -Phase[frq < 0]
 Phase[1] <- 0
 Phase <- Phase * pi / 180
 TF <- complex(modulus = Gain, argument = Phase)
-tlmt <- 1.8
+tlmt <- 1.0
 TF[abs(frq) > tlmt] <-
   TF[abs(frq) > tlmt] * exp(5 * abs(frq[abs(frq) > tlmt]) / tlmt)
 ftx <- ft / TF

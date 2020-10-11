@@ -27,7 +27,7 @@ load(file='PAR.Rdata')  ## the response parameters
 
 ## Specify the Project and Flight:
 Project <- 'SOCRATES'
-Flight <- 'rf15h'  # should be high-rate
+Flight <- 'rf15h'  
 ProjectDir <- Project
 getNext <- function(ProjectDir, Project) {
   Fl <- sort (list.files (sprintf ("%s%s/", DataDirectory (), ProjectDir),
@@ -79,17 +79,19 @@ if (!interactive()) {  ## can run interactively or via Rscript
       if (run.args[2] == 'NEXTLR') {
         Flight <- getNextLR(ProjectDir, Project)
       } else {
-      ## Find max already-processed rf..h in data directory,
-      ## Use as default if none supplied via command line:
+        ## Find max already-processed rf..h in data directory,
+        ## Use as default if none supplied via command line:
         Flight <- getNext(ProjectDir, Project)
       }
     }
   }
   FFT <- FALSE
-  RT <- FALSE
+  RTN <- FALSE
+  UH1 <- FALSE
   if (length (run.args) > 2) {
     if (any(run.args) == 'FFT') {FFT <- TRUE}
-    if (any(run.args) == 'RT') {RT <- TRUE}
+    if (any(run.args) == 'RT') {RTN <- TRUE}
+    if (any(run.args) == 'UH1') {UH1 <- TRUE}
   }
 } else {
   x <- readline (sprintf ("Project is %s; CR to accept or enter new project name: ", Project))
@@ -121,11 +123,19 @@ if (!interactive()) {  ## can run interactively or via Rscript
   } else if (nchar(x) > 0 && is.numeric(x)) {
     Flight <- sprintf('rf%02dh', as.numeric(x))
   }
-  x <- readline (sprintf ("Flight is %s; CR to accept, number 'ALL' or 'NEXT' for new flight name: ",
-                          Flight))
-  x <- readline (sprintf ("Flight is %s; CR to accept, number 'ALL' or 'NEXT' for new flight name: ",
-                          Flight))
+  x <- readline ("Add reconstructed recovery temperatures if missing? (N/y):")
+  RTN <- FALSE
+  if ((x != '') && (x != 'N')) {RTN <- TRUE}
+  x <- readline ("Include FFT-correctedtemperatures? (N/y):")
+  FFT <- FALSE
+  if ((x != '') && (x != 'N')) {FFT <- TRUE}
+  x <- readline ("Include processing for unheated sensors if 1-Hz? (N/y):")
+  UH1 <- FALSE
+  if ((x != '') && (x != 'N')) {UH1 <- TRUE}
 }
+
+print (sprintf ('run parameters: Project = %s, Flight = %s, FFT = %s RTN = %s',
+                Project, Flight, FFT, RTN))
 ## A function to transfer attributes:
 copy_attributes <- function (atv, v, nfile) {
   for (i in 1:length(atv)) {
@@ -216,7 +226,7 @@ correctDynamicHeating <- function(D, AT) {
   Q <- SmoothInterp(Q, .Length = 0)
   # Filter
   QF <- as.vector(signal::filter(AF, Q))
-  QF <- ShiftInTime(QF, .shift=(-(Lsh) * 40), .rate = Rate)
+  QF <- ShiftInTime(QF, .shift=(-(Lsh) * 1000 / Rate), .rate = Rate)
   # Change the measured air temperature by adding back Q and subtracting QF
   ATC <- D[, AT] + Q - QF
   return(ATC)
@@ -241,10 +251,10 @@ correctTemperature <- function(D, RT, responsePar =
     # DTMDT <- c(0, diff(RTT, 2), 0) * Rate / 2
     # DTM2DT2 <- (c(diff(RTT), 0) - c(0, diff(RTT))) * Rate ^ 2
     DTMDT <-  (c(0, 8 * diff(RTT, 2), 0) -
-                     c(0, 0, diff(RTT, 4), 0, 0)) * Rate / 12
+                 c(0, 0, diff(RTT, 4), 0, 0)) * Rate / 12
     DTM2DT2 <- (-c(0,0, RTT)[1:nrow(D)] + 16*c(0,RTT)[1:nrow(D)] 
-                    - 30 * RTT + 16 * c(RTT[2:nrow(D)], 0) 
-                    - c(RTT[3:nrow(D)], 0, 0)) * (Rate^2) / 12
+                - 30 * RTT + 16 * c(RTT[2:nrow(D)], 0) 
+                - c(RTT[3:nrow(D)], 0, 0)) * (Rate^2) / 12
     RTC <- (tau1 + tau2) * DTMDT + RTT + tau1 * tau2 * DTM2DT2
     RTC <- zoo::na.approx (
       as.vector(RTC),
@@ -252,7 +262,7 @@ correctTemperature <- function(D, RT, responsePar =
       na.rm = FALSE,
       rule = 2
     )
-    CutoffPeriod <- 12.5
+    CutoffPeriod <- ifelse(Rate == 25, Rate / 2, 5)
     RTC <- signal::filtfilt (signal::butter (3,
                                              2 / CutoffPeriod), RTC)
   } else {
@@ -336,6 +346,13 @@ processFile <- function(ProjectDir, Project, Flight) {
   FI <- DataFileInfo(fname, LLrange = FALSE)
   TVARS <- unlist(FI$Measurands$air_temperature)
   TVARS <- TVARS[-which ('ATX' == TVARS)]  # don't include ATX
+  if (!UH1 && (FI$Rate != 25)) {  ## omit unheated-probe measurements
+    for (i in length(TVARS):1) {
+      if(grepl('nheated', FI$LongNames[which(TVARS[i] == FI$Variables)])) {
+        TVARS <- TVARS[-i]
+      }
+    }
+  }
   RVARS <- sub('^A', 'R', TVARS)
   ## get the old netCDF variables needed to calculate the modified variables
   VarList <- standardVariables(TVARS)
@@ -417,13 +434,13 @@ processFile <- function(ProjectDir, Project, Flight) {
     D[, filteredTVARS[i]] <- correctDynamicHeating(D, as.character(TVARS[i]))
   }
   
-  
-  
   ## Calculate the corrected temperatures:
   for (i in 1:length(TVARS)) {
     D[, newTVARS[i]] <- correctTemperature(D, filteredTVARS[i], responsePar = PAR[[i]])
     D[, newRVARS[i]] <- correctTemperature(D, RVARS[i], responsePar = PAR[[i]])
-    D[, newRVARS2[i]] <- addFFTsoln(D, RVARS[i], responsePar = PAR[[i]])
+    if (FFT) {
+      D[, newRVARS2[i]] <- addFFTsoln(D, RVARS[i], responsePar = PAR[[i]])
+    }
     # get the recovery factor from the attribute:
     rf.txt <- attr(D[, TVARS[[i]]], 'RecoveryFactor')
     if (grepl('mach', rf.txt)) {
@@ -454,10 +471,16 @@ processFile <- function(ProjectDir, Project, Flight) {
     Q <- SmoothInterp(Q, .Length = 0)
     ## This should be the same as newTVARS except for numerical effects
     D[, newTVARS2[i]] <- D[, newRVARS[i]] - Q  ## using diff.eq.
-    D[, newTVARS2[i]] <- D[, newRVARS2[i]] - Q  ## using FFT
+    if (FFT) {
+      D[, newTVARS2[i]] <- D[, newRVARS2[i]] - Q  ## using FFT
+    }
   }
   ## Add the new variables:
-  newTVARS <- c(newTVARS, filteredTVARS, newTVARS2)  ## omit newTVARS2?
+  if (FFT) {
+    newTVARS <- c(newTVARS, filteredTVARS, newTVARS2)  ## omit newTVARS2?
+  } else {
+    newTVARS <- c(newTVARS, filteredTVARS) 
+  }
   
   ## create and open a copy of the old file for writing:
   fnew <- sub ('.nc', 'T.nc', fname)
@@ -529,7 +552,9 @@ processFile <- function(ProjectDir, Project, Flight) {
   VarLongName <- c(rep("Recovery Temperature, corrected", length(newRVARS)),
                    rep("Recovery Temperature, FFT corrected", length(newRVARS2)))
   VarStdName <- "air_temperature"
-  newRVARS <- c(newRVARS, newRVARS2)
+  if (FFT) {
+    newRVARS <- c(newRVARS, newRVARS2)
+  }
   Dependencies <- c(rep('', length(newRVARS)))
   for (i in 1:length(newRVARS)) {
     Dependencies[i] <- sprintf('2 %s TASX', RVARS[i])
@@ -565,38 +590,40 @@ processFile <- function(ProjectDir, Project, Flight) {
     }
   }
   ## Add reconstructed RVARS here if desired.
-  VarUnits <- "deg_C"
-  DataQ <- "reconstructed"
-  VarLongName <- "Recovery Temperature, reconstructed"
-  VarStdName <- "air_temperature"
-  Dependencies <- c(rep('', length(RVARS)))
-  for (i in 1:length(RVARS)) {
-    Dependencies[i] <- sprintf('2 %s TASX', TVARS[i])
-  }
-  L <- length(VarNew) + length(newRVARS)
-  for (i in 1:length(RVARS)) {
-    ## create the new variable and add it to the netCDF file
-    if ((RVARS[i] %in% VarList)) {next}
-    varCDF[[i + L]] <- ncvar_def (RVARS[i],
-                                  units=VarUnits,
-                                  dim=Dim,
-                                  missval=as.single(-32767.), prec="float",
-                                  longname=VarLongName)
-    newfile <- ncvar_add (newfile, varCDF[[i + L]])
-    ncatt_put (newfile, RVARS[i], attname="standard_name",
-               attval=VarStdName)
-    ncatt_put (newfile, RVARS[i], attname="long_name",
-               attval=VarLongName)
-    ncatt_put (newfile, RVARS[i], attname="Dependencies",
-               attval=Dependencies[i])
-    ncatt_put (newfile, RVARS[i], attname="DataQuality",
-               attval=DataQ)
-    ## add the measurements for the new variable
-    if (Rate == 1) {
-      ncvar_put (newfile, varCDF[[i+L]], D[, RVARS[i]])
-    } else if (Rate == 25) {
-      ncvar_put (newfile, varCDF[[i+L]], D[, RVARS[i]],
-                 count=c(25, nrow(D)/25))
+  if (RTN) {
+    VarUnits <- "deg_C"
+    DataQ <- "reconstructed"
+    VarLongName <- "Recovery Temperature, reconstructed"
+    VarStdName <- "air_temperature"
+    Dependencies <- c(rep('', length(RVARS)))
+    for (i in 1:length(RVARS)) {
+      Dependencies[i] <- sprintf('2 %s TASX', TVARS[i])
+    }
+    L <- length(VarNew) + length(newRVARS)
+    for (i in 1:length(RVARS)) {
+      ## create the new variable and add it to the netCDF file
+      if ((RVARS[i] %in% VarList)) {next}
+      varCDF[[i + L]] <- ncvar_def (RVARS[i],
+                                    units=VarUnits,
+                                    dim=Dim,
+                                    missval=as.single(-32767.), prec="float",
+                                    longname=VarLongName)
+      newfile <- ncvar_add (newfile, varCDF[[i + L]])
+      ncatt_put (newfile, RVARS[i], attname="standard_name",
+                 attval=VarStdName)
+      ncatt_put (newfile, RVARS[i], attname="long_name",
+                 attval=VarLongName)
+      ncatt_put (newfile, RVARS[i], attname="Dependencies",
+                 attval=Dependencies[i])
+      ncatt_put (newfile, RVARS[i], attname="DataQuality",
+                 attval=DataQ)
+      ## add the measurements for the new variable
+      if (Rate == 1) {
+        ncvar_put (newfile, varCDF[[i+L]], D[, RVARS[i]])
+      } else if (Rate == 25) {
+        ncvar_put (newfile, varCDF[[i+L]], D[, RVARS[i]],
+                   count=c(25, nrow(D)/25))
+      }
     }
   }
   
