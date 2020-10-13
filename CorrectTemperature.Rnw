@@ -296,18 +296,26 @@ The processing code for this script is inserted into the ``CorrectTemperature.Rn
 file as the ``processor'' code chunk. A processing example will
 be run when that file is compiled or when the associated .lyx file
 is exported to pdf via pdflatex. The script is available separately
-as ``CorrectTemperature.R'' and that is included in the SensibleHeatFlux.zip
+as ``CorrectTemperature.R,'' and that is included in the SensibleHeatFlux.zip
 file that is the project archive for the correction procedure developed
 to improve measurements of the flux density of sensible heat. That
 archive is preserved at this URL: \href{https://github.com/WilliamCooper/SensibleHeatFlux}{https://github.com/WilliamCooper/SensibleHeatFlux}
 .
+
+The script will process files with either 25~Hz or 1~Hz time resolution.
+At 1~Hz, the corrected variables for the unheated probes show little
+change from the original although the changes are still significant
+for the heated probes, so by default the new variables for unheated
+probes are not included in the corrected files. A run-time argument
+can change that default if it is desired to produce corrected variables
+for all the sensors.
 
 <<processor, echo = FALSE, eval = FALSE>>=
 
 source('./CorrectTemperature.R')
 @
 
-<<testp, echo = TRUE, include = TRUE>>=
+<<testp, echo = TRUE, include = TRUE, eval = FALSE>>=
 
 system('Rscript CorrectTemperature.R SOCRATES rf15h')
 @
@@ -593,9 +601,10 @@ will process the low-rate file ``{[}ProjectName{]}rf15.nc''.
 \item The script can also be run from a terminal, after changing to the
 working directory containing the script. The entry at a terminal window
 should follow this example: ``Rscript CorrectTemperature.R SOCRATES
-rf15h'' (without the quotation marks). Two additional optional arguments,
-``RT'' and ``FFT'', can be appended, as discussed below. Interactive
-use will also query to determine those arguments.
+rf15h'' (without the quotation marks). Three additional optional
+arguments, ``RT'', ``FFT'' and ``UH1'', can be appended, as
+discussed below. Interactive use will also query to determine those
+arguments.
 \end{itemize}
 The result will be a new netCDF file with ``T'' appended to the
 name, for example ``SOCRATESrf15hT.nc'' if the original was ``SOCRATESrf15h.nc''.
@@ -603,7 +612,10 @@ The new file will have these added variables:
 \begin{itemize}
 \item {[}ATyy{]}C if the original file contained a variable named {[}ATyy{]}
 -- the corrected result for air temperature that includes modifications
-for the sensor response and the filtered dynamic heating.
+for the sensor response and the filtered dynamic heating. For 1-Hz
+files, these variables are omitted for unheated sensors unless the
+``UH1'' argument is provided either in the run-time arguments or
+interactively.
 \item {[}ATyy{]}F -- the original measurement with only the addition of
 the usual dynamic-heating term and then subtraction of the filtered
 dynami-heating term. This removes the excess noise arising from the
@@ -614,6 +626,12 @@ This correction addresses the sensor response but does not involve
 dynamic heating. It is the best estimate of the true recovery temperature
 that is the measurand.
 \end{itemize}
+For 1-Hz files, these variables are omitted for unheated sensors unless
+the ``UH1'' argument is provided either in the run-time arguments
+or interactively. At 1~Hz, the changes to measurements from the unheated
+sensors are so minor that they are probably not useful in most cases,
+so excluding them is the default.
+
 In addition, these variables are optionally added:
 \begin{itemize}
 \item {[}RTyy{]} -- Often archived files do not include the recovery temperature,
@@ -779,11 +797,213 @@ are described in the preceding subsection.}
 
 \end{figure}
 
+\clearpage{}
+
+\section{Examples}
+
+\subsection{{[}vname{]}F - corrected dynamic heating}
+
+<<vnameF, include = TRUE, fig.cap='The measurements from an unheated sensor (ATF1) and the same measurements with the dynamic-heating correction filtered to match the response of the sensor (ATF1F). Data at 25-Hz from SOCRATES flight 15.'>>=
+
+## get the temperature variables:
+fname <- setFileName("SOCRATES", "rf15hT")
+FI <- DataFileInfo(fname, LLrange = FALSE)
+TVARS <- unlist(DataFileInfo(fname)$Measurands$air_temperature)
+TVARS <- TVARS[-which ('ATX' == TVARS)]  # don't include ATX
+Da <- getNetCDF(fname, standardVariables(TVARS), 50000, 51500)
+Da %>% selectTime(50500, 50510) %>% select(Time, ATF1, ATF1F) %>% 
+      plotWAC(lwd=c(1,3), col=c('red', 'blue'), legend.position = 'topright')
+@
+
+<<vnameFVS, include = TRUE, fig.cap='The variance spectra for measurements from an unheated sensor (ATF1) and for the measurements after filtering the dynamic-heating correction to match the response of the sensor (ATF1F). Data at 25 Hz from SOCRATES flight 15, 5:55:00 to 6:10:00 UTC, a flight segment at low level in the boundary layer.'>>=
+
+Db <- getNetCDF(fname, standardVariables(TVARS), 55500, 61000)
+Db %>% select(Time, TASX, ATF1, ATF1F) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
+@
+
+Examples were shown in Cooper et al.~(2020), Fig.9. It is expected
+that the filtering will remove variations in dynamic heating to which
+the sensor does not respond, so the result will be smoother than the
+original variable but will track it fairly well. A significant contribution
+to high-frequency noise should also be removed, and this will appear
+in the variance spectra.
+
+For a 25-Hz file and for the unheated sensor, Fig.~\ref{fig:vnameF}
+shows the expected smoothing and removal of false high-frequency fluctuaions,
+and Fig.~\ref{fig:vnameFVS} shows that the high-frequency noise
+in the variance spectrum is reduced substantially.
+
+\clearpage{}
+
+<<vnameF1, include = TRUE, fig.height = 4.5, fig.cap='The measurements from an unheated sensor (ATF1) and the same measurements with the dynamic-heating correction filtered to match the response of the sensor (ATF1F). Data at 1 Hz from SOCRATES flight 15.'>>=
+
+fname <- setFileName("SOCRATES", "rf15T")
+Dc <- getNetCDF(fname, standardVariables(TVARS), 50000, 51500)
+Dc %>% selectTime(50500, 50800) %>% select(Time, ATF1, ATF1F) %>% 
+      plotWAC(lwd=c(1,3), col=c('red', 'blue'), legend.position = 'topright')
+@
+
+<<vnameFVS1, include = TRUE, fig.height = 4.5, fig.cap='The variance spectra for measurements from an unheated sensor (ATF1) and for the measurements after filtering the dynamic-heating correction to match the response of the sensor (ATF1F). Data at 1 Hz from SOCRATES flight 15, 5:55:00 to 6:10:00 UTC, a flight segment at low level in the boundary layer.'>>=
+
+Dd <- getNetCDF(fname, standardVariables(TVARS), 55500, 61000)
+Dd %>% select(Time, TASX, ATF1, ATF1F) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
+@
+
+The corresponding results for a 1-Hz file, also for the unheated sensor,
+are shown in Figs.~\ref{fig:vnameF1} and \ref{fig:vnameFVS1}. At
+1~Hz, filtering the dynamic-heating term has negligible effect, so
+this processing is not useful for the unheated sensor. It will be
+omitted by default unless the run-time variable ``UH1'' is provided
+either as an argument to the script or interactively.
+
+\clearpage{}
+
+<<vnameH, include = TRUE, fig.cap = 'The measurements from a heated sensor (ATH1) and the same measurements with the dynamic-heating correction filtered to match the response of the sensor (ATH1F). Data at 25-Hz from SOCRATES flight 15.'>>=
+
+Da %>% selectTime(50500, 50510) %>% select(Time, ATH1, ATH1F) %>% 
+      plotWAC(lwd=c(1,3), col=c('red', 'blue'))
+@
+
+<<vnameHVS, include = TRUE, fig.cap = 'The variance spectra for measurements from a heated sensor (ATH1) and for the measurements after filtering the dynamic-heating correction to match the response of the sensor (ATH1F). Data at 25 Hz from SOCRATES flight 15, 5:55:00 to 6:10:00 UTC, a flight segment at low level in the boundary layer.'>>=
+
+Db %>% select(Time, TASX, ATH1, ATH1F) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
+@
+
+For the heated HARCO sensor, the corresponding results for 25-Hz measurements
+are shown in Figs.~\ref{fig:vnameH} and \ref{fig:vnameHVS}. In
+this case, the change is quite pronounced, and the variance spectra
+emphasize how much of the original high-frequency variance is the
+result of erroneous subtraction of dynamic-heating fluctuations to
+which the sensor does not respond.
+
+\clearpage{}
+
+<<vnameH1, include = TRUE, fig.cap = 'The measurements from a heated sensor (ATH1) and the same measurements with the dynamic-heating correction filtered to match the response of the sensor (ATH1F). Data at 1-Hz from SOCRATES flight 15.'>>=
+
+Dc %>% selectTime(50100, 50300) %>% select(Time, ATH1, ATH1F) %>% 
+      plotWAC(lwd=c(1,3), col=c('red', 'blue'))
+@
+
+Unlike the unheated sensor, for 1-Hz measurements filtering dynamic
+heating removes some significant erroneous fluctuations from measurements
+from the heated sensor, as shown in Fig.~\ref{fig:vnameH1}. This
+is also apparent in the plot of spectral variance, as shown in Fig.~\ref{fig:vnameHVS1}.
+
+<<vnameHVS1, include = TRUE, fig.cap = 'The variance spectra for measurements from a heated sensor (ATH1) and for the measurements after filtering the dynamic-heating correction to match the response of the sensor (ATH1F). Data at 1 Hz from SOCRATES flight 15, 5:55:00 to 6:10:00 UTC, a flight segment at low level in the boundary layer.'>>=
+
+Dd %>% select(Time, TASX, ATH1, ATH1F) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
+@
+
+\clearpage{}
+
+\subsection{{[}vname{]}C - correction for time response}
+
+<<vnameC, include = TRUE, fig.cap = 'Measurements at 25 Hz from an unheated sensor before (ATF1) and after (ATF1C) correction. Data from SOCRATES flight rf15.'>>=
+
+Da %>% selectTime(50500, 50510) %>% select(Time, ATF1, ATF1C) %>% 
+      plotWAC(lwd=c(1,3), col=c('red', 'blue'))
+@
+
+The plots in this subsection show the effect of correcting for the
+time response of the sensor. The preceding section only filtered the
+dynamic-heating correction and did not make any additional correction
+for the time response as represented by the sensor transfer function.
+The results in this section were obtained by correcting the measurement
+of recovery temperature for sensor response and then subtracting the
+unfiltered dynamic-heating correction. This is appropriate because
+the transfer function restores a best estime of the true recovery
+temperature, which includes the effect of dynamic heating without
+filtering. These then are the best measurements of the corrected air
+temperature.
+
+Figure~\ref{fig:vnameC} shows the uncorrected measurement and the
+measurement after correction (respectively ATF1 and ATF1C) for 25-Hz
+measurements, and Fig.~\ref{fig:vnameCVS} shows an example of the
+variance spectra for the same variables. The correction improves the
+sensor response and makes significant changes to the measurements,
+particularly giving improved response at times like 5:05:02 or 5:05:06
+where there are rapid changes in the temperature.
+
+<<vnameCVS, include = TRUE, fig.cap = 'Variance spectra for measurements at 25 Hz from an unheated sensor before (ATF1) and after (ATF1C) correction. Data from SOCRATES flight rf15, 5:55:00 to 6:10:00 UTC, a flight segment in the marine boundary layer.' >>=
+
+Db %>% select(Time, TASX, ATF1, ATF1C) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
+@
+
+\clearpage{}
+
+<<vnameC1, include = TRUE, fig.cap = 'Measurements at 1 Hz from an unheated sensor before (ATF1) and after (ATF1C) correction. Data from SOCRATES flight rf15.'>>=
+
+Dc %>% selectTime(50500, 50800) %>% select(Time, ATF1, ATF1C) %>% 
+      plotWAC(lwd=c(1,3), col=c('red', 'blue'), legend.position = 'topright')
+@
+
+<<vnameCVS1, include = TRUE, fig.cap = 'Variance spectra for measurements at 1 Hz from an unheated sensor before (ATF1) and after (ATF1C) correction. Data from SOCRATES flight rf15, 5:55:00 to 6:10:00 UTC, a flight segment in the marine boundary layer.' >>=
+
+Dd %>% select(Time, TASX, ATF1, ATF1C) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
+@
+
+The corresponding results for a 1-Hz file, also for the unheated sensor,
+are shown in Figs.~\ref{fig:vnameC1} and \ref{fig:vnameCVS1}. At
+1~Hz, filtering the dynamic-heating term has negligible effect, so
+this processing is not useful for the unheated sensor. For this reason,
+variables like ATF1C are omitted from the output by default, unless
+they are requested specifically by the runtime argument ``UH1''.
+
+\clearpage{}
+
+For the heated sensor and for 25-Hz measurements, the effect of the
+correction is to produce a measurement in reasonable agreement with
+the much faster unheated sensor. This is shown in Fig.~\ref{fig:vnameCH},
+where the corrected result from the unheated sensor (ATF1C) is shown
+as the dashed green line after adjustment by -0.1$^{\circ}\mathrm{C}$
+(and labelled instead ATF1CM) to facilitate comparison to the corrected
+measurement from the unheated sensor. The time-response correction
+is quite important for this sensor and improves the evident time response
+of the measurement significantly, leading to a measurement almost
+as good as that from the unheated sensor.
+
+<<vnameCH, include = TRUE, fig.cap='The corrected variable ATH1C compared to the original measurement ATH1, for a heated sensor and for 25-Hz measurements. Data from SOCRATES flight 15. The corrected measurements from the unheated sensor (ATF1CM) are also shown after an imposed shift of -0.1 C to facilitate comparison.'>>=
+
+Da %>% Rmutate(ATF1CM = ATF1C - 0.1) %>%
+       selectTime(50450, 50510) %>% select(Time, ATH1, ATH1C, ATF1CM) %>% 
+      plotWAC(lwd=c(1,3,2), col=c('red', 'blue', 'forestgreen'), lty=c(1,1,2))
+@
+
+<<vnameCHVS, include = TRUE, fig.cap = 'Variance spectra for measurements at 25 Hz from a heated sensor before (ATH1) and after (ATH1C) correction. Data from SOCRATES flight rf15, 5:55:00 to 6:10:00 UTC, a flight segment in the marine boundary layer.'>>=
+
+Db %>% select(Time, TASX, ATH1, ATH1C) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
+@
+
+\clearpage{}
+
+<<vnameCH1, include = TRUE, fig.cap='The corrected variable ATH1C compared to the original measurement ATH1, for a heated sensor and for 1-Hz measurements. Data from SOCRATES flight 15. The corrected measurements from the unheated sensor (ATF1CM) are also shown after an imposed shift of $-0.1$C to facilitate comparison.'>>=
+
+Dc %>% Rmutate(ATF1CM = ATF1C - 0.1) %>% selectTime(50100, 50300) %>% 
+       select(Time, ATH1, ATH1C, ATF1CM) %>% 
+      plotWAC(lwd=c(1,3), col=c('red', 'blue'))
+@
+
+Figures \ref{fig:vnameCH1} and \ref{fig:vnameCHVS1} show corresponding
+results for the heated sensor for 1-Hz measurements. The corrections
+move the measurements in the direction of those from the unheated
+sensor (shown as the green line), but the improvement does not appear
+to be as significant as in the case of 25-Hz measurements. This measurement
+still appears to be useful and is therefore included in the output
+files. However, a still better way of applying this correction would
+be to resample 25-Hz measurements at 1 Hz, because the 25-Hz correction
+appears to be significantly better than this one. That step has not
+been incorporated into this processing script but might be an addition
+worth considering.
+
+<<vnameCHVS1, include = TRUE, fig.cap = 'Variance spectra for measurements at 1 Hz from a heated sensor before (ATH1) and after (ATH1C) correction. Data from SOCRATES flight rf15, 5:55:00 to 6:10:00 UTC, a flight segment in the marine boundary layer.'>>=
+
+Dd %>% select(Time, TASX, ATH1, ATH1C) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
+@
+
+\clearpage{}
 \begin{center}
 \textsf{\textcolor{blue}{-- End of Memo --}}
 \par\end{center}
-
-\clearpage{}
 
 Reproducibility:
 

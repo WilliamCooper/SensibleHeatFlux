@@ -68,10 +68,13 @@ if (!interactive()) {  ## can run interactively or via Rscript
   ## Flight
   if (length (run.args) > 1) {
     ALL <- FALSE
+    ALLLR <- FALSE
     if (run.args[2] == 'ALLLR') {
       ALLLR <- TRUE
+      Flight <- 'ALLLR'
     } else if (run.args[2] == 'ALL') {
       ALL <- TRUE
+      Flight <- 'ALL'
     } else if (run.args[2] != 'NEXT' && (run.args[2] != 'NEXTLR')) {
       Flight <- run.args[2]
       Flight <- sub('.nc$', '', Flight)
@@ -106,10 +109,13 @@ if (!interactive()) {  ## can run interactively or via Rscript
   x <- readline (sprintf ("Flight is %s; CR to accept, number 'ALL' or 'NEXT' for new flight name: ",
                           Flight))
   ALL <- FALSE
+  ALLLR <- FALSE
   if (x == 'ALLLR') {
     ALLLR <- TRUE
+    Flight <- 'ALLLR'
   } else if (x == 'ALL') {
     ALL <- TRUE
+    Flight <- 'ALL'
   } else if (x == 'NEXTLR') {
     Flight <- getNextLR(ProjectDir, Project)
   } else if (x == 'NEXT') {
@@ -134,8 +140,8 @@ if (!interactive()) {  ## can run interactively or via Rscript
   if ((x != '') && (x != 'N')) {UH1 <- TRUE}
 }
 
-print (sprintf ('run parameters: Project = %s, Flight = %s, FFT = %s RTN = %s',
-                Project, Flight, FFT, RTN))
+print (sprintf ('run parameters: Project = %s, Flight = %s, FFT = %s RTN = %s UH1 = %s',
+                Project, Flight, FFT, RTN, UH1))
 ## A function to transfer attributes:
 copy_attributes <- function (atv, v, nfile) {
   for (i in 1:length(atv)) {
@@ -345,7 +351,11 @@ processFile <- function(ProjectDir, Project, Flight) {
                                               ProjectDir, Project, Flight))
   FI <- DataFileInfo(fname, LLrange = FALSE)
   TVARS <- unlist(FI$Measurands$air_temperature)
-  TVARS <- TVARS[-which ('ATX' == TVARS)]  # don't include ATX
+  TVARS <- TVARS[-which ('ATX' == TVARS)]  # don't include ATX, AT_A, AT_A2
+  if ('AT_A' %in% TVARS) {TVARS <- TVARS[-which('AT_A' == TVARS)]}
+  if ('AT_A2' %in% TVARS) {TVARS <- TVARS[-which('AT_A2' == TVARS)]}
+  if ('AT_VXL' %in% TVARS) {TVARS <- TVARS[-which('AT_VXL' == TVARS)]}
+  if ('AT_VXL2' %in% TVARS) {TVARS <- TVARS[-which('AT_VXL2' == TVARS)]}
   if (!UH1 && (FI$Rate != 25)) {  ## omit unheated-probe measurements
     for (i in length(TVARS):1) {
       if(grepl('nheated', FI$LongNames[which(TVARS[i] == FI$Variables)])) {
@@ -633,7 +643,13 @@ processFile <- function(ProjectDir, Project, Flight) {
 
 if (ALL) {
   Fl <- sort (list.files (sprintf ("%s%s/", DataDirectory (), ProjectDir),
-                          sprintf ("%srf..h.nc", Project)), decreasing = TRUE)
+                          sprintf ("%srf..h.nc", Project)), decreasing = FALSE)
+  
+} else if (ALLLR) {
+  Fl <- sort (list.files (sprintf ("%s%s/", DataDirectory (), ProjectDir),
+                          sprintf ("%srf...nc", Project)), decreasing = FALSE)
+}
+if (ALL || ALLLR) {
   for (flt in Fl) {
     fcheck <- file.path(DataDirectory(), ProjectDir, '/', flt, fsep = '')
     fcheck <- sub('.nc', 'T.nc', fcheck)

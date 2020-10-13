@@ -293,7 +293,7 @@ equation with one time constant does not represent the time response
 of airborne temperature sensors. The suggested explanation [@NCAR_OpenSky_TECH-NOTE-000-000-000-064]
 is that heat is transferred to the sensing wire of standard sensors
 not only from the air but also from the supporting structure that
-is in contact with the wire. Friehe and Khelif [@FrieheKhelif1992],
+is in contact with the wire. @FrieheKhelif1992,
 following other prior work including that of @rodi1972analysis
 and @mccarthy1973method, suggested representing the
 response with two time constants:
@@ -459,7 +459,7 @@ suppressMessages(ggsave('figure/fig1.pdf', plot = g))
 include_graphics('figure/fig1.pdf')
 
 ```
-\caption{The amplitude and phase for the frequency domain transfer function of an unheated temperature sensor. The parameters representing that sensor, labeled "best," are $a$=0.733, $\tau_1$=\unit{0.0308\,s} and $\tau_2$=\unit{0.447\,s}. To illustrate sensitivity,  the curves labeled "t1=0.05" and "t2=0.6" use instead $\tau_1$=\unit{0.05\,s} and $\tau_2$=\unit{0.6\,s}, respectively.\label{fig:LTsolution}}
+\caption{The amplitude and phase for the frequency-domain transfer function of an unheated temperature sensor. The parameters representing that sensor, labeled "best," are $a$=0.733, $\tau_1$=\unit{0.0308\,s} and $\tau_2$=\unit{0.447\,s}. To illustrate sensitivity,  the curves labeled "t1=0.05" and "t2=0.6" use instead $\tau_1$=\unit{0.05\,s} and $\tau_2$=\unit{0.6\,s}, respectively.\label{fig:LTsolution}}
 \end{figure}
 
 These equations and their solution provide a basis for correcting
@@ -525,13 +525,13 @@ evidence for delayed response of the standard sensors. In particular,
 the unheated sensor referenced above has been used widely as a fast-responding
 sensor so it will be a focus of this study.
 
-This research uses data archives produced by three research projects,
+This research used the data archives of three research projects,
 the VOCALS (VAMOS Ocean-Cloud-Atmosphere-Land Study), CSET (Cloud
 Systems Evolution in the Trades) and SOCRATES (Southern Ocean Clouds,
-Radiation, Aerosol Transport Experimental Study) experiments. The
-field projects are described by @wood2011vamos, @albrecht2019CSET
-and @mcfarquhar2014southern, respectively. All included low-level
-flight segments over the Pacific Ocean that are used in this paper.
+Radiation, Aerosol Transport Experimental Study) experiments. Those
+field projects, described by @wood2011vamos, @albrecht2019CSET
+and @mcfarquhar2014southern respectively, each included low-level
+flight segments in the boundary layer over the Pacific Ocean.
 
 ## Fits to the measurements
 
@@ -550,7 +550,7 @@ estimated fluctuations determined from Eq.\ \eqref{eq:DHterm}. To minimize
 this problem, regions were sought where the fluctuations in dynamic
 heating were the dominant cause of fluctuations in recovery temperature.
 Temporarily consider these approximations: $\alpha_{r}\approx1$,
-$R_{a}/(2C_{v})\approx1/5$, and $M$ small enough thatE the denominator
+$R_{a}/(2C_{v})\approx1/5$, and $M$ small enough that the denominator
 of the right side of Eq.\ \eqref{eq:DHterm} can be assumed equal to unity.
 Dynamic heating then is approximately $Q\approx T_{r}M^{2}/5$ and
 fluctuations in $Q$ are related to those in $T_{r}$ and $M$ according
@@ -573,7 +573,7 @@ of $T_{r}$ was used initially to represent dynamic heating, and
 flight segments were used where the fluctuations in the first term
 were relatively small. Once
 a set of parameters was determined, $T_{r}(t)$ was calculated using
-the first correction procedure discussed in 
+the correction procedure discussed in 
 Appendix\ \ref{sec:Correcting-the-Temperature}.
 Using this revised estimate of $T_{r}(t)$ in place of $T_{m}(t)$
 led to a small change in the fitted values of the parameters, but
@@ -931,7 +931,7 @@ sdr <- sdr * 2 / sqrt(nar)
 
 To characterize the frequency-domain transfer function of the
 unheated sensor, six
-ten-minute low level flight segments in the marine boundary layer
+ten-minute flight segments in the marine boundary layer
 from one flight of the NCAR/NSF C-130 in the "VOCALS" project
 [@wood2011vamos] were selected that had similar flight conditions
 including the intensity of turbulence. The time intervals are
@@ -1560,8 +1560,8 @@ Attempts to use the same three-parameter representation of the transfer
 function relative to dynamic heating led to unsatisfactory fits, 
 apparently because fluctuations caused by dynamic heating were not
 as dominating a cause of the temperature fluctuations as they were
-in the measurements from VOCALS used for the unheated sensor, so
-a different approach is used here. Because the evaluation in Sect.\ \ref{subsec:The-unheated-Rosemount}
+in the measurements used for the unheated sensor. Therefore
+a different approach was used here. Because the evaluation in Sect.\ \ref{subsec:The-unheated-Rosemount}
 provides a good representation of the unheated sensor,
 the measurements from that sensor, corrected as described in Appendix\ A,
 were used as the reference for the assumed-correct recovery temperature.
@@ -2047,13 +2047,13 @@ on the NSF/NCAR aircraft, adjusted to $Z=0.3$. For other conditions,
 scale as represented for $\tau_{1}^{\prime}$ in 
 Eq.\ \eqref{eq:tau1prime}. Parameters for the unheated sensor were also determined for measurements on the GV, with the result {0.73, 0.035, 0.36},
 but the fit was less satisfactory than the one for the C-130 
-so the fit in the table has been used in this paper.{\label{tab:Parameters}}}
+so the fit in the table has been used in this paper for measurements from both aircraft.{\label{tab:Parameters}}}
 \begin{tabular}{|c|c|c|c|}
 \hline 
 \bf{sensor} & $a$ & $\tau_{1}$ [s] & $\tau_{2}$ [s]\tabularnewline
 \hline 
 \hline 
-"unheated" (Rosemount 102E4AL on C-130) & `r round(Param1$a, 2)` & `r format(Param1$tau1, digits=2, nsmall=3)` & `r round(Param1$tau2,2)`\tabularnewline
+"unheated" (Rosemount 102E4AL) & `r round(Param1$a, 2)` & `r format(Param1$tau1, digits=2, nsmall=3)` & `r round(Param1$tau2,2)`\tabularnewline
 \hline 
 "heated" (HARCO Model 100009-1 Deiced TAT)& `r format(ParamSH$a, digits=1, nsmall=1)` & `r format(ParamSH$tau1, digits=2, nsmall=2)` & `r format(ParamSH$tau2, digits=2, nsmall=2)`\tabularnewline
 \hline 
@@ -2182,10 +2182,12 @@ if (generateFigures) {
 \caption{(blue dots): Temperature measured at \unit{25\,Hz} during descent through an inversion capping the marine boundary layer, from VOCALS flight\ 3, starting at 8:13:50 UTC. The dashed red line shows a dry-adiabatic lapse rate in the marine boundary layer, and the dashed black line is a reference line indicating the location of the top of the boundary layer. The  prediction using the parameters listed in the text is shown as the magenta line, mostly over the blue dots representing the measurements. The dashed brown line is the calculated temperature of the support that contacts the sensing wire.\label{fig:tfit}}
 \end{figure}
 
-Previous studies have mostly used sharp temperature changes in the
+Most prior studies 
+have used sharp temperature changes in the
 atmosphere, for example from climbs through the inversion at the top
-of a boundary layer, to study the time response. A search of representative
-VOCALS climbs and descents through inversions capping the marine boundary
+of a boundary layer, to study the time response 
+of airborne thermometers. A search of available 
+climbs and descents through inversions capping the marine boundary
 layer found that almost all have measurable structure and are not
 discrete transitions, but there was one near-ideal example. 
 Figure\ \ref{fig:tfit} shows the time history of the measured temperature
@@ -2193,10 +2195,10 @@ for \unit{8\,s} from VOCALS flight 3, when the aircraft
 descended through the top of the marine boundary layer at approximately
 \unit{5\,m\,s^{-1}}. The temperature structure in this case
 was remarkably consistent with a near-constant temperature above the
-inversion and a near-adiabatic temperature structure below the inversion.
-
+inversion and a near-adiabatic lapse rate below the inversion. 
 The suggested measurand history, if the discontinuity at the inversion
 is discrete, is that shown by the dashed black and red lines.
+
 The predicted time response from Eq.\ \eqref{eq:Tm} for the time constants listed in Table\ \ref{tab:Parameters}
 for the unheated sensor (adjusted for air density
 and flight speed) is shown as the magenta line in Fig.\ \ref{fig:tfit}.
@@ -2226,8 +2228,8 @@ the flux of sensible heat.
 
 In conventional processing to calculate the ambient air temperature, 
 an independently determined estimate of
-dynamic heating is subtracted from the measured temperature. As
-described in Sect.\ \ref{subsec:Dynamic-heating}, when the sensor
+dynamic heating is subtracted from the measured temperature, As
+described in Sect.\ \ref{subsec:Dynamic-heating}. When the sensor
 cannot respond to fluctuations in dynamic heating, this procedure
 introduces errors and excess noise into the resulting air temperature.
 Data processing should instead apply a correction that represents
@@ -2409,8 +2411,8 @@ g + theme_WAC(1) + theme(legend.position = c(0.3, 0.65))
 ```
 
 The filtered response
-has been obtained from the transfer function in several equivalent ways, by
-integration of the differential equations applied to $Q$, by Fourier transforms using the transfer function, and by applying a digital filter designed from the transfer function, all with almost equivalent results. 
+has been obtained from the transfer function in three ways, by
+integration of the differential equations applied to $Q$, by Fourier transforms using the transfer function, and by applying a digital filter designed from the transfer function. All produce almost equivalent results. 
 The filtered dynamic-heating adjustment will be denoted $Q^{\prime}$, and the calculated air temperature then becomes
 \begin{equation}
 T^{\prime}_{a}(t)=T_{m}(t)-Q^{\prime}(t){\label{eq:QprimeCorr}}
@@ -2839,8 +2841,9 @@ sdpH <- sdpH * 180 / pi
 sdpH <- sdpH * 2 / sqrt(nphaseH)
 arH <- arH / narH
 ar2H <- ar2H / narH
-sdrH <- ifelse(ar2H > arH^2, sqrt(ar2H - arH^2), 0)
-sdrH <- sdrH * 2 / sqrt(narH)
+sdrH <- ar2H - arH^2
+sdrH[sdrH < 0] <- 0
+sdrH <- sqrt(sdrH) * 2 / sqrt(narH)
 
 ```
 
@@ -3173,9 +3176,10 @@ fluctuations in $Q$, which was shown in Sect.\ \ref{sec:Correcting-for-Dynamic}
 to lead to erroneous noise in the air temperature. Then that noise
 is amplified by the correction procedure. These errors are avoided
 if corrections are applied instead to the measurement of the recovery
-temperature. Then the amplification of signals by application of the transfer function restores
+temperature. The amplification of signals by application of the 
+transfer function restores
 the fluctuations produced by dynamic heating, and those fluctuations
-are then removed by subtracting the measured dynamic heating
+are then removed by subtracting the measured (unfiltered) dynamic heating
 term from the corrected recovery temperature. 
 
 The eddy-correlation calculation used here starts with the Fourier
@@ -3186,11 +3190,11 @@ $\hat{T}_{m}(\nu)=H(\nu)\hat{T}_{r}(\nu)$ where $H(\nu)$ is the
 frequency-domain transfer function.
 The true recovery temperature will be the
 inverse Fourier transform of $\hat{T}_{r}=\hat{T}_{m}(\nu)/H(\nu)$. The Fourier representation of the air temperature is then
-obtained from $\hat{T}_{a}=\hat{T}_{m}(\nu)/H(\nu)-\hat{Q}(\nu)$, 
+$\hat{T}_{a}=\hat{T}_{m}(\nu)/H(\nu)-\hat{Q}(\nu)$, 
 which includes both the correction for time response and the subtraction of dynamic heating.
 Multiplication
 by the complex conjugate of the Fourier representation of the updraft
-then gives the cospectrum representing the flux of sensible heat, with
+gives the cospectrum representing the flux of sensible heat, with
 an appropriate scale factor as specified in Eq.\ \eqref{eq:heatFlux}.
 The resulting cospectrum is then integrated over an appropriate wavelength
 range to produce the measured flux density of sensible heat. This will normally exclude wavelengths greater
@@ -4731,10 +4735,11 @@ integrated from an assumed initial value $T_{s}(0)$ to find the temperature
 of the support, $T_{s}(t)$. Then Eq.\ \eqref{eq:Tm} can be solved to
 give the true recovery temperature $T_{r}(t)$ without further integration.
 The only choices to be made are the numerical method used to find the
-derivative $dT_{m}/dt$ (here centered fourth-order) and the integration
-method applied to Eq.\ \eqref{eq:Ts3}, here fourth-order Runge-Kutta integration
+derivative $dT_{m}/dt$ (here centered fourth-order finite difference)
+and the integration
+method applied to Eq.\ \eqref{eq:Ts3} (here fourth-order Runge-Kutta integration
 with Cash-Karp (\citet{cash1990variable}) adjustment of the step
-size. If a centered second-order finite-difference expression is used
+size). If a centered second-order finite-difference expression is used
 for $dT_{m}(t)/dt$ and an Euler integration is used to integrate
 Eq.\ \eqref{eq:Ts3}, this correction is equivalent to
 that developed by \citet{InverarityJTech2000}; cf.\ his Eqn.\ (12).
@@ -5070,8 +5075,7 @@ If the response of the sensor is indeed linear, as the differential equations
 indicate, a correction procedure equivalent to that described above is
 first to filter the dynamic-heating term as in Sect.\ 3, correct
 the measured recovery temperature by subtracting this filtered term, and
-then apply the correction procedure described above to the resulting air
-temperature to obtain the corrected air temperature.
+then apply one of the correction procedures described above to obtain the corrected air temperature.
 ```{r HARCOcorrection, include=FALSE, fig.height=3.5, fig.cap=c('Corrected recovery temperature as measured by a heated sensor ("RTH" and "FFT"), the uncorrected measurement ("Tm"), and the best estimate of the true recovery temperature ("RT") based on an unheated after correction. The time is seconds after 2018-02-24 5:59:00 UTC, SOCRATES flight 15. "RTH" is based on the approximate formula (20), while "FFT" results from Fourier transformation after correction using the transfer function determined from (13). Mean values have been subtracted from all to facilitate comparisons.', 'Variance spectra for some measurements of recovery temperature: "RT" (the best estimate resulting from correction of the measurements from the unheated sensor); "Tm" (the uncorrected measurement from the heated sensor); "FFT" (the corrected heated-sensor measurement based on Fourier transforms); and "RTH" (the corrected heated-sensor measurement based on the correction formula (17)).')}
 
 a <- Param1$a
