@@ -638,10 +638,18 @@ In addition, these variables are optionally added:
 so in the course of processing it must then be recalculated from the
 air temperature and the dynamic-heating term. If {[}RTyy{]} is not
 present in the original file, the recalculated value can be added
-if it is desired. Inclusion of these variables can be included, for
-cases where they are not present in the original file, by adding the
-argument ``RT'' to the Rscript call or answering the appropriate
-question during interactive use.
+if it is desired. These variables can be included, for cases where
+they are not present in the original file, by adding the argument
+``RT'' to the Rscript call or answering the appropriate question
+during interactive use.\footnote{\begin{itemize}
+\item A special case is that where the recovery temperature is included
+in a 25-Hz netCDF file but only at 1 Hz. In that case the recovery
+temperature is recalculated using the 25-Hz air temperature. If it
+is desired to keep the reconstructed recovery temperature for this
+case, the old 1-Hz variable is renamed by appending an 'x' to the
+name; e.g., RTH1x. 
+\end{itemize}
+} 
 \item {[}ATyy{]}C2 -- like {[}ATyy{]}C but calculated using the transfer
 function and FFT processing instead of solution of the differential
 equations. The variable {[}ATyy{]}C2 is calculated by subtracting

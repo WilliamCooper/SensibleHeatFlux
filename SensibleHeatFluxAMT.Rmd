@@ -120,7 +120,7 @@ acknowledgements: |
   for Atmospheric Research, which is a major facility sponsored by the
   National Science Foundation under Cooperative Agreement No. 1852977.
   Data provided by NCAR/EOL under the sponsorship of the National 
-  Science Foundation.
+  Science Foundation. (https://data.eol.ucar.edu/)
   Measurements used here (\citet{VOCALS2011}, \citet{SOCRATES2019},
   \citet{WECAN2018}) were collected in research projects
   (\citet{wood2011vamos},

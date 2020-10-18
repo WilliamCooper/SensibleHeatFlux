@@ -5,9 +5,25 @@
 ## The Flight should be in the form rf15h, not a simple number and
 ## without the trailing .nc. (Some untested code tries to adapt to
 ## single-number input or trailing .nc.)  Two special "Flight" inputs are these:
-##   NEXT -- processes the next unprocessed high-rate file, If a high-rate
+##   NEXT -- process the next unprocessed high-rate file, If a high-rate
 ##           file has an associated "..T.nc" file, it will be skipped.
+##   NEXTLR - process the next unprocessed low-rate file.
 ##   ALL  -- process all unprocessed high-rate files in the project directory.
+##   ALLLR - process all unprocessed low-rate files.
+## Additional optional arguments are "RTN", "FFT" and "UH1", all FALSE by 
+## default. There use is as follows:
+##   RTN  -- For files that don't contain a recovery temperature, it must be
+##           recalculated from the temperature and dynamic heating. This
+##           argument causes the recalculated variable to be preserved in the
+##           new netCDF file.
+##   FFT  -- Processing via Fourier transformation is normally suppressed and
+##           the associated "C2" variables below are not added to the new
+##           netCDF file. If those variables are desired, they will be added
+##           if the "FFT" argument is supplied.
+##   UH1  -- Normally for 1-Hz files the change provided by filtering dynamic-
+##           heating does not make a significant change for an unheated sensor,
+##           so the filtered variables ("F" below) are omitted. This argument
+##           will cause them to be included in the new netCDF file.
 ## Processed files will duplicate the original with the addition of these
 ## variables (where [name] is the original name; e.g., ATF1)
 ##  [name]C --  corrected temperature using method 1 (differential equations)
@@ -158,6 +174,29 @@ copy_attributes <- function (atv, v, nfile) {
   }
 }
 
+recoveryF <- function(TV) {  ## TV should be a temperature column in D
+  # get the recovery factor from the attribute:
+  rf.txt <- attr(TV, 'RecoveryFactor')
+  if (is.null (rf.txt)) {  ## protection for omitted attribute
+    rf <- 0.985
+  } else {
+    if (is.numeric(rf.txt)) {
+      rf <- rf.txt
+    } else {
+      if (grepl('mach', rf.txt)) {
+        rf <- gsub('mach', 'MACHX', rf.txt)
+        rf <- gsub(' log', ' * log', rf)
+        rf <- gsub(' \\(', ' * \\(', rf)
+        rf <- with(D, eval(parse(text=rf)))
+        rf <- SmoothInterp(rf, .Length = 0)
+      } else {
+        rf <- 0.985  ## placeholder -- if needed, add decoding here
+      }
+    }
+  }
+  return (rf)
+}
+
 correctDynamicHeating <- function(D, AT) {
   platform <- attr(D, 'Platform')
   platform <- ifelse (grepl('677', platform), 'GV', 'C130')
@@ -174,7 +213,7 @@ correctDynamicHeating <- function(D, AT) {
         AF <- ARG
         Lsh <- Lshift
       }
-    } else {
+    } else {  ## - C130 case
       if (heated) {
         AF <- ARH
         Lsh <- LshiftH
@@ -183,7 +222,7 @@ correctDynamicHeating <- function(D, AT) {
         Lsh <- Lshift
       }
     }
-  } else { ## assumed 1
+  } else { ## assumed 1 Hz
     if (platform == 'GV') {
       if (heated) {
         AF <- ARH1
@@ -202,16 +241,8 @@ correctDynamicHeating <- function(D, AT) {
       }
     }
   }
-  # get the recovery factor from the attribute:
-  rf.txt <- attr(D[, AT], 'RecoveryFactor')
-  if (grepl('mach', rf.txt)) {
-    rf <- gsub('mach', 'MACHX', rf.txt)
-    rf <- gsub(' log', ' * log', rf)
-    rf <- gsub(' \\(', ' * \\(', rf)
-    rf <- with(D, eval(parse(text=rf)))
-  } else {
-    rf <- 0.985  ## placeholder -- if needed, add decoding here
-  }
+
+  rf <- recoveryF(D[, AT])
   # Is the associated recovery temperature present?
   dep <- attr(D[, AT], 'Dependencies')
   RT <- gsub(' .*', '', gsub('^. ', '', dep))
@@ -249,6 +280,7 @@ correctTemperature <- function(D, RT, responsePar =
   RTT[is.na(RTT)] <- 0
   heated <- attr(D[, RT], 'long_name')
   heated <- ifelse(grepl('nheated', heated), FALSE, TRUE)
+  ## This indication is often missing from RTFx:
   if (grepl('RTF', RT)) {heated <- FALSE}
   a <- responsePar$a
   tau1 <- responsePar$tau1
@@ -350,15 +382,20 @@ processFile <- function(ProjectDir, Project, Flight) {
   fname <- file.path(DataDirectory(), sprintf('%s/%s%s.nc',
                                               ProjectDir, Project, Flight))
   FI <- DataFileInfo(fname, LLrange = FALSE)
+  Rate <- FI$Rate
   TVARS <- unlist(FI$Measurands$air_temperature)
   TVARS <- TVARS[-which ('ATX' == TVARS)]  # don't include ATX, AT_A, AT_A2
   if ('AT_A' %in% TVARS) {TVARS <- TVARS[-which('AT_A' == TVARS)]}
   if ('AT_A2' %in% TVARS) {TVARS <- TVARS[-which('AT_A2' == TVARS)]}
   if ('AT_VXL' %in% TVARS) {TVARS <- TVARS[-which('AT_VXL' == TVARS)]}
   if ('AT_VXL2' %in% TVARS) {TVARS <- TVARS[-which('AT_VXL2' == TVARS)]}
-  if (!UH1 && (FI$Rate != 25)) {  ## omit unheated-probe measurements
-    for (i in length(TVARS):1) {
+  if (!UH1 && (Rate != 25)) {  ## omit unheated-probe measurements
+    for (i in length(TVARS):1) {  ## note reversed order
       if(grepl('nheated', FI$LongNames[which(TVARS[i] == FI$Variables)])) {
+        TVARS <- TVARS[-i]
+      }
+      ## Some older projects (e.g., FRAPPE) have ATRx for the Rosemount
+      if(grepl('^ATR', TVARS[i])) {
         TVARS <- TVARS[-i]
       }
     }
@@ -366,15 +403,31 @@ processFile <- function(ProjectDir, Project, Flight) {
   RVARS <- sub('^A', 'R', TVARS)
   ## get the old netCDF variables needed to calculate the modified variables
   VarList <- standardVariables(TVARS)
-  ## Add the recovery temperatures if present; otherwise
-  ## recalculate them:
-  for (RV in RVARS) {
-    if (RV %in% FI$Variables) {
-      VarList <- c(VarList, RV)
+  ## Add the recovery temperatures if present; otherwise recalculate:
+  RVS <- RVARS[RVARS %in% FI$Variables]
+  ## The next lines deal with, for a 25-Hz file, the recovery temperature
+  ## is present only at 1-Hz rate (e.g., WECANrf08h.nc)
+  if (length(RVS) > 0) {
+    if (Rate == 25) {
+      St <- as.integer(gsub(':', '', sub('.* ', '', FI$Start)))
+      Ed <- as.integer(gsub(':', '', sub('.* ', '', FI$Start + 100)))
+      D <- getNetCDF(fname, RVS, St, Ed)
+      for (RV in RVS) {  ## only add if present at 25 Hz in netCDF file
+        if (attr(D[, RV], 'Dimensions')[[1]] == 'sps25') {
+          VarList <- c(VarList, RV)
+        }
+      }
+    } else {
+      VarList <- c(VarList, RVS)
     }
   }
   D <- getNetCDF (fname, VarList)
   Rate <- attr(D, 'Rate')
+  ## Special for WECAN: try to deal with all the missing values
+  # DSAVE <- D
+  # for (V in names(D)) {D[,V] <- SmoothInterp(D[,V], .Length=0)}
+  # D <- transferAttributes(DSAVE, D)
+
   
   ## Calculate the new variables:
   E <- SmoothInterp(D$EWX / D$PSXC, .Length = 0)
@@ -412,7 +465,7 @@ processFile <- function(ProjectDir, Project, Flight) {
       PAR[[length(PAR) + 1]] <- ParamSH
     }
   }
-  # check for ATF
+  # check for ATF or ATR
   ic <- which(grepl('ATF', TVARS))
   if (length(ic) > 0) {
     CutoffPeriod[ic] <- Rate * 0.5  # 0.5 s for ATFx
@@ -423,7 +476,17 @@ processFile <- function(ProjectDir, Project, Flight) {
       PAR[[ic]] <- Param1
     }
   }
-  ic <- which(grepl('ATH2', TVARS))
+  ic <- which(grepl('ATR', TVARS))  ## old naming convention (e.g., FRAPPE)
+  if (length(ic) > 0) {
+    CutoffPeriod[ic] <- Rate * 0.5  # 0.5 s for ATFx
+    probe[ic] <- 'UNHEATED'
+    if (platform == 'GV') {
+      PAR[[ic]] <- ParamSF
+    } else {
+      PAR[[ic]] <- Param1
+    }
+  }
+  ic <- which(grepl('ATH.*2', TVARS))  ## .* allows for names like ATHL2
   if (length(ic) > 0) {
     probe[ic] <- 'HARCOB'
     PAR[[ic]] <- ParamSH
@@ -452,15 +515,7 @@ processFile <- function(ProjectDir, Project, Flight) {
       D[, newRVARS2[i]] <- addFFTsoln(D, RVARS[i], responsePar = PAR[[i]])
     }
     # get the recovery factor from the attribute:
-    rf.txt <- attr(D[, TVARS[[i]]], 'RecoveryFactor')
-    if (grepl('mach', rf.txt)) {
-      rf <- gsub('mach', 'MACHX', rf.txt)
-      rf <- gsub(' log', ' * log', rf)
-      rf <- gsub(' \\(', ' * \\(', rf)
-      rf <- with(D, eval(parse(text=rf)))
-    } else {
-      rf <- 0.985  ## placeholder -- if needed, add decoding here
-    }
+    rf <- recoveryF(D[, TVARS[[i]]])
     # Is the associated recovery temperature present?
     dep <- attr(D[, TVARS[i]], 'Dependencies')
     RT <- gsub(' .*', '', gsub('^. ', '', dep))
@@ -504,7 +559,7 @@ processFile <- function(ProjectDir, Project, Flight) {
     Rate <- 25
     Dim <- list(Dimensions[["sps25"]], Dimensions[["Time"]])
   }
-  DATT <- D
+  DATT <- D  ## Save in case this is needed
   
   ## variables to add to the netCDF file:
   VarNew <- newTVARS
@@ -520,6 +575,7 @@ processFile <- function(ProjectDir, Project, Flight) {
     Dependencies[i] <- sprintf('2 %s TASX', VarOld[i])
   }
   
+ 
   ## create the new variables
   varCDF <- list ()
   for (i in 1:length(VarNew)) {
@@ -601,6 +657,26 @@ processFile <- function(ProjectDir, Project, Flight) {
   }
   ## Add reconstructed RVARS here if desired.
   if (RTN) {
+    ## Special treatment of recovery temperatures that are present in the 25-Hz
+    ## netCDF file only at 1 Hz, like RTH1 for WECAN
+    ## -- the needed 25-Hz  measurement of RTH1 is recovered from ATH1 
+    ##    (present at 25 Hz) and Q. Then, before writing the new
+    ##    variable (if requested), the old variable is renamed to 'RTH1X' in
+    ##    the netCDF file.  
+    if (Rate == 25) {
+      for (RV in RVARS) {
+        if (attr(D[, RV], 'DataQuality') == 'Reconstructed') {
+          if (RV %in% FI$Variables) {  ## avoid duplicate variable names
+            newfile <- ncvar_rename(newfile, RV, paste0(RV, 'x'))
+            print (sprintf ('renaming old variable %s to %s', RV, paste0(RV, 'x')))
+          }
+        }
+      }
+    }
+    # if (attr(D[, RV], 'Dimensions')[[1]] == 'sps25') {
+    if (Project == 'WECAN') {
+      
+    }
     VarUnits <- "deg_C"
     DataQ <- "reconstructed"
     VarLongName <- "Recovery Temperature, reconstructed"
