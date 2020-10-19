@@ -17,6 +17,7 @@
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{setspace}
+\usepackage[authoryear]{natbib}
 \PassOptionsToPackage{normalem}{ulem}
 \usepackage{ulem}
 \usepackage[unicode=true]
@@ -121,7 +122,7 @@ SaveRData <- sprintf("%s.Rdata", thisFileName)
 
 \section{The Governing Equations}
 
-The basis for this script is documented by Cooper et al.~(2020).
+The basis for this script is documented by \citet{CooperEtAl2020}.
 The objective in this note is to provide specific information regarding
 how that can be implemented in a second-pass processing script. It
 is hoped that this note will be useful to anyone needing to use and
@@ -131,7 +132,7 @@ maintain the processing script, which is called ``CorrectTemperature.R''.
 
 The governing differential equations involve two unknowns, the actual
 recovery temperature $T_{r}(t)$, and the temperature of the supporting
-structure $T_{s}(t)$. As given in Cooper et al.~(2020), they are:
+structure $T_{s}(t)$. As given in\citet{CooperEtAl2020}, they are:
 
 \begin{equation}
 \frac{dT_{s}(t)}{dt}=\frac{T_{r}(t)-T_{s}(t)}{\tau_{2}}\label{eq:DE1}
@@ -166,16 +167,16 @@ can be obtained by solving \eqref{eq:Tr-1} without further integration.
 The only choices needed are the numerical method used to find the
 derivative $dT_{m}/dt$ (here centered fourth-order) and the integration
 method applied to \eqref{eq:Ts3}, here fourth-order Runge-Kutta integration
-with Cash-Karp (\cite{cash1990variable}) adjustment of the step size.
-If the values of the parameters ($a$, $\tau_{1}$, $\tau_{2}$) are
-known, this approach provides a method of correcting the measured
+with Cash-Karp (\citet{cash1990variable}) adjustment of the step
+size. If the values of the parameters ($a$, $\tau_{1}$, $\tau_{2}$)
+are known, this approach provides a method of correcting the measured
 recovery temperature $T_{m}(t)$ to retrieve (an estimate of) the
 true recovery temperature $T_{r}(t)$. 
 
 \subsection{Correction Method \#2}
 
 An alternate approach to this correction is to use the frequency-space
-transfer function as developed in Cooper et al.~(2020), $H(\omega)$,
+transfer function as developed in \citet{CooperEtAl2020}, $H(\omega)$,
 which relates the Fourier representation of the measurement to that
 of the measurand via $\hat{T}_{m}(\omega)=H(\omega)\hat{T}_{r}(\omega)$.
 The measurand can be retrieved from the inverse Fourier transform
@@ -203,7 +204,7 @@ has only insignificant response at such frequencies.
 
 \subsection{The Treatment of Dynamic Heating}
 
-As described by Cooper et al.~(2020), the standard dynamic-heating
+As described by \citet{CooperEtAl2020}, the standard dynamic-heating
 correction should be modified so that only the part of that correction
 to which the sensor responds is subtracted. The above correction schemes
 apply to the recovery temperature, so further steps are needed if
@@ -244,7 +245,7 @@ the result is again \eqref{eq:Taprime}.
 \item For the heated sensor, the parameterized equations do not provide
 the best fit to the observations so the alternate fit using a polynomial
 might be preferable. That polynomial fit can only be applied using
-method \#2. However, the limited examples in Cooper et al.~(2020)
+method \#2. However, the limited examples in \citet{CooperEtAl2020}
 seem to indicate that, despite the inferior fit to the transfer function,
 the parameterized transfer function provides a better reconstruction
 as judged relative to the unheated sensor.
@@ -711,7 +712,8 @@ DTMDT~<-~(c(0,~8~{*}~diff(RTF1,~2),~0)~-~~\\
 \end{singlespace}
 \end{lyxcode}
 %
-\end{minipage}}It was found that this works significantly better than a second-order
+\end{minipage}}\\
+It was found that this works significantly better than a second-order
 centered finite-difference expression (i.e., DTMDT <- c(0, diff(RTF1,
 2), 0) {*} Rate / 2). The integration then proceeds using a 4th-order
 Runge-Kutta integration with Cash-Karp adjustment of the time step,
@@ -739,7 +741,8 @@ fS~<-~function(y,~i)~\{
 D\$Ts~<-~rk4.integrate~(fS,~D\$Ts{[}1{]},~1:nrow(D))
 \end{lyxcode}
 %
-\end{minipage}}The function needs the indexed vectors DTMDT and TTRR but they are
+\end{minipage}}\\
+The function needs the indexed vectors DTMDT and TTRR but they are
 not provided explicitly as arguments to the function. Instead, it
 is assumed that they are present in the calling environment, after
 for example calculating DTMDT as in the earlier box, and only the
@@ -765,7 +768,8 @@ DTM2DT2~<-~(-c(0,0,~RTH1){[}1:nrow(DSX){]}~+~16{*}c(0,RTH1){[}1:nrow(DSX){]}~
 ~~~~~~-~c(RTH1{[}3:nrow(DSX){]},~0,~0))~{*}~(Rate\textasciicircum 2)~/~12~
 \end{lyxcode}
 %
-\end{minipage}}Because the finite-difference formulas introduce unacceptable high-frequency
+\end{minipage}}\\
+Because the finite-difference formulas introduce unacceptable high-frequency
 noise where the heated sensor has negligible response, a third-order
 Butterworth low-pass filter with cutoff frequency of 2~Hz is then
 applied to the corrected temperature.
@@ -829,7 +833,7 @@ Db <- getNetCDF(fname, standardVariables(TVARS), 55500, 61000)
 Db %>% select(Time, TASX, ATF1, ATF1F) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
 @
 
-Examples were shown in Cooper et al.~(2020), Fig.9. It is expected
+Examples were shown in \citet{CooperEtAl2020}, Fig.9. It is expected
 that the filtering will remove variations in dynamic heating to which
 the sensor does not respond, so the result will be smoother than the
 original variable but will track it fairly well. A significant contribution
@@ -1009,6 +1013,10 @@ Dd %>% select(Time, TASX, ATH1, ATH1C) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_W
 @
 
 \clearpage{}
+
+\bibliographystyle{plainnat}
+\bibliography{WACspecial}
+
 \begin{center}
 \textsf{\textcolor{blue}{-- End of Memo --}}
 \par\end{center}
