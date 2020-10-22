@@ -311,6 +311,13 @@ probes are not included in the corrected files. A run-time argument
 can change that default if it is desired to produce corrected variables
 for all the sensors.
 
+The results for 1-Hz files are better, however, if the 25-Hz file
+is processed first and the corrected variables are averaged to 1-Hz.
+The script has provision to use these values if they are available.
+For a 1-Hz file, the script checks if a previous run at 25-Hz produced
+a 1-Hz data.frame containing the averaged values, and if so those
+values are used instead for the corrected temperature.
+
 <<processor, echo = FALSE, eval = FALSE>>=
 
 source('./CorrectTemperature.R')
@@ -664,6 +671,21 @@ call or if they are requested in response to an interactive prompt.
 function and FFT processing. 
 \end{itemize}
 
+\subsection{Special Considerations for 1-Hz Files}
+
+The processing script will work for 1-Hz files, but better results
+can be obtained by using the corresponding 25-Hz file. For this reason,
+when a 25-Hz file is processed, a special data.frame is saved with
+the name ProjectFlightLRT.Rdata (for example, VOCALSrf05hLRT.Rdata).
+If such a file is available, the script will instead use the values
+of variables in that file when processing a 1-Hz file. 
+
+The preferable approach is to process all 25-Hz files first and then
+process the 1-Hz files. The new entries in the 1-Hz file will then
+be 1-s-average values of the corresponding variables in the 25-Hz
+file. See the ``Examples'' section for an illustration of the benefit
+of this processing sequence.
+
 \subsection{Description of Key Functions}
 \begin{enumerate}
 \item \emph{\uline{correctDynamicHeating(D, AT):}} AT is a variable in
@@ -913,7 +935,7 @@ Dd %>% select(Time, TASX, ATH1, ATH1F) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_W
 <<vnameC, include = TRUE, fig.cap = 'Measurements at 25 Hz from an unheated sensor before (ATF1) and after (ATF1C) correction. Data from SOCRATES flight rf15.'>>=
 
 Da %>% selectTime(50500, 50510) %>% select(Time, ATF1, ATF1C) %>% 
-      plotWAC(lwd=c(1,3), col=c('red', 'blue'))
+      plotWAC(lwd=c(1,3), col=c('red', 'blue'), legend.position = 'topright')
 @
 
 The plots in this subsection show the effect of correcting for the
@@ -1001,15 +1023,30 @@ move the measurements in the direction of those from the unheated
 sensor (shown as the green line), but the improvement does not appear
 to be as significant as in the case of 25-Hz measurements. This measurement
 still appears to be useful and is therefore included in the output
-files. However, a still better way of applying this correction would
-be to resample 25-Hz measurements at 1 Hz, because the 25-Hz correction
-appears to be significantly better than this one. That step has not
-been incorporated into this processing script but might be an addition
-worth considering.
+files. 
 
 <<vnameCHVS1, include = TRUE, fig.cap = 'Variance spectra for measurements at 1 Hz from a heated sensor before (ATH1) and after (ATH1C) correction. Data from SOCRATES flight rf15, 5:55:00 to 6:10:00 UTC, a flight segment in the marine boundary layer.'>>=
 
 Dd %>% select(Time, TASX, ATH1, ATH1C) %>% VSpec(ylim=c(1.e-5, 1.e-2)) + theme_WAC()
+@
+
+A still better way of applying this correction is to resample 25-Hz
+measurements at 1 Hz, because the 25-Hz correction appears to be significantly
+better than this one. 
+
+<<compare1Hz, include = TRUE, fig.height=4, fig.cap = 'Corrected measurements for an unheated sensor (ATH1) from a 1-Hz data file from SOCRATES flight 15. The original measurement corrected by filtering the dynamic-heating contribution is shown as the dashed thin black line. It is evidently delayed and smoothed relative to the corrected measurement obtained from the unheated sensor, shown for reference as the dotted red line (with adjustment by $-0.1^\\circ$C to aid comparison to the heated sensor). The green line labeled "ATH1C1" is the corrected measurement obtained from the heated sensor using processing applied to the 1-Hz file, which the blue line labeled "ATH1C" is the result of averaging the 25-Hz measurements to 1 Hz. Both move closer to the reference "ATF1M" line, but "ATH1C" appears to provide a superior correction.'>>=
+
+DO <- getNetCDF('/Data/SOCRATES/SOCRATESrf15TOLD.nc', ## saved from an earlier run
+                standardVariables(c('ATH1', 'ATH1C', 'ATH1F', 'ATF1')))
+DN <- getNetCDF('/Data/SOCRATES/SOCRATESrf15T.nc',    ## new run using the .Rdata file
+                standardVariables(c('ATH1', 'ATH1C', 'ATH1F', 'ATF1')))
+DN$ATH1C1 <- DO$ATH1C
+DN$ATF1M <- DN$ATF1-0.1
+DN %>% selectTime(50100,50200) %>% 
+       select(Time, ATH1C, ATH1C1, ATF1M, ATH1F) %>%
+      plotWAC(legend.position='topright', 
+            col = c('blue', 'forestgreen', 'red', 'black'), 
+            lty=c(1,1,3,2), lwd=c(2,3,2,1))
 @
 
 \clearpage{}

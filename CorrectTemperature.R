@@ -108,9 +108,9 @@ if (!interactive()) {  ## can run interactively or via Rscript
   RTN <- FALSE
   UH1 <- FALSE
   if (length (run.args) > 2) {
-    if (any(run.args) == 'FFT') {FFT <- TRUE}
-    if (any(run.args) == 'RT') {RTN <- TRUE}
-    if (any(run.args) == 'UH1') {UH1 <- TRUE}
+    if (any(run.args == 'FFT')) {FFT <- TRUE}
+    if (any(run.args == 'RT')) {RTN <- TRUE}
+    if (any(run.args == 'UH1')) {UH1 <- TRUE}
   }
 } else {
   x <- readline (sprintf ("Project is %s; CR to accept or enter new project name: ", Project))
@@ -174,7 +174,7 @@ copy_attributes <- function (atv, v, nfile) {
   }
 }
 
-recoveryF <- function(TV) {  ## TV should be a temperature column in D
+recoveryF <- function(D, TV) {  ## TV should be a temperature column in D
   # get the recovery factor from the attribute:
   rf.txt <- attr(TV, 'RecoveryFactor')
   if (is.null (rf.txt)) {  ## protection for omitted attribute
@@ -202,6 +202,7 @@ correctDynamicHeating <- function(D, AT) {
   platform <- ifelse (grepl('677', platform), 'GV', 'C130')
   heated <- attr(D[, AT], 'long_name')
   heated <- ifelse(grepl('nheated', heated), FALSE, TRUE)
+  if (grepl('^ATR', AT)) {heated <- FALSE}  ## old name convention
   # Select the right filter
   Rate <- attr(D, 'Rate')
   if (Rate == 25) {
@@ -242,7 +243,7 @@ correctDynamicHeating <- function(D, AT) {
     }
   }
 
-  rf <- recoveryF(D[, AT])
+  rf <- recoveryF(D, AT)
   # Is the associated recovery temperature present?
   dep <- attr(D[, AT], 'Dependencies')
   RT <- gsub(' .*', '', gsub('^. ', '', dep))
@@ -281,7 +282,9 @@ correctTemperature <- function(D, RT, responsePar =
   heated <- attr(D[, RT], 'long_name')
   heated <- ifelse(grepl('nheated', heated), FALSE, TRUE)
   ## This indication is often missing from RTFx:
-  if (grepl('RTF', RT)) {heated <- FALSE}
+  if ((grepl('RTF', RT)) || (grepl('ATF', RT)) || (grepl('^ATR', RT)) || (grepl('^RTR', RT))) {
+    heated <- FALSE
+  }
   a <- responsePar$a
   tau1 <- responsePar$tau1
   tau2 <- responsePar$tau2
@@ -389,6 +392,7 @@ processFile <- function(ProjectDir, Project, Flight) {
   if ('AT_A2' %in% TVARS) {TVARS <- TVARS[-which('AT_A2' == TVARS)]}
   if ('AT_VXL' %in% TVARS) {TVARS <- TVARS[-which('AT_VXL' == TVARS)]}
   if ('AT_VXL2' %in% TVARS) {TVARS <- TVARS[-which('AT_VXL2' == TVARS)]}
+  if ('OAT' %in% TVARS) {TVARS <- TVARS[-which('OAT' == TVARS)]} #omit Ophir T
   if (!UH1 && (Rate != 25)) {  ## omit unheated-probe measurements
     for (i in length(TVARS):1) {  ## note reversed order
       if(grepl('nheated', FI$LongNames[which(TVARS[i] == FI$Variables)])) {
@@ -403,6 +407,19 @@ processFile <- function(ProjectDir, Project, Flight) {
   RVARS <- sub('^A', 'R', TVARS)
   ## get the old netCDF variables needed to calculate the modified variables
   VarList <- standardVariables(TVARS)
+  ## Treat case, in some old projects, where EWX and MACHX are not present:
+  if (!('EWX' %in% FI$Variables)) {
+    VarList <- VarList[-which('EWX' == VarList)]
+    VarList <- c(VarList, 'EDPC')
+  }
+  if (!('MACHX' %in% FI$Variables)) {
+    VarList <- VarList[-which('MACHX' == VarList)]
+    VarList <- c(VarList, 'XMACH2')
+  }
+  if (!('GGALT' %in% FI$Variables)) {
+    VarList <- VarList[-which('GGALT' == VarList)]
+    VarList <- c(VarList, 'GGALT_NTL')
+  }
   ## Add the recovery temperatures if present; otherwise recalculate:
   RVS <- RVARS[RVARS %in% FI$Variables]
   ## The next lines deal with, for a 25-Hz file, the recovery temperature
@@ -422,13 +439,17 @@ processFile <- function(ProjectDir, Project, Flight) {
     }
   }
   D <- getNetCDF (fname, VarList)
+  if ('EDPC' %in% VarList) {
+    D$EWX <- D$EDPC
+  }
+  if ('XMACH2' %in% VarList) {
+    D$MACHX <- sqrt(D$XMACH2)
+  }
+  if ('GGALT_NTL' %in% VarList) {
+    D$GGALT <- D$GGALT_NTL
+  }
   Rate <- attr(D, 'Rate')
-  ## Special for WECAN: try to deal with all the missing values
-  # DSAVE <- D
-  # for (V in names(D)) {D[,V] <- SmoothInterp(D[,V], .Length=0)}
-  # D <- transferAttributes(DSAVE, D)
 
-  
   ## Calculate the new variables:
   E <- SmoothInterp(D$EWX / D$PSXC, .Length = 0)
   D$Cp <- SpecificHeats (E)[, 1]
@@ -440,7 +461,7 @@ processFile <- function(ProjectDir, Project, Flight) {
       TV <- sub('^R', 'A', RV)
       prb <- 'HARCO'
       if (TV == 'ATH2') {prb <- 'HARCOB'}
-      if (grepl('ATF', TV)) {prb <- 'UNHEATED'}
+      if (grepl('ATF', TV) || grepl('ATR', TV)) {prb <- 'UNHEATED'}
       retrievedRVARS[which(RV == RVARS)] <- TRUE
       D[, RV] <- SmoothInterp(D[, TV] + RecoveryFactor(D$MACHX, prb) * D$DH, .Length = 0)
       ## modify the attributes for saving in the new file:
@@ -480,10 +501,12 @@ processFile <- function(ProjectDir, Project, Flight) {
   if (length(ic) > 0) {
     CutoffPeriod[ic] <- Rate * 0.5  # 0.5 s for ATFx
     probe[ic] <- 'UNHEATED'
-    if (platform == 'GV') {
-      PAR[[ic]] <- ParamSF
-    } else {
-      PAR[[ic]] <- Param1
+    for (icc in ic) {
+      if (platform == 'GV') {
+        PAR[[icc]] <- ParamSF
+      } else {
+        PAR[[icc]] <- Param1
+      }
     }
   }
   ic <- which(grepl('ATH.*2', TVARS))  ## .* allows for names like ATHL2
@@ -493,7 +516,7 @@ processFile <- function(ProjectDir, Project, Flight) {
   }
   if (Rate == 1) {  # Protection against script failure for a LRT file
     CutoffPeriod[CutoffPeriod == 1] <- 2.2
-    CutoffPeriod[CutoffPeriod == 0.5] <- 2.0
+    CutoffPeriod[CutoffPeriod == 0.5] <- 2.2
   }
   
   DHM <- rep(D$DH, length(TVARS))
@@ -515,7 +538,7 @@ processFile <- function(ProjectDir, Project, Flight) {
       D[, newRVARS2[i]] <- addFFTsoln(D, RVARS[i], responsePar = PAR[[i]])
     }
     # get the recovery factor from the attribute:
-    rf <- recoveryF(D[, TVARS[[i]]])
+    rf <- recoveryF(D, TVARS[[i]])
     # Is the associated recovery temperature present?
     dep <- attr(D[, TVARS[i]], 'Dependencies')
     RT <- gsub(' .*', '', gsub('^. ', '', dep))
@@ -540,6 +563,58 @@ processFile <- function(ProjectDir, Project, Flight) {
       D[, newTVARS2[i]] <- D[, newRVARS2[i]] - Q  ## using FFT
     }
   }
+  ## At this point, have all the new variables.
+  ## If this is a 25-Hz file, the 1-Hz averages are better than those
+  ## obtained by using this script at 1 Hz. The 1-Hz averages can be used 
+  ## instead in the corrected 1-Hz file if they are available. Those averages
+  ## can be obtained from the HRT file by averaging like this:
+  if (Rate == 25) {
+    ## Construct a new data.frame containing the 1-Hz averages.
+    ## (By convention, 1-Hz values are the average of values beginning
+    ## at the indicated time, so Time+0.5s or Var[ix+13] represents the
+    ## value at Time[ix].)
+    D1HZ <- data.frame(Time = D$Time[seq(1, nrow(D)-1, by = 25)])
+    for (TV1 in c(newTVARS, newRVARS, filteredTVARS)) {
+      vs <- zoo::na.approx (as.vector(D[, TV1]), na.rm=FALSE, rule = 2)
+      rmean <- rollapply(vs, width=25, FUN=mean, fill=NA)
+      rmean <- zoo::na.approx (as.vector(rmean), na.rm=FALSE)
+      means <- mean(vs, na.rm=TRUE)
+      vs[is.na(vs)] <- rmean[is.na(vs)]
+      vs[is.na(vs)] <- means
+      vs <- signal::filtfilt (signal::butter (3, 2/50), vs)
+      D1HZ[, TV1] <- vs[seq(13, nrow(D), by = 25)]
+    }
+    save(D1HZ, file = sprintf('%s%s1Hztemp.Rdata', Project, Flight))
+    ## also save as netCDF file:
+    # D1HZ <- transferAttributes(D, D1HZ)
+    # attr(D1HZ, 'Rate') <- 1
+    # for (v in names(D1HZ)) {
+    #   if (v == 'Time') {next}
+    #   vv <- sub('.$', '', v)
+    #   la <- attributes(D[, vv])
+    #   la$Dimensions <- list('Time')
+    #   attr(D1HZ[, v], 'Dimensions') <- list('Time')
+    # }
+    # makeNetCDF(D1HZ, sprintf('%s%sLRT.nc', Project, Flight))
+  } else { ## This section uses the data.frame saved previously if available
+    fchk <- sub('1Hz', 'h1Hz', sprintf('%s%s1Hztemp.Rdata', Project, Flight))
+    if(file.exists(fchk)) {
+      load(fchk)  ## loads D1HZ
+      ## beware of time mis-match: get the indices where Time matches
+      ix <- match(D$Time, D1HZ$Time)  ## will be NA for no match
+      for (v in names(D1HZ)) {
+        if (v == 'Time') {next}
+        if (v %in% names(D)) {
+          D[!is.na(ix), v] <- D1HZ[!is.na(ix), v] ## replace by saved value from 25-Hz run
+        }
+      }
+
+    }
+  }
+  
+  
+  
+  
   ## Add the new variables:
   if (FFT) {
     newTVARS <- c(newTVARS, filteredTVARS, newTVARS2)  ## omit newTVARS2?
