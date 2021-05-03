@@ -75,9 +75,6 @@ availability:
     The data files used in this analysis are curated as indicated by
     the following references and are publicly available. They can be requested
     from the National Center for Atmospheric Research, Earth Observing
-    Laboratory, at this web site:
-    \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}.
-    The files with references are as follows:
     \begin{center}
     \begin{tabular}{|c|c|}
     \hline 
@@ -100,7 +97,6 @@ availability:
     as implemented in the R package "knitr" [@Xie2014b]. The
     program, "SensibleHeatFluxAMT.Rmd" is archived on "GitHub"
     in the directory at
-    \href{https://github.com/WilliamCooper/SensibleHeatFlux.git}{this URL}.
     There is some supplemental material in that directory, including a
     workflow document and some code segments saved in
     the "chunks" subdirectory. The full directory should be downloaded
@@ -109,6 +105,10 @@ availability:
     A package named Ranadu [@Ranadu2.6],
     containing auxillary functions, was used extensively in the R code
     and can be downloaded from that reference.
+    Laboratory, at this web site:
+    \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}.
+    The files with references are as follows:
+    \href{https://github.com/WilliamCooper/SensibleHeatFlux.git}{this URL}.
 authorcontribution: |
   The first author wrote the processing code and developed the general
   idea for the paper. The second author contributed
@@ -120,7 +120,6 @@ acknowledgements: |
   for Atmospheric Research, which is a major facility sponsored by the
   National Science Foundation under Cooperative Agreement No. 1852977.
   Data provided by NCAR/EOL under the sponsorship of the National 
-  Science Foundation. (https://data.eol.ucar.edu/)
   Measurements used here (\citet{VOCALS2011}, \citet{SOCRATES2019},
   \citet{WECAN2018}) were collected in research projects
   (\citet{wood2011vamos},
@@ -142,6 +141,7 @@ acknowledgements: |
   the “rticles” package for R (\citet{rticles}), was used with "RMarkdown"
   (\citet{XieEtAl2018RMarkdown}) to
   generate this paper.
+  Science Foundation. (https://data.eol.ucar.edu/)
 output:
   rticles::copernicus_article: default
   bookdown::pdf_book:
