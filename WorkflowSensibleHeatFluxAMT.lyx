@@ -4004,6 +4004,73 @@ Section
  This makes possible the iteration process used here.
 \end_layout
 
+\begin_layout Standard
+The formula used to calculate the dynamic heating variable 
+\begin_inset Formula $Q$
+\end_inset
+
+ is as follows:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+Q=\frac{{V^{2}}}{2c_{p}}=\frac{M^{2}T_{r}/5}{1+\alpha_{r}M^{2}/5}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $V$
+\end_inset
+
+ is the airspeed, 
+\begin_inset Formula $c_{p}$
+\end_inset
+
+ the specific heat of air, 
+\begin_inset Formula $M$
+\end_inset
+
+ the Mach number, 
+\begin_inset Formula $T_{r}$
+\end_inset
+
+ the (true) absolute recovery temperature, and 
+\begin_inset Formula $\alpha_{r}$
+\end_inset
+
+ the recovery factor.
+ The substitution 
+\begin_inset Formula $c_{v}=\frac{5}{2}R$
+\end_inset
+
+ has been used, where 
+\begin_inset Formula $R$
+\end_inset
+
+ is the gas constant for air.
+ Initially 
+\begin_inset Formula $T_{m}$
+\end_inset
+
+ was used in place of 
+\begin_inset Formula $T_{r}$
+\end_inset
+
+, but once valid transfer-function parameters were found the measurements
+ were corrected to obtain better values for 
+\begin_inset Formula $T_{r}$
+\end_inset
+
+.
+ The change in the results was insignificant.
+\end_layout
+
 \begin_layout Subsection
 Re Sect.
 \begin_inset space ~
@@ -4487,6 +4554,1206 @@ TTRR
  uncertainty, even after only one iteration so the iteration procedure was
  not included in the processing code.
  Instead, the values obtained after iteration were those quoted in the paper.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\emph on
+\bar under
+Investigation of the high-frequency amplitude ratio in Fig.
+\begin_inset space ~
+\end_inset
+
+2b:
+\end_layout
+
+\begin_layout Standard
+A troubling aspect of Fig.
+\begin_inset space ~
+\end_inset
+
+2b is the departure from the fit for frequencies above about 3
+\begin_inset space ~
+\end_inset
+
+Hz.
+ The correction to the recovery temperature discussed in the previous paragraph
+ was used to show that this did not correct the problem.
+ The amplitude ratio is the ratio of the fluctuations in 
+\begin_inset Formula $T_{m}$
+\end_inset
+
+(TTRR) or, after correction, 
+\begin_inset Formula $T_{r}$
+\end_inset
+
+, to those in 
+\begin_inset Formula $Q$
+\end_inset
+
+, so the explanation could be either too large fluctuations in 
+\begin_inset Formula $T_{m}$
+\end_inset
+
+ (e.g., from noise) or too small fluctuations in 
+\begin_inset Formula $Q$
+\end_inset
+
+ (e.g., from attenuation of the signal).
+ 
+\begin_inset Formula $Q$
+\end_inset
+
+ depends on 
+\begin_inset Formula $V^{2}$
+\end_inset
+
+ so the variance spectrum for 
+\begin_inset Formula $Q$
+\end_inset
+
+ would be expected to show a -5/3 slope on a logarithmic plot if that is
+ the case for 
+\begin_inset Formula $V$
+\end_inset
+
+.
+ It is less clear what slope to expect for the measured recovery temperature
+ TTRR, although in an inertial subrange the air temperature might be expected
+ to exhibit -5/3 slope.
+ The manuscript argues that a filtered version of dynamic heating should
+ be used, so it is useful to correct the dynamic heating to see the shape
+ of the resulting air temperature.
+ This is shown as AT in the following plot.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Chunk
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+
+include=FALSE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+source('chunks/initialize.R')
+\end_layout
+
+\begin_layout Plain Layout
+
+load (file = './DVOCALS.Rdata')
+\end_layout
+
+\begin_layout Plain Layout
+
+  source('chunks/theme_WAC.R')
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## Special test: Filter TTRR
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## D$TTRR <- signal::filter( signal::butter (3, 0.7), D$TTRR)
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## D <- transferAttributes(DVOCALS, D)
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## Revise the calculation of dynamic heating to avoid dependence on AT:
+\end_layout
+
+\begin_layout Plain Layout
+
+  D$MACH <- MachNumber(D$PSXC, D$QCXC)
+\end_layout
+
+\begin_layout Plain Layout
+
+  recoveryFactor <- attr(D[, 'ATRR'], 'RecoveryFactor')
+\end_layout
+
+\begin_layout Plain Layout
+
+  XXA <-  D$MACH ^ 2 / 5
+\end_layout
+
+\begin_layout Plain Layout
+
+  D$DH <- (D$TTRR + 273.15) * XXA / (1 + recoveryFactor * XXA)
+\end_layout
+
+\begin_layout Plain Layout
+
+  D$DH2 <- (D$RT + 273.15) * XXA / (1 + recoveryFactor * XXA)
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## Further adjust dynamic-heating for sensor response:
+\end_layout
+
+\begin_layout Plain Layout
+
+  reviseQ <- function (.data, P) {
+\end_layout
+
+\begin_layout Plain Layout
+
+    # P is Param1, e.g.; alphaR is recovery factor
+\end_layout
+
+\begin_layout Plain Layout
+
+    .data$Q <- .data$TASX ^ 2 / 2010
+\end_layout
+
+\begin_layout Plain Layout
+
+    aV <- P$a
+\end_layout
+
+\begin_layout Plain Layout
+
+    tau1V <- P$tau1
+\end_layout
+
+\begin_layout Plain Layout
+
+    tau2V <- P$tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+    Rate <- attr (.data, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+    fS <- function(y, i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      (.data$Q[i] - y) / (tau2V * Rate)
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    fM <- function (y, i) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      (aV * .data$Q[i] + (1 - aV) * TsQ[i] - y) / (Rate * tau1V)
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+    TsQ <- rk4.integrate (fS, .data$Q[1], 1:nrow(.data))
+\end_layout
+
+\begin_layout Plain Layout
+
+    Qp <- rk4.integrate (fM, .data$Q[1], 1:nrow(.data))
+\end_layout
+
+\begin_layout Plain Layout
+
+    return (Qp)
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  a <- 0.733 # 0.713
+\end_layout
+
+\begin_layout Plain Layout
+
+  tau1 <- 0.0308  # 0.0335
+\end_layout
+
+\begin_layout Plain Layout
+
+  tau2 <- 0.447
+\end_layout
+
+\begin_layout Plain Layout
+
+  Param1 <- list(
+\end_layout
+
+\begin_layout Plain Layout
+
+    a = a,
+\end_layout
+
+\begin_layout Plain Layout
+
+    tau1 = tau1,
+\end_layout
+
+\begin_layout Plain Layout
+
+    tau2 = tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+  )
+\end_layout
+
+\begin_layout Plain Layout
+
+  D$DH3 <- reviseQ(D, Param1)
+\end_layout
+
+\begin_layout Plain Layout
+
+  # D$RTT <- D$REF + D$DH3
+\end_layout
+
+\begin_layout Plain Layout
+
+  ## temporary: shift D$AT later in time
+\end_layout
+
+\begin_layout Plain Layout
+
+  # D$AT <- ShiftInTime (D$AT, .rate=25, .shift=40)
+\end_layout
+
+\begin_layout Plain Layout
+
+  Tasm <- mean(D$TASX, na.rm = TRUE)
+\end_layout
+
+\begin_layout Plain Layout
+
+  DT1 <- D %>% selectTime(65000, 70000)
+\end_layout
+
+\begin_layout Plain Layout
+
+  DT2 <- D %>% selectTime(73300, 74300)
+\end_layout
+
+\begin_layout Plain Layout
+
+  DT3 <- D %>% selectTime(104600, 105600)
+\end_layout
+
+\begin_layout Plain Layout
+
+  DT4 <- D %>% selectTime(114200, 115200)  ## 113900, 115200
+\end_layout
+
+\begin_layout Plain Layout
+
+  DT5 <- D %>% selectTime(124300, 125300)
+\end_layout
+
+\begin_layout Plain Layout
+
+  DT6 <- D %>% selectTime(133000, 134000)
+\end_layout
+
+\begin_layout Plain Layout
+
+  DZV <- rbind(DT1, DT2, DT3, DT4, DT5, DT6)
+\end_layout
+
+\begin_layout Plain Layout
+
+  rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+\end_layout
+
+\begin_layout Plain Layout
+
+  .Var1 <- 'TTRR'
+\end_layout
+
+\begin_layout Plain Layout
+
+  .Var2 <- 'DH'
+\end_layout
+
+\begin_layout Plain Layout
+
+  .Var3 <- 'ATRR'
+\end_layout
+
+\begin_layout Plain Layout
+
+  .Var4 <- 'AT'
+\end_layout
+
+\begin_layout Plain Layout
+
+  .Var5 <- 'DH3'
+\end_layout
+
+\begin_layout Plain Layout
+
+  .Var6 <- 'DH2'
+\end_layout
+
+\begin_layout Plain Layout
+
+  spans <- 25
+\end_layout
+
+\begin_layout Plain Layout
+
+  if(exists('sp')) {rm('sp')}
+\end_layout
+
+\begin_layout Plain Layout
+
+  for (.data in list(DT1, DT2, DT3, DT4, DT5, DT6)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+   Z <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          capture.output (Vr <-
+\end_layout
+
+\begin_layout Plain Layout
+
+                            SmoothInterp(detrend (.data[, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                              c('Time', .Var1)]), .Length = 0))
+\end_layout
+
+\begin_layout Plain Layout
+
+     
+\end_layout
+
+\begin_layout Plain Layout
+
+    Z <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          capture.output (VrC <-
+\end_layout
+
+\begin_layout Plain Layout
+
+                            SmoothInterp(detrend (.data[, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                              c('Time', .Var2)]), .Length = 0))
+\end_layout
+
+\begin_layout Plain Layout
+
+     Z <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          capture.output (VrA <-
+\end_layout
+
+\begin_layout Plain Layout
+
+                            SmoothInterp(detrend (.data[, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                              c('Time', .Var3)]), .Length = 0))
+\end_layout
+
+\begin_layout Plain Layout
+
+      Z <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          capture.output (VrB <-
+\end_layout
+
+\begin_layout Plain Layout
+
+                            SmoothInterp(detrend (.data[, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                              c('Time', .Var4)]), .Length = 0))
+\end_layout
+
+\begin_layout Plain Layout
+
+     Z <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          capture.output (VrD <-
+\end_layout
+
+\begin_layout Plain Layout
+
+                            SmoothInterp(detrend (.data[, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                              c('Time', .Var5)]), .Length = 0))
+\end_layout
+
+\begin_layout Plain Layout
+
+      Z <-
+\end_layout
+
+\begin_layout Plain Layout
+
+          capture.output (VrE <-
+\end_layout
+
+\begin_layout Plain Layout
+
+                            SmoothInterp(detrend (.data[, 
+\end_layout
+
+\begin_layout Plain Layout
+
+                              c('Time', .Var6)]), .Length = 0))
+\end_layout
+
+\begin_layout Plain Layout
+
+    Rate <- attr(.data, 'Rate')
+\end_layout
+
+\begin_layout Plain Layout
+
+    vcv <- cbind(ts(Vr, frequency = Rate), ts(VrC, frequency = Rate))
+\end_layout
+
+\begin_layout Plain Layout
+
+    vcv2 <- cbind(ts(VrA, frequency = Rate), ts(VrB, frequency = Rate))
+\end_layout
+
+\begin_layout Plain Layout
+
+    vcv3 <- cbind(ts(VrD, frequency = Rate), ts(VrE, frequency = Rate))
+\end_layout
+
+\begin_layout Plain Layout
+
+    P <-
+\end_layout
+
+\begin_layout Plain Layout
+
+      spec.pgram(
+\end_layout
+
+\begin_layout Plain Layout
+
+        vcv,
+\end_layout
+
+\begin_layout Plain Layout
+
+        detrend = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        fast = TRUE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        plot = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        spans = spans
+\end_layout
+
+\begin_layout Plain Layout
+
+      )
+\end_layout
+
+\begin_layout Plain Layout
+
+    P2 <-
+\end_layout
+
+\begin_layout Plain Layout
+
+      spec.pgram(
+\end_layout
+
+\begin_layout Plain Layout
+
+        vcv2,
+\end_layout
+
+\begin_layout Plain Layout
+
+        detrend = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        fast = TRUE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        plot = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        spans = spans
+\end_layout
+
+\begin_layout Plain Layout
+
+      )
+\end_layout
+
+\begin_layout Plain Layout
+
+    P3 <-
+\end_layout
+
+\begin_layout Plain Layout
+
+      spec.pgram(
+\end_layout
+
+\begin_layout Plain Layout
+
+        vcv3,
+\end_layout
+
+\begin_layout Plain Layout
+
+        detrend = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        fast = TRUE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        plot = FALSE,
+\end_layout
+
+\begin_layout Plain Layout
+
+        spans = spans
+\end_layout
+
+\begin_layout Plain Layout
+
+      )
+\end_layout
+
+\begin_layout Plain Layout
+
+    # plot(P$freq, P$spec[,1], log='xy', type='l', col='blue')
+\end_layout
+
+\begin_layout Plain Layout
+
+    # lines(P$freq, P$spec[,2], col='forestgreen')
+\end_layout
+
+\begin_layout Plain Layout
+
+    if(!exists('sp')) {
+\end_layout
+
+\begin_layout Plain Layout
+
+      sp <- rep(0, 6*length(P$freq))
+\end_layout
+
+\begin_layout Plain Layout
+
+      dim(sp) <- c(length(P$freq), 6)
+\end_layout
+
+\begin_layout Plain Layout
+
+      sp[, 1:2] <- P$spec
+\end_layout
+
+\begin_layout Plain Layout
+
+      sp[, 3:4] <- P2$spec
+\end_layout
+
+\begin_layout Plain Layout
+
+      sp[, 5:6] <- P3$spec
+\end_layout
+
+\begin_layout Plain Layout
+
+    } else {
+\end_layout
+
+\begin_layout Plain Layout
+
+      sp[, 1:2] <- sp[, 1:2] + P$spec
+\end_layout
+
+\begin_layout Plain Layout
+
+      sp[, 3:4] <- sp[, 3:4] + P2$spec
+\end_layout
+
+\begin_layout Plain Layout
+
+      sp[, 5:6] <- sp[, 5:6] + P3$spec
+\end_layout
+
+\begin_layout Plain Layout
+
+    }
+\end_layout
+
+\begin_layout Plain Layout
+
+  }
+\end_layout
+
+\begin_layout Plain Layout
+
+  sp <- sp / 6
+\end_layout
+
+\begin_layout Plain Layout
+
+  DP <- data.frame(freq=P$freq, TTRR=P$freq*sp[,1], Q=P$freq*sp[,2], 
+\end_layout
+
+\begin_layout Plain Layout
+
+                   AT=P$freq*sp[,4])
+\end_layout
+
+\begin_layout Plain Layout
+
+  g <- ggplotWAC(DP, xlim=c(0.01,15)) +  
+\end_layout
+
+\begin_layout Plain Layout
+
+          ylab('frequency x spectral variance')
+\end_layout
+
+\begin_layout Plain Layout
+
+  g <-   g + scale_x_log10(
+\end_layout
+
+\begin_layout Plain Layout
+
+    breaks = trans_breaks("log10", function(x)
+\end_layout
+
+\begin_layout Plain Layout
+
+      10 ^ x, n = 4),
+\end_layout
+
+\begin_layout Plain Layout
+
+    labels = trans_format("log10", math_format(expr = 10 ^ .x))
+\end_layout
+
+\begin_layout Plain Layout
+
+  ) + xlab('frequency [Hz]')
+\end_layout
+
+\begin_layout Plain Layout
+
+  g <- g + scale_y_log10(
+\end_layout
+
+\begin_layout Plain Layout
+
+      breaks = trans_breaks("log10", function(x)
+\end_layout
+
+\begin_layout Plain Layout
+
+        10 ^ x, n = 4),
+\end_layout
+
+\begin_layout Plain Layout
+
+      #limits = ylim,
+\end_layout
+
+\begin_layout Plain Layout
+
+      labels = trans_format("log10", math_format(10 ^ .x))
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    annotation_logticks(sides = 'trbl') +
+\end_layout
+
+\begin_layout Plain Layout
+
+    coord_cartesian(xlim = c(0.01, 15), ylim = c(1.e-5, 1.e-2))
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- g + theme_WAC()
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- g + geom_path(data=data.frame(x=c(1e-2,10), y=c(2.e-3, 2.e-5)), aes(x=x,
+ y=y), colour='darkorange')
+\end_layout
+
+\begin_layout Plain Layout
+
+## Add a theoretical line for recovery temperature:
+\end_layout
+
+\begin_layout Plain Layout
+
+freq <- P$freq
+\end_layout
+
+\begin_layout Plain Layout
+
+RTX <- 10^((log10(freq)+2)*(-2/3))*1.e-3
+\end_layout
+
+\begin_layout Plain Layout
+
+## Add dynamic heating:
+\end_layout
+
+\begin_layout Plain Layout
+
+# load('AR.Rdata')
+\end_layout
+
+\begin_layout Plain Layout
+
+# D$QF <- as.vector(signal::filter(AR, D$Q))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Modify by the transfer function:
+\end_layout
+
+\begin_layout Plain Layout
+
+source('chunks/LTphase.R')
+\end_layout
+
+\begin_layout Plain Layout
+
+E <- LTphase(P$freq, Param1)
+\end_layout
+
+\begin_layout Plain Layout
+
+# RTX <- (sqrt(RTX) + recoveryFactor * Tasm^2/2010 * E$Amp)^2
+\end_layout
+
+\begin_layout Plain Layout
+
+RTX <- RTX * E$Amp^2
+\end_layout
+
+\begin_layout Plain Layout
+
+# g <- g + geom_path(data=data.frame(freq=freq, RTX=RTX), aes(x=freq, y=RTX),
+ colour='red', lty=2)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\begin_layout Plain Layout
+
+  # plot(P$freq, sp[,1], log='xy', type='l', col='blue')
+\end_layout
+
+\begin_layout Plain Layout
+
+  # lines(P$freq, sp[,2], col='forestgreen')
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Chunk
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+
+include=TRUE, fig.cap='Variance spectra for the measured recovery temperature
+ (TTRR) and for dynamic heating (Q) for the six flight legs used for Fig.
+ 2.
+ The variance spectrum for the air temperature after correction for dynamic
+ heating as in the manuscript (AT) is also shown.
+ The orange line is a reference line with the expected -2/3 slope.'
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+print(g)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The variance spectra for 
+\begin_inset Formula $Q$
+\end_inset
+
+ and TTRR both seem to display high-frequency problems:
+\end_layout
+
+\begin_layout Enumerate
+The spectrum for 
+\begin_inset Formula $Q$
+\end_inset
+
+ appears too small at high frequency.
+ The expectation is that this should have 
+\begin_inset Formula $-2/3$
+\end_inset
+
+ slope on this weighted plot, as indicated by the orange reference line.
+ The spectral density for 
+\begin_inset Formula $Q$
+\end_inset
+
+ starts to depart below the expected slope for frequencies above about 5
+ Hz, and there may be excess variance around 5 Hz.
+\end_layout
+
+\begin_layout Enumerate
+The variance spectrum for AT still has excess variance at high frequency,
+ although the excess is smaller than for the uncorrected air temperature
+ (not shown).
+ This is not the expected behavior for a sensor having the time response
+ otherwise found in this study; instead, the expected shape would be 
+\begin_inset Formula $-2/3$
+\end_inset
+
+ slope for low frequency and substantial attenuation of the measurement
+ at high frequency.
+ 
+\end_layout
+
+\begin_layout Standard
+The next plot shows, as RM, a calculated prediction of how the variance
+ spectrum of the recovery temperature would look if the true air temperature
+ were as shown by the orange line.
+ The result resembles the shape of the measurement (TTRR) reasonably for
+ frequencies below about 3 Hz but shows a significant departure above 3
+\begin_inset space ~
+\end_inset
+
+Hz, matching the decrease in the filtered dynamic-heating term (QP).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Chunk
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+
+include=FALSE
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+DP2 <- data.frame(freq=P$freq, TTRR=P$freq*sp[,1], RM=P$freq*sp[,5]+RTX,
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+                   QP=P$freq*sp[,5])
+\end_layout
+
+\begin_layout Plain Layout
+
+  g <- ggplotWAC(DP2, xlim=c(0.01,15)) +  
+\end_layout
+
+\begin_layout Plain Layout
+
+          ylab('frequency x spectral variance')
+\end_layout
+
+\begin_layout Plain Layout
+
+  g <-   g + scale_x_log10(
+\end_layout
+
+\begin_layout Plain Layout
+
+    breaks = trans_breaks("log10", function(x)
+\end_layout
+
+\begin_layout Plain Layout
+
+      10 ^ x, n = 4),
+\end_layout
+
+\begin_layout Plain Layout
+
+    labels = trans_format("log10", math_format(expr = 10 ^ .x))
+\end_layout
+
+\begin_layout Plain Layout
+
+  ) + xlab('frequency [Hz]')
+\end_layout
+
+\begin_layout Plain Layout
+
+  g <- g + scale_y_log10(
+\end_layout
+
+\begin_layout Plain Layout
+
+      breaks = trans_breaks("log10", function(x)
+\end_layout
+
+\begin_layout Plain Layout
+
+        10 ^ x, n = 4),
+\end_layout
+
+\begin_layout Plain Layout
+
+      #limits = ylim,
+\end_layout
+
+\begin_layout Plain Layout
+
+      labels = trans_format("log10", math_format(10 ^ .x))
+\end_layout
+
+\begin_layout Plain Layout
+
+    ) +
+\end_layout
+
+\begin_layout Plain Layout
+
+    annotation_logticks(sides = 'trbl') +
+\end_layout
+
+\begin_layout Plain Layout
+
+    coord_cartesian(xlim = c(0.01, 15), ylim = c(1.e-6, 1.e-2))
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- g + theme_WAC()
+\end_layout
+
+\begin_layout Plain Layout
+
+g <- g + geom_path(data=data.frame(x=c(1e-2,10), y=c(1.e-3, 1.e-5)), aes(x=x,
+ y=y), colour='darkorange')
+\end_layout
+
+\begin_layout Plain Layout
+
+# g <- g + geom_path(data=data.frame(freq=freq, RTX=D$), aes(x=freq, y=RTX),
+ colour='red', lty=2)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Chunk
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+
+include=TRUE, fig.cap='The predicted measurement (RM) if the air temperature
+ has the spectrum shown as the orange line and the modified dynamic-heating
+ term (QP) is added.
+ The actual measurement is also shown (TTRR).'
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+print(g)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The source of the excess variance in the measured recovery temperature has
+ not been identified, but it appears that this is the primary cause of the
+ high-frequency departure from theory in Fig.
+\begin_inset space ~
+\end_inset
+
+2b of the manuscript.
+ In this study, it has been assumed that this departure is spurious and
+ the contribution to the amplitude ratio above 3
+\begin_inset space ~
+\end_inset
+
+Hz should be ignored when fitting the transfer function to the measurements.
+ For this reason, the fit used only the amplitude ratios for frequencies
+ below 3
+\begin_inset space ~
+\end_inset
+
+Hz (although the phase was used up to 12
+\begin_inset space ~
+\end_inset
+
+Hz because it seemed reasonable in this extended range).
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+\emph on
+\bar under
+Extension to GV measurements
 \end_layout
 
 \begin_layout Standard
