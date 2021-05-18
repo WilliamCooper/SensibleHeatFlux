@@ -5723,6 +5723,95 @@ print(g)
 \end_layout
 
 \begin_layout Standard
+Fig.
+\begin_inset space ~
+\end_inset
+
+2a is based on the ratio of amplitudes, but if there is noise in one or
+ both of TTRR and Q then that will make a false contribution to the ratio
+ because what is needed is how TTRR responds to Q.
+ Therefore it may be more appropriate to consider the part of TTRR that
+ is 
+\begin_inset Quotes eld
+\end_inset
+
+caused
+\begin_inset Quotes erd
+\end_inset
+
+ by Q, which will be reflected in the coherence.
+ This suggests scaling the spectrum of TTRR to represent only the part of
+ the variance attributable to Q.
+ That is, find the variance represented by $P(
+\backslash
+nu)
+\backslash
+mathrm{Coh}(
+\backslash
+nu)$ where $
+\backslash
+mathrm{Coh}(
+\backslash
+nu)$ is the squared coherence between TTRR and Q.
+ Then use the ratio between this spectral amplitude and that of Q.
+ This then assumes that the measurement of Q does not contain noise and
+ is not attenuated.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename Tcoh.png
+	lyxscale 50
+	width 85page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variance spectra for the measured recovery temperature (TTRR), dynamic heating
+ (Q), and the measured recovery temperature weighted by the coherency (TCOH).
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The resulting figure (Fig.
+\begin_inset space ~
+\end_inset
+
+6) shows that this leads to a reasonable decrease in the resulting spectrum
+ (plotted here as TCOH) at high frequency.
+ This doesn't explain why TTRR has excess variance here, but it does confirm
+ that the excess is not driven by dynamic-heating fluctuations so it supports
+ excluding that region from the fit.
+\end_layout
+
+\begin_layout Standard
 The source of the excess variance in the measured recovery temperature has
  not been identified, but it appears that this is the primary cause of the
  high-frequency departure from theory in Fig.

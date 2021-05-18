@@ -620,10 +620,11 @@ if (file.exists ('./DVOCALS.Rdata')) {
       'WIC',
       'ATX',
       'PSXC',
+      'QCXC',
       'QCFC'  ## strangely, QCRC was used as primary -- usually not the best
     )
   )
-  D$QCXC <- D$QCFC
+  # D$QCXC <- D$QCFC
   D$DH <- D$TASX ^ 2 / 2010
   ## For use later, "filter" the dynamic-heating term and revise the temperature:
   alphaR <- attr(D[, 'ATRR'], 'RecoveryFactor')
@@ -1192,9 +1193,13 @@ Above \unit{3\,Hz} the prediction is much too low. This could arise because
 there is spurious variance in the measurement $T_m(t)$ not caused by
 dynamic heating or because 
 the measurement of dynamic heating is attenuated at high frequency. The
-variance spectra suggest both may contribute to the discrepancy,
-but spurious variance in the measured recovery temperature appears to be
-the more significant problem.
+variance spectra (not shown) suggest both may contribute to the discrepancy,
+but excess variance in the measured recovery temperature appears to be
+the more significant problem. The variance spectrum of $T_m(t)$ is reduced
+substantially above \unit{3\,Hz} if it is multiplied by the squared coherency
+between $T_m(t)$ and $Q$, so the excess variance above this frequency limit
+is apparently not the result of fluctuations in dynamic heating.
+Exclusion of these measurements from the fit is therefore reasonable.
 
 ```{r fitCoefs, include=TRUE, echo=FALSE}
 
