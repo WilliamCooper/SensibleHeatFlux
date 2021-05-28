@@ -473,7 +473,8 @@ These equations and their solution provide a basis for correcting
 either the measured temperature or the sensible-heat flux calculated
 from the cospectrum in Eq.\ \eqref{eq:heatFlux}. Corrected values can
 be obtained by several methods including integration of the equations
-for the derivatives or by dividing the Fourier transform of the time
+for the derivatives (Eqs.\ \eqref{eq:Ts} and \eqref{eq:Tm}) or by dividing the 
+Fourier transform of the time
 series by the transfer function and then using inverse Fourier transformation
 to recover the corrected time series. Those correction schemes are
 discussed in Appendix\ A. To support such corrections, the next section
@@ -948,7 +949,8 @@ from one flight of the NCAR/NSF C-130 in the "VOCALS" project
 [@wood2011vamos] were selected that had similar flight conditions
 including the intensity of turbulence. The time intervals are
 listed in Table\ 1. For each flight segment, the phase and amplitude
-ratio between the measurement and the dynamic heating term were calculated
+ratio between the measured recovery temperature
+and the dynamic heating term were calculated
 and the results for all six segments were averaged in `r round(SB,0)`
 logarithmically spaced intervals in frequency. The results for the
 average phase are shown in Fig.\ \ref{fig:Vphase}a. The theoretical
@@ -1685,7 +1687,7 @@ include_graphics('figure/fig3.pdf')
 
 
 ```
-\caption{Spectral variance $P(\nu)$ weighted by frequency ($\nu$) for the recovery temperature measured by a heated and an unheated temperature sensor.\label{fig:HARCOSpec}}
+\caption{Spectral variance $P(\nu)$ weighted by frequency ($\nu$) for the recovery temperature measured by a heated and an unheated temperature sensor. The background includes orange dotted lines denoting $-2/3$ slope and the wavelength scale is determined from the average airspeed.\label{fig:HARCOSpec}}
 \end{figure}
 
 
@@ -2244,12 +2246,12 @@ source('chunks/VSpecC.R')
 
 The transfer functions have two potential uses: (i) to predict how
 airborne thermometers will respond; and (ii) to correct measurements
-to compensate for the time response of the sensors. The two sections
-that follow are examples of these two uses. In the next section, the
+to compensate for the time response of the sensors. 
+In Section\ \ref{sec:Correcting-for-Dynamic} the
 transfer functions are used to assess how sensors respond to dynamic
-heating and to develop appropriate correction schemes. Then the following
-section applies the transfer functions to improve measurements of
-the flux of sensible heat.
+heating and to develop appropriate correction schemes. Then 
+Section\ \ref{sec:flux-density} uses the transfer functions to develop 
+improved measurements of the flux of sensible heat.
 
 # Correcting for Dynamic Heating\label{sec:Correcting-for-Dynamic}
 
@@ -2351,7 +2353,7 @@ DS$AT <- reviseDH(DS, Param1, rf)
 DS$AT <- SmoothInterp(DS$AT, .Length = 0)
 
 ```
-\caption{The weighted variance spectrum as a function of frequency $\nu$ for the recovery temperature measured by an unheated sensor. The spectra for the dynamic-heating term and for the calculated air temperature after this correction is applied are also shown.i\label{fig:S15}}
+\caption{The weighted variance spectrum as a function of frequency $\nu$ for the recovery temperature measured by an unheated sensor. The spectra for the dynamic-heating term and for the calculated air temperature after this correction is applied are also shown. The background includes orange dotted lines denoting $-2/3$ slope and the wavelength scale is determined from the average airspeed.\label{fig:S15}}
 \end{figure}
 
 Figure\ \ref{fig:S15} illustrates the problem. The measurements are
@@ -2783,7 +2785,9 @@ dynamic-heating term after application of three different filters.
 Also, variance spectra for the measurement of recovery temperature
 and ambient temperature calculated using the filtered dynamic-heating
 term. ]{Variance spectra for an unheated sensor, for the
-same flight segment used for Fig.\ \ref{fig:S15}.\protect \\
+same flight segment used for Fig.\ \ref{fig:S15}.
+The backgrounds include orange dotted lines denoting $-2/3$ slope,
+and the wavelength scale is determined from the average airspeed.\protect \\
 (a): The dynamic-heating term ("Q") and the filtered term
 obtained by integrating the differential equations for the derivatives
 ("DiffEq"), by Fourier transformation with application of the
@@ -2791,7 +2795,7 @@ transfer function ("FFT"), or applying the digital filter ("filter").
 The result for the latter is so close to that for "FFT" that it
 is obscured in this plot.\protect \\ 
 (b): The measurement of recovery temperature and ambient temperature
-calculated using the filtered dynamic-heating term. The original
+calculated using the digitally filtered dynamic-heating term. The original
 variable for ambient temperature based on standard processing 
 ("with std Q") is also shown.{\label{fig:Integration}}}
 
@@ -3034,7 +3038,8 @@ include_graphics('figure/fig8.pdf')
 
 \caption[Variance spectra for the heated temperature sensor: The unmodified dynamic-heating
 term and two filtered terms. Also, the air temperature as modified
-by filtering the dynamic-heating term.]{Variance spectra for a heated temperature sensor.\protect \\
+by filtering the dynamic-heating term.]{Variance spectra for a heated temperature sensor. 
+The backgrounds include orange dotted lines denoting $-2/3$ slope and the wavelength scale is determined from the average airspeed.\protect \\
 Left, (a): The unmodified dynamic-heating term ("Q") and the two
 filtered terms. The results from solving the differential equations
 ("DiffEq") or from application of the digital filter ("filter")
@@ -3172,7 +3177,7 @@ Fig.\ \ref{fig:ATATF}a
 illustrates the removal of erroneous structure by filtering for
 the unheated sensor, and Fig.\ \ref{fig:ATATF}b
 shows a similar example for the heated sensor. These figures
-illustrate that the erroneous fluctuations in the uncorrected measurements
+illustrate that the erroneous fluctuations in the standard measurements
 can be important in many potential uses of these measurements and
 should be removed as part of standard processing. The effect is particularly
 significant for the heated sensor, for which 
@@ -3182,7 +3187,7 @@ that are caused by subtraction of fluctuations in dynamic
 heating to which the sensor does not respond. These do not arise 
 from real fluctuations in ambient air temperature.
 
-# The Flux Density of Sensible Heat
+# The Flux Density of Sensible Heat\label{sec:flux-density}
 ## Outline of the correction procedure\label{subsec:Outline-correction}
 
 <!-- The measured air temperature $T_{a}$ is normally calculated by subtracting -->
@@ -3199,13 +3204,13 @@ from real fluctuations in ambient air temperature.
 
 Most past studies of temperature-sensor response (e.g., @mccarthy1973method,
 @nicholls1978measurements, @InverarityJTech2000) applied
-corrections to the air temperature after correction for dynamic
+corrections to the air temperature after compensation for dynamic
 heating. That applies the full correction for dynamic heating $Q$
 without considering that the sensor may respond only partly to high-frequency
 fluctuations in $Q$, which was shown in Sect.\ \ref{sec:Correcting-for-Dynamic}
 to lead to erroneous noise in the air temperature. Then that noise
 is amplified by the correction procedure. These errors are avoided
-if corrections are applied instead to the measurement of the recovery
+if corrections for time response are applied instead to the measurement of the recovery
 temperature. The amplification of signals by application of the 
 transfer function restores
 the fluctuations produced by dynamic heating, and those fluctuations
@@ -3916,11 +3921,13 @@ Its units are \unit{W\,m^{-2}}, not \unit{W\,m^{-2}}
 per logarithmic interval as is the case for the weighted cospectrum.
 
 The exceedance distributions before correction, shown as the dashed
-brown lines, were calculated using dynamic-heating corrections that
-were filtered to match the responses of the sensors, but otherwise were
-not corrected. Without correction for the response as represented
-by the transfer function, about 33\% of the flux contributed by wavelengths
-smaller than \unit{2\,km} would be missed. The underestimation is particularly
+brown lines, were calculated using dynamic-heating terms
+filtered to match the responses of the sensors, but otherwise were
+not corrected. About 33\% of the flux contributed by wavelengths
+smaller than \unit{2\,km} would be missed without correction for time 
+response as represented
+by the transfer function, as shown by the solid brown lines.
+The underestimation is particularly
 serious at higher frequencies: In both cases the measured contribution
 from frequencies above \unit{1\,Hz} is more than twice as large after correction
 as it is without correction. A significant contribution to the error is the phase shift that causes the measured temperature to be shifted in phase relative to the updraft, as shown in Fig.\ 1. 
@@ -4647,7 +4654,7 @@ include_graphics('figure/fig11.pdf')
 
 
 ```
-\caption{The cospectrum for the flux of sensible heat (blue line), weighted by frequency $\nu$, for the simulated data generated as described in the text. Three \unit{10\,min} segments of simulated \unit{25\,Hz} data were averaged. The measured cospectrum was obtained by filtering the simulated recovery temperature and subtracting the correction for dynamic heating. For the generated and measured cospectrum, filled circles indicate the average values calculated in 50 logarithmically space intervals, and for the measured cospectrum shading indicates the standard deviation in those intervals. The exceedance lines show the contribution to flux from frequencies higher than the plotted frequency. The corrected cospectrum is not shown but is consistent with the generated cospectrum, as demonstrated by the agreement between the generated exceedance and the corrected exceedance. The units for the exceedance distributions are \unit{W\,m^{-2}}, while the units for the weighted flux cospectra are \unit{W\,m^{-2}} per unit logarithmic increment. The frequency corresponding to a wavelength of \unit{2.5\,km} is denoted by the heavy dashed-black line.\label{fig:simF}}
+\caption{The cospectrum for the flux of sensible heat (blue line), weighted by frequency $\nu$, for the simulated data generated as described in the text. Three \unit{10\,min} segments of simulated \unit{25\,Hz} data were averaged. The measured cospectrum was obtained by filtering the simulated recovery temperature and subtracting the correction for dynamic heating. For the generated and measured cospectra, filled circles indicate the average values calculated in 50 logarithmically spaced intervals, and for the measured cospectrum shading indicates the standard deviation in those intervals. The exceedance lines show the contribution to flux from frequencies higher than the plotted frequency. The corrected cospectrum is not shown but is consistent with the generated cospectrum, as demonstrated by the agreement between the generated exceedance and the corrected exceedance. The units for the exceedance distributions are \unit{W\,m^{-2}}, while the units for the weighted flux cospectra are \unit{W\,m^{-2}} per unit logarithmic increment. The frequency corresponding to a wavelength of \unit{2.5\,km} is denoted by the heavy dashed-black line.\label{fig:simF}}
 \end{figure}
 
 Figure\ \ref{fig:simF} shows (as the green line) how the simulated
