@@ -74,7 +74,10 @@ availability:
   codedata: |
     The data files used in this analysis are curated as indicated by
     the following references and are publicly available. They can be requested
-    from the National Center for Atmospheric Research, Earth Observing
+    from the National Center for Atmospheric Research, Earth Observing 
+    Laboratory, at this web site:
+    \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}.
+    The files with references are as follows:
     \begin{center}
     \begin{tabular}{|c|c|}
     \hline 
@@ -96,7 +99,8 @@ availability:
     via \LaTeX, using principles and techniques described by @Xie2014a
     as implemented in the R package "knitr" [@Xie2014b]. The
     program, "SensibleHeatFluxAMT.Rmd" is archived on "GitHub"
-    in the directory at
+    in the directory at 
+    \href{https://github.com/WilliamCooper/SensibleHeatFlux.git}{this URL}.
     There is some supplemental material in that directory, including a
     workflow document and some code segments saved in
     the "chunks" subdirectory. The full directory should be downloaded
@@ -105,10 +109,6 @@ availability:
     A package named Ranadu [@Ranadu2.6],
     containing auxillary functions, was used extensively in the R code
     and can be downloaded from that reference.
-    Laboratory, at this web site:
-    \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}.
-    The files with references are as follows:
-    \href{https://github.com/WilliamCooper/SensibleHeatFlux.git}{this URL}.
 authorcontribution: |
   The first author wrote the processing code and developed the general
   idea for the paper. The second author contributed
@@ -119,12 +119,15 @@ acknowledgements: |
   This material is based upon work supported by the National Center
   for Atmospheric Research, which is a major facility sponsored by the
   National Science Foundation under Cooperative Agreement No. 1852977.
-  Data provided by NCAR/EOL under the sponsorship of the National 
+  The data were collected using NSF’s Lower Atmosphere Observing Facilities, 
+  which are managed and operated by NCAR’s Earth Observing Laboratory.
   Measurements used here (\citet{VOCALS2011}, \citet{SOCRATES2019},
   \citet{WECAN2018}) were collected in research projects
   (\citet{wood2011vamos},
   \citet{albrecht2019CSET}, \citet{mcfarquhar2021observations}) that used
   the NSF/NCAR research aircraft. Project descriptions and additional
+  information are available at the EOL data site: 
+  \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}.
   The referenced project teams conducted the experiments, with flight
   operations, data acquisition and processing, and other project support
   by the Research Aviation Facility, Earth Observing Laboratory, National
@@ -132,7 +135,7 @@ acknowledgements: |
   were mostly performed using R (\citet{Rlanguage}), with RStudio
   (\citet{RStudio2012})
   and knitr (\citet{Xie2014a,Xie2014b}). Data files in netCDF format
-  have been read and written using the R package "ncdf4" cf.\ \citet{ncdf4}.
+  have been read and written using the R package "ncdf4" (\citet{ncdf4}).
   Substantial use also was made of the "ggplot2" package (\citet{wickham2009})
   for R, and extensive use was made of the "stats" package, part
   of Core R\. Some of the numerical integrations used the Runge-Kutta
@@ -140,8 +143,7 @@ acknowledgements: |
   The Copernicus template provided by Daniel Nüst, which uses 
   the “rticles” package for R (\citet{rticles}), was used with "RMarkdown"
   (\citet{XieEtAl2018RMarkdown}) to
-  generate this paper.
-  Science Foundation. (https://data.eol.ucar.edu/)
+  generate this paper. 
 output:
   rticles::copernicus_article: default
   bookdown::pdf_book:
@@ -953,7 +955,7 @@ ratio between the measured recovery temperature
 and the dynamic heating term were calculated
 and the results for all six segments were averaged in `r round(SB,0)`
 logarithmically spaced intervals in frequency. The results for the
-average phase are shown in Fig.\ \ref{fig:Vphase}a. The theoretical
+average phase are shown in Fig.\ \ref{fig:Vphase}b. The theoretical
 curve is based on best-fit parameters as determined from these measurements
 and those of the amplitude ratio, discussed next.
 
@@ -994,7 +996,7 @@ g <-
                 aes(x = Time, y = Phase),
                 col = 'forestgreen',
                 lwd = 1.5)
-g <- g + annotate('text', x = 10, y = 0, label = '(a)', size = 8)
+g <- g + annotate('text', x = 10, y = 0, label = '(b)', size = 8)
 g1 <- g + theme_WAC(1)
 frq <- seq(0.01, 25, by = 0.01)
 dfr <- data.frame(frq = exp(pf2$xc),
@@ -1058,7 +1060,7 @@ g <-
   )
 g <- g + scale_linetype_manual (name = 'fit: ',
                                 values = c('best' = 1, 'tau2=0.6' = 2))
-g <- g + annotate('text', x = 10, y = 1.05, label = '(b)', size = 8)
+g <- g + annotate('text', x = 10, y = 1.05, label = '(a)', size = 8)
 g2 <- g + ylim(0, 1.3) + theme_WAC(1)
 
 grid.newpage()
@@ -1106,12 +1108,7 @@ include_graphics('figure/fig2.pdf')
 ```
 
 \caption[Phase and amplitude ratio (or gain) for the measured recovery temperature
-relative to dynamic heating.]{(a): Phase of measured recovery temperature relative to dynamic
-heating, for the measurements (with error bars) and for the theoretical
-response for the best-fit parameters (green line). The error bars
-indicate two-standard-deviation ranges in the mean at each plotted
-point. Data from the  flight segments listed in Table\ 1.\protect \\
-(b): The ratio of the spectral amplitude for the measurement
+relative to dynamic heating.]{(a): The ratio of the spectral amplitude for the measurement
 of recovery temperature ($T_{m}(t)$) to that for dynamic heating
 ($Q$), shown as the plotted data points. There are additional data
 points at frequencies below about 0.04 Hz that do not appear in this
@@ -1120,7 +1117,13 @@ green line is the prediction from the transfer function determined
 from the best-fit values matching the phase lag between these variables,
 and the dashed orange line is a similar result with the second time
 constant $\tau_{2}$ increased from 0.447 to \unit{0.6\,s} to illustrate
-sensitivity to this parameter.{\label{fig:Vphase}}}
+sensitivity to this parameter.\protect \\
+(b): Phase of measured recovery temperature relative to dynamic
+heating, for the measurements (with error bars) and for the theoretical
+response for the best-fit parameters (green line). The error bars
+indicate two-standard-deviation ranges in the mean at each plotted
+point. Data for both plots are from the  flight segments listed in Table\ 1.
+{\label{fig:Vphase}}}
 \end{figure}
 
 ```{r checkAmplitude, include=FALSE, fig.pos='t', fig.height = 3.5, fig.cap='The ratio of the spectral amplitude for the measurement of recovery temperature ($T_m(t)$) to that for dynamic heating ($Q$), shown as the plotted data points. There are additional data points at frequencies below about 0.04 Hz that do not appear in this plot because they lie above the upper limit for the ordinate. The green line is the prediction from the transfer function determined from the best-fit values matching the phase lag between these variables, and the dashed orange line is a similar result with the second time constant $\\tau_2$ increased from 0.447 to 0.6 s to illustrate sensitivity to this parameter.'}
@@ -1177,12 +1180,12 @@ suppressWarnings(print(g + ylim(0, 1.3) + theme_WAC(1)))
 
 The ratio of the amplitude of the response to that of the dynamic-heating
 signal, used as an estimate of the gain of the transfer function,
-is shown in Fig.\ \ref{fig:Vphase}b. It is useful to consider both
+is shown in Fig.\ \ref{fig:Vphase}a. It is useful to consider both
 the amplitude and phase when determining the response parameters because,
 as shown in Fig.\ \ref{fig:LTsolution}, the amplitude of the transfer
 function is more sensitive to $\tau_{2}$ than the phase but $\tau_{1}$
 is a very sensitive predictor of the phase at high frequency. For
-the set of favored parameters, Fig.\ \ref{fig:Vphase}b shows the
+the set of favored parameters, Fig.\ \ref{fig:Vphase}a shows the
 standard prediction and another with $\tau_{2}$ set to \unit{0.6\,s} instead,
 to show the sensitivity of this result to that parameter. The best
 prediction based on the measured phases consistently underestimates
@@ -4007,7 +4010,7 @@ plotWAC(
 
 ```
 
-```{r generate, include=FALSE, echo=FALSE, fig.cap='The variance spectrum of the generated time series. Three wind components are shown: $u$ longitudinal; $v$ side lateral; $w$ upward. The simulated eddy dissipation rate was $10^{-3}$ m$^2s^{-3}$. The generated longitudinal spectral density (u) is 3/4 the lateral spectral densities (v and w), as expected in an inertial subrange. The dashed orange lines indicated the expected slope ($-2/3$ for this distribution because it is weighted by frequency), with the large-dot line representing $10^{-4}$ m$^2s^{-3}$ and other lines representing eddy dissipation rates  factors of 10 higher or lower. The spectral variance has been attenuated at low frequency to simulate the shapes that are often observed. The displayed wavelength scale was determined from the average flight speed.'}
+```{r generate, include=FALSE, echo=FALSE, fig.cap='The variance spectrum of the generated time series. Three wind components are shown: $u$ longitudinal; $v$ side lateral; $w$ upward. The simulated eddy dissipation rate was $10^{-3}$ m$^2s^{-3}$. The generated longitudinal spectral density (u) is 3/4 the lateral spectral densities (v and w), as expected in an inertial subrange. The dashed orange lines indicated the expected slope ($-2/3$ for this distribution because it is weighted by frequency), with the large-dot line representing $10^{-4}$ m$^2s^{-3}$ and other lines representing eddy dissipation rates  factors of 10 higher or lower. The spectral variance has been attenuated at low frequency to simulate the shapes that are often observed. The displayed wavelength scale was determined from the assumed average flight speed of 200 m/s.'}
 
 if (file.exists('DF2.Rdata')) {
   ## This is to avoid having this change every run
