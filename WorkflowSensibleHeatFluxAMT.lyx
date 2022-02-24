@@ -619,7 +619,8 @@ literal "false"
 
 \end_inset
 
-, where FTP access can be requested.
+, where FTP access can be requested; see also the specific links in the
+ bibliography of the paper.
  The details of the processing algorithms including those for the calculation
  of wind are documented in this report on 
 \begin_inset CommandInset href
@@ -710,7 +711,7 @@ mdsr
 , this was processed to .pdf format using RStudio (
 \begin_inset CommandInset citation
 LatexCommand citet
-key "RStudio2012"
+key "RStudio2021"
 literal "true"
 
 \end_inset
@@ -1238,7 +1239,7 @@ plotCS()
 \begin_inset Quotes eld
 \end_inset
 
-fig10.pdf
+fig9.pdf
 \begin_inset Quotes erd
 \end_inset
 
@@ -1478,8 +1479,8 @@ lapply( )
 \begin_inset Quotes erd
 \end_inset
 
- function doesn't carry forward the variable attributes so this transfers
- them from the original data.frame.
+ function doesn't carry forward the variable attributes so this retains
+ them by transfers from the original data.frame.
 \end_layout
 
 \begin_layout Subsection
@@ -1754,12 +1755,13 @@ transfer function
  to some potential users of this work, so extensive documentation of the
  approach is included in this section of the workflow document.
  Also included is a direct verification of the solution obtained by substituting
- into the governing differential equations and showing that those equations
+ into the governing differential equations to show that those equations
  are satisfied.
  An additional derivation from the impulse function is included and shown
  to be equivalent.
- This detail did not seem appropriate to include in the paper but it may
- be of interest to someone wanting to replicate or extend this work.
+ This detail did not seem appropriate to include in the paper and may be
+ unnecessary here also, but perhaps it will be of interest to someone wanting
+ to replicate or extend this work.
  In particular, it may be useful if additional terms are needed to describe
  the time response.
 \end_layout
@@ -1770,10 +1772,8 @@ Re: Section 2.1
 
 \begin_layout Standard
 Here is exhaustive detail on the Laplace-transform solution.
- Someone expert in Laplace transforms could surely do this more elegantly
- and concisely.
- I went into this much detail to be convinced that the solution proposed
- was valid.
+ I went into this much detail to be convinced that the proposed solution
+ proposed was valid.
  This material is mostly superfluous because the solution has been verified
  several ways, so most readers can skip this subsection.
  This material will be unnecessary for those already expert in Laplace transform
@@ -3782,7 +3782,7 @@ which is zero.
 
 \end_inset
 
-here is awhich is also zero.
+which is also zero.
  These results then verify that the differential equation is satisfied for
  the case where the true signal is a continuous sine wave.
 \end_layout
@@ -3792,7 +3792,7 @@ Comments regarding Fig.
 \begin_inset space ~
 \end_inset
 
-1:
+1 in the paper:
 \end_layout
 
 \begin_layout Standard
@@ -4001,7 +4001,7 @@ Section
 
 ) and other factors that can be determined without reference to the ambient
  temperature.
- This makes possible the iteration process used here.
+ This makes possible the iteration process used later in this section.
 \end_layout
 
 \begin_layout Standard
@@ -4394,7 +4394,7 @@ TTRR
 \begin_inset Quotes erd
 \end_inset
 
- from the netCDF file.)
+ from the netCDF file.
 \begin_inset Foot
 status open
 
@@ -4446,6 +4446,11 @@ LTphase()
  using the standard values of the response parameters as found later by
  fitting to these values and the corresponding values for the amplitude
  ratio.
+ Figure
+\begin_inset space ~
+\end_inset
+
+2b shows the phace.
  The plotted frequencies are limited to those above 
 \begin_inset Formula $10^{-2}\mathrm{Hz}$
 \end_inset
@@ -4476,18 +4481,31 @@ Figure
 \begin_inset space ~
 \end_inset
 
-2b was generated in similar fashion, using the ratio of amplitudes (the
+2a was generated in similar fashion, using the ratio of amplitudes (the
  square roots of the ratio of variance spectra) in place of the phase.
- For the fit the calculation of the chi-square included the deviations from
- the experimental phases and the experimental amplitude ratios with equal
- weights, except that the experimental amplitude ratios were only included
- for the frequency range from 0.1 to 3
+ For the fit, the calculation of the chi-square included the deviations
+ from the experimental phases and the experimental amplitude ratios with
+ equal weights, except that the experimental amplitude ratios were only
+ included for the frequency range from 0.1 to 3
 \begin_inset space ~
 \end_inset
 
 Hz.
  This range was selected because outside that range the values departed
  significantly and systematically from the theoretical prediction.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+The reason may be that, for lower frequencies, the fluctuations are influenced
+ by real fluctuations in temperature not associated with dynamic heating
+ while for higher frequencies there appears to be spurious variance in the
+ measurement of temperature.
+ This is discussed in more detail in a subsequent paragraph.
+\end_layout
+
+\end_inset
+
  The R function 
 \begin_inset Quotes eld
 \end_inset
@@ -4525,7 +4543,7 @@ The paper then reports on an iteration in which the measured recovery temperatur
 e was first corrected using the parameters as determine in the fit and then
  the fit was repeated.
  This process was performed outside the .Rmd code by changing the dynamic-heating
- term in lines 866 to 871 to 
+ term in the six calls to CohP (lines 869 to 874) to 
 \begin_inset Quotes eld
 \end_inset
 
@@ -4553,7 +4571,7 @@ TTRR
  The result produced only a small change to the fit parameters, within estimated
  uncertainty, even after only one iteration so the iteration procedure was
  not included in the processing code.
- Instead, the values obtained after iteration were those quoted in the paper.
+ (The values obtained after iteration were those quoted in the paper.)
 \end_layout
 
 \begin_layout Standard
@@ -4565,7 +4583,7 @@ Investigation of the high-frequency amplitude ratio in Fig.
 \begin_inset space ~
 \end_inset
 
-2b:
+2a:
 \end_layout
 
 \begin_layout Standard
@@ -4573,7 +4591,8 @@ A troubling aspect of Fig.
 \begin_inset space ~
 \end_inset
 
-2b is the departure from the fit for frequencies above about 3
+2a in the paper is the departure from the fit for frequencies above about
+ 3
 \begin_inset space ~
 \end_inset
 
@@ -4584,7 +4603,7 @@ Hz.
 \begin_inset Formula $T_{m}$
 \end_inset
 
-(TTRR) or, after correction, 
+ (TTRR) or, after correction, 
 \begin_inset Formula $T_{r}$
 \end_inset
 
@@ -4625,7 +4644,11 @@ Hz.
  The manuscript argues that a filtered version of dynamic heating should
  be used, so it is useful to correct the dynamic heating to see the shape
  of the resulting air temperature.
- This is shown as AT in the following plot.
+ This is shown as AT in the following plot (Fig.
+\begin_inset space ~
+\end_inset
+
+4).
 \end_layout
 
 \begin_layout Standard
@@ -5533,6 +5556,12 @@ The spectrum for
 \end_layout
 
 \begin_layout Enumerate
+The deduced response function extrapolated from lower-frequency measurements
+ predicts that TTRR should be attenuated at high frequencies, but the measuremen
+ts do not show attenuation as expected.
+\end_layout
+
+\begin_layout Standard
 The variance spectrum for AT still has excess variance at high frequency,
  although the excess is smaller than for the uncorrected air temperature
  (not shown).
@@ -5547,9 +5576,13 @@ The variance spectrum for AT still has excess variance at high frequency,
 \end_layout
 
 \begin_layout Standard
-The next plot shows, as RM, a calculated prediction of how the variance
- spectrum of the recovery temperature would look if the true air temperature
- were as shown by the orange line.
+The next plot (Fig.
+\begin_inset space ~
+\end_inset
+
+5) shows, as RM, a calculated prediction of how the variance spectrum of
+ the recovery temperature would look if the true air temperature were as
+ shown by the orange line.
  The result resembles the shape of the measurement (TTRR) reasonably for
  frequencies below about 3 Hz but shows a significant departure above 3
 \begin_inset space ~
@@ -5723,13 +5756,13 @@ print(g)
 \end_layout
 
 \begin_layout Standard
-Fig.
+Figure.
 \begin_inset space ~
 \end_inset
 
-2a is based on the ratio of amplitudes, but if there is noise in one or
- both of TTRR and Q then that will make a false contribution to the ratio
- because what is needed is how TTRR responds to Q.
+2a in the paper is based on the ratio of amplitudes, but if there is noise
+ in one or both of TTRR and Q then that will make a false contribution to
+ the ratio because what is needed is how TTRR responds to Q.
  Therefore it may be more appropriate to consider the part of TTRR that
  is 
 \begin_inset Quotes eld
@@ -5742,17 +5775,15 @@ caused
  by Q, which will be reflected in the coherence.
  This suggests scaling the spectrum of TTRR to represent only the part of
  the variance attributable to Q.
- That is, find the variance represented by $P(
-\backslash
-nu)
-\backslash
-mathrm{Coh}(
-\backslash
-nu)$ where $
-\backslash
-mathrm{Coh}(
-\backslash
-nu)$ is the squared coherence between TTRR and Q.
+ That is: Find the variance represented by 
+\begin_inset Formula $P(\nu)\mathrm{Coh}(\nu)$
+\end_inset
+
+ where 
+\begin_inset Formula $\mathrm{Coh}(\nu)$
+\end_inset
+
+ is the squared coherence between TTRR and Q.
  Then use the ratio between this spectral amplitude and that of Q.
  This then assumes that the measurement of Q does not contain noise and
  is not attenuated.
@@ -5818,7 +5849,7 @@ The source of the excess variance in the measured recovery temperature has
 \begin_inset space ~
 \end_inset
 
-2b of the manuscript.
+2a of the manuscript.
  In this study, it has been assumed that this departure is spurious and
  the contribution to the amplitude ratio above 3
 \begin_inset space ~
@@ -5846,12 +5877,13 @@ Extension to GV measurements
 \end_layout
 
 \begin_layout Standard
-At the end of the discussion of the unheated sensor, there is mention of
- a similar evaluation performed on the GV\SpecialChar endofsentence
- The .Rmd file includes code for
- this, but the results were not included in the paper except to quote the
- results.
- The relevant code chunk is labelled 
+An earlier version of this paper included a similar evaluation that used
+ measurements of an unheated sensor on the GV\SpecialChar endofsentence
+ The .Rmd file includes code
+ for this, but the results were not included in the paper because the results
+ were apparently less constrained by the measurements than were those from
+ the C-130.
+ The relevant code chunk is labeled 
 \begin_inset Quotes eld
 \end_inset
 
@@ -5864,8 +5896,16 @@ GVcheck
 \begin_inset space ~
 \end_inset
 
-2 and will fit to the observations to determine the fit parameters.
- 
+2 in the paper and will fit to the observations to determine the fit parameters.
+ The chunk argument 
+\begin_inset Quotes eld
+\end_inset
+
+include = FALSE
+\begin_inset Quotes erd
+\end_inset
+
+ causes the plots to be omitted.
 \end_layout
 
 \begin_layout Subsubsection
@@ -5886,7 +5926,8 @@ Extra
 \end_inset
 
  branch which is not included in the paper but could be added by activating
- this branch.The results are included in the summary of parameters (Table
+ this branch.
+ The results are not included in the summary of parameters (Table
 \begin_inset space ~
 \end_inset
 
@@ -6207,7 +6248,7 @@ The ratio of the spectral amplitude for the measurement of recovery temperature
 \end_layout
 
 \begin_layout Standard
-The phase shift leads to these conclusions:
+The phase shift leads to these conclusions for the Rosemount heated sensor:
 \end_layout
 
 \begin_layout Enumerate
@@ -6436,7 +6477,7 @@ The transfer function for this sensor is shown in Fig.
 \begin_inset space ~
 \end_inset
 
-4.
+10.
  It does not appear to be feasible to measure sensible-heat flux with this
  sensor, even with the correction procedures to be developed in the Appendix,
  because above about 1
@@ -6707,24 +6748,408 @@ This would be a useful topic for future work.
 \end_layout
 
 \begin_layout Subsection
-Sect.
+Omitted Sect.
  2.5, response to a step change
 \end_layout
 
 \begin_layout Standard
-The VOCALS project provided a good opportunity to search for discontinuities
+This section was omitted from the final paper.
+ Tentative text and code still exist, commented, in the .Rmd file.
+ The VOCALS project provided a good opportunity to search for discontinuities
  topping the marine boundary layer because most flights included numerous
  climbs and descents through that structure.
  A large number of these were examined in a search for sharp transitions,
  but almost all showed evidence of mixing at the top and were not sharp
  as would be desired to test response to a step change.
- The case selected was the best case, and indeed the only good case, from
- about 50 examined.
+ The case selected was the best case, from about 50 examined.
  Some other projects were also considered, but good cases where the unheated
  Rosemount was in use were not found.
  It appears that this is a difficult way to test the response characteristics
  of the sensor, although other situations (terrestrial boundary layer, frontal
  surface, etc.) might provide better opportunities.
+\end_layout
+
+\begin_layout Standard
+An early version of this plot produced good agreement between the observations
+ and the expected measurement, but that agreement was based on erroneous
+ parameters for the response.
+ The corrected results are reproduced here:
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+<!-- ## Response to a step change -->
+\end_layout
+
+\begin_layout Standard
+This section has been modified significantly to relate to the recovery temperatu
+re rather than the ambient temperature and to correct an error in the calculatio
+n.
+ The section has now been omitted because it no longer provides useful support
+ for the transfer function as determined here.
+ Furthermore, the top of the BL is cloudy, so I worry about the complication
+ that sensor wetting may introduce.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex Chunk
+status open
+
+\begin_layout Plain Layout
+
+\begin_inset Argument 1
+status open
+
+\begin_layout Plain Layout
+
+label='tfit', include=TRUE, echo=FALSE, fig.height=6, out.width = "8.3cm",
+ fig.cap='(blue dots): Recovery temperature measured at 25 Hz during descent
+ through an inversion capping the marine boundary layer, from VOCALS flight
+ 3.
+ The dotted black line shows the estimated true recovery temperature, featuring
+ a sharp change at the top of the boundary layer and a dry-adiabatic lapse
+ rate in the marine boundary layer.
+ The prediction using the parameters listed in the text is shown as the
+ magenta line, and the dashed brown line is the calculated temperature of
+ the support that contacts the sensing wire.'
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+Data <- getNetCDF(file.path(DataDirectory(), 'VOCALS/VOCALSrf03h.nc'),
+\end_layout
+
+\begin_layout Plain Layout
+
+                  c('PALT', 'GGALT_NTL', 'ATX', 'ATRL', 'ATRR', 'ATWH',
+ 'DPXC', 'PSXC',
+\end_layout
+
+\begin_layout Plain Layout
+
+                    'QCXC', 'TTRR'),
+\end_layout
+
+\begin_layout Plain Layout
+
+                  81350, 81357) ## the time interval (up to 81358)
+\end_layout
+
+\begin_layout Plain Layout
+
+## Get Z for scaling the time constants:
+\end_layout
+
+\begin_layout Plain Layout
+
+rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+\end_layout
+
+\begin_layout Plain Layout
+
+Z <- MachNumber(Data$PSXC, Data$QCXC) * 100 * Data$PSXC / 
+\end_layout
+
+\begin_layout Plain Layout
+
+      (287.05 * (273.15 + Data$ATRR)) / rhozero
+\end_layout
+
+\begin_layout Plain Layout
+
+tau1 <- Param1$tau1 * (0.3 / mean(Z, na.rm = TRUE) ) ^ (0.68)
+\end_layout
+
+\begin_layout Plain Layout
+
+tau2 <- Param1$tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+a <- Param1$a
+\end_layout
+
+\begin_layout Plain Layout
+
+nf <- 50 ## subdivision factor to use for integration
+\end_layout
+
+\begin_layout Plain Layout
+
+TTOP <- 20.2 ## recovery T above and below the inversion
+\end_layout
+
+\begin_layout Plain Layout
+
+TBOT <- 12.4
+\end_layout
+
+\begin_layout Plain Layout
+
+## Adjustment to adiabatic stratification for approx ratio, recovery to
+ ambient T:
+\end_layout
+
+\begin_layout Plain Layout
+
+Slope <- 6.5 / 1000 * (mean(Data$TTRR) + 283.15) / (mean(Data$ATRR) + 273.15)
+\end_layout
+
+\begin_layout Plain Layout
+
+dt <- 1 / (nf * 25) ## integration interval
+\end_layout
+
+\begin_layout Plain Layout
+
+## Plot recovery temperature
+\end_layout
+
+\begin_layout Plain Layout
+
+Data %>% select(Time, TTRR) %>%
+\end_layout
+
+\begin_layout Plain Layout
+
+         plotWAC(type='b', ylab = bquote('recovery temperature ['*degree*'C]'))
+\end_layout
+
+\begin_layout Plain Layout
+
+## Estimate true recovery temperature:
+\end_layout
+
+\begin_layout Plain Layout
+
+Data$T <- TBOT - (0:(nrow(Data)-1)) * 5 / 25 * Slope ## 10C per km, 5 m/s
+ descent
+\end_layout
+
+\begin_layout Plain Layout
+
+Data$T[1:10] <- TTOP ## force above-inversion value
+\end_layout
+
+\begin_layout Plain Layout
+
+## Get fine-scale true recovery temperature for integration
+\end_layout
+
+\begin_layout Plain Layout
+
+yy <- TBOT - (0:(nf*nrow(Data)-1)) * 5 / (nf*25) * Slope
+\end_layout
+
+\begin_layout Plain Layout
+
+yy[1:(10*nf)] <- TTOP ## force above-inversion value
+\end_layout
+
+\begin_layout Plain Layout
+
+lineWAC(Data$Time[11:200], Data$T[11:200], col='black', lty=3)
+\end_layout
+
+\begin_layout Plain Layout
+
+lineWAC(c(Data$Time[11], Data$Time[10]), c(Data$T[11], Data$T[10]), col
+ = 'black', lty = 3)
+\end_layout
+
+\begin_layout Plain Layout
+
+xx <- (1:(nf*nrow(Data)) - 1) * dt + Data$Time[1]
+\end_layout
+
+\begin_layout Plain Layout
+
+# calculate the response, given tau:
+\end_layout
+
+\begin_layout Plain Layout
+
+FF <- 1 ## fudge factor for exploring effects; try 2.5
+\end_layout
+
+\begin_layout Plain Layout
+
+tau1 <- FF * tau1
+\end_layout
+
+\begin_layout Plain Layout
+
+tau2 <- FF * tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+ym <- yy
+\end_layout
+
+\begin_layout Plain Layout
+
+yr <- yy
+\end_layout
+
+\begin_layout Plain Layout
+
+for (i in 2:(nrow(Data)*nf)) {
+\end_layout
+
+\begin_layout Plain Layout
+
+  yr[i] <- yr[i - 1] + (yy[i] - yr[i - 1]) * dt / tau2
+\end_layout
+
+\begin_layout Plain Layout
+
+  ym[i] <- ym[i - 1] + (a * yy[i] + (1 - a) * yr[i] - ym[i - 1]) * dt /
+ tau1
+\end_layout
+
+\begin_layout Plain Layout
+
+}
+\end_layout
+
+\begin_layout Plain Layout
+
+lineWAC(xx, ym, col = 'magenta', lwd = 3, lty = 1)
+\end_layout
+
+\begin_layout Plain Layout
+
+lineWAC(xx, yr, col = 'brown', lwd = 3, lty = 2)
+\end_layout
+
+\begin_layout Plain Layout
+
+legend('topright', legend=c('measured', 'predicted', 'support', 'if discrete'),
+\end_layout
+
+\begin_layout Plain Layout
+
+  lwd=c(2, 2, 2, 2), lty=c(1, 1, 2, 3),
+\end_layout
+
+\begin_layout Plain Layout
+
+  col=c('blue', 'magenta', 'brown', 'black'),
+\end_layout
+
+\begin_layout Plain Layout
+
+  pch = c(19, NA, NA, NA))
+\end_layout
+
+\begin_layout Plain Layout
+
+box('outer', col = 'grey', lwd = 2.5)
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Most prior studies have used sharp temperature changes in the atmosphere,
+ for example from climbs through the inversion at the top of a boundary
+ layer, to study the time response of airborne thermometers.
+ A search of available climbs and descents through inversions capping the
+ marine boundary layer found that almost all have measurable structure and
+ are not discrete transitions.
+ The best case found after a search of candidate passes through inversions
+ in the VOCALS project is shown in Figure
+\begin_inset space ~
+\end_inset
+
+11 from VOCALS flight
+\begin_inset space ~
+\end_inset
+
+3, where the aircraft descended through the top of the marine boundary layer
+ at approximately 
+\begin_inset Formula $5\,m\,s^{-1}$
+\end_inset
+
+.
+ The assumed measurand history, for an assumed discrete discontinuity at
+ the inversion and a well-mixed cloudy boundary layer below, is that shown
+ by the dotted black line.
+\end_layout
+
+\begin_layout Standard
+The predicted time response from Eqns.
+\begin_inset space ~
+\end_inset
+
+(4) and (5) for the time constants listed in Table 3 for the unheated sensor
+ (adjusted for air density and flight speed) is shown as the magenta line
+ in Fig.
+\begin_inset space ~
+\end_inset
+
+11.
+ The observations initially change as fast as the predicted response, but
+ after about 0.2
+\begin_inset space ~
+\end_inset
+
+s the measurements change significantly slower than predicted.
+ The predictions and measurements only agree if the time constants are increased
+ by about a factor of 2.5.
+ It appears that, like all other boundary-layer tops observed in this project,
+ the actual structure is modified by mixing at the cloud top and is not
+ the discrete discontinuity assumed in these calculations.
+ Nevertheless, the observations provide some support for the conclusion
+ that the time response is, within about a factor of 2.5, about as estimated
+ from the transfer function.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+(this is the end of the section re the step-change response, excluded from
+ the paper, except for Fig.
+\begin_inset space ~
+\end_inset
+
+11 that follows.)
 \end_layout
 
 \begin_layout Subsection
@@ -7352,7 +7777,7 @@ status open
 
 
 \backslash
-ref{fig:SRRTH1delay}
+ref{fig:srRTH1delay}
 \end_layout
 
 \end_inset
@@ -9799,7 +10224,7 @@ Section
 where the first equation describes the effect of dynamic heating on the
  support structure of the temperature sensor, leading to support-structure
  variations in temperature of 
-\begin_inset Formula $Q_{qs}(t)$
+\begin_inset Formula $Q_{qs}(t),$
 \end_inset
 
  and the second describes the response of the sensing wire to the combined
@@ -9880,7 +10305,7 @@ CorrectTemperature.R
 \end_inset
 
 , is included in the project archive.
- It will process an existing netCDF data file to incorprate this filtering,
+ It will process an existing netCDF data file to incorporate this filtering,
  and it adds a new measurement of ambient temperature to the archive which
  corrects for the sensor response to dynamic heating as described in the
  paper.
@@ -9891,7 +10316,7 @@ Comments on Section 4 (Flux of Sensible Heat)
 \end_layout
 
 \begin_layout Standard
-Figure 10 was generated using some special code developed for this purpose,
+Figure 9 was generated using some special code developed for this purpose,
  function 
 \begin_inset Quotes eld
 \end_inset
@@ -9900,7 +10325,7 @@ plotCS()
 \begin_inset Quotes erd
 \end_inset
 
- defined in the 
+ loaded in the 
 \begin_inset Quotes eld
 \end_inset
 
@@ -9908,7 +10333,15 @@ initial3
 \begin_inset Quotes erd
 \end_inset
 
- code chunk.
+ code chunk from the 
+\begin_inset Quotes eld
+\end_inset
+
+chunks
+\begin_inset Quotes erd
+\end_inset
+
+ subdirectory.
  A related plot function is available from 
 \begin_inset Quotes eld
 \end_inset
@@ -9983,6 +10416,125 @@ zoo::rollapply()
 \end_layout
 
 \begin_layout Standard
+The following points apply to the 
+\begin_inset Quotes eld
+\end_inset
+
+plotCS()
+\begin_inset Quotes erd
+\end_inset
+
+ function used to calculate the cospectrum of temperature and updraft for
+ the SOCRATES measurements.
+ The analogous procedure was followed also for CSET.
+\end_layout
+
+\begin_layout Enumerate
+A data.frame containing the needed 25-Hz measurements from SOCRATES flight
+\begin_inset space ~
+\end_inset
+
+15, including the updraft and the variable ATF1 representing the air-temperature
+ measurements from an unheated sensor, was constructed for the time segment
+ from 5:55:00 to 6:20:00.
+ Because the recovery temperature (normally RTF1) was not included in the
+ archived data file, it was reconstructed from ATF1 and the measured dynamic-hea
+ting term.
+ The routine 
+\begin_inset Quotes eld
+\end_inset
+
+SmoothInterp()
+\begin_inset Quotes erd
+\end_inset
+
+ was used to guard against missing variables by interpolating to fill those
+ missing values.
+ This applied to about 4% of the points and resulted from a time-synchronization
+ error in the original processing.
+\end_layout
+
+\begin_layout Enumerate
+The first argument to 
+\begin_inset Quotes eld
+\end_inset
+
+plotCS()
+\begin_inset Quotes erd
+\end_inset
+
+ is a data.frame that includes a vector of frequencies and the corresponding
+ values for the measured cospectrum.
+ The cospectrum is generated from the real part of the product of the Fourier
+ transform of the measured recovery temperature and the complex conjugate
+ of the Fourier transform of the measured updraft.
+ Fourier transforms are obtained using the R routine 
+\begin_inset Quotes eld
+\end_inset
+
+fft()
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Before transforming, the measured air temperature (AT) was corrected as
+ described in Sect.
+\begin_inset space ~
+\end_inset
+
+3 of the paper by adding the original dynamic-heating correction and then
+ subtracting the filtered dynamic-heating correction.
+ (See the lines labeled REF4a in the /Rmd file.) The Fourier transform of
+ the temperature is then corrected using the transfer function so that the
+ cospectrum supplied by the argument CS is corrected for the time response
+ of the temperature sensor.
+\end_layout
+
+\begin_layout Enumerate
+Another argument, 
+\begin_inset Quotes eld
+\end_inset
+
+CSprevious
+\begin_inset Quotes erd
+\end_inset
+
+, provides the uncorrected cospectrum and is used to generate the dashed
+ exceedance line representing the original measurements.
+ 
+\end_layout
+
+\begin_layout Enumerate
+Some other variables in the code, such as 
+\begin_inset Quotes eld
+\end_inset
+
+.B = ATC
+\begin_inset Quotes erd
+\end_inset
+
+, are remnants from various explorations not in the final paper and can
+ be ignored.
+\end_layout
+
+\begin_layout Enumerate
+The argument returned from 
+\begin_inset Quotes eld
+\end_inset
+
+plotCS()
+\begin_inset Quotes erd
+\end_inset
+
+ is the original cospectrum with the exceedance function as described in
+ the paper and with added attributes that specify the cospectrum after smoothing
+, the net flux, and the flux contributed by wavelengths smaller than the
+ wavelength limit provided to the function.
+ These values of the fluxes were used to determine some of the estimates
+ of flux density quoted in the paper.
+\end_layout
+
+\begin_layout Standard
 Following the introductory discussion of the cospectrum, there was a now-suppres
 sed section that plotted and discussed the quadrature spectrum.
  This section is included in the 
@@ -10020,7 +10572,7 @@ The following are comments on the simulation at the end of this section.
 \begin_inset CommandInset href
 LatexCommand href
 name "here"
-target "https://drive.google.com/open?id=1TIcrpjZ9BQRBaLle31zc_lzKafL4Xbee"
+target "https://drive.google.com/file/d/1BvlvtFkixW9IrIifsXqFKoJ7HaehHYvX/view?usp=sharing"
 literal "false"
 
 \end_inset
@@ -10038,7 +10590,7 @@ frequency) and then modify the spectral density to have
  slope before transforming back to the simulated measurement sequence.
  This was the approach used in the paper\SpecialChar endofsentence
  It is much faster than the original
- method used in the referenced document above.
+ method used in the document referenced above.
  However, there appeared to be some advantages to the original method in
  terms of accuracy and consistency of results for different random sequences.
  Perhaps those advantages arose from generating originally at 50
@@ -10101,7 +10653,7 @@ When this was written it was developed from the differential equations,
 \begin_inset space ~
 \end_inset
 
-(4) and (6) in the paper is straightforward, but the reduction to a single
+(4) and (5) in the paper is straightforward, but the reduction to a single
  integration as in Eqn.
 \begin_inset space ~
 \end_inset
@@ -10236,10 +10788,10 @@ status open
 \begin_layout Plain Layout
 
 <<Inverarity, include=TRUE, fig.cap='Comparison between the solution developed
- in the paper (green line, RT) and that proposed by Inverarity (red line,
- RT1).
+ in the paper (green line, RT) and that proposed by Inverarity (dotted orange
+ line, RTI).
  The original measurement is shown as TTRR (blue line), and the calculated
- temperature of the support is shown as Ts (cyan line).'>>=
+ temperature of the support is shown as Ts (dashed cyan line).'>>=
 \end_layout
 
 \begin_layout Plain Layout
@@ -10443,7 +10995,17 @@ DT %>% select(Time, TTRR, RT, RTI, Ts) %>%
 
 \begin_layout Plain Layout
 
-  plotWAC()
+  plotWAC(lwd=c(2,3,4,3), 
+\end_layout
+
+\begin_layout Plain Layout
+
+          col=c('blue', 'forestgreen', 'darkorange', 'cyan'), 
+\end_layout
+
+\begin_layout Plain Layout
+
+          lty=c(1,1,3,2))
 \end_layout
 
 \begin_layout Plain Layout
@@ -10478,8 +11040,9 @@ ref{fig:Inverarity}
 
 \end_inset
 
- shows the equivalence between this solution and the one proposed in this
- paper, for corresponding response functions.
+ shows the equivalence between the Inverarity solution and the one proposed
+ in this paper, for corresponding response functions with parameters equal
+ to those determined for the unheated sensor.
 \end_layout
 
 \begin_layout Subsection
@@ -10554,7 +11117,7 @@ Because of the cyclic nature of the Fourier transform, spurious effects
  often arise at the start and end of the time series unless modifications
  are introduced.
  In the cases presented in this paper, means and trends are removed and
- then the time series is padded at the start and end with zeroes.
+ then the time series are padded at the start and end with zeroes.
  The results are then used only for a subset of the original valid time
  sequence.
  

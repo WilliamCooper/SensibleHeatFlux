@@ -46,6 +46,7 @@ theme_WAC <- function (version=0) {
       panel.grid.major = element_line(color = "lightblue", linetype=5, size=0.5),
       panel.grid.minor = element_line(color = "gray90", linetype=5, size=0.5),
       panel.background = element_rect(fill = '#e8f2f2'),
+      plot.background = element_rect(color = 'black', size = 2),
       # axis.title=element_text(face="plain", size=18, colour="blue"),
       line=element_line(size=1),
       axis.ticks = element_line(size=1),
