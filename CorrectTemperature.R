@@ -36,7 +36,7 @@ require(Ranadu, quietly = TRUE, warn.conflicts=FALSE)
 # needed packages
 library(zoo)
 require(signal)
-load(file='ARF.Rdata')    ## the filters
+load(file='AR.Rdata')    ## the filters
 load(file='PAR.Rdata')  ## the response parameters
 
 ## Get file to process:

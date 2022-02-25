@@ -299,7 +299,7 @@ however; instead, parameters entering the equations are determined
 empirically. The equations are:
 \begin{align}
 \frac{dT_{s}(t)}{dt} & =\frac{T_{r}(t)-T_{s}(t)}{\tau_{2}}{\label{eq:Ts}} \\
-\frac{dT_{m}(t)}{dt} & =\frac{a(T_{r}(t)-T_{m}(t))+(1-a)(T_{s}(t)-T_{m}(t))}{\tau_{1}}\\
+\frac{dT_{m}(t)}{dt} & =\frac{a(T_{r}(t)-T_{m}(t))+(1-a)(T_{s}(t)-T_{m}(t))}{\tau_{1}}\nonumber\\
 & = \frac{\left\{ aT_{r}(t)+(1-a)T_{s}(t)\right\} -T_{m}(t)}{\tau_{1}}{\label{eq:Tm}}
 \end{align}
 where $T_{s}(t)$ is the temperature of the \uline{s}upport, $T_{m}(t)$
@@ -1348,29 +1348,37 @@ DCX$Q <- ShiftInTime(DCX$Q, .rate = 25, .shift = -10)
 SB <- 100
 DSX$RT <- DSX$RTF1
 DCX$RT <- DCX$RTF1
-## Correct RT for time response:
-a <- Param1$a
-tau1 <- Param1$tau1
-tau2 <- Param1$tau2
-## RT is the working solution; Ts is the support temperature
-DSX$Ts <- DSX$RT
-DCX$Ts <- DCX$RT
-Rate <- attr (DSX, 'Rate')
-# DSX$DTMDT <- c(0, diff(DSX$RT, 2), 0) * Rate / 2
-DSX$DTMDT <-  (c(0, 8 * diff(DSX$RT, 2), 0) -
-                    c(0, 0, diff(DSX$RT, 4), 0, 0)) * Rate / 12
-DCX$DTMDT <-  (c(0, 8 * diff(DCX$RT, 2), 0) -
-                    c(0, 0, diff(DCX$RT, 4), 0, 0)) * Rate / 12
-fS <- function(y, i) {
-      ((tau1 * DSX$DTMDT[i] + DSX$RT[i] - (1 - a) * y) / a - y) / (Rate * tau2)
-    }
-DSX$Ts <- rk4.integrate (fS, DSX$Ts[1], 1:nrow(DSX))
-DSX$RT <- (1 / a) * (tau1 * DSX$DTMDT + DSX$RT - (1 - a) * DSX$Ts)
-fS <- function(y, i) {
-      ((tau1 * DCX$DTMDT[i] + DCX$RT[i] - (1 - a) * y) / a - y) / (Rate * tau2)
-    }
-DCX$Ts <- rk4.integrate (fS, DCX$Ts[1], 1:nrow(DCX))
-DCX$RT <- (1 / a) * (tau1 * DCX$DTMDT + DCX$RT - (1 - a) * DCX$Ts)
+## Correct RT for time response: (optional)
+## (This doesn't work; see later discussion. Erroneous Q still in
+##  RT is amplified.)
+if(FALSE) {
+  a <- Param1$a
+  tau1 <- Param1$tau1
+  tau2 <- Param1$tau2
+  a <- 0.73295
+  tau1 <- 0.029545
+  tau2 <- 0.35495
+  ## RT is the working solution; Ts is the support temperature
+  DSX$Ts <- DSX$RT
+  DCX$Ts <- DCX$RT
+  Rate <- attr (DSX, 'Rate')
+  # DSX$DTMDT <- c(0, diff(DSX$RT, 2), 0) * Rate / 2
+  # DCX$DTMDT <- c(0, diff(DCX$RT, 2), 0) * Rate / 2
+  DSX$DTMDT <-  (c(0, 8 * diff(DSX$RT, 2), 0) -
+                      c(0, 0, diff(DSX$RT, 4), 0, 0)) * Rate / 12
+  DCX$DTMDT <-  (c(0, 8 * diff(DCX$RT, 2), 0) -
+                      c(0, 0, diff(DCX$RT, 4), 0, 0)) * Rate / 12
+  fS <- function(y, i) {
+        ((tau1 * DSX$DTMDT[i] + DSX$RT[i] - (1 - a) * y) / a - y) / (Rate * tau2)
+      }
+  DSX$Ts <- rk4.integrate (fS, DSX$Ts[1], 1:nrow(DSX))
+  DSX$RT <- (1 / a) * (tau1 * DSX$DTMDT + DSX$RT - (1 - a) * DSX$Ts)
+  fS <- function(y, i) {
+        ((tau1 * DCX$DTMDT[i] + DCX$RT[i] - (1 - a) * y) / a - y) / (Rate * tau2)
+      }
+  DCX$Ts <- rk4.integrate (fS, DCX$Ts[1], 1:nrow(DCX))
+  DCX$RT <- (1 / a) * (tau1 * DCX$DTMDT + DCX$RT - (1 - a) * DCX$Ts)
+}  ## end of optional correction to RT for time response
 ## Next is for Z adjustment later
 DZ <- rbind(
   DSX %>% selectTime(55200, 60200),
@@ -1410,28 +1418,28 @@ P <- spec.pgram(
   plot = FALSE,
   spans = 25
 )
-## These lines aren't used; they are left over from earlier testing:
+## These next three lines aren't used; they are left over from earlier testing:
 df1SF <- data.frame(P$coh, log(P$freq))
 df2SF <- data.frame (P$phase, log(P$freq))
 pf1SF <- binStats (df1SF, bins = SB)
 ## ----------
 pf2SF <- binStats (df2SF, bins = SB)  ## This is used later to set frq
-phaseSF <- rep(0, SB)
+phaseSF <- rep(0, SB)  ## initialize sums
 nphaseSF <- rep(0, SB)
 phase2SF <- rep(0, SB)
 arSF <- rep(0, SB)
 ar2SF <- rep(0, SB)
 narSF <- rep(0, SB)
 for (RX in list(RXA, RXB, RXC, RXD, RXE)) {
-  for (i in 2:nrow(RX)) {
+  for (i in 2:nrow(RX)) {  ## start at 2 because binStats gives NA for 1
     phaseSF[RX$BIN.1[i]] <- phaseSF[RX$BIN.1[i]] + RX$P.phase[i]
     nphaseSF[RX$BIN.1[i]] <- nphaseSF[RX$BIN.1[i]] + 1
     phase2SF[RX$BIN.1[i]] <- phase2SF[RX$BIN.1[i]] + RX$P.phase[i] ^ 2
-    arSF[RX$BIN.1[i]] <-
-      arSF[RX$BIN.1[i]] + sqrt(RX$P.spec...1.[i] / RX$P.spec...2.[i])
-    ar2SF[RX$BIN.1[i]] <-
-      ar2SF[RX$BIN.1[i]] + (RX$P.spec...1.[i] / RX$P.spec...2.[i])
-    narSF[RX$BIN.1[i]] <- narSF[RX$BIN.1[i]] + 1
+    arSF[RX$BIN[i]] <-
+      arSF[RX$BIN[i]] + sqrt(RX$P.spec...1.[i] / RX$P.spec...2.[i])
+    ar2SF[RX$BIN[i]] <-
+      ar2SF[RX$BIN[i]] + (RX$P.spec...1.[i] / RX$P.spec...2.[i])
+    narSF[RX$BIN[i]] <- narSF[RX$BIN[i]] + 1
   }
 }
 nphaseSF[nphaseSF == 0] <- 1
@@ -1467,12 +1475,12 @@ minFn <- function(V) {
   Parm$tau1 <<- V[2]
   Parm$tau2 <<- V[3]
   Chisq <- 0
-  for (i in 1:nrow(dfSF)) {
+  for (i in 2:nrow(dfSF)) {
     Chisq <-
       Chisq + (dfSF$mphase[i] - LTphase(dfSF$frq[i], Parm)$Phase) ^ 2 / dfSF$sdp[i] ^
       2
   }
-  for (i in 1:nrow(dfrSF)) {
+  for (i in 2:nrow(dfrSF)) {
     Chisq <-
       Chisq + (dfrSF$mrspec[i] - LTphase(dfrSF$frq[i], Parm)$Amp) ^ 2 / dfrSF$sdr[i] ^
       2
@@ -2434,7 +2442,10 @@ g + theme_WAC(1) + theme(legend.position = c(0.3, 0.65))
 
 The filtered response
 has been obtained from the transfer function in three ways, by
-integration of the differential equations (Eqs.\ \eqref{eq:Ts} and \eqref{eq:Tm}) applied to $Q$, by Fourier transforms using the transfer function, and by applying a digital filter designed from the transfer function. All produce almost equivalent results. 
+integration of the differential equations (Eqs.\ \eqref{eq:Ts} and \eqref{eq:Tm}) applied to $Q$, by Fourier transforms using the transfer function, and by applying a digital filter designed from the transfer function. The digital
+filter was designed using standard methods as outlined in, e.g., \citet{Press:1992:NRC:148286}; details and
+the coefficients used are
+available in the Workflow document that accompanies this paper. All three methods produce almost equivalent results. 
 The filtered dynamic-heating adjustment will be denoted $Q^{\prime}$, and the calculated 
 air temperature $T_a^\prime$ then becomes
 \begin{equation}
@@ -3264,7 +3275,8 @@ ParamFS1$tau2 <-
   ParamFS1$tau2 * (mean(MRHO, na.rm = TRUE) / 0.3) ^ -0.68
 DS$TASX <- SmoothInterp(DS$TASX, .Length = 0)
 DS$Q <- DS$TASX ^ 2 / 2010
-DS$ATX <- DS$ATF1
+DS$ATX <- DS$ATF1  # NOTE: ATX, originally heated, is overidden here by the
+                   # measurement from the unheated sensor.
 # DS$AT <- reviseDH(DS, ParamFS1, rf)  # rf was calculated in an earlier code chunk
 ## Replace this by the filtered result:
 ## Recalculate AT using the dynamic-heating filter:
@@ -3274,20 +3286,20 @@ DS$QCXC <- SmoothInterp(DS$QCXC, .Length = 0)
 DS$MACH <- SmoothInterp(MachNumber(DS$PSXC, DS$QCXC), .Length = 0)
 DS$alphaR <- RecoveryFactor(DS$MACH, 'UNHEATED')
 DS$Q <- DS$TASX ^ 2 / (2 * SpecificHeats()[1])
-DS$QF <- as.vector(signal::filter(ARG, DS$Q))
-DS$QF <- ShiftInTime(DS$QF, .shift = -Lshift * 40, .rate = 25)
-DS$AT <- DS$ATX + DS$alphaR * (DS$Q - DS$QF)
+DS$QF <- as.vector(signal::filter(ARG, DS$Q))  # REF4a
+DS$QF <- ShiftInTime(DS$QF, .shift = -Lshift * 40, .rate = 25)  # REF4a
+DS$AT <- DS$ATX + DS$alphaR * (DS$Q - DS$QF)  # REF4a
 DS$AT <- SmoothInterp(DS$AT, .Length = 0)
 DS$RTF1 <-
   DS$ATF1 + DS$alphaR * DS$Q  ## This variable isn't in the available file
 DS$RTF1 <- SmoothInterp(DS$RTF1, .Length = 0)
 ## Estimate the corrected recovery temperature:
-aV <- ParamFS1$a
+aV <- ParamFS1$a  # Adjusted from ParamFS
 tau1V <- ParamFS1$tau1
 tau2V <- ParamFS1$tau2
-DS$DTMDT <- c(0, diff(DS$RTF1, 2), 0) * Rate / 2
-# Eq. Ts3
-fSS <- function(y, i) {
+DS$DTMDT <-  (c(0, 8 * diff(DS$RTF1, 2), 0) -
+                      c(0, 0, diff(DS$RTF1, 4), 0, 0)) * Rate / 12
+fSS <- function(y, i) {  # Eq. TS3
   ((1 / aV) * (tau1V * DS$DTMDT[i] + DS$RTF1[i] - (1 - aV) * y) - y) / 
   (Rate * tau2V)
 }
@@ -3324,7 +3336,7 @@ but the measurements still serve to illustrate the effect of the proposed correc
 \begin{figure}
 ```{r SOCp1, include=TRUE, fig.height = 4.1, out.width = "12cm"}
 
-LTphaseC <- function(f, P) {
+LTphaseC <- function(f, P) {  # LTphase but returns complex transfer function
   ## f=frequency; P=Param
   tau1 <- P$tau1
   tau2 <- P$tau2
@@ -3470,13 +3482,12 @@ DCX$RTF1 <- SmoothInterp(DCX$RTF1, .Length = 0)
 aV <- ParamFS1$a
 tau1V <- ParamFS1$tau1
 tau2V <- ParamFS1$tau2
-DCX$DTMDT <- c(0, diff(DCX$RTF1, 2), 0) * Rate / 2
-
+DCX$DTMDT <-  (c(0, 8 * diff(DCX$RTF1, 2), 0) -
+                      c(0, 0, diff(DCX$RTF1, 4), 0, 0)) * Rate / 12
 fSS <- function(y, i) {  # Eq. Ts3
     ((1/aV) * (tau1V * DCX$DTMDT[i] + DCX$RTF1[i] - (1-aV) * y) - y) / 
     (Rate * tau2V)
   }
-
 DCX$Ts <- rk4.integrate (fSS, DCX$RTF1[1], 1:nrow(DCX))
 DCX$RTC <- (1 / aV) * (tau1V * DCX$DTMDT + DCX$RTF1 - (1 - aV) * DCX$Ts)
 DCX$ATC <- DCX$RTC - DCX$alphaR * DCX$QF
