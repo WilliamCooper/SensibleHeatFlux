@@ -1,0 +1,2634 @@
+%% LyX 2.3.6.1 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[12pt,american,english]{article}
+\usepackage{mathptmx}
+\usepackage[T1]{fontenc}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose,tmargin=3.54cm,bmargin=2.54cm,lmargin=2.54cm,rmargin=2.54cm,headheight=1cm,headsep=2cm,footskip=0.5cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{color}
+\usepackage{babel}
+\usepackage{calc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[authoryear]{natbib}
+\PassOptionsToPackage{normalem}{ulem}
+\usepackage{ulem}
+\usepackage[unicode=true]
+ {hyperref}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\providecommand{\LyX}{\texorpdfstring%
+  {L\kern-.1667em\lower.25em\hbox{Y}\kern-.125emX\@}
+  {LyX}}
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newenvironment{lyxcode}
+	{\par\begin{list}{}{
+		\setlength{\rightmargin}{\leftmargin}
+		\setlength{\listparindent}{0pt}% needed for AMS classes
+		\raggedright
+		\setlength{\itemsep}{0pt}
+		\setlength{\parsep}{0pt}
+		\normalfont\ttfamily}%
+	 \item[]}
+	{\end{list}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\input colordvi
+\usepackage{color}
+\fancyhead{}
+\fancyfoot[CE,CO]{}
+\newtoks{\addressee} \global\addressee={}
+\newdimen\longindent \longindent=3.5truein
+\fancyhead[L]{Memo to: \the\addressee \\ \datetoday \\ Page \thepage \hfill}
+\renewcommand{\headrulewidth}{0.0pt}
+\newenvironment{lyxlist}[1]
+{\begin{list}{}
+{\settowidth{\labelwidth}{#1}
+\setlength{\leftmargin}{\labelwidth}
+\addtolength{\leftmargin}{\labelsep}
+\renewcommand{\makelabel}[1]{##1\hfil}}}
+{\end{list}}
+\newcommand{\datetoday}{\number\day\space
+     \ifcase\month\or January\or February\or March\or April\or May\or
+     June\or July\or August\or September\or October\or November\or
+     December\fi
+     \space\number\year}
+\newcommand{\EOLmemo}{\null \vskip-1.5truein
+{\raggedright \textsf{\textsc{\large \textcolor{blue}{Earth Observing Laboratory}}}}\par
+{\raggedright \textsf{\textsl{\textcolor{blue}{Memorandum:}}}} \par \vskip6pt
+{\color{blue}{\hrule}}\par
+\vskip0.3truein \leftline{\hskip \longindent \datetoday} \vskip0.2truein
+\thispagestyle{empty}}
+\newcommand{\attachm}[1]{\begin{lyxlist}{Attachments:00}
+\item [Attachments:] {#1}
+\end{lyxlist}}
+\newcommand{\cc}[1]{\begin{lyxlist}{Attachments:00}
+\item [cc:] {#1}
+\end{lyxlist}}
+\newcommand{\attach}[1]{\begin{lyxlist}{Attachments:00}
+\item [Attachment:] {#1}
+\end{lyxlist}}
+%usage: \encl{A\\B\\C} or \cc{ma,e1\\name2\\name3}
+
+\makeatother
+
+\begin{document}
+\EOLmemo 
+
+\global\addressee={SensibleHeatFlux Archive: workflow document}% change "File" to the "To:" name
+
+\begin{tabular}{ll}
+\textsf{\textsc{\textcolor{blue}{To:}}} & \the\addressee\tabularnewline
+\textsf{\textsc{\textcolor{blue}{From:}}} & Al Cooper\tabularnewline
+ \textsf{\textsc{\textcolor{blue}{Subject:}}} & Workflow comments for the AMT paper re sensible-heat flux\tabularnewline
+\end{tabular}
+
+\bigskip
+
+<<initialization,echo=FALSE,include=FALSE>>=
+
+
+library(knitr)
+opts_chunk$set(echo=FALSE, include=FALSE, fig.lp="fig:")
+opts_chunk$set(fig.width=6, fig.height=5, fig.align="center", digits=4)
+thisFileName <- "WorkflowSensibleHeatFlux"
+require(Ranadu, quietly = TRUE, warn.conflicts=FALSE)
+library(ggplot2)
+library(grid)
+library(ggthemes)
+library(nleqslv)
+library(magrittr)
+library(dplyr)
+Directory <- DataDirectory ()
+a <- 0.733 # 0.713
+tau1 <- 0.0308  # 0.0335
+tau2 <- 0.447
+Param <- list(
+  a = a,
+  tau1 = tau1,
+  tau2 = tau2
+)
+LTphase <- function(f, P) {
+  ## f=frequency; P=Param
+  tau1 <- P$tau1
+  tau2 <- P$tau2
+  a <- P$a
+  b <- sqrt(1 / (1 + (2 * pi * f * tau2) ^ 2))
+  zeta <- -atan(2 * pi * f * tau2)
+  C1 <- 1 / (1 + 4 * pi ^ 2 * f ^ 2 * tau1 ^ 2) *
+    (-(a + (1 - a) * b * cos(zeta)) * 2 * pi * f * tau1 +
+       (1 - a) * b * sin(zeta))
+  C2 <- 1 / (1 + 4 * pi ^ 2 * f ^ 2 * tau1 ^ 2) *
+    ((a + (1 - a) * b * cos(zeta)) +
+       (1 - a) * b * sin(zeta) * 2 * pi * f * tau1)
+  cTF <- sqrt(C1 ^ 2 + C2 ^ 2)
+  phiTF <- atan2(C1, C2) * 180 / pi
+  return(list('Amp' = cTF, 'Phase' = phiTF))
+}
+
+
+@
+
+\section{Purpose}
+
+This workflow description provides additional details leading to the
+submitted paper titled, ``On Measuring Sensible-Heat Flux with Airborne
+Thermometers.'' The intent is to support replication of the analyses
+and figures presented in the papers, to facilitate changes based on
+new data or new analysis approaches, and to make it practical to apply
+the proposed algorithms to additional data collected by research aircraft
+used in atmospheric studies. The associated ``.Rmd'' file contains
+both text (in \LaTeX{} format) and R processing scripts for the analyses
+in the resulting paper and is the definitive reference for this work,
+but there are details here that are not evident in that script. Those
+details include a description of the process of collecting the observations
+and processing them to data files, the data archives used, the steps
+required to generate the plots and other results including the instances
+where manual intervention is required to identify appropriate subsets
+of the data, references to the relevant R code and \LaTeX{} documents,
+and all the steps leading to the generation of the text in the papers.
+This overview and these diagrams will help explain the workflow at
+a general level and so should substitute for reading the R and \LaTeX{}
+code in most cases. 
+
+For brevity the subject paper will be referenced as ``the paper''
+here. It includes these sections:
+\begin{enumerate}
+\item Introduction
+\item Determining the Transfer Function
+\item Correcting for Dynamic Heating
+\item The Flux Density of Sensible Heat
+\item Conclusions
+\end{enumerate}
+After some general comments that apply to all, there are separate
+discussions for each section.
+
+\section{Acquisition of the primary data}
+
+The measurements used in these papers were collected using the NSF/NCAR
+research aircraft during various research projects that are described
+in included references. The onboard data-acquisition program 'aeros'
+recorded the data in digital format, and those data files were then
+processed by the program 'nimbus' to produce an archive in NetCDF
+format. The software management group of NCAR/EOL maintains a version-controlled
+archive of these programs, so if they are of interest they can be
+obtained by contacting the data-management group of EOL (\href{mailto:raf-dm@eol.ucar.edu}{at this }
+or \href{mailto:datahelp@eol.ucar.edu}{this} address). The data files
+available from NCAR/EOL can be found at links on \href{https://www.eol.ucar.edu/all-field-projects-and-deployments}{this URL},
+where FTP access can be requested; see also the specific links in
+the bibliography of the paper. The details of the processing algorithms
+including those for the calculation of wind are documented in this
+report on \href{https://github.com/NCAR/aircraft_ProcessingAlgorithms/blob/master/ProcessingAlgorithms.pdf}{Processing Algorithms}
+and in \citet{Bulletin23}. These procedures as they pertain to the
+measurement of wind are also documented in \citet{Cooper2016ncartn}.
+The resulting data files contain measurements in scientific units
+and brief descriptions of each measurement, included as netCDF attributes
+for the files and for each variable.
+
+\section{The .Rmd files (RMarkdown)}
+
+The .Rmd file is basically \LaTeX{} text, generated for simplicity
+using \LyX , exported to .Rnw format, converted to .Rmd using the
+``mdsr'' package for R (\citet{mdsrBaumer2019}), and then placed
+into the Copernicus template provided by Daniel N$\ddot{\mathrm{{u}}}$st
+which uses the ``rticles'' package for R (\citet{rticles}). After
+some necessary modifications to the output from ``mdsr'', this was
+processed to .pdf format using RStudio (\citet{RStudio2021}). RMarkdown
+is described by \citet{XieEtAl2018RMarkdown}. Within the .Rmd file
+or within the .lyx file there are ``chunks'' of R code (\citet{Rlanguage}),
+delineated by a header having this format:
+\begin{lyxcode}
+\fbox{\begin{minipage}[t]{1\columnwidth - 2\fboxsep - 2\fboxrule}%
+\begin{lyxcode}
+```\{title,~option~=~setting,~...\}
+
+...R~code...
+
+```
+\end{lyxcode}
+%
+\end{minipage}}
+\end{lyxcode}
+These chunks generate plots and other results of analyses that are
+incorporated into the manuscript using 'knitr' (\citet{Xie2014a,Xie2014b}).
+In RStudio, the chunks appear as gray sections in the file when it
+is edited. Where tasks involve execution of R code, the chunk containing
+the code is referenced in the discussion below. Any results from the
+processing can be incorporated into the \LaTeX{} text via ``\textbackslash Sexpr\{\}''
+calls embedded in the \LaTeX{} portion of the file.
+
+Two ``switches'' serve to speed execution of the code: (1) the ``cache''
+option which uses previous results without recalculation, and (2)
+``generateFigures'' which when TRUE causes the figures to be generated
+and placed into the text. When FALSE, previously generated figures
+saved in the subdirectory ``figure/'' are used instead. The first
+switch significantly speeds execution in cases where small changes
+are made. To ensure a clean run, set the ``cache'' option to FALSE
+and remove all entries from the ``cache'' subdirectory. In some
+cases, the figures generated from ``generateFigures <- TRUE'' were
+renamed in order to be supplied separately for the AMT submission;
+e.g., fig10.pdf is the reference used for the include\_graphics argument
+but the code chunk generating that figure is ``SOCp1'' so the figure
+placed in the ``figures'' directory with that name has been changed
+to ``fig10.pdf''.
+
+\section{Required R packages including Ranadu}
+
+The R code used for analysis reported in this paper relies heavily
+on a package of routines for R called ``Ranadu.'' This is a set
+of R functions for working with the NetCDF archive data files produced
+by NCAR/EOL/RAF, and it includes some convenience routines for generating
+plots and performing other data-analysis tasks with the archived data.
+The Ranadu package as used here is preserved at this reference: \citet{Ranadu2.6}.
+To run the R code referenced here, that version of the package should
+be included in the R installation. The .Rmd routine requires that
+package and also some others referenced in the file, including ``knitr'',
+``ggplot2'', ``grid'', ``ggthemes'', ``zoo'', ``signal''
+and ``magrittr''. In addition, Ranadu requires ``ncdf4'', ``tcltk''
+and ``stats''. Some parts of ``Ranadu'' reference additional packages
+as needed, but they are not used in these papers so do not need to
+be available for this routine to run.
+
+The data processing for this manuscript involved revising some parts
+of the Ranadu package, as listed below. The most significant change
+was the addition of ``flux()'' and ``rk4.integrate()'' functions
+to the package. The first function is used to generate and plot the
+cospectrum used to calculate the flux, and it can optionally apply
+the correction procedure developed in the paper. The second is used
+to integrate the differential equations in the paper.
+
+It may be worthwhile to call attention to the ``pipe'' that is used
+frequently in the R code. This relies on the ``magrittr'' package
+for R. The general structure resembles the following:
+\begin{lyxcode}
+DataFrame~\%>\%~
+
+~~select(Time,~ATH1,~ATF1,~Ts)~\%>\%~
+
+~~selectTime(114500,~115000)~\%>\%~
+
+~~plotWAC()
+\end{lyxcode}
+At each occurrence of \%>\% the output from the previous command is
+piped to the next command as the first argument. This provides clear
+documentation of the sequences used to construct various plots. When
+the plot is generated using the ``ggplot2'' package, this pipe is
+often followed by a sequence of ggplot2 functions linked by ``+''.
+
+The analysis uses R data.frames that are generated from the archived
+netCDF files by the function ``Ranadu::getNetCDF()''. Most of the
+plots are generated using ``Ranadu::ggplotWAC()'' or ``Ranadu::plotWAC()'',
+which are simple convenience routines that set various options preferred
+by the author before calling the R ``ggplot()'' or ``plot()''
+routines.
+
+There is a manual for the Ranadu package, included in the above package
+reference, that includes information on how to install it. See also
+\href{https://github.com/NCAR/Ranadu/blob/master/inst/RanaduManual.pdf}{this URL}. 
+
+\subsection{Ranadu::flux ()}
+
+This function calculates the appropriate cospectrum, generates a plot
+of that cospectrum, calculates the total flux and the partial flux
+associated with fluctuations smaller than a specified wavelength,
+and returns a data.frame containing the frequency, the smoothed cospectrum
+(not weighted by frequency), and the exceedance values. The data.frame
+also has attributes \textquotedbl Flux\textquotedbl{} and \textquotedbl FluxL\textquotedbl{}
+representing the total flux and the flux from wavelengths smaller
+than the wavelength ``wavelengthLimit''. The ``wavelengthLimit''
+is also included as an attribute of the returned data.frame. 
+
+An optional argument to this function is ``Par'' which can be set
+to appropriate response parameters for a temperature sensor. In that
+case, a response function is generated using those parameters and
+the cospectrum is corrected using that response function.
+
+In the code used for this paper, this was replaced by ``plotCS()'',
+a function that incorporated much of the same code. This was done
+partly to facilitate placing the two panels of ``fig9.pdf'' into
+a single plot.
+
+\subsection{Ranadu::CohPhase ()}
+
+Another Ranadu function used for the calculations in the paper is
+``Ranadu::CohPhase()'', which calculates and plots the squared coherence
+and phase between two time series. That function was recently modified
+for the needs of the analysis leading to the paper\@. Like all Ranadu
+functions, it can be obtained from the Zenodo reference cited above
+and its documentation can be checked using R help facilities once
+the package is installed. It was used to generate the cospectra used
+in the determination of the phase between the measured recovery temperature
+and the expected effect of dynamic heating.
+
+A modified version of this routine is included in the .Rmd file, named
+CohP( ). It was modified to return binned values of the phase and
+amplitude ratio labeled with bin numbers so that multiple cross-spectra
+covering the same frequency interval could be averaged to obtain these
+values. This special version was used to find the averaged values
+entering, for example, Figs.~2 and 4. 
+
+\subsection{Ranadu::VSpec ()}
+
+Plots of variance spectra, as shown in Figs.~3 and 6, were generated
+using the Ranadu function ``VSpec()''. There is a brief discussion
+of this function in ``RanaduManual.pdf'' p.~39, available at \href{https://github.com/NCAR/Ranadu/blob/master/inst/RanaduManual.pdf}{this URL}
+or in the Zenodo reference. A tutorial Shiny-app is also available
+\href{https://ncar-eol.shinyapps.io/VarSpec/}{here} that discusses
+plotting spectral variance and describes some of the options available
+in ``VSpec()''. R help facilities also provide documentation once
+the ``Ranadu'' package is installed.
+
+\subsection{Ranadu::SmoothInterp( )}
+
+Many functions including the standard spectral analysis functions
+and stats::fft will fail if there are missing values in the processed
+time series. To avoid this problem, ``SmoothInterp( )'' has been
+used extensively. It calls ``zoo::na.approx( )'' to substitute interpolated
+values for missing values, and it uses the ``rule = 2'' argument
+to that function to extend values to beginning and ending sequences
+with missing values. (``zoo:na.spline( )'' has been used in this
+function in other applications, but it tends to introduce extraneous
+variance.) By default, ``SmoothInterp( )'' also applies Savitzky-Golay
+smoothing, so this needs to be suppressed by the ``.Length=0'' argument
+to ``SmoothInterp( )'' when smoothing is not desired (which applies
+to all uses in these papers). ``SmoothInterp( )'' is called internally
+from within some of the functions that deal with variance spectra,
+including ``VSpec( )'' and ``CohPhase( )''.
+
+The following construction can be used to remove all the missing values
+in a data.frame and substitute interpolated values:
+\begin{lyxcode}
+removeNA~<-~function~(D)~\{D~<-~SmoothInterp(D,~.Length=0)\}
+
+DSW~<-~as.data.frame(lapply(DS11,~removeNA))
+
+DSW~<-~transferAttributes(DS11,~DSW)
+\end{lyxcode}
+The last line is needed because the ``lapply( )'' function doesn't
+carry forward the variable attributes so this retains them by transfers
+from the original data.frame.
+
+\subsection{rk4.integrate()\label{subsec:rk4.integrate()}}
+
+For use in this study, a new function was defined that implements
+the Cash-Karp method of step adjustment (\citet{cash1990variable})
+for a fourth-order Runge-Kutta integration. This was done when it
+became apparent that the standard R function runge.kutta() in the
+``rmutil'' package (\citet{runge.kutta}) did not perform adequately
+for step sizes of 0.04~s (as required for processing 25-Hz files)
+because one time constant for the unheated Rosemount sensor is smaller
+than this step size. This new integration routine is based on the
+description of the method in \citet{Press:1992:NRC:148286} but has
+been coded independently in R for use here. Unlike the standard method,
+it does not increase the step size above the time increment in the
+file, but if the error estimate for a particular step does not meet
+the specified tolerance then the step is divided into multiple smaller
+steps. If the tolerance is still not met, further subdivision occurs. 
+
+One aspect of how this routine is used makes it problematic for general
+use: The integration takes as an argument a function that provides
+the derivative to be integrated, but that function takes a single
+argument. As applied in this analysis, however, additional variables
+are needed to calculate the derivative. Here is an example of a function
+definition used to find the temperature of the support that contacts
+the wire:
+\begin{lyxcode}
+fS~<-~function(y,~i)~\{~~
+
+~~~~((1/a)~{*}~(tau1~{*}~DS11\$DTMDT{[}i{]}~+~DS11\$RTF1{[}i{]}~-~(1-a)~{*}~y)~-~y)~/~(Rate~{*}~tau2)
+
+\}
+\end{lyxcode}
+This function only works by using quantities that are in the function
+environment (here, DS11, a, tau1, Rate, tau2). A better structure
+would provide those as additional arguments to the function, but that
+will require restructuring the ``rk4.integrate( )'' function as
+well. The specific function that provides the derivative is defined
+each time an integration is performed, usually just before the integration,
+but the practice of referencing the calling environment might lead
+to problems for someone wanting to extend or revise the program embedded
+with this document in the ``.Rmd'' file.
+
+\section{Comments on Section 1 (Introduction)}
+
+The short introductory section just provides some context. One matter
+to which the introduction only mentions briefly is that of terminology.
+``Sensible heat flux'' is the commonly used term, but it seems inappropriate
+to this author because ``heat'' is not a property of the air but
+the flow of thermal energy as represented by the first law of thermodynamics.
+``Heat flux'' is therefore at best ambiguous because heat is necessarily
+energy in motion. The primary formula strictly represents the transfer
+of enthalpy for an ideal gas, but ``enthalpy flux'' would not exclude
+the reactive enthalpy embedded in the water vapor so that isn't a
+good substitute. ``Flux of thermal energy'' also isn't appropriate
+because that would carry the connotation of the internal energy of
+a perfect gas; i.e., $C_{v}\rho_{a}<w^{\prime}T^{\prime}>$ with $C_{v}$
+in place of $C_{p}$. A further problem is that what is conventionally
+referred to as the flux is really a flux density. Maybe the best compromise
+would be a term like ``non-reactive enthalpy flux density'' but
+to my knowledge that term has never been used or defined. In the end
+I decided to stay with ``flux of sensible heat''. (I have the same
+reservations about the term ``flux of latent heat'' for the same
+reasons: It is not the heat but the energy that is latent.)
+
+\section{Comments on Section 2 (Determining the Transfer Function)}
+
+This section presents the steady-state solution to the differential
+equations (Eqns.~(4) and (6))\footnote{Equations in the submitted paper are denoted here using the notation
+``Eq.~(n)'' as in that paper, while references to equations in
+this workflow document use the format ``(n)''.} for a sinusoidal input, as Eqns.~(7)--(12), and determines the
+frequency-domain ``transfer function'' (ratio of output to input
+for sinusoidal input) from that solution. The solution was obtained
+using Laplace transforms, which may not be familiar to some potential
+users of this work, so extensive documentation of the approach is
+included in this section of the workflow document. Also included is
+a direct verification of the solution obtained by substituting into
+the governing differential equations to show that those equations
+are satisfied. An additional derivation from the impulse function
+is included and shown to be equivalent. This detail did not seem appropriate
+to include in the paper and may be unnecessary here also, but perhaps
+it will be of interest to someone wanting to replicate or extend this
+work. In particular, it may be useful if additional terms are needed
+to describe the time response.
+
+\subsection{Re: Section 2.1}
+
+Here is exhaustive detail on the Laplace-transform solution. I went
+into this much detail to be convinced that the proposed solution proposed
+was valid. This material is mostly superfluous because the solution
+has been verified several ways, so most readers can skip this subsection.
+This material will be unnecessary for those already expert in Laplace
+transforms because they will be able to see the solution immediately
+from the differential equations, as co-author Carnes has demonstrated. 
+
+Consider a sine-wave input $T(t)=\sin\omega t$ representing the normalized
+actual history of the air temperature. The temperature of the sensor
+and that of the support must both also be sine waves, possibly of
+different amplitudes and phases: $T_{m}(t)=c\sin(\omega t+\phi)$
+and $T_{s}(t)=b\sin(\omega t+\zeta)$. 
+
+The equation for the support temperature$T_{s}(t)$, given by TN Eq.~(4)
+and repeated here, is
+
+\[
+\frac{dT_{s}(t)}{dt}=\frac{(T(t)-T_{s}(t)}{\tau_{2}}
+\]
+Taking Laplace transforms (denoted by $\mathcal{L}$) gives \\
+\begin{equation}
+s\tau_{2}\mathcal{L}(T_{s})-\tau_{2}T_{s}(0)=\frac{\omega}{s^{2}+\omega^{2}}-\mathcal{L}(T_{s})\label{eq:LTsupport}
+\end{equation}
+\begin{align*}
+\mathcal{L}(T_{s}) & =\frac{T_{s}(0)+\frac{1}{\tau_{2}}\frac{\omega}{s^{2}+\omega^{2}}}{\frac{1}{\tau_{2}}+s}\\
+= & \frac{T_{s}(0)}{\frac{1}{\tau_{2}}+s}+\frac{\omega}{\tau_{2}}\frac{1}{\left(\frac{1}{\tau_{2}}+s\right)(s+i\omega)(s-i\omega)}
+\end{align*}
+Expanding the last term in partial fractions leads to:\\
+\[
+\frac{T_{s}(0)}{\frac{1}{\tau_{2}}+s}+\frac{\omega}{\tau_{2}}\left(\frac{c_{1}}{\frac{1}{\tau_{2}}+s}+\frac{c_{2}}{s+i\omega}+\frac{c_{3}}{s-i\omega}\right)
+\]
+where, from \citet{kreyszig1963advanced} p. 219, and with $\tau=\tau_{2}$
+so the equations can be reused later:\\
+\begin{equation}
+c_{1}=\frac{1}{\omega^{2}+(1/\tau)^{2}}=\frac{\tau^{2}}{1+\omega^{2}\tau^{2}}\label{eq:c1Eq}
+\end{equation}
+\begin{equation}
+c_{2}=-\frac{1}{2i\omega(1/\tau-i\omega)}=\frac{\tau(i-\omega\tau)}{2\omega(1+\omega^{2}\tau^{2})}\label{eq:c2Eq}
+\end{equation}
+\begin{equation}
+c_{3}=\frac{\tau(-i-\omega\tau)}{2\omega(1+\omega^{2}\tau^{2})}\label{eq:c3Eq}
+\end{equation}
+The solution is then obtained by taking the inverse Laplace transform:\\
+\begin{equation}
+T_{s}(t)=T_{s}(0)e^{-t/\tau_{2}}+\left(\frac{\omega\tau_{2}}{1+\omega^{2}\tau_{2}^{2}}e^{-t/\tau_{2}}+\frac{(i-\omega\tau_{2})}{2(1+\omega^{2}\tau_{2}^{2})}e^{-i\omega t}+\frac{(-i-\omega\tau_{2})}{2(1+\omega^{2}\tau_{2}^{2})}e^{i\omega t}\right)\label{eq:solnTs}
+\end{equation}
+After any initial transient response decays, the long-time solution
+is then\\
+\begin{equation}
+T_{s}(t)=\frac{1}{(1+\omega^{2}\tau_{2}^{2})}\left(-\omega\tau_{2}\cos\omega t+\sin\omega t\right)=b\sin(\omega t+\zeta)=b(\cos\zeta\sin\omega t+\sin\zeta\cos\omega t)\label{eq:TsLongTerm}
+\end{equation}
+which leads to the solution for $b$ and $\zeta$:\\
+\[
+b\cos\zeta=-\frac{1}{1+\omega^{2}\tau_{2}^{2}}
+\]
+\[
+b\sin\zeta=\frac{-\omega\tau_{2}}{1+\omega^{2}\tau_{2}^{2}}
+\]
+\begin{equation}
+\tan\zeta=-\omega\tau_{2}\label{eq:tanzeta}
+\end{equation}
+\begin{equation}
+b=\frac{1}{1+\omega^{2}\tau_{2}^{2}}\sqrt{(1+\omega^{2}\tau_{2}^{2})}=\frac{1}{\sqrt{1+\omega^{2}\tau_{2}^{2}}}\label{eq:bFromLT}
+\end{equation}
+
+This illustrates the use of the Laplace-transform solution that will
+next be applied to Eq.~(6) from the paper. A specific input, $T(t)=\sin\omega t$,
+has been used, but a more general solution would replace the Laplace
+transform of this input ($\mathcal{L}(T)=\omega/(s^{2}+\omega^{2})$)
+with the general form $\mathcal{L}(T)$ in \eqref{eq:LTsupport}.
+The transfer function in Laplace-transform notation then is the ratio
+of the Laplace transform of the output to that of the input, with
+initial-condition-transients neglected; in this case the transfer
+function is $G(s)=1/(1+s\tau_{2})$. For a general input function,
+this leads to the Laplace transform of the response via $\mathcal{L}(T_{s})=G(s)\mathcal{L}(T)$,
+so the inverse transform of this equation will specify the solution
+for a general input. For example, for $T=B\cos\omega t$ with Laplace
+transform $\mathcal{L}(T)=Bs/(s^{2}+\omega^{2})$, $\mathcal{L}(T_{s})=Bs/\left((1+s\tau_{2})(s+i\omega)(s-i\omega)\right)$
+or\\
+\[
+\frac{\tau_{2}}{B}\mathcal{L}(T_{s})=s\left(\frac{c_{1}}{s+1/\tau_{2}}+\frac{c_{2}}{s+i\omega}+\frac{c_{3}}{s-i\omega}\right)
+\]
+with coefficients $c_{i}$ as found above. Apart from an initial decaying
+exponential, the solution is obtained from the inverse Laplace transform:
+\\
+\begin{align*}
+T_{s}(t) & =B\left(-\frac{i\omega(i-\omega\tau_{2})}{2\omega(1+\omega^{2}\tau_{2}^{2})}e^{-i\omega t}+\frac{i\omega(-i-\omega\tau_{2})}{2\omega(1+\omega^{2}\tau_{2}^{2})}e^{i\omega t}\right)=\left(\frac{B}{1+\omega^{2}\tau_{2}^{2}}\right)\left(\cos\omega t-\omega\tau_{2}\sin\omega t\right)\\
+= & \frac{B}{1+\omega^{2}\tau_{2}^{2}}\cos(\omega t+\zeta)
+\end{align*}
+where the gain is $1/(1+\omega^{2}\tau_{2}^{2})$ and the phase shift
+is $\tan\zeta=\omega t$. 
+
+As a check, the solution can also be obtained as follows:\\
+\[
+b\omega\cos(\omega t+\zeta)=\frac{\sin\omega t-b\sin(\omega t+\zeta)}{\tau_{2}}
+\]
+\[
+b\omega\tau_{2}[\cos\omega t\cos\zeta-\sin\omega t\sin\zeta]=\sin\omega t-b[\sin\omega t\cos\zeta+\cos\omega t\sin\zeta]
+\]
+Rearranging:\\
+\[
+[1-b\cos\zeta+b\omega\tau_{2}\sin\zeta]\sin\omega t=b[\sin\zeta+\omega\tau_{2}\cos\zeta]\cos\omega t
+\]
+This can only be valid if each term in square brackets is zero. The
+right-side term leads to a simple result for the phase:\\
+\begin{equation}
+\tan\zeta=-\omega\tau_{2}\label{eq:tau1}
+\end{equation}
+
+The amplitude-ratio $b$ then follows from the left-side term:\\
+\begin{equation}
+b=\frac{1}{(\tan\zeta\sin\zeta+\cos\zeta)}=\cos\zeta=1/\sqrt{1+\omega^{2}\tau_{2}^{2}}\label{eq:b-1}
+\end{equation}
+The support temperature also can be written as follows: $T_{s}(t)=b(\cos\zeta\sin\omega t+\sin\zeta\cos\omega t).$
+
+Once $b$ and $\zeta$ are known functions of frequency, they can
+be used in Eq.~(6) from the paper to represent the support temperature
+$T_{s}(t)$ to find the amplitude $c$ and phase $\phi$ of the response
+$T_{m}(t)$. 
+
+The same approach can then be applied to the equation for the sensor
+response $T_{m}(t)$ in response to a real temperature $T(t)=\sin\omega t.$
+The Laplace transform of Eq. (6) leads to\\
+\begin{equation}
+\tau_{1}(s\mathcal{L}(T_{m})-T_{m}(0))=a\mathcal{L}(T)+(1-a)b(\cos\zeta\frac{\omega}{s^{2}+\omega^{2}}+\sin\zeta\frac{s}{s^{2}+\omega^{2}})-\mathcal{L}(T_{m})\label{eq:subsidiaryEq}
+\end{equation}
+\[
+\tau_{1}(s\mathcal{L}(T_{m})-T_{m}(0))=\mathcal{L}(T)\left(a+(1-a)\frac{\omega}{\tau_{2}}\frac{1}{\left(\frac{1}{\tau_{2}}+s\right)(s+i\omega)(s-i\omega)}\right)-\mathcal{L}(T_{m})
+\]
+\\
+\begin{equation}
+\mathcal{L}(T_{m})=\frac{T_{m}(0)+\left(a+(1-a)\frac{\omega}{\tau_{2}}\frac{1}{\left(\frac{1}{\tau_{2}}+s\right)(s+i\omega)(s-i\omega)}\right)\mathcal{L}(T)}{\tau_{1}(s+1/\tau_{1})}\label{eq:SEform2}
+\end{equation}
+The ratio of the output to input transform, if the constant term is
+dropped, is\\
+\[
+\mathcal{H}=\frac{a(s+\frac{1}{\tau_{2}})(s+i\omega)(s-i\omega)+(1-a)\omega/\tau_{2}}{\tau_{1}(s+1/\tau_{1})(s+1/\tau_{2})(s+i\omega)(s-i\omega)}=\frac{a}{\tau_{1}}\frac{1}{(s+\frac{1}{\tau_{1}})}+\frac{(1-a)\omega}{\tau_{1}\tau_{2}(s+1/\tau_{1})(s+1/\tau_{2})(s+i\omega)(s-i\omega)}
+\]
+
+The inverse Laplace transform then leads to the general solution for
+$T_{m}(T)$ for sine-wave input:\footnote{Here the notation $\mathcal{L}^{-1}()$ denotes the inverse Laplace
+transform.}\\
+\begin{align}
+T_{m}(t) & =\frac{T_{m}(0)}{\tau_{1}}e^{-t/\tau_{1}}\label{eq:LTsolution}\\
++ & \mathcal{L}^{-1}\left(\frac{a+(1-a)b\cos\zeta}{\tau_{1}}\frac{\omega}{(s+1/\tau_{1})(s^{2}+\omega^{2})}\right)\\
++ & \mathcal{L}^{-1}\left(\frac{(1-a)b\sin\zeta}{\tau_{1}}\frac{s}{(s+1/\tau_{1})(s^{2}+\omega^{2})}\right)
+\end{align}
+Use partial fractions to write, following \citet{kreyszig1963advanced}
+p. 219,\\
+\begin{align}
+\frac{1}{(s+1/\tau_{1})(s^{2}+\omega^{2})} & =\frac{c_{1}}{s+1/\tau_{1}}+\frac{c_{2}}{s+i\omega}+\frac{c_{3}}{s-i\omega}\label{eq:PartialFractions}
+\end{align}
+The coefficients $c_{i}$ are the same as found previously, \eqref{eq:c1Eq}
+to \eqref{eq:c3Eq}, except now $\tau=\tau_{1}$. The Laplace-transform
+solutions for the three terms in \eqref{eq:PartialFractions}, omitting
+the coefficients, are respectively $e^{-t/\tau_{1}}$, $e^{-i\omega t}$
+and $e^{i\omega t}$. The three terms arising from representing the
+last term in \eqref{eq:LTsolution} by partial fractions are the same
+as the previous term but multiplied by $s$ instead of $\omega$.
+Because multiplying the Laplace transform by $s$ corresponds to differentiation,
+differentiating the three terms gives $-(1/\tau_{1})e^{-t/\tau_{1}}$,
+$-i\omega e^{-i\omega t}$ and $i\omega e^{i\omega t}$, apart from
+delta functions at $t=0$ that integrate to constants. Then the solution,
+without the exponentially decaying terms, is\\
+\begin{align}
+T_{m}(t)= & \frac{a+(1-a)b\cos\zeta}{\tau_{1}}\omega\left(c_{2}e^{-i\omega t}+c_{3}e^{i\omega t}\right)+\frac{(1-a)b\sin\zeta}{\tau_{1}}\left(-c_{2}i\omega e^{-i\omega t}+c_{3}i\omega e^{i\omega t}\right)\label{eq:FullSoln}
+\end{align}
+This can be transformed to sine and cosine factors using the relationships
+$e^{i\omega t}=\cos\omega t+i\sin\omega t$ and $e^{-i\omega t}=\cos\omega t-i\sin\omega t$:\\
+\[
+T_{m}(t)=\left(\frac{a+(1-a)b\cos\zeta}{1}\right)\left\{ \left(\frac{(i-\omega\tau)}{2(1+\omega^{2}\tau^{2})}\right)(\cos\omega t-i\sin\omega t)+\left(\frac{(-i-\omega\tau)}{2(1+\omega^{2}\tau^{2})}\right)(\cos\omega t+i\sin\omega t)\right\} 
+\]
+\[
++\left(\frac{(1-a)b\sin\zeta}{1}\right)i\left\{ \left(\frac{-(i-\omega\tau)}{2(1+\omega^{2}\tau^{2})}\right)(\cos\omega t-i\sin\omega t)+\left(\frac{(-i-\omega\tau)}{2(1+\omega^{2}\tau^{2})}\right)(\cos\omega t+i\sin\omega t)\right\} 
+\]
+\[
+=C_{1}\cos\omega t+C_{2}\sin\omega t
+\]
+where\\
+\[
+C_{1}=(a+(1-a)b\cos\zeta)\left(\frac{-\omega\tau}{1+\omega^{2}\tau^{2}}\right)+(1-a)b\sin\zeta\left(\frac{1}{1+\omega^{2}\tau^{2}}\right)
+\]
+\[
+C_{2}=(a+(1-a)b\cos\zeta)\left(\frac{1}{1+\omega^{2}\tau^{2}}\right)+(1-a)b\sin\zeta\left(\frac{\omega\tau}{1+\omega^{2}\tau^{2}}\right)
+\]
+
+In this equation, $C_{1}$, $C_{2}$, $b$ and $\zeta$ are all functions
+of frequency. It is useful to convert this solution into the form
+$T_{m}(t)=c(\omega)\sin(\omega t+\phi(\omega))$, so that the functions
+$c(\omega)$ and $\phi(\omega)$ represent the amplitude and phase
+of the response to an input of $\sin\omega t$. This then will characterize
+the transfer function. The result is that $c(f)\sin(2\pi ft+\phi(f))=c(f)\left(\sin2\pi ft\cos\phi(f)+\cos2\pi ft\sin\phi(f)\right)$
+so $C_{1}=c\sin\phi$ and $C_{2}=c\cos\phi$. Thus, the amplitude
+and phase of the transfer function defining the response to sine waves
+of various frequencies are given by\\
+\begin{equation}
+c=\sqrt{C_{1}^{2}+C_{2}^{2}}\label{eq:amplitude}
+\end{equation}
+\begin{equation}
+\phi=\arctan(C_{1}/C_{2})\label{eq:phase}
+\end{equation}
+
+The unheated Rosemount 102A2EL sensor can be represented by the parameters
+called ``set 1'' ($a=$\Sexpr{round(Param$a, 2)}, $\tau_{1}=$\Sexpr{round(Param$tau1, 2)},
+$\tau_{2}=$\Sexpr{round(Param$tau2, 2)}), as discussed in Section
+2.4.1 of the paper. Figure~\ref{fig:AppxFig} shows the resulting
+frequency-dependent transfer function for sine-wave input.
+
+There is a different route to the transfer function that starts with
+Eq.~(3) of the paper, which is an expression for the response to
+an inverse step function (i.e., a change from unity to zero). The
+corresponding response to a positive step is\\
+\begin{equation}
+\Theta^{*}(t)=1-A_{1}e^{-t/\tau_{1}}-A_{2}e^{-t/\tau_{2}}\label{eq:StepFn}
+\end{equation}
+The derivative of that response is the impulse function $I(t)$, and
+the Fourier transform of that impulse function is the transfer function
+$H(\nu)$:
+
+\begin{equation}
+I(t)=(A_{1}/\tau_{1})e^{-t/\tau_{1}}+(A_{2}/\tau_{2})e^{-t/\tau_{2}}\,\,\,\mathrm{for}\,t\geq0\label{eq:ImpulseFn}
+\end{equation}
+\begin{equation}
+H(\nu)=\int_{0}^{\infty}I(t)e^{-2\pi i\nu t}dt=\frac{A_{1}}{2\pi i\nu\tau_{1}+1}+\frac{A_{2}}{2\pi i\nu\tau_{2}+1}\label{eq:HfromIF}
+\end{equation}
+
+In terms of angular frequency $\omega$,
+
+\[
+H(\omega)=\frac{A_{1}(1-i\omega\tau_{1})}{(1+\omega^{2}\tau_{1}^{2})}+\frac{A_{2}(1-i\omega\tau_{2})}{(1+\omega^{2}\tau_{2}^{2})}=\left(\frac{A_{1}}{1+\omega^{2}\tau_{1}^{2}}+\frac{A_{2}}{1+\omega^{2}\tau_{2}^{2}}\right)-i\omega\left(\frac{A_{1}\tau_{1}}{1+\omega^{2}\tau_{1}^{2}}+\frac{A_{2}\tau_{2}}{1+\omega^{2}\tau_{2}^{2}}\right)
+\]
+\[
+|H(\omega)|=\sqrt{C_{1}^{2}+C_{2}^{2}}\,\,\mathrm{and}\,\,\,\mathrm{Arg}(H(\omega))=-\arctan(C_{1}/C_{2})
+\]
+where\\
+\begin{equation}
+C_{1}=-\omega\left(\frac{A_{1}\tau_{1}}{1+\omega^{2}\tau_{1}^{2}}+\frac{A_{2}\tau_{2}}{1+\omega^{2}\tau_{2}^{2}}\right)\label{eq:C1IF}
+\end{equation}
+\begin{equation}
+C_{2}=\left(\frac{A_{1}}{1+\omega^{2}\tau_{1}^{2}}+\frac{A_{2}}{1+\omega^{2}\tau_{2}^{2}}\right)\label{eq:C2IF}
+\end{equation}
+The asserted equivalence in coefficients is $A_{2}=(1-a)\tau_{2}/(\tau_{2}-\tau_{1})$
+and $A_{1}=1-A_{2}=(a\tau_{2}-\tau_{1})/(\tau_{2}-\tau_{1})$, or
+$a=A_{1}(1-\tau_{1}/\tau_{2})+\tau_{1}/\tau_{2}=A_{1}+(1-A_{1})(\tau_{1}/\tau_{2})=1-A_{2}(1-\tau_{1}/\tau_{2})$.
+Those substitutions can be used to show the equivalence of \eqref{eq:C1IF}
+and \eqref{eq:C2IF} to the corresponding expressions Eq.~(13) and
+Eq.~(14):\\
+\begin{align*}
+C_{1} & =-\omega\left(\frac{1}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\right)\left(A_{2}\tau_{2}(1+\omega^{2}\tau_{1}^{2})+(1-A_{2})\tau_{1}(1+\omega^{2}\tau_{2}^{2})\right)\\
+= & (")\left(\tau_{2}^{2}(1-a)(1+\omega^{2}\tau_{1}^{2})/(\tau_{2}-\tau_{1})+\tau_{1}(a\tau_{2}-\tau_{1})(1+\omega^{2}\tau_{2}^{2})/(\tau_{2}-\tau_{1})\right)\\
+= & (")\left(\frac{a\left(\tau_{1}\tau_{2}(1+\omega^{2}\tau_{2}^{2})-\tau_{2}^{2}(1+\omega^{2}\tau_{1}^{2})\right)+\tau_{2}^{2}(1+\omega^{2}\tau_{1}^{2})-\tau_{1}^{2}(1+\omega^{2}\tau_{2}^{2})}{\tau_{2}-\tau_{2}}\right)\\
+= & (")\left(\frac{a\left(\tau_{2}(\tau_{1}-\tau_{2})+\tau_{1}\tau_{2}^{2}\omega^{2}(\tau_{2}-\tau_{1})\right)+(\tau_{2}^{2}-\tau_{1}^{2})}{\tau_{2}-\tau_{1}}\right)\\
+= & \left(\frac{-\omega}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\right)\left(a\tau_{2}(-1+\tau_{1}\tau_{2}\omega^{2})+\tau_{2}+\tau_{1}\right)
+\end{align*}
+\begin{align*}
+C_{2} & =\left(\frac{1}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\right)\left(A_{2}(1+\omega^{2}\tau_{1}^{2})+(1-A_{2})(1+\omega^{2}\tau_{2}^{2})\right)\\
+= & \left(\frac{\tau_{2}}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\right)\left(\frac{1-a}{\tau_{2}-\tau_{1}}(1+\omega^{2}\tau_{1}^{2})+\frac{a-\tau_{1}/\tau_{2}}{\tau_{2}-\tau_{1}}(1+\omega^{2}\tau_{2}^{2})\right)\\
+= & \left(\frac{\tau_{2}}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\right)\left(\frac{a(1+\omega^{2}\tau_{2}^{2}-1-\omega^{2}\tau_{1}^{2})+1+\omega^{2}\tau_{1}^{2}-(\tau_{1}/\tau_{2})(1+\omega^{2}\tau_{2}^{2})}{\tau_{2}-\tau_{1}}\right)\\
+= & \left(\frac{\tau_{2}}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\right)\left(\frac{a\omega^{2}(\tau_{2}^{2}-\tau_{1}^{2})}{\tau_{2}-\tau_{1}}+\frac{1-\tau_{1}/\tau_{2}+\omega^{2}\tau_{1}(\tau_{1}-\tau_{2})}{\tau_{2}-\tau_{1}}\right)\\
+= & \left(\frac{1}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\right)\left(a\omega^{2}\tau_{2}(\tau_{2}+\tau_{1})+1-\omega^{2}\tau_{1}\tau_{2}\right)
+\end{align*}
+which are the same as Eqs.~(13) and (14) in the paper, obtained from
+the differential equation using 
+\[
+\tan\zeta=-\omega\tau_{2}
+\]
+\[
+\cos\zeta=\frac{1}{\sqrt{\tan^{2}\zeta+1}}=\frac{1}{\sqrt{1+\omega^{2}\tau_{2}^{2}}}=b
+\]
+\[
+\sin\zeta=\sqrt{1-\cos^{2}\zeta}=\frac{-\omega\tau_{2}}{\sqrt{1+\omega^{2}\tau_{2}^{2}}}=-b\omega\tau_{2}
+\]
+\\
+\begin{align*}
+C_{1}^{*} & =\frac{-\omega}{(1+\omega^{2}\tau_{1}^{2})}\left(\tau_{1}a+\frac{(1-a)(\tau_{1}+\tau_{2})}{(1+\omega^{2}\tau_{2}^{2})}\right)\\
+= & \frac{-\omega}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\left(a(\tau_{1}(1+\omega^{2}\tau_{2}^{2})-(\tau_{2}+\tau_{1}))+(\tau_{1}+\tau_{2})\right)\\
+= & \frac{-\omega}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\left(a\tau_{2}(-1+\tau_{1}\tau_{2}\omega^{2})+\tau_{1}+\tau_{2}\right)
+\end{align*}
+
+\begin{align*}
+C_{2}^{*} & =\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)\left(a+\frac{(1-a)(1-\omega^{2}\tau_{1}\tau_{2})}{(1+\omega^{2}\tau_{2}^{2})}\right)\\
+= & \frac{1}{(1+\omega^{2}\tau_{1}^{2})(1+\omega^{2}\tau_{2}^{2})}\left(a\omega^{2}\tau_{2}(\tau_{2}+\tau_{1})+1-\omega^{2}\tau_{1}\tau_{2}\right)
+\end{align*}
+
+The code chunk ``checkImpulseFnSoln'' (in this project archive)
+was used to check that the expressions used for the transfer function
+were indeed equivalent. An example comparison is shown in Fig.~\ref{fig:checkImpulseFnSoln}.
+
+<<checkImpulseFnSoln, include=TRUE, fig.cap='Example transfer function for $a$=0.5, $\\tau_1$=0.05, $\\tau_2$=0.5, for the Laplace-transform solution ("std") and for the corresponding solution obtained from the impulse-response function ("IF"). The lines overlap in this plot and were verified to agree to  near machine-precison limits.'>>=
+
+source('chunks/checkImpulseFnSoln.R')
+f <- seq(0.01,15,by=0.01)
+a <- 0.5
+tau1 <- 0.05
+tau2 <- 0.5
+print(CompareTF(f, a, tau1, tau2))
+
+@
+
+<<AppxFig, include=TRUE, echo=FALSE, fig.cap='The amplitude and phase for the response of the Rosemount 102E4AL temperature sensor to a signal of the form $\\sin(2\\pi$$ft$) where $f$ is the frequency, for the Laplace-transform solution and for a numerical solution of simultaneous equations.'>>=
+
+a <- Param$a
+tau1 <- Param$tau1
+tau2 <- Param$tau2
+frq <- seq(0.01, 25, by = 0.01)
+zeta <- -atan(2 * pi * frq * tau2)
+b <- cos(zeta)
+Phi <- rep(0, length(frq))
+H <- rep(0, length(frq))
+f2solve <- function (x) {
+  # x[1]=phi, x[2]=cf
+  phi <- x[1]
+  cf <- x[2]
+  v <- x
+  v[1] <-
+    a + (1 - a) * bA * cos(zetaA) + cf * tau1 * 2 * pi * frqA * sin(phi) -
+    cf * cos(phi)
+  v[2] <- cf * (tau1 * 2 * pi * frqA * cos(phi) + sin(phi)) - (1 - a) *
+    bA * sin(zetaA)
+  return(v)
+}
+for (i in 1:length(frq)) {
+  xg <- c(0.1, 0.5)
+  bA <- b[i]
+  zetaA <- zeta[i]
+  frqA <- frq[i]
+  r <- nleqslv(xg, f2solve)
+  Phi[i] <- r$x[1]
+  H[i] <- r$x[2]
+}
+Phi <- Phi * 180 / pi
+dfAP <- data.frame('Time' = frq,
+                   'Amplitude' = H,
+                   'Phase' = Phi)
+## Use the Laplace-transform solution
+C1 <- 1 / (1 + 4 * pi ^ 2 * frq ^ 2 * tau1 ^ 2) *
+  (-(a + (1 - a) * b * cos(zeta)) * 2 * pi * frq * tau1 +
+     (1 - a) * b * sin(zeta))
+C2 <- 1 / (1 + 4 * pi ^ 2 * frq ^ 2 * tau1 ^ 2) *
+  ((a + (1 - a) * b * cos(zeta)) +
+     (1 - a) * b * sin(zeta) * 2 * pi * frq * tau1)
+cTF <- sqrt(C1 ^ 2 + C2 ^ 2)
+phiTF <- atan2(C1, C2) * 180 / pi
+dfAP <-
+  data.frame(
+    'Time' = frq,
+    'Amp1' = cTF,
+    'Amp2' = H,
+    'Phase1' = phiTF,
+    'Phase2' = Phi
+  )
+t <- (0:(125 * 600)) / 125
+mx <- vector()
+for (f in c(1, 3, 10)) {
+  S <- sin(2 * pi * f * t)
+  TS <- rep(0, length(S))
+  for (i in 2:length(S)) {
+    TS[i] <- TS[i - 1] + (S[i] - TS[i - 1]) / (125 * tau2)
+  }
+  TM <- TS
+  for (i in 2:length(S)) {
+    TM[i] <- TM[i - 1] + (a * S[i] + (1 - a) * TS[i] - TM[i - 1]) / (125 * tau1)
+  }
+  mx <- c(mx, max(TM[5001:6000]))
+}
+g <-
+  ggplotWAC(
+    dfAP,
+    panels = 2,
+    labelP = c('       Amplitude', '    Phase [degrees]'),
+    labelL = c('Laplace Transform', 'numerical'),
+    lty = c(1, 2),
+    col = c('blue', 'darkorange')
+  )
+g <- g + xlab('frequency [Hz]') + ylab('transfer function')
+g <-
+  g + scale_x_log10(
+    breaks = trans_breaks("log10", function(x)
+      10 ^ x, n = 4),
+    labels = trans_format("log10", math_format(expr = 10 ^ .x))
+  ) + xlab('frequency [Hz]')
+g <- g + annotation_logticks(sides = 'tb')
+g + theme_WAC(1) + theme(legend.position = c(0.75, 0.92))
+
+@
+
+As still another check on the preceding derivations, an alternate
+solution was obtained as follows. Again isolate the factors multiplying
+$\sin\omega t$ and $\cos\omega t:$\\
+\begin{align*}
+c\omega\tau_{1}[\cos\omega t\cos\phi-\sin\omega t\sin\phi]
+\end{align*}
+\[
+=a\sin\omega t+(1-a)b(\cos\zeta\sin\omega t+\sin\zeta\cos\omega t)-c[\cos\phi\sin\omega t+\sin\phi\cos\omega t]
+\]
+\\
+Gathering terms:\\
+\begin{align*}
+[c\omega\tau_{1}\sin\phi+a+(1-a)b\cos\zeta-c\cos\phi]\sin\omega t
+\end{align*}
+\[
+=[c\omega\tau_{1}\cos\phi-(1-a)b\sin\zeta+c\sin\phi]\cos\omega t
+\]
+The simultaneous equations to be solved are then obtained by setting
+the factors in square brackets to zero:\\
+\begin{equation}
+[c\omega\tau_{1}\sin\phi+a+(1-a)b\cos\zeta-c\cos\phi]=0\label{eq:seq1-1}
+\end{equation}
+\begin{equation}
+[c\omega\tau_{1}\cos\phi-(1-a)b\sin\zeta+c\sin\phi]=0\label{eq:seq2-1}
+\end{equation}
+Because it is assumed that $a$ is known and because $b$ and $\zeta$
+are known from the solution above, the two unknowns for which \eqref{eq:seq1-1}
+and \eqref{eq:seq2-1} must be solved are $c$ and $\phi$, giving
+the amplitude and phase of the response to the input. They must be
+solved independently at each frequency because all the parameters
+\{$b,\,\zeta,\,c,\,\phi$\} are functions of frequency. R code for
+this solution using the R package ``nleqslv'' is included in the
+``Rnw''-format file used to generate this workflow memo. The results
+of the two methods of solution are the same to nearly the numerical
+precision of the software.
+
+One final check was to simulate sine waves of various frequencies
+and then use a numerical solution of Eq.~(6) to calculate the expected
+measurement. The results were consistent with Fig.~\ref{fig:AppxFig};
+for example, the 1~Hz simulation agreed in amplitude to within 1\%
+and in phase within $1^{\circ}$ even for a simple Euler-method integration.
+
+The following is a final verification of the solution by substituting
+into the differential equations. For (3), 
+
+\[
+b\omega\tau_{2}\cos(\omega t+\zeta)\stackrel{?}{=}\sin(\omega t)-b\sin(\omega t+\zeta)
+\]
+
+\[
+b\omega\tau_{2}(\cos\omega t\cos\zeta-\sin\omega t\sin\zeta)\stackrel{?}{=}\sin(\omega t)-b(\sin\omega t\cos\zeta+\sin\zeta\cos\omega t)
+\]
+
+\[
+\cos\omega t(b\omega\tau_{2}\cos\zeta+b\sin\zeta)\stackrel{?}{=}\sin(\omega t)(b\omega\tau_{2}\sin\zeta+1-b\cos\zeta)
+\]
+
+The asserted solution gives zero for the coefficient multiplying $\cos\omega t$
+on the left side. On the right side, the coefficient multiplying $\sin\omega t$
+is $1-b\cos\zeta(\omega^{2}\tau_{2}^{2}+1)$ or, using $\cos\zeta=1/\sqrt{1+\tan^{2}\zeta}=1/\sqrt{1+\omega^{2}\tau_{2}^{2}}$,
+$1-b\sqrt{1+\omega^{2}\tau_{2}^{2}}=0$ so the equality is satisfied.
+
+For (4), the approach is similar:\\
+\[
+-C_{1}\omega\tau_{1}\sin\omega t+C_{2}\omega\tau_{1}\cos\omega t
+\]
+\[
+\stackrel{?}{=}\left\{ a\sin\omega t+(1-a)b(\sin\omega t\cos\zeta+\cos\omega t\sin\zeta)\right\} -C_{1}\cos\omega t-C_{2}\sin\omega t
+\]
+
+Again gathering coefficients multiplying $\sin\omega t$ and $\cos\omega t$
+separately:
+
+\[
+\cos\omega t\left(C_{2}\omega\tau_{1}+C_{1}-(1-a)b\sin\zeta\right)\stackrel{?}{=}\sin\omega t\left(a+(1-a)b\cos\zeta+C_{1}\omega\tau_{1}-C_{2}\right)
+\]
+Substituting the solutions for $C_{1}$, $C_{2}$, $b$ and $\zeta$
+gives, for the left side coefficient, after dividing by $b\cos\zeta$,\\
+\[
+\left((\frac{a\sqrt{1+\omega^{2}\tau_{2}^{2}}}{\cos\zeta}+(1-a))\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)-(1-a)\omega\tau_{2}\left(\frac{\omega\tau_{1}}{1+\omega^{2}\tau_{1}^{2}}\right)\right)\omega\tau_{1}
+\]
+\[
++\left((\frac{a\sqrt{1+\omega^{2}\tau_{2}^{2}}}{\cos\zeta}+(1-a))\left(\frac{-\omega\tau_{1}}{1+\omega^{2}\tau_{1}^{2}}\right)-(1-a)\omega\tau_{2}\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)\right)
+\]
+\[
++(1-a)\omega\tau_{2}
+\]
+which is zero. The right-side coefficient becomes, after similar division,\\
+\[
+\frac{a\sqrt{1+\omega^{2}\tau_{2}^{2}}}{\cos\zeta}+(1-a)+\left((\frac{a\sqrt{(1+\omega^{2}\tau_{2}^{2}}}{\cos\zeta}+(1-a))\left(\frac{-\omega\tau_{1}}{1+\omega^{2}\tau_{1}^{2}}\right)-(1-a)\omega\tau_{2}\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)\right)\omega\tau_{1}
+\]
+\[
+-\left((\frac{a\sqrt{(1+\omega^{2}\tau_{2}^{2}}}{\cos\zeta}+(1-a))\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)-(1-a)\omega\tau_{2}\left(\frac{\omega\tau_{1}}{1+\omega^{2}\tau_{1}^{2}}\right)\right)
+\]
+\[
+=\frac{a\sqrt{1+\omega^{2}\tau_{2}^{2}}}{\cos\zeta}+(1-a)\left(1-\frac{1+\omega^{2}\tau_{1}^{2}}{1+\omega^{2}\tau_{1}^{2}}\right)-\frac{a\sqrt{(1+\omega^{2}\tau_{2}^{2}}}{\cos\zeta}\left(\frac{1+\omega^{2}\tau_{1}^{2}}{1+\omega^{2}\tau_{1}^{2}}\right)
+\]
+which is also zero. These results then verify that the differential
+equation is satisfied for the case where the true signal is a continuous
+sine wave.
+
+\paragraph{Comments regarding Fig.~1 in the paper:}
+
+The solution in Sect.~2.1 of the paper specifies the amplitude and
+phase of the response to a unit-amplitude sinusoidal input, and so
+specifies the magnitude and phase of the transfer function. This section
+uses assumed values for the response parameters ($a$, $\tau_{1}$
+and $\tau_{2}$) as examples because those parameters have not been
+determined yet, but the values are those that result from subsequent
+analysis. The function ``LTphase(f, P)'', included in the code chunk
+labelled ``LTsolution'', was constructed to represent the solution
+so that it could be used throughout the paper\@. Its arguments are
+the frequency ``f'', which can be a vector, and the values of the
+parameters, provided as ``P'' which should be a list with named
+components ``a'', ``tau1'' and ``tau2.'' The function returns
+a list with two component vectors representing the amplitude (or gain)
+and phase at the specified frequencies.
+
+It is useful for the ``LTphase()'' function to be able to accept
+a frequency of zero because conventional FFT results in R have the
+first coefficient equal to the constant for zero frequency. The function
+appropriately returns gain = 1 and phase = 0 for zero frequency. When
+given negative frequencies, it returns the complex conjugates of the
+values at the corresponding positive frequencies; i.e., the same amplitudes
+but (-1) times the phase. 
+
+The two-component faceted plot of the transfer function (Fig.~1)
+is generated by ``Ranadu::ggplotWAC()'', a plot function based on
+the ``ggplot2'' package (\citet{wickham2009}) that combines the
+plots of amplitude (or gain) and phase of the transfer function into
+one plot. See ``help(ggplotWAC)'' in R for information on the use
+of this routine to generate plots with multiple panels like this,
+and the ``ggplot2'' book in the reference list for complete information
+on using that package.
+
+At the end of Sect.~2.1 there is a brief discussion of how the transfer
+function can be used to correct the measurements to compensate for
+the time response of the sensor. This is included here as a brief
+reference because the correction procedure is used in some subsequent
+sections. It is developed in more detail in Appendix A, but that discussion
+is relegated to an appendix because the correction methods are straightforward
+and have been used and discussed in previous work.
+
+\subsection{Re: Section 2.2 (The response to dynamic heating):}
+
+Section~2 determines the transfer function for some representative
+airborne thermometers by observing the response to fluctuations in
+dynamic heating. The first equation (Eq.~(15)) is so complicated
+because the simple version ($\alpha_{r}V^{2}/(2C_{p})$) uses the
+measured true airspeed ($V$) and the standard calculation of that
+involves the ambient temperature. If there are errors in the measurement
+of ambient temperature, they enter the estimate of $Q$\@. For that
+reason, the expression is revised to depend only on the absolute recovery
+temperature ($T_{r}$) and other factors that can be determined without
+reference to the ambient temperature. This makes possible the iteration
+process used later in this section.
+
+The formula used to calculate the dynamic heating variable $Q$ is
+as follows:
+
+\[
+Q=\frac{{V^{2}}}{2c_{p}}=\frac{M^{2}T_{r}/5}{1+\alpha_{r}M^{2}/5}
+\]
+
+where $V$ is the airspeed, $c_{p}$ the specific heat of air, $M$
+the Mach number, $T_{r}$ the (true) absolute recovery temperature,
+and $\alpha_{r}$ the recovery factor. The substitution $c_{v}=\frac{5}{2}R$
+has been used, where $R$ is the gas constant for air. Initially $T_{m}$
+was used in place of $T_{r}$, but once valid transfer-function parameters
+were found the measurements were corrected to obtain better values
+for $T_{r}$. The change in the results was insignificant.
+
+\subsection{Re Sect.~2.3, Data Sources}
+
+No additional information seems needed here. Someone wanting to reproduce
+this work can request the data files as described here. This work
+is all based on publicly available data sets that are preserved with
+associated Document Object Identifiers (DOIs).
+
+\subsection{Re Sect. 2.4, Fits to the Measurements}
+
+The initial few paragraphs are justification for using the dynamic-heating
+term to characterize the response of the temperature sensor. In the
+course of investigating this, some plots were constructed that were
+not included in the final paper. An example was the variance spectra
+for the two terms on the right side of Eq.~(16). That figure is included
+here as Fig.~\ref{fig:Qprime}. It shows the extent to which the
+second term dominates over the first for the entire frequency range.
+That helps justify attributing the variance in dynamic heating primarily
+to the variance in the Mach number, so that to a first approximation
+the true variance in the temperature-dependent first term in Eq.~(16)
+can be neglected. 
+
+<<Qprime, include=TRUE, fig.height=3.4, fig.pos='t', fig.cap='Frequency-weighted spectral variance for $\\delta T_m/T_m$ and 0.4$\\delta M/M$ as functions of frequency ($\\nu$) for a low-level flight segment from VOCALS flight 3, 21 Oct 2008 11:39:00 -- 11:52:00 UTC. The wavelength scale shows the correspondence between frequency and wavelength at the average airspeed. The two terms are labeled "Tm" and "Mach" in the legend.'>>=
+
+load(file='DT.Rdata')
+DT$Mach <- (DT$MACH - mean(DT$MACH, na.rm = TRUE)) / 
+            mean(DT$MACH, na.rm = TRUE)
+DT$Tm <- (DT$TTRR - mean(DT$TTRR, na.rm = TRUE)) / 
+          (273.15 + mean(DT$TTRR, na.rm = TRUE))
+DT$Mach <- DT$Mach * 0.4
+g <- VSpec(DT, 'Mach', ylim = c(1.e-10, 1.e-4))
+VSpec(DT, 'Tm', add = g) + theme_WAC(1)
+
+@
+
+\subsubsection{Re.~Sect.~2.4.1: An unheated temperature sensor}
+
+The danger in the approach taken is that, if fluctuations in dynamic
+heating (via fluctuations in airspeed) are not the dominant source
+of variation in the measured recovery temperature ($T_{m}$) then
+the measured phase and amplitude ratio for the cross-spectrum of $T_{m}$
+and $Q$ will be contaminated by other causes of fluctuation in the
+measured recovery temperature. Indeed, if such fluctuations in $T_{m}$
+are large compared to fluctuations in $Q$ then the amplitude ratio
+determined from the variance spectra will not reflect the transfer
+function and cannot be used to determine it. Therefore regions and
+frequency intervals were sought where it appeared that the fluctuations
+in $T_{m}$ arose primarily from fluctuations in $Q$\@. This should
+be the case where the intensity of turbulence is high and would produce
+much larger fluctuations in $T_{m}$ than the existing fluctuations
+in ambient temperature. 
+
+The selection of data and combination into a unified data set is described
+in the text of the paper and won't be repeated here. Some trial-and-error
+investigation of the number of bins to use in the construction of
+Fig.~2 in the paper led to the choice of 200 bins, which determines
+the number of plotted points and error bars in the plot. Although
+it leads to reduced clarity in the plots, a large number of bins was
+settled upon to avoid significant distortion of the mean when calculated
+for a region where the variable changes rapidly, as for example approaching
+10~Hz in this figure. Too large an interval, with the average defined
+at the mid-point of the interval, could distort the means toward higher
+values compared to the true distribution and hence would bias the
+determination of response variables. These plots have a more convincing
+appearance when a smaller number of bins is used, and became vary
+noisy if a much larger number of bins is used, so 200 bins was the
+compromise used in the paper for the unheated Rosemount sensor. Because
+the data sets used for other sensors were much smaller, smaller numbers
+of bins were used for those sensors.
+
+A modified version of the Ranadu function ``CohPhase()'', named
+``CohP()'' in the .Rmd code, was used to combine the measurements
+of phase and amplitude for the flight segments listed in Table~1
+of the paper. That function was modified to return a special data.frame
+containing the frequency limits of the bins and, for each frequency
+in the values returned by R function ``spec.pgram()'', the assignment
+of that frequency to one of the 200 logarithmically spaced bins in
+the phase and amplitude of the two spectra at that frequency. This
+function ``CohP()'' was called for each of the six ten-minute flight
+segments, with the measured recovery temperature and the expected
+forcing by dynamic heating (i.e., $T_{m}$ and $Q$) and then the
+results from all calls were averaged in each of the frequency bins.
+The result was an average value (with standard deviation) for the
+phase and amplitude ratio, as needed to determine the transfer function.
+The observed phase at each bin-average frequency then was plotted
+in Fig.~2a to show the results for the phase. (The measurement used
+for $T_{m}$ was ``TTRR'' from the netCDF file.\footnote{At the time of the VOCALS project the recovery temperatures had names
+like TTRR instead of RTRR\@. Those names were changed subsequently
+to reflect that these are better described as recovery temperatures
+rather than total temperatures. In this analysis, the variable TTRR
+has been renamed RTRR to reflect the current usage. There is no variable
+RTRR in the referenced data files.} Two-standard-deviation values for the standard deviation of the mean
+are plotted because one-standard-deviation limits appeared hard to
+distinguish in this plot. The error-bar plot was generated using the
+ggplot2 function ``geom\_errorbar()'' with the limits specified
+using the bin-average mean values and standard deviations.
+
+The plotted ``theoretical response'' was generated by ``LTphase()''
+using the standard values of the response parameters as found later
+by fitting to these values and the corresponding values for the amplitude
+ratio. Figure~2b shows the phace. The plotted frequencies are limited
+to those above $10^{-2}\mathrm{Hz}$ because, below that frequency,
+bins had too few independent measurements to provide good statistics,
+although the available measurements below 0.01~Hz were consistent
+with zero phase shift as would be expected from the theoretical response.
+The frequency interval was also limited to <12~Hz because the highest-frequency
+points in the plot otherwise departed significantly from the trend
+by being much higher (about $-43^{\circ}$) and so appearing to be
+outliers that should be excluded from the fit. The highest frequency
+included in the plot also shows some possible deviation and maybe
+should also be excluded.
+
+Figure~2a was generated in similar fashion, using the ratio of amplitudes
+(the square roots of the ratio of variance spectra) in place of the
+phase. For the fit, the calculation of the chi-square included the
+deviations from the experimental phases and the experimental amplitude
+ratios with equal weights, except that the experimental amplitude
+ratios were only included for the frequency range from 0.1 to 3~Hz.
+This range was selected because outside that range the values departed
+significantly and systematically from the theoretical prediction.\footnote{The reason may be that, for lower frequencies, the fluctuations are
+influenced by real fluctuations in temperature not associated with
+dynamic heating while for higher frequencies there appears to be spurious
+variance in the measurement of temperature. This is discussed in more
+detail in a subsequent paragraph.} The R function ``optim()'', part of the standard ``stats'' package,
+was used for this fit. In the case of the unheated Rosemount sensor,
+the fit used the default Nelder-Mead minimization method without imposed
+constraints on the values of the three parameters. This function returned
+a calculated Hessian and that was used to determine estimates of the
+uncertainty in the parameters. The function reported that it converged
+to a solution, and at the point of convergence the chi-square was
+3892 for 218 degrees of freedom. In the calculation of the reported
+uncertainty limits the reported Hessian was divided by 4 to account
+for the use of two-standard-deviation standard deviations and then
+the square roots of the diagonal elements of the inverted Hessian
+matrix were reported. (This ignores significant correlations among
+the error estimates that perhaps should be considered and reported.)
+
+The paper then reports on an iteration in which the measured recovery
+temperature was first corrected using the parameters as determine
+in the fit and then the fit was repeated. This process was performed
+outside the .Rmd code by changing the dynamic-heating term in the
+six calls to CohP (lines 869 to 874) to ``DH2'', which was calculated
+by using the corrected ``RT'' variable in place of the measured
+variable (``TTRR''). The result produced only a small change to
+the fit parameters, within estimated uncertainty, even after only
+one iteration so the iteration procedure was not included in the processing
+code. (The values obtained after iteration were those quoted in the
+paper.)
+
+\textbf{\emph{\uline{Investigation of the high-frequency amplitude
+ratio in Fig.~2a:}}}
+
+A troubling aspect of Fig.~2a in the paper is the departure from
+the fit for frequencies above about 3~Hz. The correction to the recovery
+temperature discussed in the previous paragraph was used to show that
+this did not correct the problem. The amplitude ratio is the ratio
+of the fluctuations in $T_{m}$ (TTRR) or, after correction, $T_{r}$,
+to those in $Q$, so the explanation could be either too large fluctuations
+in $T_{m}$ (e.g., from noise) or too small fluctuations in $Q$ (e.g.,
+from attenuation of the signal). $Q$ depends on $V^{2}$ so the variance
+spectrum for $Q$ would be expected to show a -5/3 slope on a logarithmic
+plot if that is the case for $V$. It is less clear what slope to
+expect for the measured recovery temperature TTRR, although in an
+inertial subrange the air temperature might be expected to exhibit
+-5/3 slope. The manuscript argues that a filtered version of dynamic
+heating should be used, so it is useful to correct the dynamic heating
+to see the shape of the resulting air temperature. This is shown as
+AT in the following plot (Fig.~4).
+
+<<include=FALSE>>=
+
+source('chunks/initialize.R')
+load (file = './DVOCALS.Rdata')
+  source('chunks/theme_WAC.R')
+  ## Special test: Filter TTRR
+  ## D$TTRR <- signal::filter( signal::butter (3, 0.7), D$TTRR)
+  ## D <- transferAttributes(DVOCALS, D)
+  ## Revise the calculation of dynamic heating to avoid dependence on AT:
+  D$MACH <- MachNumber(D$PSXC, D$QCXC)
+  recoveryFactor <- attr(D[, 'ATRR'], 'RecoveryFactor')
+  XXA <-  D$MACH ^ 2 / 5
+  D$DH <- (D$TTRR + 273.15) * XXA / (1 + recoveryFactor * XXA)
+  D$DH2 <- (D$RT + 273.15) * XXA / (1 + recoveryFactor * XXA)
+  ## Further adjust dynamic-heating for sensor response:
+  reviseQ <- function (.data, P) {
+    # P is Param1, e.g.; alphaR is recovery factor
+    .data$Q <- .data$TASX ^ 2 / 2010
+    aV <- P$a
+    tau1V <- P$tau1
+    tau2V <- P$tau2
+    Rate <- attr (.data, 'Rate')
+    fS <- function(y, i) {
+      (.data$Q[i] - y) / (tau2V * Rate)
+    }
+    fM <- function (y, i) {
+      (aV * .data$Q[i] + (1 - aV) * TsQ[i] - y) / (Rate * tau1V)
+    }
+    TsQ <- rk4.integrate (fS, .data$Q[1], 1:nrow(.data))
+    Qp <- rk4.integrate (fM, .data$Q[1], 1:nrow(.data))
+    return (Qp)
+  }
+  a <- 0.733 # 0.713
+  tau1 <- 0.0308  # 0.0335
+  tau2 <- 0.447
+  Param1 <- list(
+    a = a,
+    tau1 = tau1,
+    tau2 = tau2
+  )
+  D$DH3 <- reviseQ(D, Param1)
+  # D$RTT <- D$REF + D$DH3
+  ## temporary: shift D$AT later in time
+  # D$AT <- ShiftInTime (D$AT, .rate=25, .shift=40)
+  Tasm <- mean(D$TASX, na.rm = TRUE)
+  DT1 <- D %>% selectTime(65000, 70000)
+  DT2 <- D %>% selectTime(73300, 74300)
+  DT3 <- D %>% selectTime(104600, 105600)
+  DT4 <- D %>% selectTime(114200, 115200)  ## 113900, 115200
+  DT5 <- D %>% selectTime(124300, 125300)
+  DT6 <- D %>% selectTime(133000, 134000)
+  DZV <- rbind(DT1, DT2, DT3, DT4, DT5, DT6)
+  rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+  .Var1 <- 'TTRR'
+  .Var2 <- 'DH'
+  .Var3 <- 'ATRR'
+  .Var4 <- 'AT'
+  .Var5 <- 'DH3'
+  .Var6 <- 'DH2'
+  spans <- 25
+  if(exists('sp')) {rm('sp')}
+  for (.data in list(DT1, DT2, DT3, DT4, DT5, DT6)) {
+   Z <-
+          capture.output (Vr <-
+                            SmoothInterp(detrend (.data[, 
+                              c('Time', .Var1)]), .Length = 0))
+     
+    Z <-
+          capture.output (VrC <-
+                            SmoothInterp(detrend (.data[, 
+                              c('Time', .Var2)]), .Length = 0))
+     Z <-
+          capture.output (VrA <-
+                            SmoothInterp(detrend (.data[, 
+                              c('Time', .Var3)]), .Length = 0))
+      Z <-
+          capture.output (VrB <-
+                            SmoothInterp(detrend (.data[, 
+                              c('Time', .Var4)]), .Length = 0))
+     Z <-
+          capture.output (VrD <-
+                            SmoothInterp(detrend (.data[, 
+                              c('Time', .Var5)]), .Length = 0))
+      Z <-
+          capture.output (VrE <-
+                            SmoothInterp(detrend (.data[, 
+                              c('Time', .Var6)]), .Length = 0))
+    Rate <- attr(.data, 'Rate')
+    vcv <- cbind(ts(Vr, frequency = Rate), ts(VrC, frequency = Rate))
+    vcv2 <- cbind(ts(VrA, frequency = Rate), ts(VrB, frequency = Rate))
+    vcv3 <- cbind(ts(VrD, frequency = Rate), ts(VrE, frequency = Rate))
+    P <-
+      spec.pgram(
+        vcv,
+        detrend = FALSE,
+        fast = TRUE,
+        plot = FALSE,
+        spans = spans
+      )
+    P2 <-
+      spec.pgram(
+        vcv2,
+        detrend = FALSE,
+        fast = TRUE,
+        plot = FALSE,
+        spans = spans
+      )
+    P3 <-
+      spec.pgram(
+        vcv3,
+        detrend = FALSE,
+        fast = TRUE,
+        plot = FALSE,
+        spans = spans
+      )
+    # plot(P$freq, P$spec[,1], log='xy', type='l', col='blue')
+    # lines(P$freq, P$spec[,2], col='forestgreen')
+    if(!exists('sp')) {
+      sp <- rep(0, 6*length(P$freq))
+      dim(sp) <- c(length(P$freq), 6)
+      sp[, 1:2] <- P$spec
+      sp[, 3:4] <- P2$spec
+      sp[, 5:6] <- P3$spec
+    } else {
+      sp[, 1:2] <- sp[, 1:2] + P$spec
+      sp[, 3:4] <- sp[, 3:4] + P2$spec
+      sp[, 5:6] <- sp[, 5:6] + P3$spec
+    }
+  }
+  sp <- sp / 6
+  DP <- data.frame(freq=P$freq, TTRR=P$freq*sp[,1], Q=P$freq*sp[,2], 
+                   AT=P$freq*sp[,4])
+  g <- ggplotWAC(DP, xlim=c(0.01,15)) +  
+          ylab('frequency x spectral variance')
+  g <-   g + scale_x_log10(
+    breaks = trans_breaks("log10", function(x)
+      10 ^ x, n = 4),
+    labels = trans_format("log10", math_format(expr = 10 ^ .x))
+  ) + xlab('frequency [Hz]')
+  g <- g + scale_y_log10(
+      breaks = trans_breaks("log10", function(x)
+        10 ^ x, n = 4),
+      #limits = ylim,
+      labels = trans_format("log10", math_format(10 ^ .x))
+    ) +
+    annotation_logticks(sides = 'trbl') +
+    coord_cartesian(xlim = c(0.01, 15), ylim = c(1.e-5, 1.e-2))
+g <- g + theme_WAC()
+g <- g + geom_path(data=data.frame(x=c(1e-2,10), y=c(2.e-3, 2.e-5)), aes(x=x, y=y), colour='darkorange')
+## Add a theoretical line for recovery temperature:
+freq <- P$freq
+RTX <- 10^((log10(freq)+2)*(-2/3))*1.e-3
+## Add dynamic heating:
+# load('AR.Rdata')
+# D$QF <- as.vector(signal::filter(AR, D$Q))
+## Modify by the transfer function:
+source('chunks/LTphase.R')
+E <- LTphase(P$freq, Param1)
+# RTX <- (sqrt(RTX) + recoveryFactor * Tasm^2/2010 * E$Amp)^2
+RTX <- RTX * E$Amp^2
+# g <- g + geom_path(data=data.frame(freq=freq, RTX=RTX), aes(x=freq, y=RTX), colour='red', lty=2)
+
+
+  # plot(P$freq, sp[,1], log='xy', type='l', col='blue')
+  # lines(P$freq, sp[,2], col='forestgreen')
+
+@
+
+<<include=TRUE, fig.cap='Variance spectra for the measured recovery temperature (TTRR) and for dynamic heating (Q) for the six flight legs used for Fig. 2. The variance spectrum for the air temperature after correction for dynamic heating as in the manuscript (AT) is also shown. The orange line is a reference line with the expected -2/3 slope.'>>=
+
+print(g)
+@
+
+The variance spectra for $Q$ and TTRR both seem to display high-frequency
+problems:
+\begin{enumerate}
+\item The spectrum for $Q$ appears too small at high frequency. The expectation
+is that this should have $-2/3$ slope on this weighted plot, as indicated
+by the orange reference line. The spectral density for $Q$ starts
+to depart below the expected slope for frequencies above about 5 Hz,
+and there may be excess variance around 5 Hz.
+\item The deduced response function extrapolated from lower-frequency measurements
+predicts that TTRR should be attenuated at high frequencies, but the
+measurements do not show attenuation as expected.
+\end{enumerate}
+The variance spectrum for AT still has excess variance at high frequency,
+although the excess is smaller than for the uncorrected air temperature
+(not shown). This is not the expected behavior for a sensor having
+the time response otherwise found in this study; instead, the expected
+shape would be $-2/3$ slope for low frequency and substantial attenuation
+of the measurement at high frequency. 
+
+The next plot (Fig.~5) shows, as RM, a calculated prediction of how
+the variance spectrum of the recovery temperature would look if the
+true air temperature were as shown by the orange line. The result
+resembles the shape of the measurement (TTRR) reasonably for frequencies
+below about 3 Hz but shows a significant departure above 3~Hz, matching
+the decrease in the filtered dynamic-heating term (QP). 
+
+<<include=FALSE>>=
+
+DP2 <- data.frame(freq=P$freq, TTRR=P$freq*sp[,1], RM=P$freq*sp[,5]+RTX, 
+                   QP=P$freq*sp[,5])
+  g <- ggplotWAC(DP2, xlim=c(0.01,15)) +  
+          ylab('frequency x spectral variance')
+  g <-   g + scale_x_log10(
+    breaks = trans_breaks("log10", function(x)
+      10 ^ x, n = 4),
+    labels = trans_format("log10", math_format(expr = 10 ^ .x))
+  ) + xlab('frequency [Hz]')
+  g <- g + scale_y_log10(
+      breaks = trans_breaks("log10", function(x)
+        10 ^ x, n = 4),
+      #limits = ylim,
+      labels = trans_format("log10", math_format(10 ^ .x))
+    ) +
+    annotation_logticks(sides = 'trbl') +
+    coord_cartesian(xlim = c(0.01, 15), ylim = c(1.e-6, 1.e-2))
+g <- g + theme_WAC()
+g <- g + geom_path(data=data.frame(x=c(1e-2,10), y=c(1.e-3, 1.e-5)), aes(x=x, y=y), colour='darkorange')
+# g <- g + geom_path(data=data.frame(freq=freq, RTX=D$), aes(x=freq, y=RTX), colour='red', lty=2)
+
+@
+
+<<include=TRUE, fig.cap='The predicted measurement (RM) if the air temperature has the spectrum shown as the orange line and the modified dynamic-heating term (QP) is added. The actual measurement is also shown (TTRR).'>>=
+
+print(g)
+@
+
+Figure.~2a in the paper is based on the ratio of amplitudes, but
+if there is noise in one or both of TTRR and Q then that will make
+a false contribution to the ratio because what is needed is how TTRR
+responds to Q. Therefore it may be more appropriate to consider the
+part of TTRR that is ``caused'' by Q, which will be reflected in
+the coherence. This suggests scaling the spectrum of TTRR to represent
+only the part of the variance attributable to Q. That is: Find the
+variance represented by $P(\nu)\mathrm{Coh}(\nu)$ where $\mathrm{Coh}(\nu)$
+is the squared coherence between TTRR and Q. Then use the ratio between
+this spectral amplitude and that of Q. This then assumes that the
+measurement of Q does not contain noise and is not attenuated.
+
+\begin{figure}
+\begin{centering}
+\includegraphics[width=0.85\paperwidth]{Tcoh}
+\par\end{centering}
+\caption{Variance spectra for the measured recovery temperature (TTRR), dynamic
+heating (Q), and the measured recovery temperature weighted by the
+coherency (TCOH).}
+
+\end{figure}
+
+The resulting figure (Fig.~6) shows that this leads to a reasonable
+decrease in the resulting spectrum (plotted here as TCOH) at high
+frequency. This doesn't explain why TTRR has excess variance here,
+but it does confirm that the excess is not driven by dynamic-heating
+fluctuations so it supports excluding that region from the fit.
+
+The source of the excess variance in the measured recovery temperature
+has not been identified, but it appears that this is the primary cause
+of the high-frequency departure from theory in Fig.~2a of the manuscript.
+In this study, it has been assumed that this departure is spurious
+and the contribution to the amplitude ratio above 3~Hz should be
+ignored when fitting the transfer function to the measurements. For
+this reason, the fit used only the amplitude ratios for frequencies
+below 3~Hz (although the phase was used up to 12~Hz because it seemed
+reasonable in this extended range).
+
+\textbf{\emph{\uline{Extension to GV measurements}}}
+
+An earlier version of this paper included a similar evaluation that
+used measurements of an unheated sensor on the GV\@. The .Rmd file
+includes code for this, but the results were not included in the paper
+because the results were apparently less constrained by the measurements
+than were those from the C-130. The relevant code chunk is labeled
+``GVcheck''. That code will generate figures similar to Fig.~2
+in the paper and will fit to the observations to determine the fit
+parameters. The chunk argument ``include = FALSE'' causes the plots
+to be omitted.
+
+\subsubsection{The heated Rosemount sensor}
+
+A study of the heated Rosemount sensor was included in the original
+file but excluded from the paper to reduce its length. The sensor
+is seldom used and has largely been replaced by the heated HARCO sensor,
+which is designed to have the same characteristics as the original.
+In the .lyx file the inclusion of this material is controlled by the
+``Extra'' branch which is not included in the paper but could be
+added by activating this branch. The results are not included in the
+summary of parameters (Table~3). Here is the text that would have
+been included in the paper but was excluded:
+
+\rule[2ex]{1\columnwidth}{1pt}
+
+\subsubsection*{The heated Rosemount sensor}
+
+<<XTR3>>=
+
+bestW <- c(0.0, 0.1635184, 0.9017476)
+
+@
+
+\begin{figure}
+\begin{centering}
+\includegraphics[width=0.9\textwidth]{figure/heatVarSpec-1}
+\par\end{centering}
+\caption{Variance spectrum for the recovery temperature from the heated Rosemount
+sensor (RTWH) and for the unheated Rosemount 102E4AL sensor (RTRR),
+for a low-level flight segment in the marine boundary layer.}
+
+\end{figure}
+
+During the same flight used to study the unheated sensor, a heated
+Rosemount sensor was also present. Data were assembled as for the
+unheated sensor and the preceding analysis was repeated, except that
+two of the flight segments were omitted because they led to erratic
+indications of the phase. The heated sensor had almost no response
+to any fluctuations above 1~Hz, as shown in Fig.~3. 
+
+\begin{figure}
+\begin{centering}
+\includegraphics[width=0.9\textwidth]{figure/VphaseW-1}
+\par\end{centering}
+\caption{Phase lag of recovery temperature vs.\textbackslash\textbackslash{}
+dynamic heating, for the measurements (error bars) from a Rosemount
+heated sensor, and the theoretical response for the best-fit parameters
+to the measurements with frequency below 1 Hz (green line).}
+
+\end{figure}
+
+The measured phase between the measured recovery temperature and the
+calculated dynamic heating is shown in Fig.~2. Above 1~Hz, the lack
+of response led to erratic estimates of the phase and the coherence
+between the measured recovery temperature and dynamic heating was
+consistent with zero, so those measurements of the phase were omitted
+from the fit. Similarly, the amplitude for frequencies above 1~Hz
+was not used in the fit, and measurements of amplitude for frequency
+below 0.13~Hz were similarly omitted because for these frequencies
+there appeared to be significant fluctuations in recovery temperature
+caused by real changes in air temperature and not primarily changes
+in dynamic heating. The best-fit parameters so obtained were $a=$\Sexpr{round(bestW[1], 2)},
+$\tau_{1}=$\Sexpr{round(bestW[2], 2)}~s and $\tau_{2}=$\Sexpr{round(bestW[3], 2)}~s;
+these values are the basis for the theoretical lines in Figs.~4 and
+5.\footnote{The fit was constrained to keep $a\geq0$. Still smaller values of
+the $\chi^{2}$ were obtained for negative $a$, but this would be
+inconsistent with the assumed model of heat transfer to the wire.}
+
+\begin{figure}
+\begin{centering}
+\includegraphics[width=0.9\textwidth]{figure/checkW-1}
+\par\end{centering}
+\caption{The ratio of the spectral amplitude for the measurement of recovery
+temperature (\$T\_m(t)\$) from the heated Rosemount sensor to that
+for dynamic heating (\$Q\$), shown as the plotted data points. The
+green line is the prediction from the transfer function determined
+from the best-fit values matching the phase lag and amplitude ratio
+between these variables.}
+
+\end{figure}
+
+The phase shift leads to these conclusions for the Rosemount heated
+sensor:
+\begin{enumerate}
+\item A two-time-constant formula does not provide a very good representation
+of the low-frequency portion of the observations that is between 0.01
+and 0.04~Hz. This may indicate that still another time constant is
+involved in the response of this sensor and that the two-equation
+representation provided by Part 1 Eqns.~(3) and (4) is incomplete.
+\item The observed phase shift falls below $-90^{\circ}$ above about 0.3~Hz.
+This is impossible for a single-time-constant sensor but is possible,
+as the theoretical line shows, for a two-time-constant representation
+of the response, so it is conclusive that at least two time constants
+are involved. This also indicates that wrong-sign contributions to
+sensible-heat flux would be measured by this sensor above about 0.3~Hz.
+\item The low value of $a$, \Sexpr{round(bestW[1], 2)}, indicates that
+the primary heat transfer from the wire is not to the air but to the
+support. For $a$ equal to zero, the differential equations TN Eq.~(3)
+and (4) do not separately constrain $\tau_{1}$ and $\tau_{2}$. The
+fit results show complete negative correlation for the errors in these
+parameters, so they cannot be determined independently. The result,
+however, is not equivalent to a single time constant, as demonstrated
+by the measured phase shifts below $-90^{\circ}$. The solution to
+the differential equations with $a=0$ becomes\\
+\[
+C_{1}=b\cos\zeta\left(\frac{-\omega\tau_{1}}{1+\omega^{2}\tau_{1}^{2}}\right)+b\sin\zeta\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)
+\]
+\[
+C_{2}=b\cos\zeta\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)+b\sin\zeta\left(\frac{\omega\tau_{1}}{1+\omega^{2}\tau_{1}^{2}}\right)
+\]
+\begin{align*}
+c & =\sqrt{C_{1}^{2}+C_{2}^{2}}=2b^{2}\frac{1+\omega^{2}\tau_{1}^{2}}{(1+\omega^{2}\tau_{1}^{2})^{2}}=2\left(\frac{1}{1+\omega^{2}\tau_{2}^{2}}\right)\left(\frac{1}{1+\omega^{2}\tau_{1}^{2}}\right)
+\end{align*}
+\[
+\tan\phi=(C_{1}/C_{2})=\frac{-\omega\tau_{1}\cos\zeta+\sin\zeta}{\cos\zeta+\omega\tau_{1}\sin\zeta}=\frac{\tan\zeta-\omega\tau_{1}}{1+\omega\tau_{1}\tan\zeta}=\frac{-\omega(\tau_{2}+\tau_{1})}{1-\omega^{2}\tau_{1}\tau_{2}}
+\]
+These equations show that, for any solution, the values of $\tau_{1}$
+and $\tau_{2}$ can be exchanged and the solution will remain the
+same. The particular solution found was influenced by the initial
+parameters for the search function, but reversed value for $\tau_{1}$
+and $\tau_{2}$ could be obtained for other initial conditions. Nevertheless,
+it appears that the best interpretation is that the support responds
+more slowly, with $\tau_{2}=$\Sexpr{round(bestW[3], 2)}, and the
+sensing wire responds faster with time constant $\tau_{1}=$\Sexpr{round(bestW[2], 2)}.
+\end{enumerate}
+\begin{figure}
+\begin{centering}
+\includegraphics[width=0.9\textwidth]{figure/rfHeated-1}
+\par\end{centering}
+\caption{The transfer function for the heated Rosemount sensor on the C-130
+research aircraft, based on the best-fit parameters that match the
+observed phase shift relative to dynamic heating.}
+
+\end{figure}
+
+The transfer function for this sensor is shown in Fig.~10. It does
+not appear to be feasible to measure sensible-heat flux with this
+sensor, even with the correction procedures to be developed in the
+Appendix, because above about 1~Hz there does not appear to be enough
+signal to amplify by using the transfer function. Also, the phase
+shift is less than $-90^{\circ}$ above this frequency.
+
+\rule[0.5ex]{1\columnwidth}{1pt}
+
+(this is the end of the section re the heated Rosemount sensor, excluded
+from the paper.)
+
+\subsubsection{Comments on Sect.~2.4.2, Heated sensors}
+
+The first try was based on WECAN data, but the results did not seem
+to give a response dominated by dynamic-heating forcing. That code
+still resides in the .Rmd file, along with an early analysis based
+on limited SOCRATES data, but those were superceded by a set of flight
+segments from the SOCRATES and CSET experiments, and that is the data
+set used in the paper to characterize the HARCO sensor\@. Procedures
+followed the pattern explained above for the unheated Rosemount sensor,
+and a transfer function for the HARCO was plotted as Fig.~4 in the
+paper using the same procedures. The fit provided by Eqs.~(17)--(19)
+has no theoretical basis, but it provides a reasonable fit to the
+observations and is a considerable improvement over the three-parameter
+fit. The variable $\nu_{0}$ was defined only to provide a dimensionless
+argument to the $\log()$ function.
+
+\subsubsection{Comments on Sect. 2.4.3, Expected dependence on flight conditions}
+
+The dependence attributed to \citet{stickney1994goodrich} was obtained
+from my approximation to the central line in their Fig.~12. The uncertainty
+in that estimate is large; slopes ranging from about $-0.6$ to $-0.75$
+fall within the uncertainty limits of the plot. \citet{collis1959two}
+and \citet{khan2005fluid}\textcolor{black}{{} indicate that the Nusselt
+number should vary as $\mathrm{Re}^{0.5}$ for a cylindrical wire,
+suggesting that $\tau_{1}$ should vary as $\mathrm{Re}^{-0.5}$,
+but that does appear to be outside the likely uncertainty limits in
+the referenced figure. It would seem appropriate to use Re at the
+sensor wire rather than the free-stream Re -- i.e., use the airspeed,
+air density, and dynamic viscosity $\mu$ evaluated for recovery conditions:
+$V_{p}=\sqrt{1-\alpha_{r}}V$, $p_{p}=p+q\approx p(1+M^{2}/5)^{-2/7}$,
+$\rho_{p}=p_{p}/(R(273.15+T_{r}))$, leading to}\\
+\textcolor{black}{
+\[
+\mathrm{Re}^{*}=\rho_{p}V_{p}d/\mu
+\]
+where the temperature dependence of $\mu$ is approximately proportional
+to $\sqrt{273.15+T_{r}}$. Because of this, the Stickney et al.~parameter
+$Z$ has almost the same temperature dependence, because $Z=M\rho/\rho_{0}=V\rho/(\rho_{o}\sqrt{\gamma RT_{K}})$
+with $T_{k}=T+273.15$. It is then possible to compare the ratios
+of $\mathrm{Re}^{*}$ and $Z$ for different flight conditions. For
+$Z=0.3,$ $\mathrm{Re}^{*}$ is about 75, so it is useful to normalize
+both to those values and then consider how the time constant would
+vary with either $(Z/0.3)^{-0.68}$ or $(\mathrm{Re}^{*}/75)^{-0.5}.$
+Appropriate flight conditions against which to test this prediction
+were difficult to find, but one candidate was from the ``DC3'' project,
+flight 11, 21:00 to 22:00 UTC, a flight segment at about 11.5 km altitude.
+An estimate of $\tau_{1}$ from that flight leg was $\tau_{1}=0.037$~s,
+while $Z^{-0.68}$ predicts 0.036 and $\left(\mathrm{Re}^{*}\right)$$^{-0.5}$
+predicts about 0.033. The results aren't very different but they seem
+closer to the Stickney representation. Therefore, it seems better
+to stay with the Stickney representation, which was based on wind-tunnel
+measurements with the sensor rather than idealized-cylinder results.
+It was interesting that there did not seem to be a similar variation
+in $\tau_{2}$; if anything, the results favored a smaller value.
+Using the expected dependence for the sensor is probably not appropriate
+for the support, so no change was suggested for the second time constant,
+but it would be useful to find more information on that time constant.
+}This would be a useful topic for future work.
+
+\subsection{Omitted Sect. 2.5, response to a step change}
+
+This section was omitted from the final paper. Tentative text and
+code still exist, commented, in the .Rmd file. The VOCALS project
+provided a good opportunity to search for discontinuities topping
+the marine boundary layer because most flights included numerous climbs
+and descents through that structure. A large number of these were
+examined in a search for sharp transitions, but almost all showed
+evidence of mixing at the top and were not sharp as would be desired
+to test response to a step change. The case selected was the best
+case, from about 50 examined. Some other projects were also considered,
+but good cases where the unheated Rosemount was in use were not found.
+It appears that this is a difficult way to test the response characteristics
+of the sensor, although other situations (terrestrial boundary layer,
+frontal surface, etc.) might provide better opportunities.
+
+An early version of this plot produced good agreement between the
+observations and the expected measurement, but that agreement was
+based on erroneous parameters for the response. The corrected results
+are reproduced here:
+
+\rule[0.5ex]{1\columnwidth}{1pt}
+
+<!-{}- \#\# Response to a step change -{}->
+
+This section has been modified significantly to relate to the recovery
+temperature rather than the ambient temperature and to correct an
+error in the calculation. The section has now been omitted because
+it no longer provides useful support for the transfer function as
+determined here. Furthermore, the top of the BL is cloudy, so I worry
+about the complication that sensor wetting may introduce. 
+
+<<label='tfit', include=TRUE, echo=FALSE, fig.height=6, out.width = "8.3cm", fig.cap='(blue dots): Recovery temperature measured at 25 Hz during descent through an inversion capping the marine boundary layer, from VOCALS flight 3. The dotted black line shows the estimated true recovery temperature, featuring a sharp change at the top of the boundary layer and a dry-adiabatic lapse rate in the marine boundary layer. The prediction using the parameters listed in the text is shown as the magenta line, and the dashed brown line is the calculated temperature of the support that contacts the sensing wire.'>>=
+
+Data <- getNetCDF(file.path(DataDirectory(), 'VOCALS/VOCALSrf03h.nc'),
+                  c('PALT', 'GGALT_NTL', 'ATX', 'ATRL', 'ATRR', 'ATWH', 'DPXC', 'PSXC',
+                    'QCXC', 'TTRR'),
+                  81350, 81357) ## the time interval (up to 81358)
+## Get Z for scaling the time constants:
+rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+Z <- MachNumber(Data$PSXC, Data$QCXC) * 100 * Data$PSXC / 
+      (287.05 * (273.15 + Data$ATRR)) / rhozero
+tau1 <- Param1$tau1 * (0.3 / mean(Z, na.rm = TRUE) ) ^ (0.68)
+tau2 <- Param1$tau2
+a <- Param1$a
+nf <- 50 ## subdivision factor to use for integration
+TTOP <- 20.2 ## recovery T above and below the inversion
+TBOT <- 12.4
+## Adjustment to adiabatic stratification for approx ratio, recovery to ambient T:
+Slope <- 6.5 / 1000 * (mean(Data$TTRR) + 283.15) / (mean(Data$ATRR) + 273.15)
+dt <- 1 / (nf * 25) ## integration interval
+## Plot recovery temperature
+Data %>% select(Time, TTRR) %>%
+         plotWAC(type='b', ylab = bquote('recovery temperature ['*degree*'C]'))
+## Estimate true recovery temperature:
+Data$T <- TBOT - (0:(nrow(Data)-1)) * 5 / 25 * Slope ## 10C per km, 5 m/s descent
+Data$T[1:10] <- TTOP ## force above-inversion value
+## Get fine-scale true recovery temperature for integration
+yy <- TBOT - (0:(nf*nrow(Data)-1)) * 5 / (nf*25) * Slope
+yy[1:(10*nf)] <- TTOP ## force above-inversion value
+lineWAC(Data$Time[11:200], Data$T[11:200], col='black', lty=3)
+lineWAC(c(Data$Time[11], Data$Time[10]), c(Data$T[11], Data$T[10]), col = 'black', lty = 3)
+xx <- (1:(nf*nrow(Data)) - 1) * dt + Data$Time[1]
+# calculate the response, given tau:
+FF <- 1 ## fudge factor for exploring effects; try 2.5
+tau1 <- FF * tau1
+tau2 <- FF * tau2
+ym <- yy
+yr <- yy
+for (i in 2:(nrow(Data)*nf)) {
+  yr[i] <- yr[i - 1] + (yy[i] - yr[i - 1]) * dt / tau2
+  ym[i] <- ym[i - 1] + (a * yy[i] + (1 - a) * yr[i] - ym[i - 1]) * dt / tau1
+}
+lineWAC(xx, ym, col = 'magenta', lwd = 3, lty = 1)
+lineWAC(xx, yr, col = 'brown', lwd = 3, lty = 2)
+legend('topright', legend=c('measured', 'predicted', 'support', 'if discrete'),
+  lwd=c(2, 2, 2, 2), lty=c(1, 1, 2, 3),
+  col=c('blue', 'magenta', 'brown', 'black'),
+  pch = c(19, NA, NA, NA))
+box('outer', col = 'grey', lwd = 2.5)
+
+@
+
+Most prior studies have used sharp temperature changes in the atmosphere,
+for example from climbs through the inversion at the top of a boundary
+layer, to study the time response of airborne thermometers. A search
+of available climbs and descents through inversions capping the marine
+boundary layer found that almost all have measurable structure and
+are not discrete transitions. The best case found after a search of
+candidate passes through inversions in the VOCALS project is shown
+in Figure~11 from VOCALS flight~3, where the aircraft descended
+through the top of the marine boundary layer at approximately $5\,m\,s^{-1}$.
+The assumed measurand history, for an assumed discrete discontinuity
+at the inversion and a well-mixed cloudy boundary layer below, is
+that shown by the dotted black line.
+
+The predicted time response from Eqns.~(4) and (5) for the time constants
+listed in Table 3 for the unheated sensor (adjusted for air density
+and flight speed) is shown as the magenta line in Fig.~11. The observations
+initially change as fast as the predicted response, but after about
+0.2~s the measurements change significantly slower than predicted.
+The predictions and measurements only agree if the time constants
+are increased by about a factor of 2.5. It appears that, like all
+other boundary-layer tops observed in this project, the actual structure
+is modified by mixing at the cloud top and is not the discrete discontinuity
+assumed in these calculations. Nevertheless, the observations provide
+some support for the conclusion that the time response is, within
+about a factor of 2.5, about as estimated from the transfer function. 
+
+\rule[0.5ex]{1\columnwidth}{1pt}
+
+(this is the end of the section re the step-change response, excluded
+from the paper, except for Fig.~11 that follows.)
+
+\subsection{Application to a \textquotedblleft speed run\textquotedblright}
+
+Initial drafts of this paper included a section showing how the sensor
+response introduces hysteresis into measurements during a ``speed
+run'', where the airspeed changes during level flight and causes
+a change in dynamic heating. This material is included here but was
+excluded from the submitted version of the paper. 
+
+An example is shown in Fig.~\ref{fig:SRDW}, where the airspeed was
+increased steadily in level flight from near the lower limit of the
+flight envelope to near the upper limit and then was decreased back
+to the starting value. A plot of recovery temperature should also
+increase and decrease as the dynamic heating changes, but with a lag
+caused by the sensor response. This lag will produce hysteresis in
+the measured temperature during the speed run.
+
+\selectlanguage{american}%
+<<SRDW, include=TRUE, fig.pos='t', fig.height=3.2, fig.cap='History of the airspeed during a  "speed-run" maneuver where the airspeed varied during level flight over the available speed range of the aircraft.'>>=
+
+Project <- 'DEEPWAVE'
+Flight <- 'rf15h'
+startTime <- 32300
+endTime <- 32815
+fname <- file.path(DataDirectory(), Project, '/', Project,
+                   Flight, '.nc', fsep = '')
+FI <- DataFileInfo(fname, LLrange = FALSE)
+iv <- which(grepl("^RT", FI$Variables))
+ProjDir <- Project
+VL <- c(
+  'TASX',
+  'EWX',
+  'PSXC',
+  'RTX',
+  'RTH1',
+  'RTH2',
+  'RTF1',
+  'ATX',
+  'GGALT',
+  'PITCH',
+  'ADIFR',
+  'QCF',
+  'AKRD',
+  'WIC',
+  'QCXC'
+)
+VL <- c(VL, FI$Variables[iv])
+VL <- unique(VL)
+DSR <- getNetCDF (
+  sprintf ('%s%s/%s%s.nc', DataDirectory (),
+           ProjDir, Project, Flight),
+  VL,
+  Start = startTime,
+  End = endTime
+)
+DSR %>% select(Time, TASX) %>% 
+  selectTime(32310, 32700) %>% 
+  plotWAC()
+## Find the average Z: (but there is significant Mach number variation...)
+load('PAR.Rdata')
+rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+Z <- MachNumber(DSR$PSXC, DSR$QCXC) * 100 * DSR$PSXC / 
+     (287.05 * (273.15 + DSR$ATX)) / rhozero
+ParamS <- Param1
+ParamS$tau1 <- ParamS$tau1 * (mean(Z, na.rm = TRUE) / 0.3) ^ -0.6
+ParamS$tau2 <- ParamS$tau2 * (mean(Z, na.rm = TRUE) / 0.3) ^ -0.6
+ParamHZ <- Param1
+ParamHZ$tau1 <- ParamHZ$tau1 * (mean(Z, na.rm = TRUE) / 0.3) ^ -0.6
+ParamHZ$tau2 <- ParamHZ$tau2 * (mean(Z, na.rm = TRUE) / 0.3) ^ -0.6
+
+@
+
+\selectlanguage{english}%
+Figure~\ref{fig:srRTH1delay}a shows this hysteresis, which appears
+as the difference between the segment with increasing speed and that
+with decreasing speed. A correction based on simply shifting the
+measurements in time works reasonably but doesn't take into account
+that the Mach number and hence the time parameters vary significantly
+during the speed run. A better test of the time-response parameters
+is to apply the first correction scheme outlined in the Appendix to
+the measurements, with varying response parameters dependent on the
+Mach number. The specific correction equation used is Eq.~(A2) for
+the heated sensor. Figure~\ref{fig:srRTH1delay}b shows that the
+delay is mostly removed by this procedure. The residual standard deviation
+about the regression fit for recovery temperature as a function of
+$V^{2}/(2C_{p})$ is reduced from $0.26^{\circ}$C before correction
+to $0.10^{\circ}$C after correction. The minimum standard deviation
+results from increasing the time constants an additional 10\%, so
+measurements from this speed-run maneuver are consistent with the
+predicted time response as found in Sect.~2.4 of the paper to within
+about this uncertainty.
+
+\selectlanguage{american}%
+<<SRnodelay, include=FALSE, fig.cap='The recovery temperature measured by a heated HARCO sensor during the speed-run maneuver shown in the previous figure. The abscissa is the dynamic-heating term without the recovery factor, where $V$ is the airspeed and $Cp$ is the specific heat at constant pressure. The measurements while the airspeed was increasing are shown by the green line and those for decreasing airspeed by the red line. The dashed orange line indicates the regression fit, with standard deviation about the fit of 0.26$^{\\circ}$C.'>>=
+
+Cp <- SpecificHeats (DSR$EWX / DSR$PSXC)[, 1]
+DSR$X <- DSR$TASX ^ 2 / (2 * Cp)
+Rate <- 1
+if (grepl('h', Flight)) {
+  Rate <- 25
+}
+DSR$RT <- DSR$RTH1
+DSS <- DSR
+DSR <- DSR %>% selectTime(32310, 32700)
+DSR <- transferAttributes(DSS, DSR)
+cf <- coef(fm <- lm (RT ~ X, data = DSR))
+rms <- summary(fm)$sigma
+RTSEL <- 'RTH1'
+xp <- c(min(DSR$X, na.rm = TRUE), max(DSR$X, na.rm = TRUE))
+yp <- cf[1] + cf[2] * xp
+d <- data.frame(xp = xp, yp = yp)
+Xlab <- expression(paste(V ^ 2, '/(2', C[p], ')', sep = ''))
+dX <- c(0, diff(DSR$X))
+dXS <- SmoothInterp(dX)
+DSR$RT2 <- DSR$RT
+DSR$RT1 <- DSR$RT
+DSR$RT2[dXS <= 0] <- NA  # Don't plot decreasing-speed as green
+DSR$RT1[dXS >= 0] <- NA
+delay <- 0
+g <- ggplot (data = DSR, aes(x = X, y = RT))
+if (Rate == 1) {
+  g <- g + geom_point(colour = 'blue')
+}
+g <- g + geom_path(aes(y = RT1, colour = 'decreasing'),
+                   na.rm = TRUE,
+                   lwd = 1.1)
+g <- g + geom_path(aes(y = RT2, colour = 'increasing'),
+                   lwd = 1.1,
+                   na.rm = TRUE)
+g <- g + geom_path(
+  data = d,
+  aes(x = xp, y = yp),
+  colour = 'darkorange',
+  lwd = 1.5,
+  lty = 2
+)
+# g <-
+#  g + ggtitle(sprintf(
+#    'sensor is %s; fit coefficients %.1f %.2f rms %.3f; no delay',
+#    RTSEL,
+#    cf[1],
+#    cf[2],
+#    rms
+#  ))
+g <- g + scale_colour_manual (
+  name = 'airspeed: ',
+  values = c("increasing" = "forestgreen", "decreasing" = "blue")
+)
+# print (sprintf('RTX is %s; fit coefficients %.3f %.3f rms %.2f; delay %d ms',
+#   RTSEL, cf[1], cf[2], rms, input$sliderSR))
+g <-
+  g + ylab(expression(paste('Recovery Temperature [', degree, 'C]'))) + 
+  xlab(Xlab) + 
+  theme_WAC(1)
+g1 <- g + theme(plot.title = element_text(size = 12))
+DXX <- DSR  ## save for the next chunk
+
+@
+
+<<srRTH1delay, include=TRUE, fig.height=3.3, fig.width=6.5, fig.cap='The recovery temperature as measured by a heated HARCO sensor during the speed-run maneuver shown in the previous figure (a) and the same measurement after correction (b). The abscissa is the dynamic-heating term without the recovery factor, where $V$ is the airspeed and $Cp$ is the specific heat at constant pressure. The measurements while the airspeed was increasing are shown by the green lines and those for decreasing airspeed by the blue lines. The dashed orange lines indicate the regression fits, with standard deviation about the fit of 0.26$^{\\circ}$C (uncorrected) and 0.10$^{\\circ}$C (after correction).'>>=
+
+delay <- -2200
+DSR <- DSS
+rhozero <- 1013.25 * 100 / (287.05 * 288.15)
+bestSH <- c(0.0, 0.05849842, 1.28791645)
+MRHO <- MachNumber(DSR$PSXC, DSR$QCXC) * DSR$PSXC * 100 / 
+        (287.05 * (273.15 + DSR$ATX)) / rhozero
+a <- bestSH[1]
+tau1 <- bestSH[2] * (0.3 / MRHO) ^ 0.6  ## Note that these are variable
+tau2 <- bestSH[3] * (0.3 / MRHO) ^ 0.6
+## RT is the working solution
+Rate <- attr (DSR, 'Rate')
+DSR$DTMDT <- c(0, diff(DSR$RTH1, 2), 0) * Rate / 2
+DSR$DTM2DT2 <- (c(diff(DSR$RTH1), 0) - c(0, diff(DSR$RTH1))) * Rate^2
+DSR$RT <- (tau1 + tau2) * DSR$DTMDT + DSR$RTH1 + tau1 * tau2 * DSR$DTM2DT2
+# DSR$RT <- ShiftInTime(DSR[, RTSEL], .rate=Rate, .shift = delay)
+DSR <- DSR %>% selectTime(32310, 32700)
+DSR <- transferAttributes(DSS, DSR)
+N <- 2^13  ## encompasses the speed run
+Nby2 <- N / 2
+N1 <- (N - nrow(DSR)) %/% 2
+N2 <- N - nrow(DSR) - N1
+RTH1 <- c(rep(DSR$RTH1[1], N1), DSR$RTH1, rep(DSR$RTH1[nrow(DSR)], N2))
+ff1 <- fft(RTH1)
+RTH <- Re(fft(ff1, inverse=TRUE)) / N
+df <- Rate / N
+frq <- c(seq(0, Rate / 2, by = df), seq(-Rate / 2 + df, -df, by = df))
+fr <- log(frq[1:(Nby2+1)])
+## Get the transfer function from the fitted parameterized form:
+## (Coefficients are transferred from where they are used in the main paper:)
+cfHARCO <- c(-155.20736, -62.80924, -6.35164, 67.17185)
+cfrHARCO <- c(0.160796040, -0.136460209, -0.076042545, -0.030920784, -0.003244361)
+Ph <- cfHARCO[1] + cfHARCO[2] * fr + 
+           cfHARCO[3] * fr^2 + cfHARCO[4] * atan(frq[1:(Nby2+1)])
+Ph[1] <- 0
+G <- cfrHARCO[1] + fr * (cfrHARCO[2] + fr * fr * (cfrHARCO[3] + 
+           fr * (cfrHARCO[4] + fr * cfrHARCO[5])))
+G[frq[1:length(fr)] < 0.024] <- 1
+G[frq[1:length(fr)] > 2] <- G[which.min(abs(frq-2))]
+H <- rep(complex(modulus=0), N)
+H[1:(Nby2+1)] <- complex(modulus=G, argument=Ph * pi / 180)
+H[(Nby2+2):N] <- rev(Conj(H[2:Nby2]))
+RTC <- Re(fft(ff1 / H, inverse = TRUE)) / N
+DSR$RTC <- RTC[(N1+1):(N-N2)]
+cf <- coef(fm <- lm (RT ~ X, data = DSR))
+xp <- c(min(DSR$X, na.rm = TRUE), max(DSR$X, na.rm = TRUE))
+yp <- cf[1] + cf[2] * xp
+d <- data.frame(xp = xp, yp = yp)
+rms <- summary(fm)$sigma
+DSR$RT2C <- DSR$RT
+DSR$RT1C <- DSR$RT
+DSR$RT2C[dXS <= 0] <- NA  # Don't plot decreasing-speed as green
+DSR$RT1C[dXS >= 0] <- NA
+# DXX$RT1C <- DSR$RT1C
+# DXX$RT2C <- DSR$RT2C
+# DXX$Time <- DXX$X
+# g <- DXX %>% select(Time, RT1, RT2, RT1C, RT2C) %>%
+#              ggplotWAC(panels=2, labelP=c)'      uncorrected', 
+#              '      corrected'), labelL=c('decreasing', 'increasing')) + 
+#        xlab(Xlab) 
+g <- ggplot (data = DSR, aes(x = X, y = RT))
+if (Rate == 1) {
+  g <- g + geom_point(colour = 'blue')
+}
+g <- g + geom_path(aes(y = RT1C, colour = 'decreasing'),
+                   na.rm = TRUE,
+                   lwd = 1.2)
+g <- g + geom_path(aes(y = RT2C, colour = 'increasing'),
+                   lwd = 1.2,
+                   na.rm = TRUE)
+g <- g + geom_path(
+  data = d,
+  aes(x = xp, y = yp),
+  colour = 'darkorange',
+  lwd = 1.5,
+  lty = 2
+)
+g <-
+  g + scale_colour_manual (
+    name = 'airspeed: ',
+    values = c("increasing" = "forestgreen", "decreasing" = "blue")
+  )
+# print (sprintf('RTX is %s; fit coefficients %.3f %.3f rms %.2f; delay %d ms',
+#   RTSEL, cf[1], cf[2], rms, input$sliderSR))
+g <-
+  g + ylab(expression(paste('Recovery Temperature [', degree, 'C]'))) + xlab(Xlab) + theme_WAC(1)
+g2 <- g + theme(plot.title = element_text(size = 12))
+g1 <- g1 + theme(legend.position=c(0.99, 0.92))
+g2 <- g2 + theme(legend.position = 'none')
+g1 <- g1 + ylim(c(-11, 4.5))
+g2 <- g2 + ylim(c(-11, 4.5))
+g2 <- g2 + ylab('')
+g1 <- g1 + annotate('text', x=8, y=3, label='(a)', size=5)
+g2 <- g2 + annotate('text', x=17, y=3, label='(b)', size=5)
+grid.newpage()
+vp1 <- viewport(width=0.57, height=0.9, x=0.25, y=0.45)
+vp2 <- viewport(width=0.57, height=0.9, x=0.68, y=0.45)
+# grid.rect(0.5, 0.5, width = unit(5, "npc"), name = 'a', vp = vp1)
+# grid.rect(0.5, 0.5, width = unit(5, "npc"), name = 'b', vp = vp2)
+plot(g2, vp=vp2)
+plot(g1, vp=vp1)
+# grid.newpage()
+
+@
+
+\selectlanguage{english}%
+The initial approach was to shift the measurements in time to minimize
+the standard deviation about the fit, but the problem with this is
+that the Mach number varies significantly during the speed run so
+the appropriate time shift should also vary significantly. A confusing
+and unresolved conflict with this measurement is that delaying the
+temperature measurements by 2.25~s produces the minimum residual
+standard deviation in the fit, but that is significantly longer than
+the predicted shift of about 1.35~s. There may be some additional
+timing error that affects the measurement, but none has been found.
+Inconsistency in these results led to omission of this evidence from
+the paper.
+
+\section{Comments on Section 3: Correcting for Dynamic Heating}
+
+\subsection{The Digital Filter Coefficients}
+
+The paper presents only a cursory discussion of the digital filter
+used to correct dynamic heating for the response of the sensor. Here
+some additional details are included as well as the specific coefficients
+used. The filter was specified in the code chunk labeled ``designFilter'',
+following suggestions from \citet{Press:1992:NRC:148286}. These steps
+were followed:
+\begin{enumerate}
+\item The impulse function was found from the inverse Fourier transform
+of the transfer function. For 25~Hz measurements, the transfer function
+was evaluated at frequencies in the range 0--12.5~Hz with a resolution
+of (1/600)~Hz and at the corresponding negative frequencies. This
+solution is stored in a vector with frequencies in the order 0--12.5~Hz,
+then $-12.5$ to $-(1/600)$ Hz as needed for the inverse Fourier
+transform.
+\item The resulting impulse function then has 15,000 values, but most except
+for those near the start and end of the sequence are very small. Therefore
+only the initial 101 and trailing 100 coefficients were retained and
+all others were set to zero. (For the slower heated sensor, a length
+of 301 samples was used.) Specifically, all values in the array representing
+the impulse function were set to zero for indices k with values $M+2\leq k\leq N-M$
+where $N$=15000 is the length of the calculated impulse function
+and $M=100$ or 150 to leave 201 or 301 non-zero coefficients. This
+gave coefficients spanning about 8 s at 25~Hz for the unheated sensor
+and 12~s for the heated sensor, times long compared to the expected
+impulse response of the sensor. The sum of the coefficients obtained
+in this was was larger than 0.99, but to ensure proper normalization
+they were scaled to give a sum of unity.
+\item Appropriate moving-average coefficients were then constructed by shifting
+the trailing negative-frequency components to the start of the array
+to give an eight-second or 12-s moving-average filter that represents
+the response of the sensor.
+\item After filtering, the result then must be shifted backward in time
+to compensate for the 4-s or 6-s delays.
+\end{enumerate}
+A sample of the approach used is listed below. For more details, see
+the ``designFilter'' code chunk.
+\begin{lyxcode}
+NP~<-~15000~~\#\#~Assume~q~10-min~segment
+
+df~<-~25~/~NP~~\#\#~The~frequency~resolution
+
+frq~<-~c(seq(0,~12.5,~by=df),~seq(-12.5+df,~-df,~by=df))
+
+E~<-~LTphase(frq,~P)~~\#\#~This~function~returns~the~gain~and~phase~in~deg.
+
+G~<-~complex(modulus=E\$Amp,~argument=E\$Phase~{*}~pi~/~180)~\#~the~transfer~fn
+
+NG~<-~length(G)
+
+GT~<-~fft(G,~inverse=TRUE)~/~NG~~\#~get~the~impulse~function
+
+\#\#~Limit~to~200~coefficients~(8~s~at~25~Hz)
+
+Lshift~<-~100~~\#\#~below,~will~need~to~shift~by~100~40-ms~samples
+
+GT{[}(Lshift~+~2):(NP~-~Lshift){]}~<-~complex(modulus=0)
+
+GTT~<-~GT{[}GT~!=~complex(modulus=0){]}
+
+\#\#~Reorder:
+
+GTT~<-~c(GTT{[}(Lshift~+~2):length(GTT){]},~GTT{[}1:(Lshift~+~1){]})
+
+AR~<-~Arma(Re(GTT)~/~sum(Re(GTT)),~1)~\#~Normalize~to~avoid~<1\%~bias
+
+\#\#~Result~is~appropriate~coefficients~to~use~for~filtering;~
+
+\#\#~e.g.,~if~DF~is~data.frame~with~Q~measured~dynamic~heating:
+
+DF\$QF~<-~as.vector(signal::filter(AR,~DF\$Q))~\#\#~standard~R
+
+\#\#~the~following~is~a~function~to~shift~in~time:
+
+DF\$QF~<-~ShiftInTime(DF\$QF,~.shift=-Lshift~{*}~40,~.rate=25)
+\end{lyxcode}
+<<designFilter, include=FALSE>>=
+
+load('PAR.Rdata')
+P <- Param1
+NP <- 15000  ## Assume 10-min segment
+df <- 25 / NP
+df1 <- 1 / NP
+frq <- c(seq(0, 12.5, by = df), seq(-12.5 + df,-df, by = df))
+frq1 <- c(seq(0, 0.5, by = df1), seq(-0.5 + df1,-df1, by = df1))
+NP <- length(frq)
+NP1 <- length(frq1)
+E <- LTphase(frq, P)
+EH <- LTphase(frq, ParamSH)
+EHB <- LTphase(frq, ParamSH)
+EG <- LTphase(frq, ParamSF)
+E1 <- LTphase(frq1, P)
+EH1 <- LTphase(frq1, ParamSH)
+EHB1 <- LTphase(frq1, ParamSH)
+EG1 <- LTphase(frq1, ParamSF)
+## --------------------------
+G <- complex(modulus = E$Amp, argument = E$Phase * pi / 180)
+NG <- length(G)
+GT <- fft(G, inverse = TRUE) / NG  # get the impulse function
+## Limit to 200 coefficients (8 s at 25 Hz)
+Lshift <- 100
+GT[(Lshift + 2):(NP - Lshift)] <- complex(modulus = 0)
+GTT <- GT[GT != complex(modulus = 0)]
+## Reorder:
+GTT <- c(GTT[(Lshift + 2):length(GTT)], GTT[1:(Lshift + 1)])
+AR <- signal::Arma(Re(GTT) / sum(Re(GTT)), 1) # Normalize to avoid <1% bias
+## --------------------------
+GG <- complex(modulus = EG$Amp, argument = EG$Phase * pi / 180)
+GTG <- fft(GG, inverse = TRUE) / NG  # get the impulse function
+GTG[(Lshift + 2):(NP - Lshift)] <- complex(modulus = 0)
+GTTG <- GTG[GTG != complex(modulus = 0)]
+## Reorder:
+GTTG <- c(GTTG[(Lshift + 2):length(GTTG)], GTTG[1:(Lshift + 1)])
+ARG <-   signal::Arma(Re(GTTG) / sum(Re(GTTG)), 1) # Normalize to avoid <1% bias
+## --------------------------
+GH <- complex(modulus = EH$Amp, argument = EH$Phase * pi / 180)
+NG <- length(GH)
+GTH <- fft(GH, inverse = TRUE) / NG  # get the impulse function
+## Limit to 300 coefficients (12 s at 25 Hz)
+LshiftH <- 150
+GTH[(LshiftH + 2):(NP - LshiftH)] <- complex(modulus = 0)
+GTTH <- GTH[GTH != complex(modulus = 0)]
+## Reorder:
+GTTH <- c(GTTH[(LshiftH + 2):length(GTTH)], GTTH[1:(LshiftH + 1)])
+ARH <- signal::Arma(Re(GTTH) / sum(Re(GTTH)), 1)
+## --------------------------
+GHB <- complex(modulus = EHB$Amp, argument = EHB$Phase * pi / 180)
+NG <- length(GHB)
+GTHB <- fft(GHB, inverse = TRUE) / NG  # get the impulse function
+## Limit to 300 coefficients (12 s at 25 Hz)
+LshiftH <- 150
+GTHB[(LshiftH + 2):(NP - LshiftH)] <- complex(modulus = 0)
+GTTHB <- GTHB[GTHB != complex(modulus = 0)]
+## Reorder:
+GTTHB <-   c(GTTHB[(LshiftH + 2):length(GTTHB)], GTTHB[1:(LshiftH + 1)])
+ARHB <- signal::Arma(Re(GTTHB) / sum(Re(GTTHB)), 1)
+## --------------------------
+G1 <- complex(modulus = E1$Amp, argument = E1$Phase * pi / 180)
+NG1 <- length(G1)
+GT1 <- fft(G1, inverse = TRUE) / NG1  # get the impulse function
+## Limit to 20 coefficients (20 s at 1 Hz)
+Lshift1 <- 10
+GT1[(Lshift1 + 2):(NP1 - Lshift1)] <- complex(modulus = 0)
+GTT1 <- GT1[GT1 != complex(modulus = 0)]
+## Reorder:
+GTT1 <- c(GTT1[(Lshift1 + 2):length(GTT1)], GTT1[1:(Lshift1 + 1)])
+AR1 <- signal::Arma(Re(GTT1) / sum(Re(GTT1)), 1)
+## --------------------------
+GH1 <- complex(modulus = EH1$Amp, argument = EH1$Phase * pi / 180)
+NG1 <- length(GH1)
+GTH1 <- fft(GH1, inverse = TRUE) / NG1  # get the impulse function
+LshiftH1 <- 10
+GTH1[(LshiftH1 + 2):(NP1 - LshiftH1)] <- complex(modulus = 0)
+GTTH1 <- GTH1[GTH1 != complex(modulus = 0)]
+GTTH1 <-   c(GTTH1[(LshiftH1 + 2):length(GTTH1)], GTTH1[1:(LshiftH1 + 1)])
+ARH1 <- signal::Arma(Re(GTTH1) / sum(Re(GTTH1)), 1)
+## --------------------------
+GHB1 <- complex(modulus = EHB1$Amp, argument = EHB1$Phase * pi / 180)
+NG1 <- length(GHB1)
+GTHB1 <- fft(GHB1, inverse = TRUE) / NG1  # get the impulse function
+LshiftH1 <- 10
+GTHB1[(LshiftH1 + 2):(NP1 - LshiftH1)] <- complex(modulus = 0)
+GTTHB1 <- GTHB1[GTHB1 != complex(modulus = 0)]
+GTTHB1 <- c(GTTHB1[(LshiftH1 + 2):length(GTTHB1)], GTTHB1[1:(LshiftH1 + 1)])
+ARHB1 <- signal::Arma(Re(GTTHB1) / sum(Re(GTTHB1)), 1)
+## --------------------------
+GG1 <- complex(modulus = EG1$Amp, argument = EG1$Phase * pi / 180)
+NG1 <- length(GG1)
+GTG1 <- fft(GG1, inverse = TRUE) / NG1  # get the impulse function
+LshiftH1 <- 10
+GTG1[(LshiftH1 + 2):(NP1 - LshiftH1)] <- complex(modulus = 0)
+GTTG1 <- GTG1[GTG1 != complex(modulus = 0)]
+GTTG1 <- c(GTTG1[(LshiftH1 + 2):length(GTTG1)], GTTG1[1:(LshiftH1 + 1)])
+ARG1 <- signal::Arma(Re(GTTG1) / sum(Re(GTTG1)), 1)
+# save(AR, ARH, ARHB, ARG, AR1, ARH1, ARHB1, ARG1,
+#     Lshift, LshiftH, Lshift1, LshiftH1, file = 'AR.Rdata')
+## --------------------------
+# DF2$QF <- as.vector(signal::filter(AR, DF2$Q))
+# DF2$QF <- ShiftInTime(DF2$QF, .shift=(-(Lshift + 1) * 40), .rate = 25)
+
+@
+
+\begin{figure}
+<<plotImpulse, include=TRUE, fig.height=4>>=
+
+layout(matrix(1:2, ncol=1), widths=c(8,8), heights=c(6.5,8))
+op <- par (mar=c(2,4,1,1)+0.1, oma=c(1.1,0,0,0))
+dP1 <- data.frame(Time = (1 : 100) * 0.04, R = Re(GT[1:100]), 
+                 H = 10*Re(GTH[1:100]))
+plotWAC(dP1, xlab='Time [s]', ylab='impulse response', lwd = c(2, 2), 
+        lty = c(1, 2), legend.position = NA)
+legend(2, 0.3, legend=c('Rosemount', 'HARCO x 10'), 
+       col=c('blue', 'forestgreen'), lwd=c(2,2), lty=c(1,2))
+abline(h=0, lty=2) 
+text(4, 0.3, labels='(a)', cex=1.5)
+op <- par (mar=c(5,4,1,1)+0.1)
+dP2 <- data.frame(Time = (0 : 200) * 0.04, R = Re(GTT), 
+                 H = 10 * Re(GTTH[51 :251]))
+plotWAC(dP2, xlab='Time [s]', ylab='filter coef.', lwd = c(2, 2), 
+        lty = c(1, 2), legend.position = NA)
+legend(0.5, 0.3, legend=c('Rosemount', 'HARCO x 10'), 
+       col=c('blue', 'forestgreen'), lwd=c(2,2), lty=c(1,2))
+abline(h=0, lty=2)
+text(8, 0.3, labels='(b)', cex=1.5)
+layout(matrix(1:1, ncol=1), widths=c(8), heights=c(5.5))
+
+@
+
+\caption[The impulse response function found from the inverse Fourier transform
+of the transfer function for the unheated Rosemount 102E4AL sensor
+and for the heated HARCO sensor , and the filter functions determined
+from those impulse response functions.]{(a) The impulse response function found from the inverse Fourier
+transform of the transfer function for the unheated Rosemount 102E4AL
+sensor (Rosemount) and for the heated HARCO sensor (HARCO), using
+the response parameters from Table~3 of the paper. The impulse response
+for the HARCO sensor is multiplied by 10.\protect \\
+(b) A filter function (moving-average coefficients spanning 8 s) obtained
+from the impulse response function. The filtered result must be shifted
+forward in time by 4 s to compensate for the delay introduced by the
+filter. The coefficients are multiplied by 10 for the HARCO sensor.\label{fig:plotImpulse}}
+\end{figure}
+
+Figure \ref{fig:plotImpulse}a shows the impulse function for the
+unheated and heated sensors, and Fig.~\ref{fig:plotImpulse}b shows
+corresponding moving-average coefficients for a filter obtained from
+this impulse function. There is significant ringing in the filter
+for the unheated sensor because the shorter time constant for the
+sensor, 0.03~s, is smaller than the time between 25-Hz samples. The
+impulse response for the slower heated sensor leads to a much broader
+impulse response function. 
+
+The digital-filter coefficients and the transfer-function parameters
+on which they are based are stored in two data file, respectively
+``ARF.Rdata'' and ``PAR.Rdata''. The following table documents
+the correspondence between the two files:
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+\textbf{aircraft / sensor} & \textbf{ARMA coefficients} & \textbf{Data Rate} & \textbf{Parameter file} & \textbf{required time shift, samples}\tabularnewline
+\hline 
+\hline 
+C-130 / unheated & AR & 25 Hz & Param1 & 100\tabularnewline
+\hline 
+C-130 / heated & ARH & 25 Hz & ParamSH & 150\tabularnewline
+\hline 
+GV / unheated$^{*}$ & ARG & 25 Hz & ParamSF & 100\tabularnewline
+\hline 
+C-130 / unheated & AR1 & 1 Hz & Param1 & 10\tabularnewline
+\hline 
+C-130 / heated & ARH1 & 1 Hz & ParamSH & 10\tabularnewline
+\hline 
+GV / unheated$^{*}$ & ARG1 & 1 Hz & ParamSF & 10\tabularnewline
+\hline 
+\end{tabular}\\
+$^{*}$The listed values for GV / unheated are not used in the paper
+because it is thought that they were not determined as well as for
+the C-130 / unheated sensor. The C-130 / unheated values are used
+instead.
+
+\subsection{Other filtering methods }
+
+Two other calculations can produce the appropriately filtered response
+to dynamic heating $Q^{\prime}(t)$:
+\begin{enumerate}
+\item Section~2.1 in the paper showed that the transfer function is represented
+reasonably by the solution to two coupled differential equations.
+Numerical integration of those equations can then produce the predicted
+response of the sensor to dynamic heating. The equations, revised
+to apply to dynamic heating, are these:\\
+\[
+\frac{dQ_{qs}(t)}{dt}=\frac{Q(t)-Q_{qs}(t)}{\tau_{2}}
+\]
+\[
+\frac{dQ^{\prime}(t)}{dt}=\frac{\left\{ aQ(t)=(1-a)Q_{qs}(t)\right\} -Q^{\prime}(t)}{\tau_{1}}
+\]
+where the first equation describes the effect of dynamic heating on
+the support structure of the temperature sensor, leading to support-structure
+variations in temperature of $Q_{qs}(t),$ and the second describes
+the response of the sensing wire to the combined effects of this influence
+on the support temperature and the dynamic-heating term. This separation
+relies on the linearity of the underlying equations, which makes it
+possible to represent the effect of dynamic heating in isolation from
+real fluctuations in temperature. Euler integration of these differential
+equations led to erroneous results at high frequency arising from
+inadequate resolution in the integration, so a fourth-order Runge-Kutta
+integration with dynamic adjustment of the time step, as described
+by \citet{cash1990variable}, was used. 
+\item The response specified by the frequency-domain transfer function $H(\nu)$
+can be realized by Fourier transforms, by first calculating the Fourier
+transform of the dynamic-heating signal (here denoted $\hat{Q}(\nu)=\mathcal{F}^{-1}(Q(t))$
+where $\mathcal{F}$ denote the Fourier transform) and then using
+the inverse Fourier transform $\mathcal{F}^{-1}$ to find the sensor
+response from $Q^{\prime}(t)=\mathcal{F}^{-1}(H\{\nu)\hat{Q}(\nu))$. 
+\end{enumerate}
+As noted in the paper, for 25~Hz measurements from the unheated sensor
+the numerical integration appeared to provide less satisfactory results
+than the other two methods, even with the step-adjusted numerical
+integration technique. The first time constant for that probe is comparable
+to the time between samples, apparently leading to accumulation of
+errors during the integration. To see if this was indeed the problem,
+the 25-Hz measurements were interpolated to 125-Hz samples, smoothed
+with a low-pass Butterworth filter with 25-Hz cutoff, and then integrated
+with 125-Hz resolution. The result was in much better agreement with
+the results from the other two methods, so this is consistent with
+attribution of the discrepancy to problems with the 25-Hz integration.
+(This was done in special separate steps, not incorporated into the
+RMarkdown file, so the code does not reflect this check.)
+
+A special processing script, ``CorrectTemperature.R'', is included
+in the project archive. It will process an existing netCDF data file
+to incorporate this filtering, and it adds a new measurement of ambient
+temperature to the archive which corrects for the sensor response
+to dynamic heating as described in the paper.
+
+\section{Comments on Section 4 (Flux of Sensible Heat)}
+
+Figure 9 was generated using some special code developed for this
+purpose, function ``plotCS()'' loaded in the ``initial3'' code
+chunk from the ``chunks'' subdirectory. A related plot function
+is available from ``Ranadu::flux()'' but in order to combine the
+two plots from SOCRATES and CSET into one plot ``plotCS()'' was
+used to place the appropriate plots into viewports that were passed
+to the function. There is an inactive remnant call to ``flux()''
+in the ``SOCp1'' code chunk that was used originally but has been
+replaced by calls to plotCS(). The earlier calls to ``Ranadu:CohSpec)''
+were also replaced by direct calls to the ``fft()'' function in
+the same way as was done in ``CohSpec()''. The smoothing of the
+cospectrum discussed in the paper was accomplished using the ``zoo::rollapply()''
+function to calculate the running means with various lengths.
+
+The following points apply to the ``plotCS()'' function used to
+calculate the cospectrum of temperature and updraft for the SOCRATES
+measurements. The analogous procedure was followed also for CSET.
+\begin{enumerate}
+\item A data.frame containing the needed 25-Hz measurements from SOCRATES
+flight~15, including the updraft and the variable ATF1 representing
+the air-temperature measurements from an unheated sensor, was constructed
+for the time segment from 5:55:00 to 6:20:00. Because the recovery
+temperature (normally RTF1) was not included in the archived data
+file, it was reconstructed from ATF1 and the measured dynamic-heating
+term. The routine ``SmoothInterp()'' was used to guard against missing
+variables by interpolating to fill those missing values. This applied
+to about 4\% of the points and resulted from a time-synchronization
+error in the original processing.
+\item The first argument to ``plotCS()'' is a data.frame that includes
+a vector of frequencies and the corresponding values for the measured
+cospectrum. The cospectrum is generated from the real part of the
+product of the Fourier transform of the measured recovery temperature
+and the complex conjugate of the Fourier transform of the measured
+updraft. Fourier transforms are obtained using the R routine ``fft()''.
+Before transforming, the measured air temperature (AT) was corrected
+as described in Sect.~3 of the paper by adding the original dynamic-heating
+correction and then subtracting the filtered dynamic-heating correction.
+(See the lines labeled REF4a in the /Rmd file.) The Fourier transform
+of the temperature is then corrected using the transfer function so
+that the cospectrum supplied by the argument CS is corrected for the
+time response of the temperature sensor.
+\item Another argument, ``CSprevious'', provides the uncorrected cospectrum
+and is used to generate the dashed exceedance line representing the
+original measurements. 
+\item Some other variables in the code, such as ``.B = ATC'', are remnants
+from various explorations not in the final paper and can be ignored.
+\item The argument returned from ``plotCS()'' is the original cospectrum
+with the exceedance function as described in the paper and with added
+attributes that specify the cospectrum after smoothing, the net flux,
+and the flux contributed by wavelengths smaller than the wavelength
+limit provided to the function. These values of the fluxes were used
+to determine some of the estimates of flux density quoted in the paper.
+\end{enumerate}
+Following the introductory discussion of the cospectrum, there was
+a now-suppressed section that plotted and discussed the quadrature
+spectrum. This section is included in the ``Extra'' branch in the
+.lyx file so it is accessible to anyone interested, but the material
+and discussion did not seem be contribute to the main theme of this
+section in any significant way so it has been omitted from the standard
+branch. It is worth noting, however, that the quadrature spectrum
+showed more indication of significant values than might have been
+expected, and some aspects of that distribution were not understood
+or explained convincingly in the suppressed material. An alternative
+to the correction procedure used in this section would be to transform
+between the cospectrum and quadrature spectrum according to the transfer-function
+phase angle, and that was explored but was abandoned when it did not
+appear to produce results consistent with the approach taken here. 
+
+The following are comments on the simulation at the end of this section.
+The generation of a variance spectrum with $-5/3$ slope (spectral
+variance vs frequency) started by using work from an earlier study,
+documented \href{https://drive.google.com/file/d/1BvlvtFkixW9IrIifsXqFKoJ7HaehHYvX/view?usp=sharing}{here}.
+In the course of working on this paper, it became evident that there
+is a better way: generate a Gaussian noise spectrum (flat vs.~frequency)
+and then modify the spectral density to have $-5/3$ slope before
+transforming back to the simulated measurement sequence. This was
+the approach used in the paper\@. It is much faster than the original
+method used in the document referenced above. However, there appeared
+to be some advantages to the original method in terms of accuracy
+and consistency of results for different random sequences. Perhaps
+those advantages arose from generating originally at 50~Hz and then
+reducing the sample rate, or they may have arisen from generation
+as complete sine waves spanning the entire time period (which is unrealistic).
+In the code chunk ``generate'' in the .Rmd file, some truncation
+is included for frequency components smaller than 0.02~Hz, as a commented
+option. This seemed to improve the consistency of the results at the
+highest frequency and so was included in the latest simulation used
+in the paper. The code in ``generate'' may be useful elsewhere.
+The resulting time series are saved in ``DF.Rdata'' for that reason
+and to avoid needing to re-generate the series with each processing
+run.
+
+\section{Comments on Appendix A: Correcting the Temperature}
+
+\subsection{Integrating the equations}
+
+When this was written it was developed from the differential equations,
+and it was only later realized that the solution is the same as that
+obtained by Inverarity by a quite different method. That is the primary
+reason that this was relegated to an appendix. The integration of
+Eqns.~(4) and (5) in the paper is straightforward, but the reduction
+to a single integration as in Eqn.~(A1) in the paper replaces one
+of the integrations with a more straightforward evaluation using a
+fourth-order central-difference representation for the derivative
+$dT_{m}(t)/dt$. The formula used for the derivative is:
+\begin{lyxcode}
+DTMDT~<-~~(c(0,~8{*}diff(TTRR,~2),~0)~-~
+
+~~~~~~~~~~~~~~c(0,~0,~diff(TTRR,~4),~0,~0))~{*}~Rate~/~12
+
+\#\#~The~second-order~expression~would~be:
+
+\#\#~DTMDT~<-~c(0,~diff(TTRR,~2),~0)~{*}~Rate~/~2
+\end{lyxcode}
+Other possible representations of the derivative, including the second-order
+centered finite-difference expression above and Savitzky-Golay calculation
+of the first derivative, were also tried but the above choice worked
+best.
+
+The use of the new routine ``rk4.integrate()'' was important in
+the case of 25-Hz measurements from the unheated sensor because the
+standard Runge-Kutta package for R (and an Euler integration as used
+by Inverarity) led to obvious numerical problems associated with the
+small time constant $\tau_{1}$ for the unheated sensor. 
+
+For the heated HARCO sensor, another finite-difference expression
+is needed for the second derivative. Because this sensor is slow,
+a second-order centered expression was adequate, so this expression
+was used for $d^{2}T_{m}(t)/dt^{2}$:
+\begin{lyxcode}
+DTM2DT2~<-~(c(diff(RTH1),~0)~-~c(0,~diff(RTH1)))~{*}~Rate\textasciicircum 2
+\end{lyxcode}
+
+\subsection{Comparison to the Inverarity solution}
+
+\citet{InverarityJTech2000} developed an equation equivalent to the
+following expression for the solution of the differential equations:\\
+\[
+T_{a}(t_{k})=T_{a}(t_{0})+\frac{\mathrm{1}}{2\alpha\delta t}\frac{dT_{m}(t_{k})}{dt}-\beta\Delta T_{m}(t_{k})+\gamma(1-\beta)I_{k}
+\]
+where $\alpha=(A_{1}/\tau_{1}+A_{2}/\tau_{2}),$$\beta=\frac{1}{\alpha}(1/\tau_{1}+1/\tau_{2})-\frac{1}{\alpha^{2}\tau_{1}\tau_{2}}$,
+$\gamma=\frac{1}{\alpha\tau_{1}\tau_{2}}$ and\\
+\[
+I_{k}=e^{-\gamma\delta t}I_{k-1}+\frac{\delta t}{2}\left(e^{-\gamma\delta t}(T_{m}(t_{k-1})-T_{a}(t_{0}))+T_{m}(t_{k})-T_{a}(t_{0})\right)
+\]
+with $I_{0}=0$.
+
+<<Inverarity, include=TRUE, fig.cap='Comparison between the solution developed in the paper (green line, RT) and that proposed by Inverarity (dotted orange line, RTI). The original measurement is shown as TTRR (blue line), and the calculated temperature of the support is shown as Ts (dashed cyan line).'>>=
+
+## Get a sample time series to which to apply corrections:
+load(file='DT.Rdata')
+DT$RTI <- DT$TTRR
+Rate <- attr (DT, 'Rate')
+DT$DTMDT <- c(0, diff(DT$TTRR, 2), 0) * Rate / 2
+# DT$DTMDT <-  (c(0, 8*diff(DT$TTRR, 2), 0) - 
+#               c(0, 0, diff(DT$TTRR, 4), 0, 0)) * Rate / 12
+a <- 0.73
+tau1 <- 0.031
+tau2 <- 0.45
+A2 <- (1-a)/(1-tau1/tau2)
+A1 <- 1-A2
+alpha <- A1/tau1+A2/tau2
+beta <- (1 / tau1 + 1 / tau2) / alpha - 1/(alpha^2 * tau1 * tau2)
+gamma <- 1/(alpha*tau1*tau2)
+Ik <- 0
+for (k in 2:nrow(DT)) {
+  Ik <- exp(-gamma/Rate)*Ik + 
+        (1/(2*Rate))*(exp(-gamma/Rate)*(DT$TTRR[k]-DT$TTRR[1]) + 
+        DT$TTRR[k]-DT$TTRR[1]) 
+  DT$RTI[k] <- DT$TTRR[1] + (1/alpha)*DT$DTMDT[k] +
+                 beta * (DT$TTRR[k]-DT$TTRR[1]) +
+                 gamma * (1 - beta) * Ik
+}
+## Method-1 solution:
+DT$Ts <- DT$RT
+# DT$DTMDT <- (DT$DTMDT + c(0, DT$DTMDT[1:(nrow(DT)-1)])) / 2
+# DT$DTMDT <- as.vector (signal::filter(signal::sgolay(1, 3, m=1), DT$TTRR)) * Rate
+fS <- function(y, i) {
+  # Eq. Ts3
+  ((tau1 * DT$DTMDT[i] + DT$TTRR[i] - (1 - a) * y)/a - y) / (Rate * tau2)
+}
+
+DT$Ts <- rk4.integrate (fS, DT$Ts[1], 1:nrow(DT))
+DT$RT <- (1 / a) * (tau1 * DT$DTMDT + DT$TTRR - (1 - a) * DT$Ts)
+## Get Inverarity solution:
+
+DT %>% select(Time, TTRR, RT, RTI, Ts) %>% 
+  selectTime(114500, 114505) %>% 
+  plotWAC(lwd=c(2,3,4,3), 
+          col=c('blue', 'forestgreen', 'darkorange', 'cyan'), 
+          lty=c(1,1,3,2))
+
+@
+
+Figure~\ref{fig:Inverarity} shows the equivalence between the Inverarity
+solution and the one proposed in this paper, for corresponding response
+functions with parameters equal to those determined for the unheated
+sensor.
+
+\subsection{Fourier transformation}
+
+There are some standard considerations when dealing with Fourier transforms
+that are perhaps worth discussing here. The standard representation
+of the Fourier transform has frequencies ordered from 0 to the Nyquist
+frequency in steps given by $\delta f=\mathrm{Rate/N}$ where Rate
+is the sample rate (e.g., 25~Hz) and N is the length of the time
+series. These are followed by negative frequencies ranging from ($-\nu_{Nq}+\delta f)$
+to $-\delta f$, for a total length of $N$. When the transfer function
+is specified, it needs to be specified for these same frequencies.
+This is done conveniently by the ``LTphase()'' function if the first
+argument to the function is frequencies as specified. Then normal
+R operations can be used with the resulting complex vectors. The basic
+correction procedures is then concisely specified as
+\begin{lyxcode}
+RTcorr~<-~Re(fft(fft(RTm)~/~H,~inverse~=~TRUE))~/~N
+\end{lyxcode}
+where RTm is the original measurement, RTcorr is the corrected measurement,
+H is the transfer function, and N is the length of the time series.
+
+This will fail if there are missing-value measurements in the time
+sequence, so interpolation is used routinely via the Ranadu routine
+``SmoothInterp()'', but with argument .Length=0 to suppress smoothing.
+
+Because of the cyclic nature of the Fourier transform, spurious effects
+often arise at the start and end of the time series unless modifications
+are introduced. In the cases presented in this paper, means and trends
+are removed and then the time series are padded at the start and end
+with zeroes. The results are then used only for a subset of the original
+valid time sequence. 
+\begin{center}
+\par\end{center}
+
+\clearpage{}
+
+\label{sec:bibliography} 
+
+\bibliographystyle{plainnat}
+\addcontentsline{toc}{section}{\refname}\bibliography{WAC}
+
+\begin{center}
+\textsf{\textcolor{blue}{-- End of Memo --}}
+\par\end{center}
+
+%\attach{attachment}
+
+%\attachm{first\\second}
+
+%\cc{first attachment\\second\\3rd att}
+\end{document}
