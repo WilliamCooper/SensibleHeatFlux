@@ -311,7 +311,7 @@ VSpecC <-
               y = fpf2,
               colour = VL[2],
               linetype = VL[2],
-              size = FL[2]
+              size = VL[2] # was FL
             ),
             lwd = lwd[2],
             data = DF,

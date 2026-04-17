@@ -20,6 +20,7 @@
 % Advances in Radio Science (ars)
 % Advances in Science and Research (asr)
 % Advances in Statistical Climatology, Meteorology and Oceanography (ascmo)
+% Aerosol Research (ar)
 % Annales Geophysicae (angeo)
 % Archives Animal Breeding (aab)
 % Atmospheric Chemistry and Physics (acp)
@@ -27,7 +28,6 @@
 % Biogeosciences (bg)
 % Climate of the Past (cp)
 % DEUQUA Special Publications (deuquasp)
-% Drinking Water Engineering and Science (dwes)
 % Earth Surface Dynamics (esurf)
 % Earth System Dynamics (esd)
 % Earth System Science Data (essd)
@@ -57,6 +57,7 @@
 % Scientific Drilling (sd)
 % SOIL (soil)
 % Solid Earth (se)
+% State of the Planet (sp)
 % The Cryosphere (tc)
 % Weather and Climate Dynamics (wcd)
 % Web Ecology (we)
@@ -72,18 +73,31 @@
 
 
 %
+%% \usepackage commands included in the copernicus.cls:
+%\usepackage[german, english]{babel}
+%\usepackage{tabularx}
+%\usepackage{cancel}
+%\usepackage{multirow}
+%\usepackage{supertabular}
+%\usepackage{algorithmic}
+%\usepackage{algorithm}
+%\usepackage{amsthm}
+%\usepackage{float}
+%\usepackage{subfig}
+%\usepackage{rotating}
+
 \begin{document}
 
 
 \title{On Measuring Sensible-Heat Flux With Airborne Thermometers}
 
 
-\Author[1]{William}{Cooper}
-\Author[1]{Adriana}{Bailey}
-\Author[1]{Joshua}{Carnes}
+\Author[][cooperw@ucar.edu]{William A.}{Cooper}
+\Author[]{Adriana}{Bailey}
+\Author[]{Joshua}{Carnes}
 
 
-\affil[1]{Earth Observing Laboratory, National Center for Atmospheric
+\affil[]{Earth Observing Laboratory, National Center for Atmospheric
 Research 80307-3000 Boulder, CO, United States}
 
 \runningtitle{Measuring Sensible-Heat Flux}
@@ -91,7 +105,7 @@ Research 80307-3000 Boulder, CO, United States}
 \runningauthor{Cooper}
 
 
-\correspondence{William\ Cooper\ (cooperw@ucar.edu)}
+\correspondence{William A.\ Cooper\ (cooperw@ucar.edu)}
 
 
 
@@ -546,13 +560,13 @@ with standard uncertainties are \(a\)= 0.703 \(\pm\) 0.003,
 \(\tau_{2}\)=0.56 \(\pm\) 0.02\unit{\,s}.
 
 To complete the iteration discussed earlier, the measured recovery
-temperature was then corrected as described in Appendix~A, using the
+temperature was then corrected as described in Appendix~A using the
 parameters from this first fit to predict the actual recovery
 temperature \(T_{r}(t)\). The calculation of phase and amplitude was
-repeated After recalculating \(Q\) using Eq.~\eqref{eq:DHterm} and that
-prediction of \(T_{r}(t)\), the results were fitted again by adjusting
-the fit parameters. Only insignificant changes, much smaller than the
-quoted uncertainties, resulted from this iteration.
+then repeated after recalculating \(Q\) using Eq.~\eqref{eq:DHterm} and
+that new prediction of \(T_{r}(t)\), and the results were fitted again
+by adjusting the fit parameters. Only insignificant changes, much
+smaller than the quoted uncertainties, resulted from this iteration.
 
 \subsubsection{\texorpdfstring{Heated
 sensors\label{subsec:Heated-sensors}}{Heated sensors}}
@@ -630,9 +644,10 @@ the blue lines labelled ``3-par'' in that figure. The fitted values for
 \{\(a,\,\tau_{1},\,\tau_{2}\)\} were \{0, 0.108\unit{\,s},
 1.28\unit{\,s}\}, and to obtain this result the fit had to be
 constrained to keep \(a\) non-negative. A value of zero for the
-parameter \(a\) would indicate that no heat is transferred from the
-sensing wire to the air, but instead all is transferred to the support
-which has a relatively slow characteristic response.
+parameter \(a\) would indicate that no heat is transferred from the air
+to the sensing wire, but instead all is transferred from the support to
+the wire, while the support has a relatively slow characteristic
+response.
 
 The three-parameter fit is not consistent with the measurement errors
 even though it provides an approximate representation of the transfer
@@ -1260,8 +1275,9 @@ the corrected air temperature.
 
 \codedataavailability{The data files used in this analysis are curated
 as indicated by the following references and are publicly available.
-They can be requested from the National Center for Atmospheric Research,
-Earth Observing Laboratory, at this web site:
+They can be requested from the National Science Foundation (NSF)
+National Center for Atmospheric Research (NCAR), Earth Observing
+Laboratory (EOL), at the following web site:
 \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}. The files
 with references are as follows:
 
@@ -1276,6 +1292,8 @@ VOCALS & \citet{VOCALS2011}\tabularnewline
 CSET & \citet{CSET2017}\tabularnewline
 \hline 
 SOCRATES & \citet{SOCRATES2019}\tabularnewline
+\hline 
+WE-CAN & \citet{WECAN2018}\tabularnewline 
 \hline 
 \end{tabular}
 \par\end{center}
@@ -1320,19 +1338,20 @@ interests.} %% this section is mandatory even if you declare that no competing i
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{acknowledgements}
-This material is based upon work supported by the National Center for
-Atmospheric Research, which is a major facility sponsored by the
-National Science Foundation under Cooperative Agreement No.~1852977. The
-data were collected using NSF's Lower Atmosphere Observing Facilities,
-which are managed and operated by NCAR's Earth Observing Laboratory.
-Measurements used here (\citet{VOCALS2011}, \citet{SOCRATES2019},
+This material is based upon work supported by the NSF National Center
+for Atmospheric Researchi, which is a major facility sponsored by the
+National Science Foundation under Cooperative Agreement No.~1852977.
+Data provided by NSF NCAR EOL. https://data.eol.ucar.edu/. The data were
+collected using NSF's Lower Atmosphere Observing Facilities, which are
+managed and operated by NCAR's Earth Observing Laboratory. Measurements
+used here (\citet{VOCALS2011}, \citet{SOCRATES2019}, \citet{CSET2017}.
 \citet{WECAN2018}) were collected in research projects
 (\citet{wood2011vamos}, \citet{albrecht2019CSET},
-\citet{mcfarquhar2021observations}) that used the NSF/NCAR research
-aircraft. Project descriptions and additional information are available
-at the EOL data site:
-\href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}. The
-referenced project teams conducted the experiments, with flight
+\citet{mcfarquhar2021observations}, \citet{Fischer2018}) that used the
+NSF/NCAR C130 (\citet{C130})and GV (\citet{GV}) research aircraft.
+Project descriptions and additional information are available at the EOL
+data site: \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}.
+The referenced project teams conducted the experiments, with flight
 operations, data acquisition and processing, and other project support
 by the Research Aviation Facility, Earth Observing Laboratory, National
 Center for Atmospheric Research (NCAR). The analyses reported here were
@@ -1345,8 +1364,8 @@ package (\citet{wickham2009}) for R, and extensive use was made of the
 used the Runge-Kutta function from the ``rmutil'' package
 (\citet{runge.kutta}). The Copernicus template provided by Daniel Nüst,
 which uses the ``rticles'' package for R (\citet{rticles}), was used
-with ``RMarkdown'' (\citet{XieEtAl2018RMarkdown}) to generate this
-paper.
+with ``RMarkdown'' (\citet{XieEtAl2018RMarkdown,Allaire2026}) to
+generate this paper.
 \end{acknowledgements}
 
 %% REFERENCES

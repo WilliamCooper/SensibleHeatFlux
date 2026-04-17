@@ -2,23 +2,19 @@
 title: On Measuring Sensible-Heat Flux With Airborne Thermometers
 journal: "`r rticles::copernicus_journal_abbreviations(journal_name = 'Atmospheric Measurement Techniques')`"
 author:
-  - given_name: William
-    surname: Cooper
-    affiliation: 1
-    email: cooperw@ucar.edu
+  - surname: ["Cooper"]
+    given_name: [William A. ]
     corresponding: true
+    email: cooperw@ucar.edu
   - given_name: Adriana
     surname: Bailey
-    affiliation: 1
     email: abailey@ucar.edu
   - given_name: Joshua
     surname: Carnes
-    affiliation: 1
     email: jcarnes@ucar.edu
 affiliation:
-  - code: 1
-    address: Earth Observing Laboratory, National Center for Atmospheric Research 80307-3000 Boulder, CO, United States
-abstract: |
+  - address: Earth Observing Laboratory, National Center for Atmospheric Research 80307-3000 Boulder, CO, United States
+abstract:
   Most measurements of temperature from research aircraft rely 
   on sensors that have inadequate response for demanding applications,
   including especially measuring the flux density of
@@ -64,11 +60,11 @@ availability:
   codedata: |
     The data files used in this analysis are curated as indicated by
     the following references and are publicly available. They can be requested
-    from the National Center for Atmospheric Research, Earth Observing
-    Laboratory, at this web site:
+    from the National Science Foundation (NSF) National Center for Atmospheric Research (NCAR), Earth Observing
+    Laboratory (EOL), at the following web site: 
     \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}.
     The files with references are as follows:
-    \begin{center}
+     \begin{center}
     \begin{tabular}{|c|c|}
     \hline 
     Research Project & Citation (see References)\tabularnewline
@@ -80,9 +76,11 @@ availability:
     \hline 
     SOCRATES & \citet{SOCRATES2019}\tabularnewline
     \hline 
+    WE-CAN & \citet{WECAN2018}\tabularnewline 
+    \hline 
     \end{tabular}
     \par\end{center}
-    
+   
     This document is constructed in ways that support duplication of the
     study. The code that generates the plots and implements the correction
     procedure is incorporated into the same file that generated this document
@@ -99,6 +97,7 @@ availability:
     A package named Ranadu [@Ranadu2.6],
     containing auxillary functions, was used extensively in the R code
     and can be downloaded from that reference.
+    
 authorcontribution: |
   The first author wrote the processing code and developed the general
   idea for the paper. The second author contributed
@@ -106,16 +105,17 @@ authorcontribution: |
   author provided Laplace-transform solutions and a digital filter based
   on them while also contributing to the presentation. 
 acknowledgements: |
-  This material is based upon work supported by the National Center
-  for Atmospheric Research, which is a major facility sponsored by the
+  This material is based upon work supported by the NSF National Center
+  for Atmospheric Researchi, which is a major facility sponsored by the
   National Science Foundation under Cooperative Agreement No. 1852977.
+  Data provided by NSF NCAR EOL. https://data.eol.ucar.edu/. 
   The data were collected using NSF’s Lower Atmosphere Observing Facilities, 
   which are managed and operated by NCAR’s Earth Observing Laboratory.
-  Measurements used here (\citet{VOCALS2011}, \citet{SOCRATES2019},
+  Measurements used here (\citet{VOCALS2011}, \citet{SOCRATES2019}, \citet{CSET2017}. 
   \citet{WECAN2018}) were collected in research projects
   (\citet{wood2011vamos},
-  \citet{albrecht2019CSET}, \citet{mcfarquhar2021observations}) that used
-  the NSF/NCAR research aircraft. Project descriptions and additional
+  \citet{albrecht2019CSET}, \citet{mcfarquhar2021observations}, \citet{Fischer2018}) that used
+  the NSF/NCAR C130 (\citet{C130})and GV (\citet{GV}) research aircraft. Project descriptions and additional
   information are available at the EOL data site: 
   \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}.
   The referenced project teams conducted the experiments, with flight
@@ -132,14 +132,16 @@ acknowledgements: |
   function from the "rmutil" package (\citet{runge.kutta}).
   The Copernicus template provided by Daniel Nüst, which uses 
   the “rticles” package for R (\citet{rticles}), was used with "RMarkdown"
-  (\citet{XieEtAl2018RMarkdown}) to
+  (\citet{XieEtAl2018RMarkdown,Allaire2026}) to
   generate this paper. 
+  
 output:
   rticles::copernicus_article: 
     highlight: NULL
     keep_tex: true
   bookdown::pdf_book:
     base_format: rticles::copernicus_article # for using bookdown features like \@ref()
+
 ---
 \newpage
 
@@ -193,6 +195,10 @@ to apply corrections to compensate for that response.
 <!-- especially the sections "Technical instructions for LaTeX" and "Manuscript -->
 <!-- composition". Please contact Daniel Nüst, `daniel.nuest@uni-muenster.de`, with -->
 <!-- any problems. -->
+```{r, include=FALSE}
+options(tinytex.verbose = TRUE)
+```
+
 # Determining the Transfer Function \label{sec:theTransferFn}
 
 The time response of an airborne thermometer can be characterized by
@@ -1276,12 +1282,12 @@ DT %>% select(Time, TTRR, RT, Ts) %>%
 ```
 
 To complete the iteration discussed earlier, the measured recovery
-temperature was then corrected as described in Appendix\ A, using
+temperature was then corrected as described in Appendix\ A using
 the parameters from this first fit to predict the actual
 recovery temperature $T_{r}(t)$. The calculation
-of phase and amplitude was repeated  After recalculating $Q$ using 
+of phase and amplitude was then repeated after recalculating $Q$ using 
 Eq.\ \eqref{eq:DHterm}
-and that prediction of $T_{r}(t)$, the results were fitted again
+and that new prediction of $T_{r}(t)$, and the results were fitted again
 by adjusting the fit parameters. Only insignificant changes, much smaller 
 than the quoted uncertainties, resulted from this iteration. 
 
@@ -1990,8 +1996,8 @@ for \{$a,\,\tau_{1},\,\tau_{2}$\} were \{0, `r round(bestSH[2], 3)`\unit{\,s},
 `r round(bestSH[3], 2)`\unit{\,s}\}, and to obtain this result the fit
 had to be constrained to keep $a$ non-negative. A value of zero for
 the parameter $a$ would indicate that no heat is transferred from
-the sensing wire to the air, but instead all is transferred to the
-support which has a relatively slow characteristic response. 
+the air to the sensing wire, but instead all is transferred from the
+support to the wire, while the support has a relatively slow characteristic response. 
 
 The three-parameter fit is not consistent with the measurement errors
 even though it provides an approximate representation of the transfer
@@ -4505,7 +4511,7 @@ g2 <- DSAP %>% selectTime(55915, 55935) %>%
     c('forestgreen', 'black', 'darkorange', 'blue'),
     ylab = bquote('recovery temperature [' ~ degree * 'C]'),
     lty = c(1, 1, 1, 1),
-    lwd = c(0.5, 1.2, 0.8, 1.2)
+    lwd = c(0.8, 1.2, 0.8, 1.2)
   ) + 
   xlab('time [s]') +
   theme_WAC(1) +
