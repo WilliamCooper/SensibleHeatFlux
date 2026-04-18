@@ -425,7 +425,7 @@ to which the introduction only mentions briefly is that of terminology.
 ``Sensible heat flux'' is the commonly used term, but it seems inappropriate
 to this author because ``heat'' is not a property of the air but
 the flow of thermal energy as represented by the first law of thermodynamics.
-``Heat flux'' is therefore at best ambiguous because heat is necessarily
+``Heat flux'' is therefore at best redundant because heat is necessarily
 energy in motion. The primary formula strictly represents the transfer
 of enthalpy for an ideal gas, but ``enthalpy flux'' would not exclude
 the reactive enthalpy embedded in the water vapor so that isn't a
@@ -435,8 +435,10 @@ a perfect gas; i.e., $C_{v}\rho_{a}<w^{\prime}T^{\prime}>$ with $C_{v}$
 in place of $C_{p}$. A further problem is that what is conventionally
 referred to as the flux is really a flux density. Maybe the best compromise
 would be a term like ``non-reactive enthalpy flux density'' but
-to my knowledge that term has never been used or defined. In the end
-I decided to stay with ``flux of sensible heat''. (I have the same
+to my knowledge that term has never been used or defined. "Temperature flux
+density" might be a better term. In the end
+I decided to stay with ``flux of sensible heat'' because that seems more
+likely to convey the aim of the paper. (I have the same
 reservations about the term ``flux of latent heat'' for the same
 reasons: It is not the heat but the energy that is latent.)
 
