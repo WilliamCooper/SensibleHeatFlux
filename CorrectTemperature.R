@@ -38,6 +38,7 @@ library(zoo)
 require(signal)
 load(file='AR.Rdata')    ## the filters
 load(file='PAR.Rdata')  ## the response parameters
+source('chunks/LTphase.R')
 
 ## Get file to process:
 
@@ -393,8 +394,8 @@ processFile <- function(ProjectDir, Project, Flight) {
   if ('AT_VXL' %in% TVARS) {TVARS <- TVARS[-which('AT_VXL' == TVARS)]}
   if ('AT_VXL2' %in% TVARS) {TVARS <- TVARS[-which('AT_VXL2' == TVARS)]}
   if ('OAT' %in% TVARS) {TVARS <- TVARS[-which('OAT' == TVARS)]} #omit Ophir T
-  if (!UH1 && (Rate != 25)) {  ## omit unheated-probe measurements
-    for (i in length(TVARS):1) {  ## note reversed order
+  if (!UH1 && (Rate != 25)) {  ## omit unheated-probe measurements if 1-Hz
+    for (i in length(TVARS):1) {  ## note reversed order; necessary
       if(grepl('nheated', FI$LongNames[which(TVARS[i] == FI$Variables)])) {
         TVARS <- TVARS[-i]
       }
@@ -422,7 +423,7 @@ processFile <- function(ProjectDir, Project, Flight) {
   }
   ## Add the recovery temperatures if present; otherwise recalculate:
   RVS <- RVARS[RVARS %in% FI$Variables]
-  ## The next lines deal with, for a 25-Hz file, the recovery temperature
+  ## The next lines deal with cases where, for a 25-Hz file, the recovery temperature
   ## is present only at 1-Hz rate (e.g., WECANrf08h.nc)
   if (length(RVS) > 0) {
     if (Rate == 25) {
@@ -599,6 +600,9 @@ processFile <- function(ProjectDir, Project, Flight) {
   } else { ## This section uses the data.frame saved previously if available
     fchk <- sub('1Hz', 'h1Hz', sprintf('%s%s1Hztemp.Rdata', Project, Flight))
     if(file.exists(fchk)) {
+      # save file for reference in CorrectTemperature.Rnw
+      makeNetCDF(D, sprintf('%s%s/%s%s1HzRef.nc', DataDirectory(), Project, 
+                            Project,Flight))
       load(fchk)  ## loads D1HZ
       ## beware of time mis-match: get the indices where Time matches
       ix <- match(D$Time, D1HZ$Time)  ## will be NA for no match
@@ -706,7 +710,7 @@ processFile <- function(ProjectDir, Project, Flight) {
                                                units=VarUnits,
                                                dim=Dim,
                                                missval=as.single(-32767.), prec="float",
-                                               longname=VarLongName)
+                                               longname=VarLongName[i])
     newfile <- ncvar_add (newfile, varCDF[[i + length(VarNew)]])
     ## if the original variable is present, transfer attributes from the old 
     ## variable, then add new ones
