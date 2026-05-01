@@ -295,7 +295,7 @@ variables are inserted into a copy of the original netCDF file, renamed
 to have a ``T'' suffix.
 
 The processing code for this script is inserted below as a code chunk
-named ``processor''. chunk. A processing example will be run when
+named ``processor''. A processing example will be run when
 this file is exported to pdf via pdflatex. The script is available
 separately as ``CorrectTemperature.R,'' and that is included in
 the CorrectTemperature.zip file that is the project archive for this

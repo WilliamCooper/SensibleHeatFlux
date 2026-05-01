@@ -288,9 +288,9 @@ VSpecC <-
               y = fpf,
               colour = VL[1],
               linetype = VL[1],
-              size = VL[1]
+              linewidth = VL[1]
             ),
-            lwd = lwd[1],
+            # linewidth = lwd[1],
             data = DF,
             na.rm = TRUE) +
             xlab(labx) + ylab (laby)
@@ -311,9 +311,9 @@ VSpecC <-
               y = fpf2,
               colour = VL[2],
               linetype = VL[2],
-              size = VL[2] # was FL
+              linewidth = VL[2] # was FL
             ),
-            lwd = lwd[2],
+            # linewidth = lwd[2],
             data = DF,
             na.rm = TRUE)
           cl2 <- ifelse (length(col) >= 2, col[2], 'forestgreen')
@@ -335,9 +335,9 @@ VSpecC <-
               y = fpf3,
               colour = VL[3],
               linetype = VL[3],
-              size = VL[3]
+              linewidth = VL[3]
             ),
-            lwd = lwd[3],
+            # linewidth = lwd[3],
             data = DF,
             na.rm = TRUE)
           cl3 <- ifelse (length(col) >= 3, col[3], 'black')
@@ -359,9 +359,9 @@ VSpecC <-
               y = fpf4,
               colour = VL[4],
               linetype = VL[4],
-              size = VL[4]
+              linewidth = VL[4]
             ),
-            lwd = lwd[4],
+            # linewidth = lwd[4],
             data = DF,
             na.rm = TRUE)
           cl4<- ifelse (length(col) >= 4, col[4], 'darkorange')
@@ -430,7 +430,7 @@ VSpecC <-
     }
     
     g <-
-      suppressMessages(g + scale_size_manual (name = 'variable', 
+      suppressMessages(g + scale_linewidth_manual (name = 'variable', 
                                                   values = .slinesVSpec))
     g <-
       suppressMessages(g + scale_linetype_manual (name = 'variable', 
@@ -438,12 +438,12 @@ VSpecC <-
     g <-
       suppressMessages(g + scale_colour_manual (name = 'variable', 
                                                 values = .clinesVSpec))
-    # g <- g + scale_size_manual ('', labels=lvl, breaks=lvl, values = lwd)
+    # g <- g + scale_linewidth_manual ('', labels=lvl, breaks=lvl, values = lwd)
     # g <- g + scale_linetype_manual ('', labels=lvl, breaks=lvl, values = lty)
     # g <-
     #   suppressMessages(g + scale_linetype_manual (name = '', values = .clinesVSpec))
     # g <-
-    #   suppressMessages(g + scale_size_manual (name = '', values = .clinesVSpec))
+    #   suppressMessages(g + scale_linewidth_manual (name = '', values = .clinesVSpec))
     # print (.clinesVSpec)
     if (showErrors > 0) {
       if (smoothBins > 9) {
@@ -515,7 +515,7 @@ VSpecC <-
         g <-
           g + geom_path(data = DFL,
                         aes(x = x, y = y),
-                        lwd = 1.5,
+                        linewidth = 1.5,
                         colour = 'red')
         g <- g + ggtitle (bquote(.(ttl) ~ ' m' ^ 2 ~ 's' ^ -3))
         # g <- g + ggtitle(sprintf(' mean eddy dissipation rate %.2e m^2/s^3', aveEDR))
@@ -531,7 +531,7 @@ VSpecC <-
               data = DFL,
               aes(x = x, y = y),
               colour = 'darkorange',
-              lwd = lw,
+              linewidth = lw,
               lty = 3
             )
         }
@@ -546,7 +546,7 @@ VSpecC <-
               data = DFL2,
               aes(x = x, y = y),
               colour = lclr,
-              lwd = 1.0
+              linewidth = 1.0
             )
           if (j1 != 100000) {
             for (j2 in 2:9) {
@@ -556,7 +556,7 @@ VSpecC <-
                   data = DFL2,
                   aes(x = x, y = y),
                   colour = lclr,
-                  lwd = 0.6
+                  linewidth = 0.6
                 )
             }
           }
@@ -567,7 +567,7 @@ VSpecC <-
           g + geom_path(data = DFL2,
                         aes(x = x, y = y),
                         colour = lclr,
-                        lwd = 1.0)
+                        linewidth = 1.0)
         g <- g + annotate(
           "text",
           x = tasAverage * c(1 / 100000, 1 / 10000, 1 / 1000, 1 / 100, 1 /

@@ -379,19 +379,20 @@ Eq.~\eqref{eq:responseAmp} and Eq.~\eqref{eq:responsePhase}.
 
 The present investigation uses measurements from two NSF/NCAR (National
 Science Foundation / National Center for Atmospheric Research) research
-aircraft, a Gulfstream V (hereafter, GV) and a Hercules C-130. The
-temperature sensors producing the measurements are in widespread use so
-these results should have broad applicability. Some aspects of the
-uncertainty limits associated with these measurements of temperature are
-included in an NCAR Technical Note \citep{cooper2016ncartn}, where it
-was estimated that the standard uncertainty in measurements of
-temperature from the GV is about \unit{0.3^{\circ}C}. However, this
-estimate does not apply when the temperature changes rapidly.
-\citet{FrieheKhelif1992} and \citet{LawsonRodi1992}, among others,
-provide reviews of the evidence for delayed response of standard
-sensors. The unheated sensor referenced above and cited in these studies
-has been used widely as a fast-responding sensor so it will be a focus
-of this study.
+aircraft, a Gulfstream V (hereafter, GV) and a Hercules C-130. Brief
+descriptions of these aircraft are available at these sources:
+\citet{GV}, \citet{C130}. The temperature sensors producing the
+measurements are in widespread use so these results should have broad
+applicability. Some aspects of the uncertainty limits associated with
+these measurements of temperature are included in an NCAR Technical Note
+\citep{cooper2016ncartn}, where it was estimated that the standard
+uncertainty in measurements of temperature from the GV is about
+\unit{0.3^{\circ}C}. However, this estimate does not apply when the
+temperature changes rapidly. \citet{FrieheKhelif1992} and
+\citet{LawsonRodi1992}, among others, provide reviews of the evidence
+for delayed response of standard sensors. The unheated sensor referenced
+above and cited in these studies has been used widely as a
+fast-responding sensor so it will be a focus of this study.
 
 This research used the data archives of three research projects, the
 VOCALS (VAMOS Ocean-Cloud-Atmosphere-Land Study), CSET (Cloud Systems
@@ -406,7 +407,7 @@ and specific references to the data sets are included in the section on
 \subsection{Fits to the measurements}
 
 Because the airspeed \(V\) is itself conventionally determined using the
-processed air temperature \(T_{a}\), via \(V=M\sqrt{\gamma R_{a}T_{a}}\)
+processed air temperature \(T_{a}\) via \(V=M\sqrt{\gamma R_{a}T_{a}}\)
 where \(\gamma=C_{p}/C_{v}\), the second expression in
 Eq.~\eqref{eq:DHterm} provides the advantage that it does not rely on
 prior calculation of the air temperature \(T_{a}\) but can be calculated
@@ -599,7 +600,7 @@ parameters determining the transfer function for the heated sensor.
 \begin{figure}
 
 \begin{center}\includegraphics[width=8.3cm,height=5cm]{figure/fig3} \end{center}
-\caption{Spectral variance $P(\nu)$ weighted by frequency ($\nu$) for the recovery temperature measured by a heated and an unheated temperature sensor. The background includes orange dotted lines denoting $-2/3$ slope and the wavelength scale is determined from the average airspeed.\label{fig:HARCOSpec}}
+\caption{Spectral variance $P(\nu)$ weighted by frequency ($\nu$) for the recovery temperature sensed by a heated and an unheated temperature sensor. The background includes orange dotted lines denoting $-2/3$ slope and the wavelength scale is determined from the average airspeed.\label{fig:HARCOSpec}}
 \end{figure}
 
 \begin{table}[t]
@@ -749,18 +750,18 @@ that sensor has much faster response.
 \caption{The measured recovery temperature ($T_m$) from an unheated sensor, the dynamic heating ($Q$), and the result of using Eqs.\ \eqref{eq:DHterm} and \eqref{eq:recoveryTemperature} to calculate the air temperature ($T_a$). Mean values have been subtracted from these variables to facilitate comparison. Data from VOCALS flight 3.\label{fig:f5}}
 \end{figure}
 
-The new approach followed here is to filter the dynamic-heating term so
-that only the actual sensor response to dynamic heating is subtracted
-from the measurement. This is made possible by the assumed linearity in
-response of the sensor, which is required if this part of the response
-is to be separated from the more general response to the combination of
-dynamic heating and true fluctuations in temperature. The proposed
-filtering removes a significant source of erroneous fluctuations present
-in many temperature measurements made from research aircraft.
+The new approach followed here is to filter the dynamic-heating term to
+match the response of the sensor, so that only the actual sensor
+response to dynamic heating is subtracted from the measurement. This is
+made possible by the assumed linearity in response of the sensor. The
+proposed filtering removes a significant source of erroneous
+fluctuations present in many measurements of temperature made from
+research aircraft.
 
-The filtered response has been obtained from the transfer function in
-three ways, by integration of the differential equations
-(Eqs.~\eqref{eq:Ts} and \eqref{eq:Tm}) applied to \(Q\), by Fourier
+The filtered response to dynamic heating expected for the temperature
+sensor has been obtained from the transfer function in three ways: by
+integration of the differential equations (Eqs.~\eqref{eq:Ts} and
+\eqref{eq:Tm}) applied to \(Q\) instead of \(T_r\), by Fourier
 transforms using the transfer function, and by applying a digital filter
 designed from the transfer function. The digital filter was designed
 using standard methods as outlined in, e.g.,
@@ -788,12 +789,12 @@ and the wavelength scale is determined from the average airspeed.\protect \\
 obtained by integrating the differential equations for the derivatives
 ("DiffEq"), by Fourier transformation with application of the
 transfer function ("FFT"), or applying the digital filter ("filter").
-The result for the latter is so close to that for "FFT" that it
+The result for the latter (dashed greenline) is so close to that for "FFT" that it
 is obscured in this plot.\protect \\ 
-(b): The measurement of recovery temperature and ambient temperature
-calculated using the digitally filtered dynamic-heating term. The original
+(b): The recovery temperature sensed by the sensor without correction and the ambient temperature
+calculated using the digitally filtered dynamic-heating term (but without correction for the sensor response time). The original
 variable for ambient temperature based on standard processing 
-("with std Q") is also shown.{\label{fig:Integration}}}
+(labelled "with std Q") is also shown.{\label{fig:Integration}}}
 
 \end{figure}
 
@@ -824,16 +825,17 @@ results from the digital filter and from Fourier transformation with
 application of the transfer function supports the validity of these
 results and suggests that these are preferable and equivalent methods
 for filtering dynamic heating to match the response of the temperature
-sensor.
+sensor. The digital filter has the advantage that it can be applied to
+an entire flight and avoids the need to segment and patch results from
+the Fourier transform.
 
 A revised estimate of the ambient air temperature was then calculated
-using Eq.~\eqref{eq:QprimeCorr} and the corrected dynamic-heating term
+using Eq.~\eqref{eq:QprimeCorr} and the filtered dynamic-heating term
 \(Q^{\prime}\). The spectral variance for this air temperature, shown in
 Fig.~\ref{fig:Integration}b as the blue line, is improved considerably
-at high frequency vs.~that using the standard correction. Even at
-\unit{1\,Hz}, filtering the dynamic-heating term removes a significant
-and erroneous contribution to the variance in the measured air
-temperature.
+at high frequency vs.~that using the standard dynamic-heating term. Even
+at \unit{1\,Hz}, filtering removes a significant and erroneous
+contribution to the variance in the measured ambient temperature.
 
 In the case of the heated sensors, the revision is still more
 significant because they respond more slowly. Figure~\ref{fig:HarcoQ}a
@@ -851,14 +853,14 @@ above about \unit{0.1\,Hz}.
 
 \caption[Variance spectra for the heated temperature sensor: The unmodified dynamic-heating
 term and two filtered terms. Also, the air temperature as modified
-by filtering the dynamic-heating term.]{Variance spectra for a heated temperature sensor. (Data from
-the WECAN project, flight 17, 18:04:00 to 18:35:00 UTC.) 
+by filtering the dynamic-heating term.]{Variance spectra for the dynamic-heating correction applied to a heated temperature sensor. (Data from
+the CSET project, flight 5, 18:04:00 to 18:35:00 UTC.) 
 The backgrounds include orange dotted lines denoting $-2/3$ slope and the wavelength scale is determined from the average airspeed.\protect \\
 (a): The unmodified dynamic-heating term ("Q") and the two
 corrected terms. The results from solving the differential equations
 ("DiffEq") or from application of the digital filter ("filter")
 are overlapping and indistinguishable in this figure.\protect \\
-(b): The air temperature as modified by filtering the dynamic-heating
+(b): Variance spectra for the air temperature as modified by filtering the dynamic-heating
 term (blue line). The other plotted spectra are for the measured recovery
 temperature and the air temperature with the conventional dynamic-heating
 correction.{\label{fig:HarcoQ}}}
@@ -893,7 +895,7 @@ temperature.
 \caption[Comparison of the original calculated air temperature and the same temperature
 after filtering the dynamic-heating correction, for an unheated sensor and a heated sensor. ]{Comparison of the original calculated air temperature and the same temperature
 after filtering the dynamic-heating correction:\protect \\
-(a): An unheated sensor, VOCALS project, flight 3, time after 8:01:00 UTC; (b): A heated sensor, WECAN project, flight 17. time after 18:13:00 UTC. {\label{fig:ATATF}}}
+(a): An unheated sensor, VOCALS project, flight 3, time after 8:01:00 UTC; (b): A heated sensor, VOCALS project, flight 3. time after 8:01:00 UTC. {\label{fig:ATATF}}}
 \end{figure}
 
 Fig.~\ref{fig:ATATF}a illustrates the removal of erroneous structure by
@@ -902,10 +904,9 @@ similar example for the heated sensor. These figures illustrate that the
 erroneous fluctuations in the standard measurements can be important in
 many potential uses of these measurements and should be removed as part
 of standard processing. The effect is particularly significant for the
-heated sensor, for which the conventionally processed temperature has
-large fluctuations that are caused by subtraction of fluctuations in
-dynamic heating to which the sensor does not respond. These do not arise
-from real fluctuations in ambient air temperature.
+heated sensor. Most of these rapid fluctuations do not arise from real
+fluctuations in ambient air temperature, but instead from erroneous
+subtraction of the unfiltered rapid fluctuations in dynamic heating.
 
 \section{\texorpdfstring{The Flux Density of Sensible
 Heat\label{sec:flux-density}}{The Flux Density of Sensible Heat}}
@@ -1293,8 +1294,6 @@ CSET & \citet{CSET2017}\tabularnewline
 \hline 
 SOCRATES & \citet{SOCRATES2019}\tabularnewline
 \hline 
-WE-CAN & \citet{WECAN2018}\tabularnewline 
-\hline 
 \end{tabular}
 \par\end{center}
 
@@ -1347,11 +1346,10 @@ National Science Foundation under Cooperative Agreement No.~1852977.
 Data provided by NSF NCAR EOL. https://data.eol.ucar.edu/. The data were
 collected using NSF's Lower Atmosphere Observing Facilities, which are
 managed and operated by NCAR's Earth Observing Laboratory. Measurements
-used here (\citet{VOCALS2011}, \citet{SOCRATES2019}, \citet{CSET2017}.
-\citet{WECAN2018}) were collected in research projects
-(\citet{wood2011vamos}, \citet{albrecht2019CSET},
-\citet{mcfarquhar2021observations}, \citet{Fischer2018}) that used the
-NSF/NCAR C130 (\citet{C130})and GV (\citet{GV}) research aircraft.
+used here (\citet{VOCALS2011}, \citet{SOCRATES2019}, \citet{CSET2017})
+were collected in research projects (\citet{wood2011vamos},
+\citet{albrecht2019CSET}, \citet{mcfarquhar2021observations}) that used
+the NSF/NCAR C130 (\citet{C130}) and GV (\citet{GV}) research aircraft.
 Project descriptions and additional information are available at the EOL
 data site: \href{https://data.eol.ucar.edu}{https://data.eol.ucar.edu}.
 The referenced project teams conducted the experiments, with flight

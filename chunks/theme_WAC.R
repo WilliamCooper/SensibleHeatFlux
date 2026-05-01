@@ -17,12 +17,12 @@ theme_WAC <- function (version=0) {
     themeWAC <- theme_gdocs() + theme(
       plot.title = element_text(hjust=0.5, vjust=1.3, size=12),
       # axis.text = element_text(size = 16),
-      panel.grid.major = element_line(color = "lightblue", linetype=5, size=0.6),
-      panel.grid.minor = element_line(color = "gray90", linetype=5, size=0.6),
+      panel.grid.major = element_line(color = "lightblue", linetype=5, linewidth=0.6),
+      panel.grid.minor = element_line(color = "gray90", linetype=5, linewidth=0.6),
       panel.background = element_rect(fill = '#e8f2f2'),
       # axis.title=element_text(face="plain", size=18, colour="blue"),
-      line=element_line(size=1),
-      axis.ticks = element_line(size=1),
+      line=element_line(linewidth=1),
+      axis.ticks = element_line(linewidth=1),
       axis.ticks.length = unit(-0.3,"cm"),
       axis.title.x = element_text (face='plain', size=16, color='blue', margin=margin(5,0,0,0)),
       axis.text.x = element_text (size=16, margin=margin(15,0,0,0)),
@@ -31,11 +31,11 @@ theme_WAC <- function (version=0) {
       # axis.ticks.margin = unit (0.6,"cm"), # before ggplot2 v2.0
       legend.position=c(0.5,0.92),
       plot.margin=unit(c(0.3,0.3,1.1,1.3),"lines"),
-      legend.background=element_rect(colour='black', size=0.3, fill="ivory"),
+      legend.background=element_rect(colour='black', linewidth=0.3, fill="ivory"),
       legend.direction="horizontal",
       legend.key.width=unit(1.3,'lines'), legend.key.height=unit(0.7,'lines'),
       legend.text=element_text(size=8),
-      panel.border=element_rect(colour="black",size=0.7),
+      panel.border=element_rect(colour="black",linewidth=0.7),
       strip.background=element_rect(fill='ivory')
       # axis.title.y=element_text(angle=90))
     )
@@ -43,13 +43,13 @@ theme_WAC <- function (version=0) {
     themeWAC <- theme_gdocs() + theme(
       plot.title = element_text(hjust=0.5, vjust=1.3),
       # axis.text = element_text(size = 16),
-      panel.grid.major = element_line(color = "lightblue", linetype=5, size=0.5),
-      panel.grid.minor = element_line(color = "gray90", linetype=5, size=0.5),
+      panel.grid.major = element_line(color = "lightblue", linetype=5, linewidth=0.5),
+      panel.grid.minor = element_line(color = "gray90", linetype=5, linewidth=0.5),
       panel.background = element_rect(fill = '#e8f2f2'),
-      plot.background = element_rect(color = 'black', size = 2),
+      plot.background = element_rect(color = 'black', linewidth = 2),
       # axis.title=element_text(face="plain", size=18, colour="blue"),
-      line=element_line(size=1),
-      axis.ticks = element_line(size=1),
+      line=element_line(linewidth=1),
+      axis.ticks = element_line(linewidth=1),
       axis.ticks.length = unit(-0.35,"cm"),
       axis.title.x = element_text (face='plain', size=16, color='blue', margin=margin(5,0,0,0)),
       axis.text.x = element_text (size=16, margin=margin(15,0,0,0)),
@@ -58,10 +58,10 @@ theme_WAC <- function (version=0) {
       # axis.ticks.margin = unit (0.6,"cm"), # before ggplot2 v2.0
       legend.position=c(0.5,0.96),
       plot.margin=unit(c(1.5,1,1.0,0.5),"lines"),
-      legend.background=element_rect(colour='black', size=0.3, fill="ivory"),
+      legend.background=element_rect(colour='black', linewidth=0.3, fill="ivory"),
       legend.direction="horizontal",
       legend.title=element_text(size=12),
-      panel.border=element_rect(colour="black",size=0.7)
+      panel.border=element_rect(colour="black",linewidth=0.7)
       # axis.title.y=element_text(angle=90))
     )
   }

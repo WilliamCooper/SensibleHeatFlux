@@ -102,7 +102,7 @@ plot2CS <- function(CS,
         colour = 'exc-msrd',
         linetype = 'exc-msrd'
       ),
-      lwd = 1.2
+      linewidth = 1.2
     )
   } else {
     g <- ggplot(data = CS, aes(x = freq))
@@ -126,7 +126,7 @@ plot2CS <- function(CS,
       colour = 'exceedance',
       linetype = 'exceedance'
     ),
-    lwd = 1.2)
+    linewidth = 1.2)
   }
   if (is.data.frame(CSprevious)) {
     g <- g + geom_path(
@@ -137,7 +137,7 @@ plot2CS <- function(CS,
         colour = 'exc-corr',
         linetype = 'exc-corr'
       ),
-      lwd = 1.2
+      linewidth = 1.2
     )
     if ('ogive2' %in% names(CSprevious)) {
       g <- g + geom_path(
@@ -148,7 +148,7 @@ plot2CS <- function(CS,
           colour = 'generated',
           linetype = 'generated'
         ),
-        lwd = 1.3
+        linewidth = 1.3
       )
     }
   }
