@@ -50,7 +50,7 @@ abstract:
   prevalent in most archived temperature measurements from research
   aircraft, that results when conventional treatments of dynamic
   heating do not take into account the time response of the sensor.  
-bibliography: WAC.bib
+bibliography: CooperAMT.bib
 competinginterests: |
   The authors declare no competing interests.
 # OPTIONAL:
@@ -92,7 +92,7 @@ availability:
     the "chunks" subdirectory. The full directory should be downloaded
     in order to run the program. The calculations use the programming
     language R [@Rlanguage] and were run within RStudio [@RStudio2021].
-    A package named Ranadu [@Ranadu2.6],
+    A package named Ranadu [@ranadu2.7],
     containing auxillary functions, was used extensively in the R code
     and can be downloaded from that reference.
     
@@ -238,7 +238,6 @@ be applied with proper treatment of the sensor response.
 ## used for the Laplace-transform solution of the governing
 ## differential equations.
 
-# setwd('~/RStudio/SensibleHeatFluxAMT/CopernicusFiles')
 source('chunks/initialize.R')
 source('chunks/theme_WAC.R') ## modified to make background more gray, less pink
 # source('chunks/VSpec.R')
@@ -564,10 +563,6 @@ to
 \begin{equation}
 \frac{\delta Q}{Q}\approx\frac{\delta T_{r}}{T_{r}}+\frac{2}{5}\frac{\delta M}{M}{\label{eq:QprimeOverQ}}
 \end{equation}
-<!-- The measured phase and -->
-<!-- amplitude of the response to the dynamic-heating term may be distorted -->
-<!-- from the correct value at frequencies where $\delta T_{m}/T_{m}$ -->
-<!-- differs from $\delta T_{r}/T_{r}$.   -->
 For a representative low-level 
 flight segment with moderate turbulence
 where the airspeed fluctuations were approximately consistent with
@@ -649,14 +644,9 @@ if (file.exists ('./DVOCALS.Rdata')) {
   }
   D$Ts <- rk4.integrate (fS, D$Ts[1], 1:nrow(D))
   D$RT <- (1 / a) * (tau1 * D$DTMDT + D$TTRR - (1 - a) * D$Ts)
-  # D %>% select(Time, TTRR, RT, Ts) %>% selectTime(114500, 114505) %>% plotWAC()
   save(D, file = './DVOCALS.Rdata')
   DVOCALS <- D
 }
-## Special test: Filter TTRR
-## D$TTRR <- signal::filter( signal::butter (3, 0.7), D$TTRR)
-## D <- transferAttributes(DVOCALS, D)
-## Revise the calculation of dynamic heating to avoid dependence on AT:
 D$MACH <- MachNumber(D$PSXC, D$QCXC)
 recoveryFactor <- attr(D[, 'ATRR'], 'RecoveryFactor')
 XXA <-  D$MACH ^ 2 / 5
@@ -978,10 +968,6 @@ Param5$tau2 <- 0.6
 H5 <- LTphase(df$frq, Param5)
 cTF5 <- H5$Amp
 phiTF5 <- H5$Phase
-# df$Amp5 <- cTF5
-# plot(df$frq, df$mphase, type='p', pch=20, col='blue', log='x', xlim=c(1.e-2, 15),
-#   xlab='frequency [Hz]', ylab='phase, RTRR x Q [degrees]', ylim=c(-80, 9))
-# arrows(df$frq, df$mphase-df$sdp, df$frq, df$mphase+df$sdp, length=0.05, angle=90, code=3)
 g <- ggplot(df, aes(x = frq, y = mphase)) + geom_point()
 g <-
   g + xlab('frequency [Hz]') + ylab (bquote('phase [' ~ degree * ']'))
@@ -1009,17 +995,6 @@ dfr <- dfr[dfr$frq > 0.04,]
 dfr <- dfr[dfr$sdr > 0,]
 dfr <- dfr[dfr$frq < 12,]
 frq <- exp(pf2$xc[nar > 0])
-# spec1 <- spec1[nspec1 > 0]
-# spec2 <- spec2[nspec1 > 0]
-# rspec <- spec1 / spec2
-# plotWAC(data.frame(frq, mrspec), xlab='frequency [Hz]', ylab='amplitude ratio RTRR/Q', type='p',
-#         col='blue', log='x', pch=20, xlim=c(0.1,15), ylim=c(0,1.2))
-# HR <- LTphase(frq, Param1)
-# P <- Param1
-# P$tau2 <- 0.84
-# HR2 <- LTphase(frq, P)
-# lines(frq, (HR2$Amp)^2, col='forestgreen', lwd=2)
-# lines(frq, (HR$Amp)^2, col='darkorange', lwd=2, lty=2)
 Param5 <- Param1
 Param5$tau2 <- 0.6
 H5 <- LTphase(dfr$frq, Param5)
@@ -1430,7 +1405,7 @@ P <- spec.pgram(
   plot = FALSE,
   spans = 25
 )
-## These next three lines aren't used; they are left over from earlier testing:
+## These next three lines are left over from earlier testing:
 df1SF <- data.frame(P$coh, log(P$freq))
 df2SF <- data.frame (P$phase, log(P$freq))
 pf1SF <- binStats (df1SF, bins = SB)
@@ -1557,25 +1532,8 @@ g <-
 # g <- g + geom_path(data=dfAPSF, aes(x=Time, y=Amp), col='darkorange')
 g <- g + geom_path(data = dfrSF, aes(x = frq, y = Amp), col = 'forestgreen')
 suppressWarnings(print(g + ylim(0, 1.3) + theme_WAC(1)))
-# CohPhase(DSA, 'RTF1', 'Q')
-# DSA %>% select(Time, TASX, RTF1, Q, ATF1) %>% 
-#         VSpec()
-# print(bestSF)
 
 ```
-
-<!-- The airflow and typical flow angles approaching a sensor can affect -->
-<!-- its response, so the results might change when installed on a different -->
-<!-- location or a different aircraft. Therefore a similar evaluation examined -->
-<!-- the response of this same sensor when flown on the NSF/NCAR GV, which -->
-<!-- flies significantly faster than the C-130. The results of a study -->
-<!-- using a combined low-level dataset from the SOCRATES [@mcfarquhar2014southern] -->
-<!-- and CSET [@albrecht2019CSET] experiments, which were flown -->
-<!-- over the Pacific Ocean, were similar to but slightly different from -->
-<!-- the coefficients determined on the C-130, with both time constants -->
-<!-- smaller than found for the C-130 ($\tau_{1}$=`r round(bestSF[2], 3)`\unit{\,s} -->
-<!-- and $\tau_{2}$=`r round(bestSF[3], 2)`\unit{\,s}). This might be expected -->
-<!-- at greater airspeed, as discussed in Sect.\ \ref{subsec:Expected-dependence-on}. -->
 
 
 ### Heated sensors\label{subsec:Heated-sensors}
@@ -1666,8 +1624,6 @@ sdrW <- sdrW * 2 / sqrt(narW)
 
 ```{r RTH1Spec, include=FALSE, echo=FALSE, fig.pos='t', fig.height=4, fig.cap='Spectral variance $P(\\nu)$ weighted by frequency ($\\nu$) for the recovery temperature measured by a heated and an unheated sensor. The background includes orange dotted lines denoting $-2/3$ slope and the wavelength scale is determined from the average airspeed.'}
 
-# g <- VSpec(DT, 'TTWH', spans=99, ylim=c(1.e-6, 1))
-# suppressWarnings(print(VSpec(DT, 'TTRR', add=g, spans=99) + theme_WAC(1)))
 DT$temperature <- DT$TTWH
 DT %>% select(Time, TASX, TTWH, TTRR) %>%
   VSpec(
@@ -2010,12 +1966,7 @@ even though it provides an approximate representation of the transfer
 function. The apparent reason is that there is conflict between the
 constraints imposed by the amplitude ratio and the phase, such that
 either could be represented reasonably but not both. 
-<!-- The amplitude decreases to $e^{-1}$ at about \unit{0.34\,Hz}, -->
-<!-- as would be the case for a first-order time constant of about \unit{1.3\,s}, -->
-<!-- so this could be considered one measure of the response. However, the -->
-<!-- phase shift at \unit{0.34\,Hz} is approximately $-73^{\circ}$, which would -->
-<!-- indicate that the measurement of a real contribution to sensible-heat -->
-<!-- flux at this frequency would be only about 10\% of the correct value. -->
+
 Because the three-parameter fit distorted the measured result, fits
 in the logarithm of the frequency were used to provide a better representation
 of the measurements, as shown by the dashed green lines labelled "lfit".
@@ -2035,10 +1986,6 @@ the complex conjugate of the values at the corresponding positive
 frequency) represents the transfer function better than
 the three-parameter fit, although the fit is not valid above about \unit{2\,Hz}
 because those values were not constrained by the measurements.
-<!-- For completeness, replicating the value at \unit{2\,Hz} to higher frequencies -->
-<!-- may be reasonable because there is so little variance measured -->
-<!-- by this sensor at these frequencies, as shown by Fig.\ \ref{fig:HARCOSpec}. -->
-
 
 ### Expected dependence on flight conditions\label{subsec:Expected-dependence-on}
 
@@ -2048,16 +1995,10 @@ rhozero <- 1013.25 * 100 / (287.05 * 288.15)
 MRHO <- MachNumber(DZV$PSXC, DZV$QCXC) * 
           DZV$PSXC * 100 / (287.05 * (273.15 + DZV$ATX)) / rhozero
 Param1$tau1 <- Param1$tau1 * (0.3 / mean(MRHO, na.rm = TRUE)) ^ (-0.68)
-# Param1$tau2 <- Param1$tau2 * (0.3 / mean(MRHO, na.rm = TRUE)) ^ -0.68
 MRHO <- MachNumber(DZ$PSXC, DZ$QCXC) * DZ$PSXC * 100 / 
         (287.05 * (273.15 + DZ$ATX)) / rhozero
-# ParamHS$tau1 <- ParamHS$tau1 * (mean(MRHO, na.rm = TRUE) / 0.3) ^ 0.68
-# ParamHS$tau2 <- ParamHS$tau2 * (mean(MRHO, na.rm = TRUE) / 0.3) ^ 0.68
-# ParamHSB$tau1 <- ParamHSB$tau1 * (mean(MRHO, na.rm = TRUE) / 0.3) ^ 0.68
-# ParamHSB$tau2 <- ParamHSB$tau2 * (mean(MRHO, na.rm = TRUE) / 0.3) ^ 0.68
 ParamSH$tau1 <- ParamSH$tau1 * (0.3 / mean(MRHO, na.rm = TRUE)) ^ (-0.68)
 ParamSF$tau1 <- ParamSF$tau1 * (0.3 / mean(MRHO, na.rm = TRUE)) ^ (-0.68)
-# bestSH[3] <- bestSH[3] * (0.3 / mean(MRHO, na.rm = TRUE)) ^ 0.68
 ParamSH$a <- 0
 save(Param1, ParamSF, ParamSH, file = 'PAR.Rdata')
 
@@ -2102,107 +2043,6 @@ so the fit in the table has been used in this paper for measurements from both a
 \end{tabular}
 \end{table}
 
-
-
-<!-- ## Response to a step change -->
-
-<!-- <!-- This section has been modified significantly to relate to the recovery -->
-<!-- <!-- temperature rather than the ambient temperature and to correct an error -->
-<!-- <!-- in the calculation. -->
-<!-- The section has now been omitted because it no longer provides  -->
-<!-- useful support for the transfer function as determined here. -->
-<!-- Furthermore, the top of the BL is cloudy, so I worry about -->
-<!-- the complication that sensor wetting may introduce. -->
-<!-- \begin{figure} -->
-<!-- ```{r tfit, include=TRUE, echo=FALSE, fig.height=3.5, out.width = "8.3cm"} -->
-
-<!-- ## The code below was used to generate fig5.pdf: -->
-<!-- if (generateFigures || !(file.exists('figure/fig5.pdf'))) { -->
-<!--   cairo_pdf('figure/fig5.pdf') -->
-<!--   Data <- getNetCDF(file.path(DataDirectory(), 'VOCALS/VOCALSrf03h.nc'), -->
-<!--                     c('PALT', 'GGALT_NTL', 'ATX', 'ATRL', -->
-<!--                       'ATRR', 'ATWH', 'DPXC', 'PSXC', -->
-<!--                       'QCXC', 'TTRR'), -->
-<!--                     81350, 81357)  ## the time interval (up to 81358) -->
-<!--   ## Get Z for scaling the time constants: -->
-<!--   rhozero <- 1013.25 * 100 / (287.05 * 288.15) -->
-<!--   Z <- MachNumber(Data$PSXC, Data$QCXC) * 100 * Data$PSXC / -->
-<!--     (287.05 * (273.15 + Data$ATRR)) / rhozero -->
-<!--   tau1 <- Param1$tau1 * (0.3 / mean(Z, na.rm = TRUE) ) ^ (0.68) -->
-<!--   tau2 <- Param1$tau2 -->
-<!--   a <- Param1$a -->
-<!--   nf <- 50  ## subdivision factor to use for integration -->
-<!--   TTOP <- 20.2  ## recovery T above and below the inversion -->
-<!--   TBOT <- 12.4 -->
-<!--   ## Adjustment to adiabatic stratification for approx ratio, recovery to ambient T: -->
-<!--   Slope <- 6.5 / 1000 * (mean(Data$TTRR) + 283.15) / (mean(Data$ATRR) + 273.15) -->
-<!--   dt <- 1 / (nf * 25)  ## integration interval -->
-<!--   ## Plot recovery temperature -->
-<!--   Data %>%  -->
-<!--     select(Time, TTRR) %>%  -->
-<!--     plotWAC(type='b', ylab = bquote('recovery temperature ['*degree*'C]')) -->
-<!--   ## Estimate true recovery temperature: -->
-<!--   Data$T <- TBOT - (0:(nrow(Data)-1)) * 5 / 25 * Slope  ## 10C per km, 5 m/s descent  -->
-<!--   Data$T[1:10] <- TTOP  ## force above-inversion value -->
-<!--   ## Get fine-scale true recovery temperature for integration -->
-<!--   yy <- TBOT - (0:(nf*nrow(Data)-1)) * 5 / (nf*25) * Slope  -->
-<!--   yy[1:(10*nf)] <- TTOP  ## force above-inversion value -->
-<!--   lineWAC(Data$Time[11:200], Data$T[11:200], col='black', lty=3) -->
-<!--   lineWAC(c(Data$Time[11], Data$Time[10]), c(Data$T[11], Data$T[10]), col = 'black', lty = 3) -->
-<!--   xx <- (1:(nf*nrow(Data)) - 1) * dt + Data$Time[1] -->
-<!--   # calculate the response, given tau: -->
-<!--   FF <- 1  ## fudge factor for exploring effects; try 2.5 -->
-<!--   tau1 <- FF * tau1 -->
-<!--   tau2 <- FF * tau2 -->
-<!--   ym <- yy -->
-<!--   yr <- yy -->
-<!--   for (i in 2:(nrow(Data)*nf)) { -->
-<!--     yr[i] <- yr[i - 1] + (yy[i] - yr[i - 1]) * dt / tau2 -->
-<!--     ym[i] <- ym[i - 1] + (a * yy[i] + (1 - a) * yr[i] - ym[i - 1]) * dt / tau1 -->
-<!--   } -->
-<!--   lineWAC(xx, ym, col = 'magenta', lwd = 3, lty = 1) -->
-<!--   lineWAC(xx, yr, col = 'brown',   lwd = 3, lty = 2) -->
-<!--   legend('topright', legend=c('measured', 'predicted', 'support', 'if discrete'), -->
-<!--          lwd=c(2, 2, 2, 2), lty=c(1, 1, 2, 3), -->
-<!--          col=c('blue', 'magenta', 'brown', 'black'), -->
-<!--          pch = c(19, NA, NA, NA)) -->
-<!--   box('outer', col = 'grey', lwd = 2.5) -->
-<!-- } -->
-<!-- include_graphics('figure/fig5.pdf') -->
-
-<!-- ``` -->
-<!-- \caption{(blue dots): Recovery temperature measured at \unit{25\,Hz} during descent through an inversion capping the marine boundary layer, from VOCALS flight\ 3. The dotted black line shows the estimated true recovery temperature, featuring a sharp change at the top of the -->
-<!-- boundary layer and a dry-adiabatic lapse rate in the marine boundary layer. The  prediction using the parameters listed in the text is shown as the magenta line, and the dashed brown line is the calculated temperature of the support that contacts the sensing wire.\label{fig:tfit}} -->
-<!-- \end{figure} -->
-
-<!-- Most prior studies have used sharp temperature changes in the -->
-<!-- atmosphere, for example from climbs through the inversion at the top -->
-<!-- of a boundary layer, to study the time response  -->
-<!-- of airborne thermometers. A search of available  -->
-<!-- climbs and descents through inversions capping the marine boundary -->
-<!-- layer found that almost all have measurable structure and are not -->
-<!-- discrete transitions. The best case found after a search of candidate passes through -->
-<!-- inversions in the VOCALS project is shown in  -->
-<!-- Figure\ \ref{fig:tfit}, from VOCALS flight 3, where the aircraft -->
-<!-- descended through the top of the marine boundary layer at approximately -->
-<!-- \unit{5\,m\,s^{-1}}. -->
-<!-- The assumed measurand history, for an assumed discrete discontinuity at the inversion -->
-<!-- and a well-mixed cloudy boundary layer below, is that shown by the dotted black line. -->
-
-<!-- The predicted time response from Eq.\ \eqref{eq:Tm} for the time constants listed in Table\ \ref{tab:Parameters} -->
-<!-- for the unheated sensor (adjusted for air density -->
-<!-- and flight speed) is shown as the magenta line in Fig.\ \ref{fig:tfit}. -->
-<!-- The observations initially change as fast as the predicted response, but after about -->
-<!-- \unit{0.2\,s} the measurements change significantly slower than predicted. -->
-<!-- The predictions and measurements only agree if the time constants are increased -->
-<!-- by about a factor of 2.5. It appears that, like all other boundary-layer tops -->
-<!-- observed in this project, the actual structure is modified by mixing at the cloud top and -->
-<!-- is not the discrete discontinuity assumed in these calculations. Nevertheless, -->
-<!-- the observations provide some support for the conclusion that the time response is, -->
-<!-- within about a factor of 2.5, about as  -->
-<!-- estimated from the transfer function determined from fits to -->
-<!-- the response to dynamic heating. -->
-
 ```{r specialVSpec, cache = FALSE}
 
 ## Special version to show transfer-fn mod and delay setting scale_x
@@ -2210,18 +2050,6 @@ source('chunks/VSpecC.R')
 source('chunks/Ranadu.R')
 
 ```
-
-<!-- ## Uses of the transfer functions -->
-
-<!-- The transfer functions have two potential uses: (i) to predict how -->
-<!-- airborne thermometers will respond; and (ii) to correct measurements -->
-<!-- to compensate for the time response of the sensors.  -->
-<!-- In Section\ \ref{sec:Correcting-for-Dynamic} the -->
-<!-- transfer functions are used to assess how sensors respond to dynamic -->
-<!-- heating and to develop appropriate correction schemes. Then  -->
-<!-- Section\ \ref{sec:flux-density} uses the transfer functions to develop  -->
-<!-- improved measurements of the flux of sensible heat. -->
-
 
 # Correcting for Dynamic Heating\label{sec:Correcting-for-Dynamic}
 
@@ -2241,29 +2069,9 @@ not how it affects the recovery temperature.
 ## This is a special version of CohPhase with features 
 ## not in the standard Ranadu version
 source('chunks/CohP.R')
-## The following commented statements are remnants from an earlier
-## program, and should be deleted eventually.
-# a <- 0.733 # 0.713
-# tau1 <- 0.0308  # 0.0335
-# tau2 <- 0.447
-# Param <- list(
-#   a = a,
-#   tau1 = tau1,
-#   tau2 = tau2
-# )
-# Param1 <- Param
-# ParamSH <- Param
-# ParamSH$a <- 0
-# ParamSH$tau1 <- 0.05681167 
-# ParamSH$tau2 <- 1.25078040
-# ParamSF <- Param
-# ParamSF$a <- 0.652
-# ParamSF$tau1 <- 0.0295
-# ParamSF$tau2 <- 1.04
 
 ```
 
-<!-- \begin{figure} -->
 ```{r S15, include=TRUE, fig.height = 3.7, out.width = "8.3cm"}
 
 DS <- getNetCDF(
@@ -2291,44 +2099,9 @@ DS$RT <- DS$RTH1
 DS$AT <- DS$ATH1
 xlim <- c(0.08, 12)
 ```
-<!-- ## Using VSpecC only because it doesn't set scale_x and want to  -->
-<!-- ## set it specially here: -->
-<!-- if (generateFigures || !(file.exists('figure/fig5.pdf'))) { -->
-<!--   cairo_pdf('figure/fig5.pdf') -->
-<!--   ## I have changed this plot because the former plot had -->
-<!--   ## spurious variance in Q from line resonance on the GV. -->
-<!--   ## It seemed better to use a C-130 example to avoid the -->
-<!--   ## distraction of that noise. -->
-<!--   ggg <- DT5 %>% Rmutate(Tr = TTRR, Ta = ATRR, Q = DH) %>% -->
-<!--        select(Time, TASX, Tr, Ta, Q) %>% -->
-<!--        VSpecC(VLabel = c('recovery temp.', 'air temp.', 'dynamic heating'), -->
-<!--              spans = 199, xlim = xlim, ylim=c(1.e-5, 0.03)) + -->
-<!--        suppressWarnings( -->
-<!--        scale_x_log10(breaks = trans_breaks("log10", function(x) 10^x, n = 2),  -->
-<!--                      labels = trans_format("log10", math_format(10^.x)))) + -->
-<!--       theme_WAC(1) + -->
-<!--       theme(legend.position=c(0.82, 0.85), -->
-<!--       plot.margin = unit(c(0.6, 0.6, 0.8, 0.6), "lines"), -->
-<!--       legend.background=element_rect(colour = 'black', liinewidth = 0.3, -->
-<!--                                      fill = "ivory"), -->
-<!--       legend.direction = "vertical",  -->
-<!--       legend.key.width = unit(1.3, 'lines'),  -->
-<!--       legend.key.height = unit(0.7, 'lines'), -->
-<!--       legend.text = element_text(size = 14), -->
-<!--       legend.title = element_blank()) + -->
-<!--       # guides(colour = guide_legend(reverse = TRUE, '  legend:')) + -->
-<!--       ylab(bquote('spectral variance ' * nu * 'P(' * nu * ')')) -->
-<!--   print(ggg) -->
-<!--   invisible(dev.off()) -->
-<!-- } -->
-<!-- include_graphics('figure/fig5.pdf') -->
 
-<!-- DS$AT <- reviseDH(DS, Param1, rf) -->
-<!-- DS$AT <- SmoothInterp(DS$AT, .Length = 0) -->
-
-<!-- ``` -->
-<!-- \caption{The weighted variance spectrum as a function of frequency $\nu$ for the recovery temperature measured by an unheated sensor. The spectra for the dynamic-heating term and for the calculated air temperature after this correction is applied are also shown. The wavelength scale is determined from the average airspeed, and the background includes orange dotted lines denoting $-2/3$ slope. Data from VOCALS flight 3, 12:43:00 to 12:53:00 UTC.\label{fig:S15}} -->
-<!-- \end{figure} -->
+<!-- ## Using VSpecC because it doesn't set scale_x; need  -->
+<!-- ## to set it specially here: -->
 
 Figure\ \ref{fig:f5} illustrates the problem. The measurements are
 from a low-level flight segment over the ocean where other indications
@@ -2370,26 +2143,6 @@ include_graphics('figure/fig5.pdf')
 
 The new approach followed here is to filter the dynamic-heating term to match the response of the sensor, so that only the actual sensor response to dynamic heating is subtracted from the measurement. This is made possible by the assumed linearity in response of the sensor. The proposed filtering removes a significant source of erroneous fluctuations
 present in many measurements of temperature made from research aircraft.
-<!-- However, the variance spectrum for -->
-<!-- the estimated ambient temperature, after correction by subtracting the contribution -->
-<!-- from dynamic heating, appears to have a substantial amount -->
-<!-- of high-frequency contamination. This matches the high-frequency portion -->
-<!-- of the spectrum for dynamic heating. The spectrum for the recovery temperature -->
-<!-- should exceed that of the ambient -->
-<!-- temperature (as is the case for measurements below about \unit{1\,Hz}) so that the subtraction -->
-<!-- of dynamic heating would produce smaller variance in the measured -->
-<!-- ambient temperature.  -->
-
-<!-- The transfer function shown in Fig.\ \ref{fig:LTsolution} indicates -->
-<!-- that the response to fluctuations at \unit{5\,Hz} is only about 50\% of the -->
-<!-- imposed amplitude, and at \unit{10\,Hz} the response is only about 35\%. -->
-<!-- Furthermore, the phase at \unit{10\,Hz} is shifted by about $62^{\circ}$. -->
-<!-- Subtracting the measured dynamic heating $Q$ as specified by Eq.\ \eqref{eq:DHterm} -->
-<!-- to the measured recovery temperature will therefore over-correct -->
-<!-- and produce erroneous fluctuations in the measured air temperature -->
-<!-- unless $Q$ is filtered to represent the sensor response. -->
-
-
 
 ```{r LT, include = FALSE, fig.height=3.7, fig.cap = 'The amplitude and phase for the frequency domain transfer function of an unheated temperature sensor.'}
 
@@ -2458,30 +2211,6 @@ air temperature $T_a^\prime$ then becomes
 T^{\prime}_{a}(t)=T_{m}(t)-Q^{\prime}(t){\label{eq:QprimeCorr}}
 \end{equation}
 instead of Eq.\ \eqref{eq:recoveryTemperature}. 
-
-<!-- One aspect of this correction needs emphasis, though. The correction -->
-<!-- only removes the erroneous signal from dynamic heating and does not otherwise -->
-<!-- correct for the response of the sensor. If the sensor response is corrected -->
-<!-- as described in Appendix A, that correction adjust for the sensor response -->
-<!-- to the recovery temperature, so in that case the unfiltered dynamic-heating -->
-<!-- correction should be subtracted to obtain the measured air temperature. -->
-<!-- That approach addresses the full response of the sensor, while the intent -->
-<!-- of the present section is to emphasize the errors that result from -->
-<!-- conventional processing. -->
-
-<!-- The inverse Fourier -->
-<!-- transform of the transfer function in the impulse function, and appropriate -->
-<!-- moving-average coefficients can be found from the impulse response. -->
-<!-- Those coefficients define a digital filter that represents the -->
-<!-- sensor response. The filter used here for 25-Hz measurements -->
-<!-- was determined at a frequency -->
-<!-- resolution of \unit{(1/600)\,Hz}, from which only the initial 101 and trailing -->
-<!-- 100 coefficients were retained and all other were set to zero. (For the slower heated sensor, a length of 301 samples was used.) Shifting -->
-<!-- the negative-frequency components to the start of the array gave an -->
-<!-- eight-second (or 12-s) moving-average filter that represents the response of the sensor. -->
-<!-- After filtering, the result was then shifted forward in time by four seconds to compensate -->
-<!-- for the delay. The arbitrary filter used here is not optimal, but this filter functions -->
-<!-- reasonably for \unit{25\,Hz} measurements, as shown in ... -->
 
 ```{r designFilter, include=FALSE}
 
@@ -2605,43 +2334,6 @@ save(AR,
 
 ```
 
-
-<!-- ## Other filtering methods -->
-
-<!-- Two other calculations can produce the appropriately filtered response -->
-<!-- to dynamic heating $Q^{\prime}(t)$: -->
-
-<!-- (1). Section\ \ref{sec:theTransferFn} showed that the transfer function -->
-<!-- is represented reasonably by the solution to two coupled differential -->
-<!-- equations. Numerical integration of those equations can then produce -->
-<!-- the predicted response of the sensor to dynamic heating. The equations -->
-<!-- from Sect.\ \ref{subsec:Theory}, revised to apply to dynamic heating, -->
-<!-- are these: -->
-<!-- \begin{equation} -->
-<!-- \frac{dQ_{qs}(t)}{dt}=\frac{Q(t)-Q_{qs}(t)}{\tau_{2}}{\label{eq:Ts-1}} -->
-<!-- \end{equation} -->
-<!-- \begin{equation} -->
-<!-- \frac{dQ^{\prime}(t)}{dt}=\frac{\left\{ aQ(t)+(1-a)Q_{qs}(t)\right\} -Q^{\prime}(t)}{\tau_{1}}{\label{eq:Tm-1}} -->
-<!-- \end{equation} -->
-<!-- where the first equation describes the effect of dynamic heating on -->
-<!-- the support structure of the temperature sensor, leading to support-structure -->
-<!-- variations in temperature of $Q_{qs}(t)$, and the second describes -->
-<!-- the response of the sensing wire to the combined effects of this influence -->
-<!-- on the support temperature and the dynamic-heating term. This separation -->
-<!-- relies on the linearity of the underlying equations, which makes it -->
-<!-- possible to represent the effect of dynamic heating in isolation from -->
-<!-- real fluctuations in temperature. Euler integration of these differential -->
-<!-- equations led to erroneous results at high frequency arising from -->
-<!-- inadequate resolution in the integration, so a fourth-order Runge-Kutta -->
-<!-- integration with dynamic adjustment of the time step, as described -->
-<!-- by @cash1990variable, was used. -->
-
-<!-- (2). The response specified by the frequency-domain transfer function $H(\nu)$ -->
-<!-- can be realized by Fourier transforms, by first calculating the Fourier -->
-<!-- transform of the dynamic-heating signal (here denoted $\hat{Q}(\nu)=\mathcal{F}(Q(t))$ -->
-<!-- where $\mathcal{F}$ denotes the Fourier transform) and then using -->
-<!-- the inverse Fourier transform ($\mathcal{F}^{-1}$) to estimate the -->
-<!-- sensor response from $Q^{\prime}(t)=\mathcal{F}^{-1}(H(\nu)\hat{Q}(\nu))$. -->
 
 \begin{figure}
 ```{r Integration, include=TRUE, echo=FALSE, out.height = "5cm", out.width = "12cm", messages = FALSE}
@@ -2855,54 +2547,6 @@ measured ambient temperature.
 
 ```{r CSETX, include=TRUE, echo=FALSE}
 
-# DWECAN <- getNetCDF(
-#   file.path(DataDirectory(), 'WECAN/WECANrf17h.nc'), 
-#             standardVariables(c('RTH1',
-#                     'ATH1', 'RTF1', 'ATF1')), 180400, 183500) # 182600,182900)
-# DWECAN$Q <- DWECAN$TASX^2 / 2010
-# SB <- 50
-# Z <- capture.output (
-#        Vr <- SmoothInterp(detrend (DWECAN[, c('Time', 'RTH1')]), .Length = 0))
-# Z <- capture.output (
-#        VrC <- SmoothInterp(detrend (DWECAN[, c('Time', 'Q')]), .Length = 0))
-# Rate <- attr(DWECAN, 'Rate')
-# vcv <- cbind(ts(Vr, frequency = Rate), ts(VrC, frequency = Rate))
-# P <- spec.pgram(vcv, detrend = FALSE, fast = TRUE, plot = FALSE, spans = 25)
-# dfH <- data.frame(P$coh, log(P$freq))
-# pfH <- binStats (dfH, bins = SB)
-# RXH <- CohP(DWECAN, 'RTH1', 'Q', plotType = 'Ranadu', smoothBins = SB)
-# phaseH <- rep(0, SB)
-# nphaseH <- rep(0, SB)
-# phase2H <- rep(0, SB)
-# arH <- rep(0, SB)
-# ar2H <- rep(0, SB)
-# narH <- rep(0, SB)
-# RXH$P.spec...1.[RXH$P.spec...1. < 0] <- 0
-# for (i in 2:nrow(RXH)) {
-#   phaseH[RXH$BIN.1[i]] <- phaseH[RXH$BIN.1[i]] + RXH$P.phase[i]
-#   nphaseH[RXH$BIN.1[i]] <- nphaseH[RXH$BIN.1[i]] + 1
-#   phase2H[RXH$BIN.1[i]] <- phase2H[RXH$BIN.1[i]] + RXH$P.phase[i]^2 
-#   arH[RXH$BIN.1[i]] <- arH[RXH$BIN.1[i]] + 
-#              sqrt(RXH$P.spec...1.[i] / RXH$P.spec...2.[i])
-#   ar2H[RXH$BIN.1[i]] <- ar2H[RXH$BIN.1[i]] + 
-#              (RXH$P.spec...1.[i] / RXH$P.spec...2.[i])
-#   narH[RXH$BIN.1[i]] <- narH[RXH$BIN.1[i]] + 1
-# }
-# narH[narH <= 0] <- 1
-# nphaseH[nphaseH == 0] <- 1
-# mphaseH <- phaseH / nphaseH
-# mphase2H <- phase2H / nphaseH
-# sdpH <- sqrt(mphase2H - mphaseH^2)
-# mphaseH <- mphaseH * 180 / pi
-# sdpH <- sdpH * 180 / pi
-# sdpH <- sdpH * 2 / sqrt(nphaseH)
-# arH <- arH / narH
-# ar2H <- ar2H / narH
-# sdrH <- ar2H - arH^2
-# sdrH[sdrH < 0] <- 0
-# sdrH <- sqrt(sdrH) * 2 / sqrt(narH)
-## Delete the above; can't use preliminary WE-CAN files
-# Repeat for CSET rf04h
 DCSET <- getNetCDF(
   file.path(DataDirectory(), 'CSET/CSETrf05h.nc'), 
             standardVariables(c('RTH1',
@@ -3051,7 +2695,6 @@ vp1 <-
   )
 
 DCSET$AT <- DCSET$RT - DCSET$QF
-# save(DWECAN, file = 'DWECAN.Rdata')
 g2 <- DCSET %>% select(Time, TASX, AT, RTH1, ATH1) %>%
   VSpecC(
     VLabel = c(
@@ -3104,9 +2747,6 @@ if (generateFigures) {
 }
 generateFigures <- generateSave
 include_graphics('figure/fig7.pdf')
-
-
-# grid.newpage()
 
 ```
 
@@ -3175,66 +2815,6 @@ if (file.exists ('./DVOCALS.Rdata')) {
       linetype = guide_legend("air T:")
     )
 }
-# generateSave <- generateFigures
-# # generateFigures <- TRUE  ## temporary; reset below
-# SV <- standardVariables()
-# DCSET <- getNetCDF(
-#   file.path(DataDirectory(), 'CSET/CSETrf12hT.nc'),
-#       c(SV, 'ATF1', 'ATH1', 'RTF1', 'RTH1',  'ATF1C', 'ATH1C')  
-# )  ## strangely, QCRC was used as primary -- usually not the best
-# recoveryFactor <- 0.9849
-# DCSET$Q <- recoveryFactor * DCSET$TASX^2 / 2010
-# DCSET$Q <- SmoothInterp(DCSET$Q, .Length=0)
-# Rate <- attr (DCSET, 'Rate')
-# rhozero <- 1013.25 * 100 / (287.05 * 288.15)
-# MRHO <- MachNumber(DCSET$PSXC, DCSET$QCXC) * 
-#         DCSET$PSXC * 100 / (287.05 * (273.15 + DCSET$ATX)) / rhozero
-# MRHO <- SmoothInterp(MRHO, .Length = 0)
-# a <- ParamSF$a
-# ## Note that these are variable:
-# tau1 <- ParamSF$tau1 * (MRHO / 0.3) ^ 0.68
-# tau2 <- rep(ParamSF$tau2, length(MRHO))
-# # tau2 <- ParamSH$tau2 * (MRHO / 0.3) ^ 0.68
-# Rate <- attr (DCSET, 'Rate')
-# DCSET$TsQ <- DCSET$Q
-# DCSET$Qp <- DCSET$Q
-# fS <- function(y, i) {
-#   (DCSET$Q[i] - y) / (Rate * tau2[i])
-# }
-# fM <- function (y, i) {
-#   (a * DCSET$Q[i] + (1 - a) * DCSET$TsQ[i] - y) / (Rate * tau1[i])
-# }
-# DCSET$TsQ <- rk4.integrate (fS, DCSET$Q[1], 1:nrow(DCSET))
-# DCSET$Qp <- rk4.integrate (fM, DCSET$Q[1], 1:nrow(DCSET))
-# DCSET$QF <- as.vector(signal::filter(AR1, DCSET$Q)) # AR for unheated
-# DCSET$QF <- ShiftInTime(DCSET$QF, .shift = -LshiftH * 40, .rate = 25)
-# # if (file.exists ('./DVOCALS.Rdata')) {
-# #   load (file = './DVOCALS.Rdata') # loads D
-# # DVOCALS <- D
-#   # DVOCALS$ATC <- DVOCALS$AT
-#   DCSET$ATF1F <- DCSET$ATF1 + DCSET$Q - DCSET$QF
-#   DCSET$original <- DCSET$ATF1
-#   DCSET$filtered <- DCSET$ATF1F
-#   startTime <- 174000; endTime <- 175000
-#   ga <- DCSET %>% select(Time, original, filtered) %>%
-#     # selectTime(startTime, endTime) %>%
-#     selectTime(180000, 180004) %>%
-#     ggplotWAC(col = c('darkorange', 'black'), lty=c(1,1), lwd = c(2.5, 1.0)) +
-#     theme_WAC(1) +
-#     ylab(bquote('temperature [' * degree * 'C]')) +
-#     xlab('time after 18:00:00 UTC [s]') +
-#     theme(legend.direction = "vertical",
-#           legend.position = c(0.5, 0.25),
-#           legend.key.width = unit(1, 'lines'),
-#           legend.key.height = unit(0.5, 'lines'),
-#           legend.text = element_text(size = 12),
-#           plot.margin = unit(c(0.6, 0.6, 0.8, 0.6), "lines")) +
-#     guides(
-#       color = guide_legend("air T:"),
-#       size = guide_legend("air T:"),
-#       linetype = guide_legend("air T:"),
-#       linewidth = guide_legend("air T:")
-#     )
   grid.newpage()
   vp2 <-
     viewport(
@@ -3325,18 +2905,6 @@ significant for the heated sensor. Most of these rapid fluctuations do not arise
 
 # The Flux Density of Sensible Heat\label{sec:flux-density}
 ## Outline of the correction procedure\label{subsec:Outline-correction}
-
-<!-- The measured air temperature $T_{a}$ is normally calculated by subtracting -->
-<!-- a dynamic-heating correction $Q$ from the measurement: $T_{a}=T_{m}-Q$ -->
-<!-- where $T_{m}$ is the measured recovery temperature. However, here -->
-<!-- it is desired to correct the resulting measurement on the basis of -->
-<!-- a known transfer function $H(\nu)$ that describes how the sensor -->
-<!-- responds to the input. That input (the measurand) is the recovery -->
-<!-- temperature $T_{r}=T_{a}+Q$, which differs from the measurement $T_{m}$ -->
-<!-- when the sensor output lags behind the input. The correction procedure -->
-<!-- therefore should correct the measurement $T_{m}$ to obtain an improved -->
-<!-- estimate of the recovery temperature and then use that corrected estimate -->
-<!-- of the recovery temperature to find the air temperature. -->
 
 Most past studies of temperature-sensor response (e.g., @mccarthy1973method,
 @nicholls1978measurements, @InverarityJTech2000) applied
@@ -3850,19 +3418,7 @@ by starting with
 a Gaussian-noise spectrum, weighting the Fourier components
 to obtain a $-5/3$ slope, and then using an inverse Fourier transform
 to reconstruct the simulated measurement series. 
-<!-- \begin{equation} -->
-<!-- P(\nu)=C\left(\frac{2\pi}{V}\right)^{-2/3}\epsilon^{2/3}\nu^{-5/3}{\label{eq:expectedSpectrum}} -->
-<!-- \end{equation} -->
-<!-- where $\nu$ is the frequency, $V$ the airspeed, $\epsilon$ the -->
-<!-- eddy dissipation rate, and $C=0.5$ for the longitudinal component -->
-<!-- <!-- of the wind and 2/3 for a lateral component. Thirty-minute sequences -->
-<!-- were generated at \unit{50\,Hz} for the three components of the wind, for -->
-<!-- an eddy dissipation rate of, -->
-<!-- and then long-wavelength components with frequency below \unit{0.05\,Hz} -->
-<!-- were attenuated by multiplying the Fourier components by $\exp(-5*0.05/|\nu|)$ -->
-<!-- where $\nu$ is the frequency. This not only produced a more realistic -->
-<!-- spectrum but also improved the accuracy of the high-frequency simulation, -->
-<!-- which otherwise exhibited some variability for different random sequences.  -->
+
 
 ```{r varSpecISR, include=FALSE, echo=FALSE, fig.cap="Assumed spectral variance at periodogram points."}
 
@@ -3961,7 +3517,6 @@ DF2 %>% select(Time, TASX, u, v, w) %>%
 
 ## plotCS is redefined here to get the form desired for a unified
 ## plot of the simulation results without distorting earlier plots.
-# source('chunks/plotCS2.R')
 source('chunks/plot2CS.R')
 
 ```
