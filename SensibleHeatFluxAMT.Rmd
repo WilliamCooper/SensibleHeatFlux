@@ -110,7 +110,7 @@ acknowledgements: |
   This material is based upon work supported by the NSF National Center
   for Atmospheric Research, which is a major facility sponsored by the
   National Science Foundation under Cooperative Agreement No. 1852977.
-  Data provided by NSF NCAR EOL. https://data.eol.ucar.edu/. 
+  Data provided by NSF NCAR EOL under sponsorship of the National Science Foundation. https://data.eol.ucar.edu/. 
   The data were collected using NSF’s Lower Atmosphere Observing Facilities, 
   which are managed and operated by NCAR’s Earth Observing Laboratory.
   Measurements used here (\citet{VOCALS2011}, \citet{SOCRATES2019}, \citet{CSET2017}) were collected in research projects

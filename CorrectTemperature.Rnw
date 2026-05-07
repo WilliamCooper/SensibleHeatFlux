@@ -1,5 +1,4 @@
 %% LyX 2.3.6.1 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
 \documentclass[12pt,american]{article}
 \usepackage{mathptmx}
 \usepackage[T1]{fontenc}
@@ -94,7 +93,7 @@ time response\tabularnewline
 \end{tabular}
 
 \bigskip
-
+The processing script described herein (``CorrectTemperature.R'') adjusts the measured recovery temperature to compensate for the known response of the sensor, before correction for dynamic heating. In addition, the script produces a new variable with the original (uncorrected) measurement of recovery temperature but with the dynamic-heating term revised to compensate for the response time of the temperature sensors. If the temperature sensor responds slower than the measurement of dynamic heating, the dynamic-heating term should be filtered to compensate for this difference in response times before it is subtracted from the measured recovery temperature. Otherwise a false signal may be introduced into the measured ambient temperature. This is described in \citet{CooperEtAl2022}.
 <<initialization,echo=FALSE,include=FALSE>>=
 
 
@@ -122,11 +121,10 @@ SaveRData <- sprintf("%s.Rdata", thisFileName)
 
 \section{The Governing Equations}
 
-The basis for this script is documented by \citet{CooperEtAl2022}.
 The objective in this note is to provide specific information regarding
-how that can be implemented in a second-pass processing script. It
+how the recommendations from that paper can be implemented in a second-pass processing script. It
 is hoped that this note will be useful to anyone needing to use and
-maintain the processing script, which is called ``CorrectTemperature.R''.
+maintain the processing script.
 
 \subsection{Correction Method \#1}
 
@@ -191,7 +189,7 @@ Mach number varies over the block of measurements.
 
 For the HARCO heated sensor, both methods require modification. The
 best-fit parameters include $a=0$, so \eqref{eq:Tr-1} and \eqref{eq:Ts3}
-can't be used for Method \#1 Fortunately, there is an alternate solution
+can't be used for Method \#1. Fortunately, there is an alternate solution
 to the equations for the case when $a=0$:\\
 \begin{equation}
 T_{r}(t)=(\tau_{1}+\tau_{2})\frac{dT_{m}(t)}{dt}+T_{m}(t)+\tau_{1}\tau_{2}\frac{d^{2}T_{m}(t)}{dt^{2}}\label{eq:HARCOcorr}
@@ -239,9 +237,8 @@ as in Method \#1 but applied to the result from item 1 above.
 \item An equivalent approach is to apply Method \#1 or Method \#2 to the
 measurement of recovery temperature, which will produce an estimate
 of what the sensor should have measured in the presence of normal
-dynamic heating, and then subtract the full unfiltered dynamic heating,
-which will have been restored to the recovery temperature by the correction
-procedure. In the frequency-space representation, because $H(\omega)\hat{Q}(\omega)/H(\omega)=\hat{Q}(\omega)$
+dynamic heating; i.e., the \emph{true} recovery temperature. Then subtract the \emph{full} unfiltered dynamic-heating term as measured.
+In the frequency-space representation, because $H(\omega)\hat{Q}(\omega)/H(\omega)=\hat{Q}(\omega)$
 the result is again \eqref{eq:Taprime}.
 \item For the heated sensor, the parameterized equations do not provide
 the best fit to the observations so the alternate fit using a polynomial
@@ -287,7 +284,7 @@ not an improvement over {[}vname{]}C but is available for testing.
 Given a netCDF flight, the script identifies the air-temperature and
 recovery-temperature variables and processes each to obtain the new
 variables listed above. Because the recovery temperatures are not
-preserved in most production files, the script reconstructs the recovery
+preserved in many production files, the script reconstructs the recovery
 temperature if necessary from the air temperature and the calculated
 dynamic heating, using the same recovery factor that was included
 as an attribute for the original air-temperature variable. The new
@@ -299,14 +296,15 @@ named ``processor''. A processing example will be run when
 this file is exported to pdf via pdflatex. The script is available
 separately as ``CorrectTemperature.R,'' and that is included in
 the CorrectTemperature.zip file that is the project archive for this
-processor. That archive is preserved at this URL: \href{https://github.com/WilliamCooper/SensibleHeatFlux}{https://github.com/WilliamCooper/SensibleHeatFlux}
+processor. That archive is preserved at this URL:\\  
+\href{https://github.com/WilliamCooper/SensibleHeatFlux}{https://github.com/WilliamCooper/SensibleHeatFlux}
 .
 
 The script will process files with either 25~Hz or 1~Hz time resolution.
 At 1~Hz, the corrected variables for the unheated probes show little
 change from the original although the changes are still significant
 for the heated probes, so by default the new variables for unheated
-probes are not included in the corrected files. A run-time argument
+probes are not included in the corrected 1-Hz files. A run-time argument
 can change that default if it is desired to produce corrected variables
 for all the sensors.
 
@@ -376,7 +374,7 @@ files, these variables are omitted for unheated sensors unless the
 interactively.
 \item {[}ATyy{]}F -- the original measurement with only the addition of
 the usual dynamic-heating term and then subtraction of the filtered
-dynami-heating term. This removes the excess noise arising from the
+dynamic-heating term. This removes the excess noise arising from the
 failure of the sensor to respond fully to dynamic heating, but it
 does not otherwise correct the measurement for sensor response.
 \item {[}RTyy{]}C -- the corrected result for the recovery temperature.
@@ -741,11 +739,12 @@ unless they are requested specifically by the runtime argument ``UH1''.
 For 25-Hz measurements and for the heated sensor, the effect of the
 correction is to produce a measurement in reasonable agreement with
 the much faster unheated sensor. This is shown in Fig.~\ref{fig:vnameCH},
-where the corrected result from the unheated sensor ATF1C,
-adjusted by -0.1$^{\circ}\mathrm{C}$ and labelled ATF1CM
+where the corrected result from the unheated sensor ATF1C, after
+adjustment of the measurement
+by -0.1$^{\circ}\mathrm{C}$ and labelled ATF1CM (for
+ATF1C-modified), is shown as the thin green line. The time shift was introduced
 to facilitate comparison to the corrected
-measurement from the heated sensor, is shown
-as the thin green line. The time-response correction
+measurement from the heated sensor. The time-response correction
 is quite important for this sensor and leads to a measurement almost
 as good as that from the unheated sensor.
 
@@ -829,7 +828,7 @@ Reproducibility:
 \textsf{\textsc{\textcolor{blue}{Project:}}} & \Sexpr{thisFileName}\tabularnewline
 \textsf{\textsc{\textcolor{blue}{Archive package:}}} & \Sexpr{thisFileName}.zip in the Git directory below\tabularnewline
 \textsf{\textsc{\textcolor{blue}{Contains:}}} & attachment list below\tabularnewline
-\textsf{\textsc{\textcolor{blue}{Program:}}} & \Sexpr{thisFileName}.Rnw produced from the .lyx file\tabularnewline
+\textsf{\textsc{\textcolor{blue}{Program:}}} & \Sexpr{thisFileName}.Rnw containing the text and code\tabularnewline
 \textsf{\textsc{\textcolor{blue}{Original Data:}}} & /scr/raf\_data/SOCRATES/\Sexpr{Flight}.nc for the example\tabularnewline
 \textsf{\textsc{\textcolor{blue}{Git:}}} & https://github.com/WilliamCooper/SensibleHeatFlux/\Sexpr{thisFileName}.zip\tabularnewline
 \end{tabular}
