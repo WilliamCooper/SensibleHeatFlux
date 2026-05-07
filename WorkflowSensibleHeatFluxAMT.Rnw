@@ -1,11 +1,11 @@
 %% LyX 2.3.6.1 created this file.  For more info, see http://www.lyx.org/.
-%% Do not edit unless you really know what you are doing.
 \documentclass[12pt,american,english]{article}
 \usepackage{mathptmx}
 \usepackage[T1]{fontenc}
 \usepackage[letterpaper]{geometry}
 \geometry{verbose,tmargin=3.54cm,bmargin=2.54cm,lmargin=2.54cm,rmargin=2.54cm,headheight=1cm,headsep=2cm,footskip=0.5cm}
 \usepackage{fancyhdr}
+\setlength{\headheight}{41.48592pt}
 \pagestyle{fancy}
 \setlength{\parskip}{\medskipamount}
 \setlength{\parindent}{0pt}
@@ -196,7 +196,7 @@ for the files and for each variable.
 
 \section{The .Rmd files (RMarkdown)}
 
-The .Rmd file is basically \LaTeX{} text, generated for simplicity
+The .Rmd file for the paper is basically \LaTeX{} text, generated for simplicity
 using \LyX , exported to .Rnw format, converted to .Rmd using the
 ``mdsr'' package for R (\citet{mdsrBaumer2019}), and then placed
 into the Copernicus template provided by Daniel N$\ddot{\mathrm{{u}}}$st
@@ -248,7 +248,7 @@ on a package of routines for R called ``Ranadu.'' This is a set
 of R functions for working with the NetCDF archive data files produced
 by NCAR/EOL/RAF, and it includes some convenience routines for generating
 plots and performing other data-analysis tasks with the archived data.
-The Ranadu package as used here is preserved at this reference: \citet{Ranadu2.6}.
+The Ranadu package as used here is preserved at this reference: \citet{ranadu2.7}.
 To run the R code referenced here, that version of the package should
 be included in the R installation. The .Rmd routine requires that
 package and also some others referenced in the file, including ``knitr'',
@@ -293,7 +293,7 @@ routines.
 
 There is a manual for the Ranadu package, included in the above package
 reference, that includes information on how to install it. See also
-\href{https://github.com/NCAR/Ranadu/blob/master/inst/RanaduManual.pdf}{this URL}. 
+\href{https://github.com/WilliamCooper/Ranadu/blob/master/inst/RanaduManual.pdf}{this URL}. 
 
 \subsection{Ranadu::flux ()}
 
@@ -340,7 +340,7 @@ entering, for example, Figs.~2 and 4.
 
 Plots of variance spectra, as shown in Figs.~3 and 6, were generated
 using the Ranadu function ``VSpec()''. There is a brief discussion
-of this function in ``RanaduManual.pdf'' p.~39, available at \href{https://github.com/NCAR/Ranadu/blob/master/inst/RanaduManual.pdf}{this URL}
+of this function in ``RanaduManual.pdf'' p.~39, available at \href{https://github.com/WilliamCooper/Ranadu/blob/master/inst/RanaduManual.pdf}{this URL}
 or in the Zenodo reference. A tutorial Shiny-app is also available
 \href{https://ncar-eol.shinyapps.io/VarSpec/}{here} that discusses
 plotting spectral variance and describes some of the options available
@@ -465,7 +465,7 @@ to describe the time response.
 \subsection{Re: Section 2.1}
 
 Here is exhaustive detail on the Laplace-transform solution. I went
-into this much detail to be convinced that the proposed solution proposed
+into this much detail to be convinced that the proposed solution
 was valid. This material is mostly superfluous because the solution
 has been verified several ways, so most readers can skip this subsection.
 This material will be unnecessary for those already expert in Laplace
@@ -753,7 +753,7 @@ The code chunk ``checkImpulseFnSoln'' (in this project archive)
 was used to check that the expressions used for the transfer function
 were indeed equivalent. An example comparison is shown in Fig.~\ref{fig:checkImpulseFnSoln}.
 
-<<checkImpulseFnSoln, include=TRUE, fig.cap='Example transfer function for $a$=0.5, $\\tau_1$=0.05, $\\tau_2$=0.5, for the Laplace-transform solution ("std") and for the corresponding solution obtained from the impulse-response function ("IF"). The lines overlap in this plot and were verified to agree to  near machine-precison limits.'>>=
+<<checkImpulseFnSoln, include=TRUE, fig.cap='Example transfer function for $a$=0.5, $\\tau_1$=0.05, $\\tau_2$=0.5, for the Laplace-transform solution ("std") and for the corresponding solution obtained from the impulse-response function ("IF"). The lines overlap in this plot and were verified to agree to near machine-precison limits.'>>=
 
 source('chunks/checkImpulseFnSoln.R')
 f <- seq(0.01,15,by=0.01)
@@ -1002,13 +1002,12 @@ dynamic heating. The first equation (Eq.~(15)) is so complicated
 because the simple version ($\alpha_{r}V^{2}/(2C_{p})$) uses the
 measured true airspeed ($V$) and the standard calculation of that
 involves the ambient temperature. If there are errors in the measurement
-of ambient temperature, they enter the estimate of $Q$\@. For that
+of ambient temperature, they enter the estimate of dynamic heating. For that
 reason, the expression is revised to depend only on the absolute recovery
 temperature ($T_{r}$) and other factors that can be determined without
-reference to the ambient temperature. This makes possible the iteration
-process used later in this section.
+reference to the ambient temperature. This makes possible the iterative process used later in this section.
 
-The formula used to calculate the dynamic heating variable $Q$ is
+The formula used to calculate the dynamic-heating variable $Q$ is
 as follows:
 
 \[
@@ -1025,24 +1024,11 @@ for $T_{r}$. The change in the results was insignificant.
 
 \subsection{Re Sect.~2.3, Data Sources}
 
-No additional information seems needed here. Someone wanting to reproduce
-this work can request the data files as described here. This work
-is all based on publicly available data sets that are preserved with
-associated Document Object Identifiers (DOIs).
+No additional information seems needed here. Someone wanting to reproduce this work can request the data files as described previously. This work is all based on publicly available data sets that are preserved with associated Document Object Identifiers (DOIs). See the paper for citations for the data sets used, some of which are used again in this workflow document.
 
 \subsection{Re Sect. 2.4, Fits to the Measurements}
 
-The initial few paragraphs are justification for using the dynamic-heating
-term to characterize the response of the temperature sensor. In the
-course of investigating this, some plots were constructed that were
-not included in the final paper. An example was the variance spectra
-for the two terms on the right side of Eq.~(16). That figure is included
-here as Fig.~\ref{fig:Qprime}. It shows the extent to which the
-second term dominates over the first for the entire frequency range.
-That helps justify attributing the variance in dynamic heating primarily
-to the variance in the Mach number, so that to a first approximation
-the true variance in the temperature-dependent first term in Eq.~(16)
-can be neglected. 
+The initial few paragraphs are justification for using the dynamic-heating term to characterize the response of the temperature sensor. In the course of investigating this, some plots were constructed that were not included in the final paper. An example was the variance spectra for the two terms on the right side of Eq.~(16). That figure is included here as Fig.~\ref{fig:Qprime}. It shows the extent to which the second term dominates over the first for the entire frequency range. That helps justify attributing the variance in dynamic heating primarily to the variance in the Mach number, so that to a first approximation the true variance in the temperature-dependent first term in Eq.~(16) can be neglected. 
 
 <<Qprime, include=TRUE, fig.height=3.4, fig.pos='t', fig.cap='Frequency-weighted spectral variance for $\\delta T_m/T_m$ and 0.4$\\delta M/M$ as functions of frequency ($\\nu$) for a low-level flight segment from VOCALS flight 3, 21 Oct 2008 11:39:00 -- 11:52:00 UTC. The wavelength scale shows the correspondence between frequency and wavelength at the average airspeed. The two terms are labeled "Tm" and "Mach" in the legend.'>>=
 
@@ -1067,12 +1053,7 @@ and $Q$ will be contaminated by other causes of fluctuation in the
 measured recovery temperature. Indeed, if such fluctuations in $T_{m}$
 are large compared to fluctuations in $Q$ then the amplitude ratio
 determined from the variance spectra will not reflect the transfer
-function and cannot be used to determine it. Therefore regions and
-frequency intervals were sought where it appeared that the fluctuations
-in $T_{m}$ arose primarily from fluctuations in $Q$\@. This should
-be the case where the intensity of turbulence is high and would produce
-much larger fluctuations in $T_{m}$ than the existing fluctuations
-in ambient temperature. 
+function and cannot be used to determine it. For this reason, regions and frequency intervals were sought where it appeared that the fluctuations in $T_{m}$ arose primarily from fluctuations in $Q$\@. This should be the case where the intensity of turbulence is high and would produce much larger fluctuations in $T_{m}$ than the existing fluctuations in ambient temperature. 
 
 The selection of data and combination into a unified data set is described
 in the text of the paper and won't be repeated here. Some trial-and-error
@@ -1080,13 +1061,7 @@ investigation of the number of bins to use in the construction of
 Fig.~2 in the paper led to the choice of 200 bins, which determines
 the number of plotted points and error bars in the plot. Although
 it leads to reduced clarity in the plots, a large number of bins was
-settled upon to avoid significant distortion of the mean when calculated
-for a region where the variable changes rapidly, as for example approaching
-10~Hz in this figure. Too large an interval, with the average defined
-at the mid-point of the interval, could distort the means toward higher
-values compared to the true distribution and hence would bias the
-determination of response variables. These plots have a more convincing
-appearance when a smaller number of bins is used, and became vary
+settled upon to avoid significant distortion of the mean when calculated for a region where the variable changes rapidly, as for example approaching 10~Hz in this figure. Too large an interval, with the average defined at the mid-point of the interval, could distort the means toward higher values compared to the true distribution and hence would bias the determination of response variables. These plots have a more convincing appearance when a smaller number of bins is used, and became very
 noisy if a much larger number of bins is used, so 200 bins was the
 compromise used in the paper for the unheated Rosemount sensor. Because
 the data sets used for other sensors were much smaller, smaller numbers
@@ -1107,7 +1082,7 @@ results from all calls were averaged in each of the frequency bins.
 The result was an average value (with standard deviation) for the
 phase and amplitude ratio, as needed to determine the transfer function.
 The observed phase at each bin-average frequency then was plotted
-in Fig.~2a to show the results for the phase. (The measurement used
+in Fig.~2b. (The measurement used
 for $T_{m}$ was ``TTRR'' from the netCDF file.\footnote{At the time of the VOCALS project the recovery temperatures had names
 like TTRR instead of RTRR\@. Those names were changed subsequently
 to reflect that these are better described as recovery temperatures
@@ -1119,10 +1094,10 @@ distinguish in this plot. The error-bar plot was generated using the
 ggplot2 function ``geom\_errorbar()'' with the limits specified
 using the bin-average mean values and standard deviations.
 
-The plotted ``theoretical response'' was generated by ``LTphase()''
+The plotted ``best'' theoretical response was generated by ``LTphase()''
 using the standard values of the response parameters as found later
 by fitting to these values and the corresponding values for the amplitude
-ratio. Figure~2b shows the phace. The plotted frequencies are limited
+ratio. Figure~2a shows the amplitude ratio (the square roots of the ratio of variance spectra) or the ``gain''. The plotted frequencies are limited
 to those above $10^{-2}\mathrm{Hz}$ because, below that frequency,
 bins had too few independent measurements to provide good statistics,
 although the available measurements below 0.01~Hz were consistent
@@ -1134,9 +1109,7 @@ outliers that should be excluded from the fit. The highest frequency
 included in the plot also shows some possible deviation and maybe
 should also be excluded.
 
-Figure~2a was generated in similar fashion, using the ratio of amplitudes
-(the square roots of the ratio of variance spectra) in place of the
-phase. For the fit, the calculation of the chi-square included the
+For the fit, the calculation of the chi-square included the
 deviations from the experimental phases and the experimental amplitude
 ratios with equal weights, except that the experimental amplitude
 ratios were only included for the frequency range from 0.1 to 3~Hz.
@@ -1163,7 +1136,7 @@ The paper then reports on an iteration in which the measured recovery
 temperature was first corrected using the parameters as determine
 in the fit and then the fit was repeated. This process was performed
 outside the .Rmd code by changing the dynamic-heating term in the
-six calls to CohP (lines 869 to 874) to ``DH2'', which was calculated
+six calls to CohP (lines 871 to 876) to ``DH2'', which was calculated
 by using the corrected ``RT'' variable in place of the measured
 variable (``TTRR''). The result produced only a small change to
 the fit parameters, within estimated uncertainty, even after only
@@ -1507,21 +1480,19 @@ Rosemount sensor was also present. Data were assembled as for the
 unheated sensor and the preceding analysis was repeated, except that
 two of the flight segments were omitted because they led to erratic
 indications of the phase. The heated sensor had almost no response
-to any fluctuations above 1~Hz, as shown in Fig.~3. 
+to any fluctuations above 1~Hz, as shown in Fig.~7. 
 
 \begin{figure}
 \begin{centering}
 \includegraphics[width=0.9\textwidth]{figure/VphaseW-1}
 \par\end{centering}
-\caption{Phase lag of recovery temperature vs.\textbackslash\textbackslash{}
-dynamic heating, for the measurements (error bars) from a Rosemount
-heated sensor, and the theoretical response for the best-fit parameters
-to the measurements with frequency below 1 Hz (green line).}
+\caption{Phase lag of recovery temperature vs.~dynamic heating, for the measurements (error bars) from a Rosemount
+heated sensor, and the theoretical response for the best-fit parameters representing the measurements with frequency below 1~Hz (green line).}
 
 \end{figure}
 
 The measured phase between the measured recovery temperature and the
-calculated dynamic heating is shown in Fig.~2. Above 1~Hz, the lack
+calculated dynamic heating is shown in Fig.~8. Above 1~Hz, the lack
 of response led to erratic estimates of the phase and the coherence
 between the measured recovery temperature and dynamic heating was
 consistent with zero, so those measurements of the phase were omitted
@@ -1532,8 +1503,8 @@ there appeared to be significant fluctuations in recovery temperature
 caused by real changes in air temperature and not primarily changes
 in dynamic heating. The best-fit parameters so obtained were $a=$\Sexpr{round(bestW[1], 2)},
 $\tau_{1}=$\Sexpr{round(bestW[2], 2)}~s and $\tau_{2}=$\Sexpr{round(bestW[3], 2)}~s;
-these values are the basis for the theoretical lines in Figs.~4 and
-5.\footnote{The fit was constrained to keep $a\geq0$. Still smaller values of
+these values are the basis for the theoretical lines in Figs.~8 and
+9.\footnote{The fit was constrained to keep $a\geq0$. Still smaller values of
 the $\chi^{2}$ were obtained for negative $a$, but this would be
 inconsistent with the assumed model of heat transfer to the wire.}
 
@@ -1542,8 +1513,8 @@ inconsistent with the assumed model of heat transfer to the wire.}
 \includegraphics[width=0.9\textwidth]{figure/checkW-1}
 \par\end{centering}
 \caption{The ratio of the spectral amplitude for the measurement of recovery
-temperature (\$T\_m(t)\$) from the heated Rosemount sensor to that
-for dynamic heating (\$Q\$), shown as the plotted data points. The
+temperature ($T_m(t)$) from the heated Rosemount sensor to that
+for dynamic heating ($Q$), shown as the plotted data points. The
 green line is the prediction from the transfer function determined
 from the best-fit values matching the phase lag and amplitude ratio
 between these variables.}
@@ -1562,7 +1533,7 @@ representation provided by Part 1 Eqns.~(3) and (4) is incomplete.
 This is impossible for a single-time-constant sensor but is possible,
 as the theoretical line shows, for a two-time-constant representation
 of the response, so it is conclusive that at least two time constants
-are involved. This also indicates that wrong-sign contributions to
+are involved or that the representation of time response is more complicated. This also indicates that wrong-sign contributions to
 sensible-heat flux would be measured by this sensor above about 0.3~Hz.
 \item The low value of $a$, \Sexpr{round(bestW[1], 2)}, indicates that
 the primary heat transfer from the wire is not to the air but to the
@@ -1618,19 +1589,17 @@ from the paper.)
 
 \subsubsection{Comments on Sect.~2.4.2, Heated sensors}
 
-The first try was based on WECAN data, but the results did not seem
-to give a response dominated by dynamic-heating forcing. That code
-still resides in the .Rmd file, along with an early analysis based
-on limited SOCRATES data, but those were superceded by a set of flight
+The first try was based on WE-CAN data, but the results did not seem
+to give a response dominated by dynamic-heating forcing. Those analyses were superceded by a set of flight
 segments from the SOCRATES and CSET experiments, and that is the data
 set used in the paper to characterize the HARCO sensor\@. Procedures
 followed the pattern explained above for the unheated Rosemount sensor,
 and a transfer function for the HARCO was plotted as Fig.~4 in the
-paper using the same procedures. The fit provided by Eqs.~(17)--(19)
+paper using the same procedures. The fit provided by Eqs.~(17)--(18)
 has no theoretical basis, but it provides a reasonable fit to the
 observations and is a considerable improvement over the three-parameter
-fit. The variable $\nu_{0}$ was defined only to provide a dimensionless
-argument to the $\log()$ function.
+fit. (The variable $\nu_{0}$ was defined only to provide a dimensionless
+argument to the $\log()$ function.) 
 
 \subsubsection{Comments on Sect. 2.4.3, Expected dependence on flight conditions}
 
@@ -1638,7 +1607,7 @@ The dependence attributed to \citet{stickney1994goodrich} was obtained
 from my approximation to the central line in their Fig.~12. The uncertainty
 in that estimate is large; slopes ranging from about $-0.6$ to $-0.75$
 fall within the uncertainty limits of the plot. \citet{collis1959two}
-and \citet{khan2005fluid}\textcolor{black}{{} indicate that the Nusselt
+and \citet{khan2005fluid} indicate that the Nusselt
 number should vary as $\mathrm{Re}^{0.5}$ for a cylindrical wire,
 suggesting that $\tau_{1}$ should vary as $\mathrm{Re}^{-0.5}$,
 but that does appear to be outside the likely uncertainty limits in
@@ -1646,8 +1615,7 @@ the referenced figure. It would seem appropriate to use Re at the
 sensor wire rather than the free-stream Re -- i.e., use the airspeed,
 air density, and dynamic viscosity $\mu$ evaluated for recovery conditions:
 $V_{p}=\sqrt{1-\alpha_{r}}V$, $p_{p}=p+q\approx p(1+M^{2}/5)^{-2/7}$,
-$\rho_{p}=p_{p}/(R(273.15+T_{r}))$, leading to}\\
-\textcolor{black}{
+$\rho_{p}=p_{p}/(R(273.15+T_{r}))$, leading to\\
 \[
 \mathrm{Re}^{*}=\rho_{p}V_{p}d/\mu
 \]
@@ -1660,25 +1628,22 @@ $Z=0.3,$ $\mathrm{Re}^{*}$ is about 75, so it is useful to normalize
 both to those values and then consider how the time constant would
 vary with either $(Z/0.3)^{-0.68}$ or $(\mathrm{Re}^{*}/75)^{-0.5}.$
 Appropriate flight conditions against which to test this prediction
-were difficult to find, but one candidate was from the ``DC3'' project,
+were difficult to find, but one candidate was from the ``DC3'' project \citet{DC3},
 flight 11, 21:00 to 22:00 UTC, a flight segment at about 11.5 km altitude.
 An estimate of $\tau_{1}$ from that flight leg was $\tau_{1}=0.037$~s,
-while $Z^{-0.68}$ predicts 0.036 and $\left(\mathrm{Re}^{*}\right)$$^{-0.5}$
-predicts about 0.033. The results aren't very different but they seem
+while $Z^{-0.68}$ predicts 0.036 and $\left(\mathrm{Re}^{*}\right)^{-0.5}$
+predicts about 0.033. The results aren't very different but they are
 closer to the Stickney representation. Therefore, it seems better
 to stay with the Stickney representation, which was based on wind-tunnel
 measurements with the sensor rather than idealized-cylinder results.
 It was interesting that there did not seem to be a similar variation
-in $\tau_{2}$; if anything, the results favored a smaller value.
+in $\tau_{2}$; the results appear to favor a smaller value.
 Using the expected dependence for the sensor is probably not appropriate
-for the support, so no change was suggested for the second time constant,
-but it would be useful to find more information on that time constant.
-}This would be a useful topic for future work.
+for the support, so no change was suggested for the second time constant. It would be useful to find more information on that time constant; this could be a useful topic for future work.
 
 \subsection{Omitted Sect. 2.5, response to a step change}
 
-This section was omitted from the final paper. Tentative text and
-code still exist, commented, in the .Rmd file. The VOCALS project
+This section was omitted from the final paper and was removed from the final SensibleHeatFluxAMT.Rmd file. The VOCALS project
 provided a good opportunity to search for discontinuities topping
 the marine boundary layer because most flights included numerous climbs
 and descents through that structure. A large number of these were
@@ -1700,9 +1665,7 @@ are reproduced here:
 
 <!-{}- \#\# Response to a step change -{}->
 
-This section has been modified significantly to relate to the recovery
-temperature rather than the ambient temperature and to correct an
-error in the calculation. The section has now been omitted because
+The section has now been omitted because
 it no longer provides useful support for the transfer function as
 determined here. Furthermore, the top of the BL is cloudy, so I worry
 about the complication that sensor wetting may introduce. 
@@ -1758,7 +1721,7 @@ box('outer', col = 'grey', lwd = 2.5)
 
 @
 
-Most prior studies have used sharp temperature changes in the atmosphere,
+Some prior studies have used sharp temperature changes in the atmosphere,
 for example from climbs through the inversion at the top of a boundary
 layer, to study the time response of airborne thermometers. A search
 of available climbs and descents through inversions capping the marine
@@ -1787,7 +1750,8 @@ about a factor of 2.5, about as estimated from the transfer function.
 \rule[0.5ex]{1\columnwidth}{1pt}
 
 (this is the end of the section re the step-change response, excluded
-from the paper, except for Fig.~11 that follows.)
+from the paper.)
+\newpage
 
 \subsection{Application to a \textquotedblleft speed run\textquotedblright}
 
@@ -1795,7 +1759,7 @@ Initial drafts of this paper included a section showing how the sensor
 response introduces hysteresis into measurements during a ``speed
 run'', where the airspeed changes during level flight and causes
 a change in dynamic heating. This material is included here but was
-excluded from the submitted version of the paper. 
+excluded from the final version of the paper. 
 
 An example is shown in Fig.~\ref{fig:SRDW}, where the airspeed was
 increased steadily in level flight from near the lower limit of the
@@ -1803,9 +1767,8 @@ flight envelope to near the upper limit and then was decreased back
 to the starting value. A plot of recovery temperature should also
 increase and decrease as the dynamic heating changes, but with a lag
 caused by the sensor response. This lag will produce hysteresis in
-the measured temperature during the speed run.
+the measured temperature during the speed run. (Measurements from the DEEPWAVE experiment, \citet{DEEPWAVEhr}.)
 
-\selectlanguage{american}%
 <<SRDW, include=TRUE, fig.pos='t', fig.height=3.2, fig.cap='History of the airspeed during a  "speed-run" maneuver where the airspeed varied during level flight over the available speed range of the aircraft.'>>=
 
 Project <- 'DEEPWAVE'
@@ -2622,7 +2585,7 @@ valid time sequence.
 \label{sec:bibliography} 
 
 \bibliographystyle{plainnat}
-\addcontentsline{toc}{section}{\refname}\bibliography{WAC}
+\addcontentsline{toc}{section}{\refname}\bibliography{WAC.bib}
 
 \begin{center}
 \textsf{\textcolor{blue}{-- End of Memo --}}

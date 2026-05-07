@@ -30,7 +30,9 @@ CompareTF <- function(f, a, tau2, tau1) {
   AmpDiff <- cTF - cTFa
   PhaseDiff <- phiTF - phiTFa
   DF <- data.frame(Time=f, Amp=cTF, Amp2=cTFa, Phase=phiTF, Phase2= phiTFa, AmpD = AmpDiff, PhaseD = PhaseDiff)
-  g <- DF %>% select(Time, Amp, Amp2, Phase, Phase2) %>% ggplotWAC(labx='Frequency', panels=2, labelP=c('Gain', 'Phase'), labelL=c('std', 'IF'))
+  g <- DF %>% select(Time, Amp, Amp2, Phase, Phase2) %>% 
+    ggplotWAC(labx='Frequency', panels=2, lwd=c(2.5,1.), lty=c(1,2), col=c('blue', 'darkorange'),
+              labelP=c('Gain', 'Phase'), labelL=c('std', 'IF'))
   # g <- ggplotWAC(DF, labx='Frequency', panels=2, labelP=c('Gain', 'Phase'))
   g <- g + xlab('frequency [Hz]') + ylab(bquote('transfer function H(' * nu ~ ')'))
   g <-
